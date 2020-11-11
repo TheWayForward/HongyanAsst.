@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="0e36202e-3c9b-4353-8544-0e10ed2aa493" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/miniprogram/pages/event/event.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/miniprogram/pages/event/event.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/miniprogram/pages/event/event.wxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/miniprogram/pages/event/event.wxss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/miniprogram/pages/eventlist/eventlist.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/miniprogram/pages/eventlist/eventlist.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/miniprogram/pages/eventlist/eventlist.wxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/miniprogram/pages/eventlist/eventlist.wxss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/miniprogram/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/miniprogram/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/miniprogram/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/miniprogram/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/miniprogram/app.wxss" beforeDir="false" afterPath="$PROJECT_DIR$/miniprogram/app.wxss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/miniprogram/pages/article/article.js" beforeDir="false" afterPath="$PROJECT_DIR$/miniprogram/pages/article/article.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/miniprogram/pages/article/article.json" beforeDir="false" afterPath="$PROJECT_DIR$/miniprogram/pages/article/article.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/miniprogram/pages/articlelist/articlelist.js" beforeDir="false" afterPath="$PROJECT_DIR$/miniprogram/pages/articlelist/articlelist.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/miniprogram/pages/articlelist/articlelist.json" beforeDir="false" afterPath="$PROJECT_DIR$/miniprogram/pages/articlelist/articlelist.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/miniprogram/pages/index/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/miniprogram/pages/index/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/miniprogram/pages/index/index.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/miniprogram/pages/index/index.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/miniprogram/pages/index/index.wxss" beforeDir="false" afterPath="$PROJECT_DIR$/miniprogram/pages/index/index.wxss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/miniprogram/pages/official/official.js" beforeDir="false" afterPath="$PROJECT_DIR$/miniprogram/pages/official/official.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/miniprogram/pages/official/official.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/miniprogram/pages/official/official.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/miniprogram/pages/register/register.js" beforeDir="false" afterPath="$PROJECT_DIR$/miniprogram/pages/register/register.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/miniprogram/pages/register/register.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/miniprogram/pages/register/register.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/miniprogram/pages/user_profile/user_profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/miniprogram/pages/user_profile/user_profile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/miniprogram/pages/user_profile/user_profile.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/miniprogram/pages/user_profile/user_profile.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/miniprogram/pages/user_profile/user_profile.wxss" beforeDir="false" afterPath="$PROJECT_DIR$/miniprogram/pages/user_profile/user_profile.wxss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/miniprogram/style/weui.wxss" beforeDir="false" afterPath="$PROJECT_DIR$/miniprogram/style/weui.wxss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/miniprogram/utils/parser.min/libs/CssHandler.js" beforeDir="false" afterPath="$PROJECT_DIR$/miniprogram/utils/parser.min/libs/CssHandler.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/miniprogram/utils/parser.min/libs/MpHtmlParser.js" beforeDir="false" afterPath="$PROJECT_DIR$/miniprogram/utils/parser.min/libs/MpHtmlParser.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/miniprogram/utils/parser.min/libs/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/miniprogram/utils/parser.min/libs/config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/miniprogram/utils/parser.min/parser.js" beforeDir="false" afterPath="$PROJECT_DIR$/miniprogram/utils/parser.min/parser.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/miniprogram/utils/parser.min/parser.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/miniprogram/utils/parser.min/parser.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/miniprogram/utils/parser.min/trees/trees.js" beforeDir="false" afterPath="$PROJECT_DIR$/miniprogram/utils/parser.min/trees/trees.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/miniprogram/utils/parser.min/trees/trees.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/miniprogram/utils/parser.min/trees/trees.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/miniprogram/utils/parser.min/trees/trees.wxss" beforeDir="false" afterPath="$PROJECT_DIR$/miniprogram/utils/parser.min/trees/trees.wxss" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="280" />
+    <option name="y" value="236" />
+    <option name="width" value="925" />
+    <option name="height" value="700" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0e36202e-3c9b-4353-8544-0e10ed2aa493" name="Default Changelist" comment="" />
+      <created>1604072926314</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1604072926314</updated>
+      <workItem from="1604072929850" duration="18000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="18000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="224" y="189" width="740" height="560" extended-state="0" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.105882354" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="运行" order="7" weight="0.39181286" />
+      <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="9" />
+      <window_info anchor="bottom" id="Database Changes" order="10" />
+      <window_info anchor="bottom" id="Terminal" order="11" />
+      <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" />
+      <window_info anchor="bottom" id="调试" order="13" />
+      <window_info anchor="bottom" id="Python Console" order="14" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="SciView" order="3" />
+      <window_info anchor="right" id="Database" order="4" weight="0.32991204" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

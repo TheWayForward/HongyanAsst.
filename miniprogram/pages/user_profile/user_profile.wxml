@@ -1,0 +1,88 @@
+<!--all-->
+<view class="container" hidden="{{isHide}}">
+
+  <!--avatar and username-->
+  <view class="avatar_name_container pt-50 pb-25">
+    <view class="avatar_container">
+      <image src="{{user.avatar}}" class="rounded avatar shadow-bold" data-action="{{user.avatar}}" bindtap="preview"/>
+    </view>
+    <view class="name bold" style="letter-spacing:1rpx">{{user.nickname}}</view>
+    <!--update info-->
+    <view class="update_info_button" bindtap="goto_updateinfo" hover-class="hv" hover-stay-time="30">✐编辑资料</view>
+  </view>
+  
+  <!--basic info group-->
+  <view class="info_group">
+    <view class="bar"></view>
+    <view class="info_group_title">基本资料</view>
+  </view>
+
+  <!--birthday-->
+  <view class="info_tab d-flex shadow" style="margin-top:-5rpx;">
+  <view class="info_tab_image_container">
+      <image class="info_tab_image" src="../user_profile/image/time.png"/>
+    </view>
+    <view class="info_field bold my_gray">入驻时间</view>
+    <view class="info_data">{{user.birthday}}</view>
+  </view>
+
+  <!--campus-->
+  <view class="info_tab d-flex shadow">
+  <view class="info_tab_image_container">
+      <image class="info_tab_image" src="../user_profile/image/bupt.png"/>
+    </view>
+    <view class="info_field bold my_gray">所在校区</view>
+    <view class="info_data">{{user.campus}}</view>
+  </view>
+
+  <!--total diasance-->
+  <view class="info_tab d-flex shadow">
+  <view class="info_tab_image_container">
+      <image class="info_tab_image" src="../user_profile/image/distance.png"/>
+    </view>
+    <view class="info_field bold my_gray">骑行里程</view>
+    <view class="info_data">{{user.total_distance}} km</view>
+  </view>
+
+  <!--credit-->
+  <view class="info_tab d-flex shadow">
+  <view class="info_tab_image_container">
+      <image class="info_tab_image" src="../user_profile/image/credit.png"/>
+    </view>
+    <view class="info_field bold my_gray">信用积分</view>
+    <view class="info_data">{{user.credit}} </view>
+  </view>
+
+  <!--bicycle info group-->
+  <view class="info_group" style="margin-bottom:-20rpx;">
+    <view class="bar"></view>
+    <view class="info_group_title">我的车辆</view>
+  </view>
+
+  <!--bicycles-->
+  <view class="info_tab shadow-bold" style="padding-bottom:0;" wx:for="{{user.my_bicycle}}">
+  <view class="d-flex">
+    <view class="info_tab_image_container">
+      <image class="info_tab_image" src="../user_profile/image/bicycle.png"/>
+    </view>
+    <view class="info_field bold my_gray">{{item.bicycle_type}}</view>
+    <view class="info_data">{{item.bicycle_name}} </view>
+  </view>
+  <view class="bicycle_thumbnail_container">
+      <image class="bicycle_thumbnail" mode="aspectFill" src="{{item.bicycle_thumbnail}}" data-action="{{item.bicycle_thumbnail}}" bindtap="preview"/>
+  </view>
+  </view>
+
+  <!--add bicycles-->
+  <view style="text-align:center;padding-top:20rpx;">
+    <image src="image/add.png" style="width:150rpx;height:150rpx;"></image>
+  </view>
+
+  <!--event info group-->
+  <view class="info_group">
+    <view class="bar"></view>
+    <view class="info_group_title">我的活动</view>
+  </view>
+
+
+</view>

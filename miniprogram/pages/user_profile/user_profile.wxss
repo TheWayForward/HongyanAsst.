@@ -1,0 +1,94 @@
+.avatar_name_container{
+  width: 100%;
+  border-radius: 30rpx;
+  margin-top: -20rpx;
+  text-align: center;
+  background-image: url(https://www.bupt.edu.cn/images/bg.png);
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+.avatar{
+  width: 150rpx;
+  height: 150rpx;
+}
+
+.update_info_button{
+  height: 50rpx;
+  line-height: 50rpx;
+  text-align: center;
+  border-radius: 40rpx;
+  color: gray; 
+}
+
+.info_group{
+  display: flex;
+  line-height: 60rpx;
+}
+
+.bar{
+  margin-left: -350rpx;
+  width: 7rpx;
+  height: 40rpx;
+  align-self: center;
+  border-radius: 50rpx;
+  background: gray;
+}
+
+.info_group_title{
+  margin-left: 10rpx;
+  letter-spacing: 5rpx;
+  color: gray;
+  line-height: 60rpx;
+  font-size: 25rpx;
+}
+
+.info_tab{
+  width: 95%;
+  border-radius: 30rpx;
+  margin-top: 20rpx;
+  background: white;
+  border-top: 2px dotted gainsboro;
+  overflow: hidden;
+}
+
+.info_tab_image_container{
+  
+}
+
+.info_tab_image{
+  height: 50rpx;
+  width: 50rpx;
+  margin-top: 15rpx;
+  margin-left: 25rpx;
+}
+
+.info_field{
+  margin-left: 30rpx;
+  line-height: 80rpx;
+}
+
+.info_data{
+  margin-left: 50rpx;
+  line-height: 80rpx;
+}
+
+.bicycle_thumbnail_container{
+  width: 100%;
+  height: 400rpx;
+  padding: 0;
+}
+
+.bicycle_thumbnail{
+  width: 100%;
+  height: 400rpx;
+}
+
+.add_bicycle{
+  width: 200rpx;
+  height: 200rpx;
+}
+
+.my_gray{
+  color: #646C7A;
+}

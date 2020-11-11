@@ -1,0 +1,56 @@
+<!--loading animation-->
+<view class="cview" style="margin-top:200rpx;" hidden="{{!isHide}}">
+  <view wx:for="{{hnode}}" wx:key="_id" class="html">
+    <rich-text class="html" selectable="true" nodes='{{item.node}}'></rich-text>
+  </view>
+</view>
+
+<!--to top button-->
+<view hover-class="hv" hover-stay-time="30">
+  <image src='http://m.qpic.cn/psc?/V10ldMks1Z5QlW/TmEUgtj9EK6.7V8ajmQrEPfkM1nl3J09FGot6wPesmw02oPEavSAyVQ1CSzNQYVz*b9EetX9VgERFKIsilbadBUBHg7I6CMvbYums3DiLHQ!/b&bo=cQBnAHEAZwADGTw!&rf=viewer_4' class='goTop' hidden='{{showTop}}' bindtap='goTop'/>
+</view>
+
+<!--search bar-->
+<view class="" style="position:fixed;width:100%">
+  <view class="search_align rounded-10 d-flex">
+    <image src="../../images/search.png" mode="widthFill" style="height:70rpx;width:90rpx;margin-left:10rpx;margin-right:20rpx;"></image>
+    <input placeholder="按题目或标签搜索资讯" class="input" bindinput="input">
+      
+    </input>
+  </view>
+</view>
+
+<view>
+
+<!--article segment-->
+<view class="container articles" style="padding-top:20rpx;margin-top:100rpx;" hidden="{{isHide}}">
+  
+  <!--article block-->
+  <view class="article_block" wx:for="{{search_articles}}"> 
+    <view>
+      <!--upper thumbnail-->
+      <view class="thumbnail_container">
+        <image src="{{item.thumbnail}}" mode="aspectFill" class="article_thumbnail" bindtap="preview" data-action="{{item.thumbnail}}" lazy-load="true"/>
+      </view>
+      <!--overview-->
+      <view class="overview">
+        <image src="../../images/view.png" style="width: 35rpx;height: 20rpx;" bindtap="preview" data-action="{{item.thumbnail}}"></image>
+        <view class="my_white" style="line-height:20rpx;margin-left:10rpx">{{item.view}}</view>
+      </view>
+      <!--bottom info-->
+      <view class="bottominfo" style="padding-left:15rpx;padding-right:15rpx;padding-top:15rpx" hover-class="hv" hover-stay-time="30" data-title="{{item.title}}" data-availability="{{item.isAvailable}}" data-id="{{item._id}}" bindtap="goto_article"> 
+        <!--title-->
+        <view class="title my_small" style="">{{item.title}}</view>
+        <view class="foot">
+          <!--tag-->
+          <view class="tag_block shadow rounded-5" style="">
+            <view class="tag_text" style="">{{item.type}}</view>
+          </view>
+          <!--author-->
+          <view class="author my_gray" style="line-height:60rpx;margin-left:15rpx;font-size:26rpx">{{item.author}}</view>
+        </view>  
+      </view>
+    </view>
+  </view>
+</view>
+</view>

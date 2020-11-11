@@ -1,0 +1,124 @@
+<!--weui as bootstrap-->
+<view class="page">
+  <view class="weui-cells">
+    <view class="weui-cell weui-cell_active">
+				<view class="weui-cell__hd" style="position: relative; margin-right: 10px;">
+					<image src="{{avatar}}" class="rounded-10" style="width: 80rpx; height: 80rpx; display: block;"></image>
+				</view>
+				<view class="weui-cell__bd ml-50">
+					<view>{{wechat_nickname}}</view>
+				</view>
+			</view>
+  </view>
+    <view class="page__bd">
+        <view class="weui-cells__title">基本信息</view>
+        <view class="weui-cells weui-cells_after-title">
+            <!--weui-cell is the outer container-->
+            <!--user info forms-->
+
+            <!--realname-->
+            <view class="weui-cell weui-cell_active">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">真实姓名</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" placeholder="请输入您的姓名" bindinput="input_realname"/>
+                </view>
+            </view>
+
+            <!--gender-->
+            <view class="weui-cell weui-cell_active weui-cell_select weui-cell_select-after">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">性别</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <picker bindchange="bind_genderChange" value="{{genderIndex}}" range="{{genders}}">
+                        <view class="weui-select weui-select_in-select-after">{{genderIndex}}</view>
+                    </picker>
+                </view>
+            </view>
+            
+            <!--campus-->
+            <view class="weui-cell weui-cell_active weui-cell_select weui-cell_select-after">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">所在校区</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <picker bindchange="bind_campusChange" value="{{campusIndex}}" range="{{campuses}}">
+                        <view class="weui-select weui-select_in-select-after">{{campusIndex}}</view>
+                    </picker>
+                </view>
+            </view>
+
+            <!--dept-->
+            <view class="weui-cell weui-cell_active weui-cell_select weui-cell_select-after">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">学院</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <picker bindchange="bind_deptChange" value="{{deptIndex}}" range="{{depts}}">
+                        <view class="weui-select weui-select_in-select-after">{{deptIndex}}</view>
+                    </picker>
+                </view>
+            </view>
+
+            <!--QQ-->
+            <view class="weui-cell weui-cell_active">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">QQ</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" placeholder="请输入QQ号码" bindinput="input_QQ"/>
+                </view>
+            </view>
+
+            <!--tel-->
+            <view class="weui-cell weui-cell_active">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">电话</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" placeholder="请输入手机号" bindinput="input_tel"/>
+                </view>
+            </view>
+
+            <!--email-->
+            <view class="weui-cell weui-cell_active">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">邮箱</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" placeholder="请输入邮箱" bindinput="input_email"/>
+                </view>
+            </view>
+
+        </view>
+        
+        <!--detail-->
+        <view class="weui-cells__title">个人介绍（选填）</view>
+        <view class="weui-cells weui-cells_after-title">
+            <view class="weui-cell weui-cell_active">
+                <view class="weui-cell__bd">
+                    <textarea class="weui-textarea" placeholder="我玩车多长时间了？我喜欢如何骑车？我的优势……" style="height: 3.3em" bindinput="input_detail" maxlength="200"/>
+                    <view class="weui-textarea-counter">{{text_counter}}</view>
+                </view>
+            </view>
+        </view>
+
+        <view class="weui-cells__tips">感谢您对鸿雁车协的关注，我们将规范地使用这些信息。</view>
+
+        <!--agreement-->
+        <label class="weui-agree">
+            <switch type="checkbox" checked="{{isChecked}}" class="checkbox-size" color="#07C160" bindchange="check_contract"/>
+            <span class="weui-agree__text">我已阅读并同意<navigator url="" class="weui-agree__link">《"鸿雁车协助手"服务条款》</navigator></span>
+        </label>
+
+        <!--submit-->
+        <view class="weui-btn-area">
+            <button class="weui-btn shadow" style="margin-top:-30rpx;" type="primary" bindtap="submit" disabled="{{!isChecked}}">立即注册</button>
+        </view>
+
+        <!--bottom line-->
+        <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
+    </view>
+</view>

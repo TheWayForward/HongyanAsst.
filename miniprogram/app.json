@@ -1,0 +1,32 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/eventlist/eventlist",
+    "pages/event/event",
+    "pages/register/register",
+    "pages/user_profile/user_profile",
+    "pages/articlelist/articlelist",
+    "pages/article/article",
+    "pages/official/official",
+    "pages/im/im",
+    "pages/locate/locate",
+    "pages/im/room/room"
+  ],
+  "window": {
+    "backgroundColor": "#F6F6F6",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#F6F6F6",
+    "navigationBarTitleText": "鸿雁车协助手",
+    "navigationBarTextStyle": "black"
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "usingComponents":{
+    "parser": "../miniprogram/utils/parser.min/parser"
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "获取活动签到位置"
+    }
+  }
+}

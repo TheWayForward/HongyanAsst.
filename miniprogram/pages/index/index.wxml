@@ -1,0 +1,22 @@
+<view style="text-align:center;">
+  <view>This is the index page, buttons below navigate you to different pages.</view>
+  <view>这是首页，点击下列按钮访问不同的页面。</view>
+</view>
+
+<button bindtap="goto_articlelist" class="bg-white border">文章评论 2020/10/12</button>
+<button bindtap="goto_photos" class="bg-white border">车协照相馆</button>
+<button bindtap="goto_user_profile" class="bg-white border">重难点：账户系统与租赁</button>
+<button bindtap="goto_eventlist" class="bg-white border">活动</button>
+<button bindtap="goto_locate" class="bg-white border">getLocation</button>
+<button class="bg-white border">chatroom</button>
+<button open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
+
+<!--footer-->
+<view class="footer mt-20">
+  <view class="weui-footer">
+    <view class="weui-footer__links">
+      <navigator url="../../pages/official/official" class="weui-footer__link">开发日志</navigator>
+    </view>
+    <view class="weui-footer__text" >Copyright © 北京邮电大学 鸿雁车协</view>
+    </view>
+  </view>

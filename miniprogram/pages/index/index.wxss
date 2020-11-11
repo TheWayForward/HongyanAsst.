@@ -1,0 +1,104 @@
+@import "../../style/weui.wxss";
+@import "../official/official.wxss";
+
+page {
+  background: #F4F4F4;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.search_align{
+  background: #F6F6F6;
+  padding:20rpx 20rpx 20rpx 20rpx;
+ }
+
+.input{
+  background: gainsboro;
+  border-radius: 60rpx;
+  height: 70rpx;
+  width: 100%;
+  padding:0rpx 20rpx 0rpx 20rpx;
+}
+
+.goTop{
+  position: fixed;
+  bottom: 20px;
+  right: 15px;
+  width: 25px;
+  height: 25px;
+  z-index: 15;
+}
+
+.articles{
+  flex-direction: row;
+  flex-flow: row wrap;  
+}
+
+.article_block{
+  height: 390rpx;
+  width: 47%;
+  margin-left: 15rpx;
+  margin-bottom: 15rpx;
+  background: #FFFFFF;
+  border-radius: 10rpx;
+  overflow: hidden;
+  box-shadow: 0rpx 3rpx 2rpx 2rpx gainsboro;
+}
+
+.thumbnail_container{
+  width: 100%;
+}
+
+.article_thumbnail{
+  width: 360rpx;
+  height: 240rpx;
+}
+
+.overview{
+  margin-left: 15rpx;
+  margin-top: -50rpx;
+  display: flex;
+}
+
+.title{
+  margin-top:10rpx;
+  text-align: justify;
+}
+
+.foot{
+  display: flex;
+}
+
+.tag_block{
+  height: 40rpx;
+  border: 1px solid #38706F;
+  margin-top: 10rpx;
+  text-align: center;
+  width: 20%;
+}
+
+.tag_text{
+  color:#38706F;
+  letter-spacing:5rpx;
+  font-size:25rpx;
+  line-height:40rpx;
+}
+
+.my_white{
+  color: white;
+}
+
+.my_big{
+  font-size: 100rpx;
+}
+
+.my_small{
+  font-size: 27rpx;
+}
+
+.my_gray{
+  color: gray;
+}
+
+.weui-flex{-webkit-box-align:center;-webkit-align-items:center;align-items:center}.weui-cells{margin-top:0;opacity:0;-webkit-transform:translateY(-50%);transform:translateY(-50%);-webkit-transition:.3s;transition:.3s}.weui-cells:after,.weui-cells:before{display:none}.weui-cells_show{opacity:1;-webkit-transform:translateY(0);transform:translateY(0)}.weui-cell:before{right:15px}.kind-list__item{margin:10px 0;background-color:var(--weui-BG-2);border-radius:2px;overflow:hidden}.kind-list__item:first-child{margin-top:0}.kind-list__img{width:30px;height:30px}[data-weui-theme=dark] .kind-list__img{-webkit-filter:invert(100) hue-rotate(180deg);filter:invert(100) hue-rotate(180deg)}.kind-list__item-hd{padding:20px;-webkit-transition:opacity .3s;transition:opacity .3s}.kind-list__item-hd_show{opacity:.4}.kind-list__item-bd{height:0;overflow:hidden}.kind-list__item-bd_show{height:auto}

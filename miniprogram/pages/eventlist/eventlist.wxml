@@ -1,0 +1,56 @@
+<!--loading animation-->
+<view class="cview" style="margin-top:200rpx;" hidden="{{!isHide}}">
+  <view wx:for="{{hnode}}" wx:key="_id" class="html">
+    <rich-text class="html" selectable="true" nodes='{{item.node}}'></rich-text>
+  </view>
+</view>
+
+<!--main list, coming and previous-->
+<view class="page" hidden="{{isHide}}">
+	<view class="page__bd" style="overflow:hidden; border-radius:50rpx; border: 1px solid #F5F5F5;">
+		<!--coming-->
+		<view class="weui-panel weui-panel_access">
+			<view class="weui-panel__hd">当前活动</view>
+			<view class="weui-panel__bd" style="border-bottom: 1px solid #F5F5F5;"  wx:for="{{coming_event}}">
+				<a class="weui-media-box weui-media-box_appmsg">
+					<view class="weui-media-box__hd rounded-10 shadow" style="overflow: hidden;">
+						<image class="weui-media-box__thumb" src="{{item.poster}}" mode="aspectFill" data-action="{{item.poster}}" bindtap="preview" alt></image>
+					</view>
+					<view class="weui-media-box__bd">
+						<h4 class="weui-media-box__title" data-action="{{item}}" bindtap="goto_event">{{item.name}}</h4>
+						<view class="weui-media-box__desc" data-action="{{item}}" bindtap="goto_event">{{item.detail}}</view>
+						<view class="weui-media-box__info__meta" data-action="{{item}}" bindtap="goto_event">时间：{{item.date}}</view>
+						<view class="weui-media-box__info__meta" data-action="{{item}}" bindtap="goto_event">领队：{{item.leader}}</view>
+					  <view class="weui-media-box__info__meta weui-media-box__info__meta_extra"></view>
+					</view>
+				</a>
+			</view>
+		</view>
+
+		<!--previous-->
+		<view class="weui-panel weui-panel_access">
+			<view class="weui-panel__hd">往期活动</view>
+			<view class="weui-panel__bd" style="border-bottom: 1px solid #F5F5F5;"  wx:for="{{previous_event}}">
+				<a class="weui-media-box weui-media-box_appmsg">
+					<view class="weui-media-box__hd rounded-10 shadow" style="overflow: hidden;">
+						<image class="weui-media-box__thumb" src="{{item.poster}}" mode="aspectFill" data-action="{{item.poster}}" bindtap="preview" alt></image>
+					</view>
+					<view class="weui-media-box__bd">
+						<h4 class="weui-media-box__title" data-action="{{item}}" bindtap="goto_event">{{item.name}}</h4>
+						<view class="weui-media-box__desc" data-action="{{item}}" bindtap="goto_event">{{item.detail}}</view>
+						<view class="weui-media-box__info__meta" data-action="{{item}}" bindtap="goto_event">时间：{{item.date}}</view>
+						<view class="weui-media-box__info__meta" data-action="{{item}}" bindtap="goto_event">领队：{{item.leader}}</view>
+						<view class="weui-media-box__info__meta" data-action="{{item}}" bindtap="goto_event"></view>
+						<view class="weui-media-box__info__meta weui-media-box__info__meta_extra"></view>
+					</view>
+				</a>
+			</view>
+			<view class="weui-panel__ft">
+				<a class="weui-cell weui-cell_active weui-cell_access weui-cell_link">
+					<view class="weui-cell__bd">查看更多</view>
+					<text class="weui-cell__ft"></text>
+				</a>
+			</view>
+		</view>
+	</view>
+</view>

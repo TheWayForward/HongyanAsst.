@@ -1,0 +1,80 @@
+<!--loading animation-->
+<view class="cview" hidden="{{!isHide}}">
+  <view wx:for="{{hnode}}" wx:key="_id" class="html">
+    <rich-text class="html" selectable="true" nodes='{{item.node}}'></rich-text>
+  </view>
+</view>
+
+<!--crews' badge-->
+<view style="text-align:center;margin-top:75rpx" hidden="{{isHide}}">
+  <image src="../../images/hongyancrew.png" mode="aspectFill" style="height:300rpx;width:300rpx"/>
+</view>
+
+<!--division-->
+<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot" hidden="{{isHide}}"></view>
+
+<!--developers and contributors title-->
+<view style="align-items:center">
+  <image hidden="{{isHide}}" src="../../images/contributor.png" style="width:540rpx; height:155rpx; margin-left:96rpx"/>
+</view>
+
+<!--developers and contributors align-->
+<view class="dc_align">
+<!--left-->
+<view class="developer_container">
+<view class="developer_inner_container" wx:for="{{developers_2}}" wx:key="_id" style="background-color:{{item.color}}; height:{{item.len}}rpx" hover-class="hv" hover-stay-time="30">
+<image src="{{item.avatar}}" class="avatar" data-action="{{item.avatar}}" bindtap="preview"></image>
+<view class="developer_name">{{item.name}}</view>
+<view class="developer_group">{{item.group}}</view>
+<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot" style="width:300rpx; margin-top:20rpx"></view>
+<view class="developer_details">{{item.details}}</view>
+</view>
+</view>
+<!--right-->
+<view class="developer_container">
+<view class="developer_inner_container" wx:for="{{developers_1}}" wx:key="_id" style="background-color:{{item.color}}; height:{{item.len}}rpx" hover-class="hv" hover-stay-time="30">
+<image src="{{item.avatar}}" class="avatar" data-action="{{item.avatar}}" bindtap="preview"></image>
+<view class="developer_name">{{item.name}}</view>
+<view class="developer_group">{{item.group}}</view>
+<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot" style="width:300rpx; margin-top:20rpx"></view>
+<view class="developer_details">{{item.details}}</view>
+</view>
+</view>
+</view>
+
+<view class="footer" hidden="{{isHide}}">
+<view class="weui-footer">
+<view class="weui-footer__text" style="margin-top:60rpx">鸿通国脉 雁启未来 车行四海 协者无疆</view>
+</view>
+</view>
+<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot" hidden="{{isHide}}"></view>
+<!--logs-->
+<view style="align-items:center">
+<image src="../../images/log.png" hidden="{{isHide}}" style="width:540rpx; height:135rpx; margin-left:96rpx"></image>
+</view>
+
+<view class="page">
+	<view class="page__bd" style="overflow:hidden; border-radius:50rpx;">
+		<view class="weui-panel weui-panel_access">
+			<view class="weui-panel__bd">
+				<a class="weui-media-box weui-media-box_appmsg" wx:for="{{p}}">
+					<view class="weui-media-box__hd">
+						<image class="weui-media-box__thumb rounded-10 shadow" src="{{item.avatar}}" alt></image>
+					</view>
+					<view class="weui-media-box__bd">
+						<h4 class="weui-media-box__title">V{{item.version}}</h4>
+						<view class="weui-media-box__desc">{{item.details}}</view>
+            <view class="weui-media-box__info">
+						<view class="weui-media-box__info__meta">{{item.contributor}}</view>
+						<view class="weui-media-box__info__meta">{{item.date}}</view>
+						<view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{item.year}}</view>
+					</view>
+					</view>
+				</a>
+			</view>
+		</view>
+	</view>
+</view>
+
+<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot" hidden="{{isHide}}"></view>
+<image src="https://www.bupt.edu.cn/__local/C/8E/F7/EE902059AE32E0E6325EFEE8F46_B2D41D06_CD58.png" style="height:160rpx; margin-left:80rpx; margin-bottom:50rpx" hidden="{{isHide}}"></image>

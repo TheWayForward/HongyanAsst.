@@ -1,0 +1,52 @@
+<view class="title" style="color:#333333">{{title}}</view>
+<view class="subalign">
+  <view class="subtitle" style="color:#576B95">{{author}}</view>
+  <view class="subtitle" style="color:#B7B7B7">{{time}}</view>
+</view>
+
+<view class="cview">
+  <view wx:for="{{hnode}}" wx:key="_id" class="html">
+  <parser html="{{item.node}}"></parser>
+  </view>
+</view>
+
+<view class="subalign" hidden="{{isHide}}">
+<view class="subtitle" style="color:#B7B7B7">阅读：{{view}}</view>
+</view>
+
+<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot" hidden="{{isHide}}"></view>
+
+
+<view class="comment_submission_align" hidden="{{isHide}}">
+  <image class="shadow" src="{{avatar}}" style="height:60rpx; width:60rpx; border-radius:10rpx"></image>
+  <input style="background:#E9E9E9; width:490rpx; margin-left:15rpx; height:60rpx; border-radius:10rpx; font-size:25rpx; padding-left:20rpx; padding-right:20rpx" maxlength="200" bindinput="input" placeholder="您的评论通过审核后，将对所有用户可见"></input>
+  <view class="shadow" style="height:60rpx; width:70rpx; background:#188FC8; margin-left:15rpx; border-radius:10rpx" hover-class="hv" hover-stay-time="30" bindtap="submit_comment">
+    <image src="../../images/submitcomment.png" style="height:40rpx; width:45rpx; margin-top:11rpx; margin-left:14rpx"></image>
+  </view>
+</view>
+
+<view class="comment_align" hidden="{{isHide}}">
+
+<view class="comment_container1" hidden="{{isHide}}">
+<view class="comment_inner_container1" wx:for="{{comment_array_2}}" wx:key="time" style="height:{{item.len}}rpx" hover-class="hv" hover-stay-time="30">
+<image src="{{item.avatar}}" class="avatar"></image>
+<view class="comment_name">{{item.name}}</view>
+<view class="comment_time">{{item.time}}</view>
+<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot" style="width:300rpx; margin-top:20rpx"></view>
+<view class="comment_details">{{item.detail}}</view>
+</view>
+</view>
+
+<view class="comment_container1">
+<view class="comment_inner_container1" wx:for="{{comment_array_1}}" wx:key="time" style="height:{{item.len}}rpx" hover-class="hv" hover-stay-time="30">
+<image src="{{item.avatar}}" class="avatar"></image>
+<view class="comment_name">{{item.name}}</view>
+<view class="comment_time">{{item.time}}</view>
+<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot" style="width:300rpx; margin-top:20rpx"></view>
+<view class="comment_details">{{item.detail}}</view>
+</view>
+</view>
+
+</view>
+
+<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot" hidden="{{isHide}}"></view>
