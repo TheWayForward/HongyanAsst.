@@ -1,23 +1,34 @@
 const devicesId = "644250210";
 const api_key = "fhAS54e5X8HL5wcaB6ZW74oA3vo=";
 var timer;
+var timer_snapshotgetter;
+var files_cloud_url = [];
 var app = getApp();
 const db = wx.cloud.database();
 
 Page({
   data: {
     //from server
+    event: {},
+    //image previewer shown or not
+    isHide: true,
+    //all image previewer shown or not
+    is_all_Hide: true,
     //initalize as Tian'an Men
     latitude: 39.129574,
     longitude: 116.482548,
     markers: [],
+    current_marker: {},
     event_shots: [],
     event_id: null,
     //from user
+    tip: "留下精彩瞬间！",
     files: [],
     files_cloud_url: [],
-    isHide: false,
-    snapshots: {}
+    snapshots: {},
+    detail: "",
+    //dynamic text
+    all_snapshots_tip: "查看该活动全部图片"
   },
 
   onLoad: function () {
@@ -42,13 +53,27 @@ Page({
           var marker = {};
           //geopoint need to be transformed to json
           var location = snapshot.location.toJSON().coordinates;
-          console.log(location)
           marker.id = i;
           marker.longitude = location[0];
           marker.latitude = location[1];
           marker.name = snapshot.name;
           marker.avatar = snapshot.avatar;
           marker.nickname = snapshot.nickname;
+          marker.realname = snapshot.realname;
+          marker.taker = snapshot.nickname + " (" + snapshot.realname + ")";
+          marker.detail = snapshot.detail;
+          marker.iconPath = "../../images/imagepoint.png";
+          marker.url = snapshot.url;
+          marker.width = 30;
+          marker.height = 30;
+          marker.callout = {
+            content: snapshot.detail,
+            bgColor: "#fff",
+            padding: "5px",
+            borderRadius:" 5px",
+            borderWidth: "1px",
+            borderColor: "#07c160"
+          };
           markers.push(marker);
         }
         console.log(markers);
@@ -94,13 +119,12 @@ Page({
           var latitude = response.data.datastreams[1].datapoints;
           var current_lo = Number(longitude[longitude.length - 1].value);
           var current_la = Number(latitude[latitude.length - 1].value);
-          console.log(current_lo,current_la);
           that.setData({
             longitude: current_lo,
             latitude: current_la,
           })
-          console.log(that.data.latitude);
-          console.log(that.data.longitude);
+          console.log("[onenet][latitude]: " + that.data.latitude);
+          console.log("[onenet][longitude]: " + that.data.longitude);
           if (status !== 200) 
           {
             reject(res.data)
@@ -170,6 +194,36 @@ Page({
     }
   },
 
+  //marker tapped
+  show_snapshots: function(e){
+    console.log(e);
+    var id = e.detail.markerId;
+    var marker = this.data.markers[id];
+    console.log(marker);
+    this.setData({
+      current_marker: marker,
+      isHide: false
+    })
+  },
+
+  //show all tab tapped
+  show_all_snapshots: function(){
+    if(this.data.is_all_Hide)
+    {
+      this.setData({
+        is_all_Hide: false,
+        all_snapshots_tip: "收起"
+      })
+    }
+    else
+    {
+      this.setData({
+        is_all_Hide: true,
+        all_snapshots_tip: "查看该活动全部图片"
+      })
+    }
+  },
+
   //using offical plugin to get the corresponded location by tapping
   choose_location: function(){
     var that = this;
@@ -177,21 +231,42 @@ Page({
       latitude: that.data.latitude,
       longitude: that.data.longitude,
       complete: (res) => {
+        if(!res.name)
+        {
+          this.setData({
+            tip: "未选中位置，点我重新选择"
+          })
+        }
+        else
+        {
+          this.setData({
+            tip: res.name
+          })
+        }
         this.data.snapshots.avatar = app.globalData.user.avatar;
         this.data.snapshots.openid = app.globalData.user.openid;
         this.data.snapshots.nickname = app.globalData.user.nickname;
+        this.data.snapshots.realname = app.globalData.user.realname;
         this.data.snapshots.name = res.name;
         this.data.snapshots.location = db.Geo.Point(res.longitude,res.latitude);
+        if(this.data.detail)
+        {
+          this.data.snapshots.detail = this.data.detail;
+        }
+        else
+        {
+          this.data.snapshots.detail = "暂无描述";
+        }
       },
     })
   },
 
   //the rider choose an image from snapshots just taken
   choose_image: function(){
-    if(this.data.files.length >= 2)
+    if(this.data.files.length >= 1)
     {
       wx.showToast({
-        title: '每位用户单个地点最多上传两张图片',
+        title: '每位用户单个地点最多上传一张图片',
         icon: "none"
       })
       return;
@@ -209,6 +284,7 @@ Page({
         });
       }
     })
+    this.choose_location();
   },
 
   //preview image in this page
@@ -259,62 +335,84 @@ Page({
     })
   },
 
-  //pre-upload
-  upload_images: function(){
-    var files = this.data.files;
-    var files_cloud_url = [];
-    for(var i = 0; i < files.length; i++){
-      const filePath = files[i];
-      const cloudPath =  `events/event_name/${app.globalData.user.nickname}/${app.globalData.openid}_${Math.random()}_${Date.now()}.${filePath.match(/\.(\w+)$/)[1]}`;
-      wx.cloud.uploadFile({
-        cloudPath,
-        filePath,
-        success: function(res){
-          files_cloud_url.push(res.fileID);
-        }
-      })
-    }
+  //input image detail
+  input: function(e){
     this.setData({
-      files_cloud_url: files_cloud_url
+      detail: e.detail.value
     })
   },
-  
-  //final upload
-  upload_images_with_location_and_userinfo: function(){
-    //upload image first, then get the url from cloud base, load field url for snapshot
-    var that = this;
+
+  //upload image with location and detail
+  upload_images: function(){
     if(!this.data.snapshots.name)
     {
       wx.showToast({
-        title: '请点击地图，选择位置',
-        icon: 'none'
+        icon: 'none',
+        title: '未选择位置',
       })
       return;
     }
-    this.upload_images();
-    var snapshots = this.data.snapshots;
-    //add url field
-    snapshots.url = this.data.files_cloud_url;
-    var e = this.data.event_shots;
-    e.push(snapshots);
-    this.setData({
-      event_shots: e
-    })
-    console.log(this.data.event_shots);
-    wx.cloud.callFunction({
-      name:'update_snapshots',
-      data:{
-        taskId: that.data.event_id.toString(),
-        my_snapshot: that.data.event_shots,
+    if(!this.data.detail)
+    {
+      wx.showModal({
+        title:'提示',
+        content:'是否填写图片备注？',
+        cancelColor: 'gray',
+        cancelText: '否',
+        confirmText: '是',
+        success: function(e){
+          if(e.cancel)
+          {
+            //cancelled, continue
+          }
+          else
+          {
+            return;
+          }
+        }
+      })
+    }
+    var that = this;
+    const filePath = this.data.files[0];
+    //const filePath = files[i];
+    const cloudPath =  `events/event_name/${app.globalData.user.nickname}/${app.globalData.openid}_${Math.random()}_${Date.now()}.${filePath.match(/\.(\w+)$/)[1]}`;
+    wx.cloud.uploadFile({
+      cloudPath,
+      filePath,
+      success: function(res){
+        files_cloud_url = res.fileID;
+        that.setData({
+          files_cloud_url: files_cloud_url
+        })
+        var snapshots = that.data.snapshots;
+        //regenerate detail
+        if(that.data.detail != "暂无描述")
+        {
+          snapshots.detail = that.data.detail;
+        }
+        //add url field
+        snapshots.url = that.data.files_cloud_url;
+        var e = that.data.event_shots;
+        e.push(snapshots);
+        that.setData({
+          event_shots: e
+        })
+        console.log(that.data.event_shots);
+        wx.cloud.callFunction({
+          name:'update_snapshots',
+          data:{
+            taskId: that.data.event_id.toString(),
+            my_snapshot: that.data.event_shots,
+          }
+        }).then(res => {
+        })
+        console.log("updated successfully");
+        wx.showToast({
+          title: '上传成功',
+          duration: 3000
+        })
+        that.onLoad();
       }
-    }).then(res => {
-    })
-    console.log("updated successfully");
-    wx.showToast({
-      title: '上传成功',
-    })
-    wx.navigateTo({
-      url: "../../pages/index/index",
-    })
-  }
+    }) 
+  },  
 })

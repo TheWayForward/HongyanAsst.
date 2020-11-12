@@ -13,5 +13,5 @@ exports.main = async (event, context) => {
         snapshots: event.my_snapshot
       }
     })
-  })
+  }).then(console.log("[update_snapshots][updated successfully]"))
 }
