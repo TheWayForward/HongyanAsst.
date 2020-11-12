@@ -16,7 +16,7 @@ Page({
   },
 
   onLoad: function() {
-    
+    console.log("hello");
   },
 
   onGetUserInfo: function(e) {
