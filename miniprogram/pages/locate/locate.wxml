@@ -22,11 +22,11 @@
 				<a class="weui-media-box weui-media-box_appmsg">
                     <!--snapshot-->
 					<view class="weui-media-box__hd rounded-10 shadow" style="overflow: hidden;" hover-class="hv">
-						<image class="weui-media-box__thumb" src="{{current_marker.url}}" mode="aspectFill" bindtap="preview" data-action="{{current_marker.url}}" alt></image>
+						<image class="weui-media-box__thumb" src="{{current_marker.url}}" mode="aspectFill" bindtap="preview" data-action="{{current_marker.url}}" lazy-load="true" alt></image>
 					</view>
                     <!--user avatar-->
                     <view class="weui-media-box__hd rounded-10 shadow" style="overflow: hidden;" hover-class="hv">
-						<image class="weui-media-box__thumb" src="{{current_marker.avatar}}"  mode="aspectFill" bindtap="preview" data-action="{{current_marker.avatar}}" alt></image>
+						<image class="weui-media-box__thumb" src="{{current_marker.avatar}}"  mode="aspectFill" bindtap="preview" data-action="{{current_marker.avatar}}" lazy-load="true" alt></image>
 					</view>
 					<view class="weui-media-box__bd">
                         <!--image name-->
@@ -46,11 +46,11 @@
 				<a class="weui-media-box weui-media-box_appmsg">
                     <!--snapshot-->
 					<view class="weui-media-box__hd rounded-10 shadow" style="overflow: hidden;" hover-class="hv">
-						<image class="weui-media-box__thumb" src="{{item.url}}" mode="aspectFill" bindtap="preview" data-action="{{item.url}}" alt></image>
+						<image class="weui-media-box__thumb" src="{{item.url}}" mode="aspectFill" bindtap="preview" data-action="{{item.url}}" lazy-load="true" alt></image>
 					</view>
                     <!--user avatar-->
                     <view class="weui-media-box__hd rounded-10 shadow" style="overflow: hidden;" hover-class="hv">
-						<image class="weui-media-box__thumb" src="{{item.avatar}}"  mode="aspectFill" bindtap="preview" data-action="{{item.avatar}}" alt></image>
+						<image class="weui-media-box__thumb" src="{{item.avatar}}"  mode="aspectFill" bindtap="preview" data-action="{{item.avatar}}" lazy-load="true" alt></image>
 					</view>
 					<view class="weui-media-box__bd">
                         <!--image name-->

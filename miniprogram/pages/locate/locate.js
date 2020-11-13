@@ -54,8 +54,10 @@ Page({
           //geopoint need to be transformed to json
           var location = snapshot.location.toJSON().coordinates;
           marker.id = i;
+          marker.location = snapshot.location;
           marker.longitude = location[0];
           marker.latitude = location[1];
+          marker.openid = snapshot.openid;
           marker.name = snapshot.name;
           marker.avatar = snapshot.avatar;
           marker.nickname = snapshot.nickname;
@@ -64,15 +66,17 @@ Page({
           marker.detail = snapshot.detail;
           marker.iconPath = "../../images/imagepoint.png";
           marker.url = snapshot.url;
-          marker.width = 30;
-          marker.height = 30;
+          marker.width = 20;
+          marker.height = 20;
           marker.callout = {
             content: snapshot.detail,
             bgColor: "#fff",
             padding: "5px",
-            borderRadius:" 5px",
+            borderRadius: "5px",
             borderWidth: "1px",
-            borderColor: "#07c160"
+            borderColor: "#1485EF",
+            display: "ALWAYS",
+            fontSize: "10", 
           };
           markers.push(marker);
         }
@@ -139,7 +143,7 @@ Page({
           {
             reject("No data yet.")
           }
-          //succeed promise resolved
+          //promise resolved successfully
           resolve({
             longitude: response.data.datastreams[0].datapoints.reverse(),
             latitude: response.data.datastreams[1].datapoints.reverse()
@@ -166,6 +170,7 @@ Page({
     wx.showNavigationBarLoading({
       complete: (res) => {},
     })
+    this.onLoad();
     if(this.getDatapoints())
     {
       wx.hideNavigationBarLoading({
@@ -198,10 +203,20 @@ Page({
   show_snapshots: function(e){
     console.log(e);
     var id = e.detail.markerId;
-    var marker = this.data.markers[id];
-    console.log(marker);
+    var markers = this.data.markers;
+    for(var i = 0; i < this.data.markers.length; i++){
+      markers[i].iconPath = "../../images/imagepoint.png";
+      markers[i].callout.borderColor = "#1485EF";
+      if(i == id)
+      {
+        markers[i].iconPath = "../../images/imagepoint_selected.png";
+        markers[i].callout.borderColor = "#EF2914";
+      }
+    }
+    var current_marker = markers[id];
     this.setData({
-      current_marker: marker,
+      markers: markers,
+      current_marker: current_marker,
       isHide: false
     })
   },
@@ -231,6 +246,7 @@ Page({
       latitude: that.data.latitude,
       longitude: that.data.longitude,
       complete: (res) => {
+        console.log(res);
         if(!res.name)
         {
           this.setData({
@@ -249,6 +265,7 @@ Page({
         this.data.snapshots.realname = app.globalData.user.realname;
         this.data.snapshots.name = res.name;
         this.data.snapshots.location = db.Geo.Point(res.longitude,res.latitude);
+        this.data.snapshots.time = new Date();
         if(this.data.detail)
         {
           this.data.snapshots.detail = this.data.detail;
@@ -344,6 +361,19 @@ Page({
 
   //upload image with location and detail
   upload_images: function(){
+    //check if the user is uploading another snapshot to the same point
+    for(var i = 0; i < this.data.markers.length; i++){
+      var marker = this.data.markers[i];
+      if(marker.openid == app.globalData.openid && marker.name == this.data.snapshots.name)
+      {
+        wx.showToast({
+          icon: 'none',
+          title: '每位用户单个地点最多上传一张图片',
+        })
+        return;
+      }
+    }
+    //check if the location is specified
     if(!this.data.snapshots.name)
     {
       wx.showToast({
@@ -352,6 +382,7 @@ Page({
       })
       return;
     }
+    //check if the detail of snapshot is provided
     if(!this.data.detail)
     {
       wx.showModal({
@@ -375,6 +406,7 @@ Page({
     var that = this;
     const filePath = this.data.files[0];
     //const filePath = files[i];
+    //use this when uploading mutiple details
     const cloudPath =  `events/event_name/${app.globalData.user.nickname}/${app.globalData.openid}_${Math.random()}_${Date.now()}.${filePath.match(/\.(\w+)$/)[1]}`;
     wx.cloud.uploadFile({
       cloudPath,

@@ -22,7 +22,7 @@
   "sitemapLocation": "sitemap.json",
   "style": "v2",
   "usingComponents":{
-    "parser": "../miniprogram/utils/parser.min/parser"
+    "parser": "utils/parser.min/parser"
   },
   "permission": {
     "scope.userLocation": {
