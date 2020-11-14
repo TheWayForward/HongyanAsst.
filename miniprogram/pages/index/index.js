@@ -100,11 +100,18 @@ Page({
     })
   },
 
+  goto_gallery: function(){
+    wx.showToast({
+      title: '页面建设中！',
+      icon: 'none'
+    })
+  },
+
   goto_user_profile: function(){
     if(!app.globalData.data_status)
     {
       wx.showToast({
-        title: '加载中，请稍候',
+        title: '暂未获取到用户信息',
         icon: "none"
       })
     }
@@ -117,24 +124,42 @@ Page({
   },
 
   goto_eventlist: function(){
-    wx.navigateTo({
-      url: '../../pages/eventlist/eventlist',
-    })
-  },
-
-  goto_locate: function(){
-    if(!app.globalData.data_status)
+    if(!app.globalData.user)
     {
       wx.showToast({
-        title: '加载中，请稍候',
+        title: '暂未获取到用户信息',
         icon: "none"
       })
     }
     else
     {
       wx.navigateTo({
-        url: '../../pages/locate/locate',
+        url: '../../pages/eventlist/eventlist',
       })
     }
+  },
+
+  goto_manager: function(){
+    if(!app.globalData.user)
+    {
+      wx.showToast({
+        title: '暂未获取到用户信息',
+        icon: "none"
+      })
+    }
+    else
+    {
+      wx.showToast({
+        title: '页面建设中！',
+        icon: 'none'
+      })
+    }
+  },
+
+  goto_chatroom: function(){
+    wx.showToast({
+      title: '页面建设中！',
+      icon: 'none'
+    })
   }
 })

@@ -1,0 +1,61 @@
+<view class="page">
+	<view class="page__bd">
+		<view style="border-radius: 20rpx;" hover-class="hv" hover-stay-time="30">
+      <image class="poster" src="{{event.poster}}" mode="aspectFill" data-action="{{event.poster}}" bindtap="preview"></image>
+		</view>
+		<view class="weui-cells">
+			<view class="weui-form-preview">
+			<view class="weui-form-preview__hd">
+				<view class="weui-form-preview__item" style="font-weight: bold;">
+					<label class="weui-form-preview__label">活动名称</label>
+					<text class="weui-form-preview__value" selectable="true">{{event.name}}</text>
+				</view>
+			</view>
+			<view class="weui-form-preview__bd">
+				<view class="weui-form-preview__item">
+					<label class="weui-form-preview__label">时间</label>
+					<text class="weui-form-preview__value" selectable="true">{{date}}</text>
+				</view>
+				<view class="weui-form-preview__item">
+					<label class="weui-form-preview__label">骑行里程</label>
+					<text class="weui-form-preview__value" selectable="true">{{distance}}</text>
+				</view>
+				<view class="weui-form-preview__item">
+					<label class="weui-form-preview__label">难度</label>
+					<text class="weui-form-preview__value" selectable="true">{{difficulty}}</text>
+				</view>
+				<view class="weui-form-preview__item">
+					<label class="weui-form-preview__label">领队</label>
+					<text class="weui-form-preview__value" selectable="true">{{event.leader}}</text>
+				</view>
+				<view class="weui-form-preview__item">
+					<label class="weui-form-preview__label mr-50">简介</label>
+					<text class="weui-form-preview__value" style="text-align: justify; font-size: 25rpx;" selectable="true">{{event.detail}}</text>
+				</view>
+			</view>
+		</view>
+		</view>
+		<view class="weui-cells">
+			<view class="weui-cell weui-cell_active" bindtap="show_participants">
+				<view class="weui-cell__bd">
+					<text style="vertical-align: middle;">参与者</text>
+					<text class="weui-badge" style="margin-left: 5px;">{{event.participants_count}}</text>
+				</view>
+				<view class="weui-cell__ft">{{tip}}</view>
+			</view>
+        <view class="weui-cells weui-cells_after-title" hidden="{{isHide}}">
+            <view class="weui-cell weui-cell_example" wx:for="{{participants}}">
+                <view class="weui-cell__hd">
+                    <image class="rounded-10 shadow" src="{{item.avatar}}" style="margin-right: 16px;vertical-align: middle;width:50rpx; height: 50rpx;" mode="aspectFill" data-action="{{item.avatar}}" bindtap="preview" lazy-load="true"></image>
+                </view>
+                <view class="weui-cell__bd">{{item.nickname}}</view>
+                <view class="weui-cell__ft">{{item.name}}</view>
+            </view>
+        </view>
+		</view>
+    <!--sign up and location button-->
+    <view class="button-sp-area mt-20 mb-20" style="text-align: center; display: flex;">
+			<button class="weui-btn weui-btn_primary shadow" bindtap="goto_locate">动态追踪</button>
+		</view>
+	</view>
+</view>

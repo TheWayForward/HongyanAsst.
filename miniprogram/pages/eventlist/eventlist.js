@@ -36,8 +36,12 @@ Page({
         db.collection("events").skip(i * 20).field({
           name: true,
           detail: true,
-          poster: true,
+          distance: true,
           difficulty: true,
+          name_start: true,
+          name_return: true,
+          poster: true,
+          participants_count: true,
           time: true,
           leader: true
         }).get({
@@ -61,17 +65,44 @@ Page({
               var previous_event = [];
               var coming_event = [];
               for(var i = 0; i < arrayContainer.length; i++){
-                arrayContainer[i].date = arrayContainer[i].time.toLocaleDateString();
+                var t = arrayContainer[i].time;
+                //reformat date, don't forget about the shit getMonth + 1
+                arrayContainer[i].date = t.getFullYear().toString() + "/" + (t.getMonth() + 1).toString() + "/" + t.getDate().toString();
+                //reformat day
+                switch(t.getDay()){
+                  case(0):
+                    arrayContainer[i].day = "星期日";
+                  break;
+                  case(1):
+                    arrayContainer[i].day = "星期一";
+                  break;
+                  case(2):
+                    arrayContainer[i].day = "星期二";
+                  break;
+                  case(3):
+                    arrayContainer[i].day = "星期三";
+                  break;
+                  case(4):
+                    arrayContainer[i].day = "星期四";
+                  break;
+                  case(5):
+                    arrayContainer[i].day = "星期五";
+                  break;
+                  case(6):
+                    arrayContainer[i].day = "星期六";
+                  break;
+                  default:
+                    arrayContainer[i].day = "获取日期出错";
+                  break;
+                }
                 //there are bugs in date object transfer, so set up a millisecond time in order to recover
-                arrayContainer[i].precise_time = Date.parse(arrayContainer[i].time);
-                if(arrayContainer[i].time <= now)
+                arrayContainer[i].precise_time = Date.parse(t);
+                if(t <= now)
                 {
-                  console.log("previous event");
                   previous_event.push(arrayContainer[i]);
                 }
                 else
                 {
-                  console.log("coming event");
                   coming_event.push(arrayContainer[i]);
                 }
               }
@@ -169,7 +200,7 @@ Page({
     }
     app.globalData.event_status_code = event_status_code;
     wx.navigateTo({
-      url: '../../pages/event/event',
+      url: '../eventlist/event/event',
     })
   }
 })

@@ -49,7 +49,7 @@ Page({
     db.collection("articles").where({
       title: article_title
     }).field({
-      _id: "",
+      _id: true,
       author: true,
       comment: true,
       date: true,

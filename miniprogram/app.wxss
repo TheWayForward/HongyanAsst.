@@ -161,6 +161,10 @@ page {
   margin: 0 auto;
 }
 
+.d-flex{
+  display: flex;
+}
+
 .bg-white{
   background: white;
 }
@@ -205,6 +209,10 @@ page {
   margin-left: 50rpx;
 }
 
+.mr-50{
+  margin-right: 50rpx;
+}
+
 .mt-20{
   margin-top: 20rpx;
 }
@@ -215,6 +223,10 @@ page {
 
 .mt-100{
   margin-top: 100rpx;
+}
+
+.mb-20{
+  margin-bottom: 20rpx;
 }
 
 .w-100{
