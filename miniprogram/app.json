@@ -4,6 +4,8 @@
     "pages/eventlist/eventlist",
     "pages/eventlist/event/event",
     "pages/eventlist/event/locate/locate",
+    "pages/manager/manager",
+    "pages/manager/event_release/event_release",
     "pages/register/register",
     "pages/user_profile/user_profile",
     "pages/articlelist/articlelist",
@@ -21,7 +23,7 @@
   },
   "sitemapLocation": "sitemap.json",
   "style": "v2",
-  "usingComponents":{
+  "usingComponents": {
     "parser": "utils/parser.min/parser"
   },
   "permission": {

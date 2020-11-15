@@ -16,7 +16,6 @@ Page({
   },
 
   onLoad: function() {
-    console.log("hello");
   },
 
   onGetUserInfo: function(e) {
@@ -149,9 +148,8 @@ Page({
     }
     else
     {
-      wx.showToast({
-        title: '页面建设中！',
-        icon: 'none'
+      wx.navigateTo({
+        url: '../manager/manager',
       })
     }
   },

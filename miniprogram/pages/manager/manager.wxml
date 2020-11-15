@@ -1,0 +1,18 @@
+<!--starting with manager-->
+<view style="text-align:center;">
+  <view>Managers are bound to the orgnization.</view>
+  <view>管理员可进行活动发布等操作。</view>
+</view>
+
+<button bindtap="goto_event_release" class="bg-white border">活动发布</button>
+
+<!--footer-->
+<view class="footer mt-20">
+  <view class="weui-footer">
+    <view class="weui-footer__links">
+      <navigator url="../official/official" class="weui-footer__link">开发日志</navigator>
+    </view>
+    <view class="weui-footer__text" >Copyright © 北京邮电大学 鸿雁车协</view>
+  </view>
+</view>
+

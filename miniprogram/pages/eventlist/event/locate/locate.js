@@ -456,10 +456,16 @@ Page({
         })
         var snapshots = that.data.snapshots;
         //regenerate detail
-        if(that.data.detail != "暂无描述")
+
+        if(that.data.detail != "暂无描述" && that.data.detail != "")
         {
           snapshots.detail = that.data.detail;
         }
+        else
+        {
+          snapshots.detail = "暂无描述";
+        }
+        console.log(snapshots);
         //add url field
         snapshots.url = that.data.files_cloud_url;
         var e = that.data.event_shots;

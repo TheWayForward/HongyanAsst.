@@ -1,5 +1,5 @@
 <view class="page">
-	<view class="page__bd">
+	<view class="page__bd" style="margin-bottom: 120rpx;">
 		<view style="border-radius: 20rpx;" hover-class="hv" hover-stay-time="30">
       <image class="poster" src="{{event.poster}}" mode="aspectFill" data-action="{{event.poster}}" bindtap="preview"></image>
 		</view>
@@ -15,6 +15,14 @@
 				<view class="weui-form-preview__item">
 					<label class="weui-form-preview__label">时间</label>
 					<text class="weui-form-preview__value" selectable="true">{{date}}</text>
+				</view>
+				<view class="weui-form-preview__item">
+					<label class="weui-form-preview__label">起点</label>
+					<text class="weui-form-preview__value" selectable="true">{{event.name_start}}</text>
+				</view>
+				<view class="weui-form-preview__item">
+					<label class="weui-form-preview__label">途径地标</label>
+					<text class="weui-form-preview__value" selectable="true">{{event.name_return}}</text>
 				</view>
 				<view class="weui-form-preview__item">
 					<label class="weui-form-preview__label">骑行里程</label>
@@ -35,6 +43,7 @@
 			</view>
 		</view>
 		</view>
+		<!--participants-->
 		<view class="weui-cells">
 			<view class="weui-cell weui-cell_active" bindtap="show_participants">
 				<view class="weui-cell__bd">
@@ -44,17 +53,21 @@
 				<view class="weui-cell__ft">{{tip}}</view>
 			</view>
         <view class="weui-cells weui-cells_after-title" hidden="{{isHide}}">
-            <view class="weui-cell weui-cell_example" wx:for="{{participants}}">
+            <view class="weui-cell weui-cell_example" style="background: {{item.background}};font-weight:{{item.bold}};" wx:for="{{participants}}" hover-class="hv" hover-stay-time="30">
                 <view class="weui-cell__hd">
                     <image class="rounded-10 shadow" src="{{item.avatar}}" style="margin-right: 16px;vertical-align: middle;width:50rpx; height: 50rpx;" mode="aspectFill" data-action="{{item.avatar}}" bindtap="preview" lazy-load="true"></image>
                 </view>
                 <view class="weui-cell__bd">{{item.nickname}}</view>
-                <view class="weui-cell__ft">{{item.name}}</view>
+                <view class="weui-cell__ft">{{item.realname}}</view>
             </view>
+				<view class="button-sp-area mt-20 mb-20" style="text-align: center;">
+							<button class="weui-btn weui-btn_primary shadow" bindtap="sign_up" hidden="{{is_sign_up_hide}}">报名</button>
+							<button class="weui-btn weui-btn_warning shadow" hover-class="hv" style="background: #FA5159;" bindtap="un_sign_up" hidden="{{!is_sign_up_hide}}">取消报名</button>
+				</view>
         </view>
 		</view>
-    <!--sign up and location button-->
-    <view class="button-sp-area mt-20 mb-20" style="text-align: center; display: flex;">
+    <!--locate button-->
+    <view class="button-sp-area mt-20 mb-20 locate_align" style="text-align: center; display: flex;">
 			<button class="weui-btn weui-btn_primary shadow" bindtap="goto_locate" disabled="{{!is_locate_permissible}}">{{button_text}}</button>
 		</view>
 	</view>

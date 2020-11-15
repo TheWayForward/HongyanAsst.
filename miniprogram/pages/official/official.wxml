@@ -7,7 +7,7 @@
 
 <!--crews' badge-->
 <view style="text-align:center;margin-top:75rpx" hidden="{{isHide}}">
-  <image src="../../images/hongyancrew.png" mode="aspectFill" style="height:300rpx;width:300rpx"/>
+  <image src="cloud://hongyancrew-pvmj1.686f-hongyancrew-pvmj1-1303885697/essentials/hongyancrew.png" mode="aspectFill" style="height:300rpx;width:300rpx"/>
 </view>
 
 <!--division-->

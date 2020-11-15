@@ -104,6 +104,6 @@ App({
     //3: coming event(has signed)
     event_status_code: 0,
     
-  }
+  },
 
 })
