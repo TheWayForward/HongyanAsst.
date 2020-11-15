@@ -29,6 +29,7 @@ Page({
     files: [],
     files_cloud_url: [],
     snapshots: {},
+    snapshots_count: null,
     detail: "",
     //dynamic text
     all_snapshots_tip: "查看该活动全部图片"
@@ -38,6 +39,7 @@ Page({
     var that = this;
     //get the corresponded event
     var event = app.globalData.event;
+    console.log(event);
     //check whether the event is expired, -12h to 1d
     var can_upload = ((((Date.now() - event.precise_time) / 86400000) >= 1) || (((Date.now() - event.precise_time) / 86400000) <= -0.5)) ? false : true;
     //fill the basic event name info and decide whether the uploader should be shown or not
@@ -215,12 +217,12 @@ Page({
 
   //marker tapped
   show_snapshots: function(e){
-    console.log(e);
     var id = e.detail.markerId;
     var markers = this.data.markers;
     for(var i = 0; i < this.data.markers.length; i++){
       markers[i].iconPath = "image/imagepoint.png";
       markers[i].callout.borderColor = "#1485EF";
+      //change imagepoint to red
       if(i == id)
       {
         markers[i].iconPath = "image/imagepoint_selected.png";
@@ -237,6 +239,16 @@ Page({
 
   //show all tab tapped
   show_all_snapshots: function(){
+    //no snapshot
+    var event = this.data.event;
+    if(!this.data.event.snapshots_count)
+    {
+      this.setData({
+        all_snapshots_tip: "暂无图片"
+      })
+      return;
+    }
+    //has snapshots
     if(this.data.is_all_Hide)
     {
       this.setData({
@@ -248,7 +260,7 @@ Page({
     {
       this.setData({
         is_all_Hide: true,
-        all_snapshots_tip: "查看该活动全部图片"
+        all_snapshots_tip: "查看" + this.data.event.name +"全部图片"
       })
     }
   },
@@ -433,7 +445,7 @@ Page({
     const filePath = this.data.files[0];
     //const filePath = files[i];
     //use this when uploading mutiple details
-    const cloudPath =  `events/event_name/${app.globalData.user.nickname}/${app.globalData.openid}_${Math.random()}_${Date.now()}.${filePath.match(/\.(\w+)$/)[1]}`;
+    const cloudPath =  `events/${this.data.event.name}/${app.globalData.user.nickname}/${app.globalData.openid}_${Math.random()}_${Date.now()}.${filePath.match(/\.(\w+)$/)[1]}`;
     wx.cloud.uploadFile({
       cloudPath,
       filePath,
@@ -452,26 +464,34 @@ Page({
         snapshots.url = that.data.files_cloud_url;
         var e = that.data.event_shots;
         e.push(snapshots);
+        var snapshots_count = e.length;
         that.setData({
           event_shots: e
         })
         console.log(that.data.event_shots);
         wx.cloud.callFunction({
-          name:'update_snapshots',
-          data:{
+          name: 'update_snapshots_count',
+          data: {
+            taskId: that.data.event_id.toString(),
+            my_snapshot_count: snapshots_count
+          }
+        })
+        wx.cloud.callFunction({
+          name: 'update_snapshots',
+          data: {
             taskId: that.data.event_id.toString(),
             my_snapshot: that.data.event_shots,
           }
         }).then(res => {
-        })
-        console.log("updated successfully");
-        wx.showToast({
-          title: '上传成功',
-          duration: 3000
-        })
-        wx.reLaunch({
-          url: '../event',
-        })
+          console.log("updated successfully");
+          wx.showToast({
+            title: '上传成功',
+            duration: 3000
+          })
+          wx.reLaunch({
+            url: '../event',
+          })
+          })
       }
     }) 
   },  

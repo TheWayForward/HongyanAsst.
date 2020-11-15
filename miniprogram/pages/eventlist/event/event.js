@@ -16,7 +16,10 @@ Page({
     //participants
     participants: [],
     tip: "点击展开",
-    isHide: true
+    isHide: true,
+    //button
+    is_locate_permissible: false,
+    button_text:"加载中"
   },
 
   /**
@@ -29,13 +32,45 @@ Page({
     db.collection("events").where({
       name: event.name
     }).field({
-      participants: true
+      participants: true,
+      snapshots_count: true
     }).get({
       success: function(res){
         event.participants = res.data[0].participants;
+        event.snapshots_count = res.data[0].snapshots_count;
         that.setData({
           participants: res.data[0].participants
         })
+        var now = new Date();
+        if((event.time - now) / 86400000 < 1)
+        {
+          //can enter locate page
+          that.setData({
+            is_locate_permissible: true
+          })
+          if(event.snapshots_count)
+          {
+            //totality
+            that.setData({
+            button_text: "动态追踪" + "(" + event.snapshots_count + ")"
+            })
+          }
+          else
+          {
+            //no snapshots yet
+            that.setData({
+            button_text: "动态追踪(暂无)"
+            })
+          }
+        }
+        else
+        {
+          that.setData({
+            //post time, cannot enter locate page
+            is_locate_permissible: false,
+            button_text: "非活动时间"
+          })
+        }
       }
     })
     //giving stars
@@ -61,6 +96,7 @@ Page({
       break;
     }
     var date = event.date + " (" + event.day + ")";
+    //if no participant, show "no participants yet"
     if(!event.participants_count)
     {
       this.setData({

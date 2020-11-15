@@ -55,7 +55,7 @@
 		</view>
     <!--sign up and location button-->
     <view class="button-sp-area mt-20 mb-20" style="text-align: center; display: flex;">
-			<button class="weui-btn weui-btn_primary shadow" bindtap="goto_locate">动态追踪</button>
+			<button class="weui-btn weui-btn_primary shadow" bindtap="goto_locate" disabled="{{!is_locate_permissible}}">{{button_text}}</button>
 		</view>
 	</view>
 </view>
