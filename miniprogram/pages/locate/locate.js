@@ -65,7 +65,7 @@ Page({
           var marker = {};
           //geopoint need to be transformed to json
           var location = snapshot.location.toJSON().coordinates;
-          marker.id = i+1;
+          marker.id = i;
           marker.location = snapshot.location;
           marker.longitude = location[0];
           marker.latitude = location[1];
@@ -76,7 +76,7 @@ Page({
           marker.realname = snapshot.realname;
           marker.taker = snapshot.nickname + " (" + snapshot.realname + ")";
           marker.detail = snapshot.detail;
-          marker.iconPath = "../../images/imagepoint.png";
+          marker.iconPath = "images/ditu-xing.png";
           marker.url = snapshot.url;
           marker.width = 20;
           marker.height = 20;
@@ -88,19 +88,29 @@ Page({
             borderWidth: "1px",
             borderColor: "#1485EF",
             display: "ALWAYS",
-            fontSize: "10", 
+            fontSize: "10",
           };
           markers.push(marker);
           console.log("[onLoad][marker] ", marker);
         }
 
         var marker = {
-          id: 0,
+          id: snapshots.length,
           latitude: that.data.latitude,
           longitude: that.data.longitude,
           width: 20,
           height: 20,
-          iconPath: "../../images/imagepoint.png",
+          iconPath: "images/imagepoint.png",
+        };
+        marker.callout = {
+          content: devicesId,
+          bgColor: "#fff",
+          padding: "5px",
+          borderRadius: "5px",
+          borderWidth: "1px",
+          borderColor: "#1485EF",
+          display: "FALSE",
+          fontSize: "10",
         };
 
         markers.push(marker);
