@@ -76,7 +76,7 @@ Page({
           marker.realname = snapshot.realname;
           marker.taker = snapshot.nickname + " (" + snapshot.realname + ")";
           marker.detail = snapshot.detail;
-          marker.iconPath = "images/imagepoint.png";
+          marker.iconPath = "../../images/imagepoint.png";
           marker.url = snapshot.url;
           marker.width = 20;
           marker.height = 20;
@@ -100,7 +100,7 @@ Page({
           longitude: that.data.longitude,
           width: 20,
           height: 20,
-          iconPath: "images/imagepoint.png",
+          iconPath: "../../images/imagepoint.png",
         };
         marker.callout = {
           content: devicesId,
