@@ -21,7 +21,7 @@
 					<text class="weui-form-preview__value" selectable="true">{{event.name_start}}</text>
 				</view>
 				<view class="weui-form-preview__item">
-					<label class="weui-form-preview__label">途径地标</label>
+					<label class="weui-form-preview__label">途经地标</label>
 					<text class="weui-form-preview__value" selectable="true">{{event.name_return}}</text>
 				</view>
 				<view class="weui-form-preview__item">

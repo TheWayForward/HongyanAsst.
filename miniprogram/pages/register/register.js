@@ -145,7 +145,6 @@ Page({
       detail : e.detail.value,
       text_counter: c
     });
-    
   },
 
   //picker
@@ -372,56 +371,57 @@ Page({
       console.log(result.total);
       count = ++result.total;
       user._id = count;
-    })
-    console.log(user);
-    db.collection("user").where({
-      openid: app.globalData.openid
-    }).field({
-      _id: true
-    }).get({
-      success: function(res){
-        if(res.data[0])
-        {
-          wx.showToast({
-            icon: "none",
-            title: '不可重复注册'
-          })
-          return;
+      console.log(user);
+      db.collection("user").where({
+        openid: app.globalData.openid
+      }).field({
+        _id: true
+      }).get({
+        success: function(res){
+          if(res.data[0])
+          {
+            wx.showToast({
+              icon: "none",
+              title: '不可重复注册'
+            })
+            return;
+          }
+          else
+          {
+            app.globalData.user = user;
+            db.collection("user").add({
+              data:{
+                _id: user._id,
+                QQ: user.QQ,
+                avatar: that.data.avatar,
+                birthday: user.birthday,
+                campus: user.campus,
+                credit: 100,
+                dept: user.dept,
+                detail: user.detail,
+                email: user.email,
+                gender: user.gender,
+                is_manager: false,
+                login: true,
+                my_bicycle: user.my_bicycle,
+                my_event: [],
+                nickname: user.nickname,
+                openid: app.globalData.openid,
+                realname: user.realname,
+                tel: user.tel,
+                total_distance: 0
+              }
+            })
+            wx.showToast({
+              title: '注册成功',
+              duration: 3000
+            })
+            wx.reLaunch({
+              url: '../../pages/index/index',
+            })
+          }
         }
-        else
-        {
-          app.globalData.user = user;
-          db.collection("user").add({
-            data:{
-              _id: user._id,
-              QQ: user.QQ,
-              avatar: that.data.avatar,
-              birthday: user.birthday,
-              campus: user.campus,
-              credit: 100,
-              dept: user.dept,
-              detail: user.detail,
-              email: user.email,
-              gender: user.gender,
-              login: true,
-              my_bicycle: user.my_bicycle,
-              my_event: [],
-              nickname: user.nickname,
-              openid: app.globalData.openid,
-              realname: user.realname,
-              tel: user.tel,
-              total_distance: 0
-            }
-          })
-          wx.showToast({
-            title: '注册成功',
-            duration: 3000
-          })
-          wx.reLaunch({
-            url: '../../pages/index/index',
-          })
-        }
-      }
+      })
     })
   } 
 })

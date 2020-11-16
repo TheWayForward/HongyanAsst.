@@ -12,8 +12,7 @@
     "pages/article/article",
     "pages/official/official",
     "pages/im/im",
-    "pages/im/room/room",
-    "pages/locate/locate"
+    "pages/im/room/room"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",

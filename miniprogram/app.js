@@ -7,12 +7,9 @@ var dayTime = util.formatTime(new Date());
 App({
 
   onLaunch: function () {
-
-    //set date
     var that = this;
     wx.login({
       success: res => {
-        
       }
     })
     wx.getSetting({
@@ -70,6 +67,8 @@ App({
   },
 
   globalData:{
+    //device
+    height: 0,
     //login status
     data_status: false,
     //date

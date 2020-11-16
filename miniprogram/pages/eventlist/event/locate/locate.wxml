@@ -1,15 +1,11 @@
 <view class="page">
   <view class="map shadow rounded-20">
   <!--40.157306,116.288791, when onenet is down-->
-    <map style="width: 100%; height: 750rpx;" id="myMap" latitude="40.157306" longitude="116.288791" markers="{{markers}}" covers="{{covers}}" bindmarkertap="show_snapshots" show-location>
+    <map style="width: 100%; height: {{height}}px;" id="myMap" latitude="{{latitude}}" longitude="{{longitude}}" markers="{{markers}}" covers="{{covers}}" bindmarkertap="show_snapshots" show-location>
         <view class="dynamic_data_group">
             <view class="dynamic_data shadow" hover-class="hv">
-                <view class="dynamic_data_title">时间：</view>
-                <view class="dynamic_data_detail">12:00:00</view>
-            </view>
-            <view class="dynamic_data shadow" hover-class="hv">
                 <view class="dynamic_data_title">速率：(kph)</view>
-                <view class="dynamic_data_detail">800.00</view>
+                <view class="dynamic_data_detail">{{speed}}</view>
             </view>
         </view>
     </map>
@@ -38,7 +34,7 @@
 					<view class="weui-cell__bd" bindtap="show_all_snapshots">{{all_snapshots_tip}}</view>
 				</a>
 			</view>
-			<view wx:for="{{markers}}" class="weui-panel__bd" hidden="{{is_all_Hide}}">
+			<view wx:for="{{markers}}" wx:if="{{item.is_snapshot}}" class="weui-panel__bd" hidden="{{is_all_Hide}}">
 				<a class="weui-media-box weui-media-box_appmsg">
                     <!--snapshot-->
 					<view class="weui-media-box__hd rounded-10 shadow" style="overflow: hidden;" hover-class="hv">
@@ -65,7 +61,7 @@
                     <view class="weui-uploader">
                         <view class="weui-uploader__hd">
                           <view class="weui-uploader__overview">
-                              <view class="weui-uploader__title" bindtap="choose_location" hover-class="hv">{{tip}}</view>
+                              <view class="weui-uploader__title">{{tip}}</view>
                           </view>
                           <view class="weui-uploader__tips">
                             {{tip_second}}

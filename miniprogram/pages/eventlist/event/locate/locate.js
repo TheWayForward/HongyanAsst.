@@ -1,10 +1,58 @@
+var app = getApp();
+const db = wx.cloud.database();
 const devicesId = "644250210";
 const api_key = "fhAS54e5X8HL5wcaB6ZW74oA3vo=";
 var timer;
 var timer_snapshotgetter;
 var files_cloud_url = [];
-var app = getApp();
-const db = wx.cloud.database();
+//Tencent map uses the gcj02 coordinate offset
+var latiToCanvas = function(lat) {return lat + 0.0060;};
+var logiToCanvas = function(log) {return log + 0.0065;};
+var wgs84togcj02 = function(lat, log) {
+  //is position off China mainland
+  if (log < 72.004 || log > 137.8347 || lat < 0.8293 || lat > 55.8271) {
+    return {
+      latitude:  lat,
+      longitude: log,
+    }
+  } else {
+    const Pi = 3.14159265358979324;
+    //coordinate projection factor
+    const a = 6378245.0;
+    //eccentricity
+    const ee = 0.00669342162296594323;
+    
+    var transformLat = function (x, y) {
+      var ret = -100.0 + 2.0 * x + 3.0 * y + 0.2 * y * y + 0.1 * x * y + 0.2 * Math.sqrt(Math.abs(x));
+      ret += (20.0 * Math.sin(6.0 * x * Pi) + 20.0 * Math.sin(2.0 * x * Pi)) * 2.0 / 3.0;
+      ret += (20.0 * Math.sin(y * Pi) + 40.0 * Math.sin(y / 3.0 * Pi)) * 2.0 / 3.0;
+      ret += (160.0 * Math.sin(y / 12.0 * Pi) + 320 * Math.sin(y * Pi / 30.0)) * 2.0 / 3.0;
+      return ret; }
+    var transformLog = function (x, y) {
+      var ret = 300.0 + x + 2.0 * y + 0.1 * x * x + 0.1 * x * y + 0.1 * Math.sqrt(Math.abs(x));
+      ret += (20.0 * Math.sin(6.0 * x * Pi) + 20.0 * Math.sin(2.0 * x * Pi)) * 2.0 / 3.0;
+      ret += (20.0 * Math.sin(x * Pi) + 40.0 * Math.sin(x / 3.0 * Pi)) * 2.0 / 3.0;
+      ret += (150.0 * Math.sin(x / 12.0 * Pi) + 300.0 * Math.sin(x / 30.0 * Pi)) * 2.0 / 3.0;
+      return ret; }
+    var delta = function (lat, lon) {
+      var dLat = transformLat(lon - 105.0, lat - 35.0);
+      var dLon = transformLog(lon - 105.0, lat - 35.0);
+      var radLat = lat / 180.0 * Pi;
+      var magic = Math.sin(radLat);
+      magic = 1 - ee * magic * magic;
+      var sqrtMagic = Math.sqrt(magic);
+      dLat = (dLat * 180.0) / ((a * (1 - ee)) / (magic * sqrtMagic) * Pi);
+      dLon = (dLon * 180.0) / (a / sqrtMagic * Math.cos(radLat) * Pi);
+      return {'lat': dLat, 'lon': dLon};
+    }
+    const d = delta(lat, log);
+    return {
+      latitude:  lat + d.lat,
+      longitude: log + d.lon,
+    }
+  }
+};
+
 
 Page({
   data: {
@@ -16,9 +64,10 @@ Page({
     is_all_Hide: true,
     //uploader shown or not
     is_uploader_hide: true,
-    //initalize as Tian'an Men
-    latitude: 39.129574,
-    longitude: 116.482548,
+    height: 0,
+    latitude: 0,
+    longitude: 0,
+    speed: 0,
     markers: [],
     current_marker: {},
     event_shots: [],
@@ -33,11 +82,18 @@ Page({
     snapshots_count: null,
     detail: "",
     //dynamic text
-    all_snapshots_tip: "查看该活动全部图片"
+    all_snapshots_tip: "查看该活动全部图片",
   },
 
   onLoad: function () {
     var that = this;
+    wx.getSystemInfo({
+      success(res){
+        that.setData({
+          height: res.windowHeight * 0.5
+        })
+      }
+    })
     //get the corresponded event
     var event = app.globalData.event;
     console.log(event);
@@ -57,6 +113,12 @@ Page({
           is_uploader_hide: !can_upload,
           tip_footer: "请在活动开始前12小时到活动结束后1天内上传图片"
         })
+        if(((Date.now() - event.precise_time) / 86400000) >= 1)
+        {
+          this.setData({
+            tip_footer: "活动已结束"
+          })
+        }
         is_signed = true;
         break;
       }
@@ -71,7 +133,6 @@ Page({
         })
       }
     }
-    //test version, dynamic later
     db.collection("events").where({
       _id: event._id
     }).field({
@@ -86,12 +147,31 @@ Page({
           event_shots: snapshots
         })
         var markers = [];
+        markers[0] = {
+          id: 0,
+          latitude: that.data.latitude,
+          longitude: that.data.longitude,
+          width: 20,
+          height: 20,
+          iconPath: "image/star.png",
+          callout: {
+            content: devicesId,
+            bgColor: "#fff",
+            padding: "5px",
+            borderRadius: "5px",
+            borderWidth: "1px",
+            borderColor: "#1485EF",
+            display: "BYCLICK",
+            fontSize: "10",
+          },
+          is_snapshot: false
+        };
         for(var i = 0; i < snapshots.length; i++){
           var snapshot = snapshots[i];
           var marker = {};
           //geopoint need to be transformed to json
           var location = snapshot.location.toJSON().coordinates;
-          marker.id = i;
+          marker.id = i + 1;
           marker.location = snapshot.location;
           marker.longitude = location[0];
           marker.latitude = location[1];
@@ -116,7 +196,21 @@ Page({
             display: "ALWAYS",
             fontSize: "10", 
           };
+          marker.is_snapshot = true;
           markers.push(marker);
+          console.log("[onLoad][marker]",marker);
+
+          //deviation, prevent markers from overlapping
+          if(i >= 1)
+          {
+            for(var j = 1; j < markers.length; j++){
+              if(marker.location == markers[j].location)
+              {
+                markers[j].longitude += i * 0.0002;
+                markers[j].latitude += i * 0.0002; 
+              }
+            }
+          }
         }
         console.log(markers);
         that.setData({
@@ -129,7 +223,7 @@ Page({
     timer = setInterval(() => {
       this.getDatapoints().then(datapoints => {
       })
-    }, 30000)
+    }, 10000)
 
     wx.showLoading({
       title: 'loading'
@@ -149,7 +243,7 @@ Page({
     var that = this;
     return new Promise((resolve, reject) => {
       wx.request({
-        url: `https://api.heclouds.com/devices/${devicesId}/datapoints?datastream_id=Latitude,Logitude&limit=5`,
+        url: `https://api.heclouds.com/devices/${devicesId}/datapoints?datastream_id=Latitude,Logitude,Speed&limit=1`,
         header: {
           'content-type': 'application/json',
           'api-key': api_key
@@ -157,14 +251,20 @@ Page({
         success: (res) => {
           const status = res.statusCode
           const response = res.data
-          var longitude = response.data.datastreams[0].datapoints;
-          var latitude = response.data.datastreams[1].datapoints;
+          var speed = response.data.datastreams[0].datapoints;
+          var longitude = response.data.datastreams[1].datapoints;
+          var latitude = response.data.datastreams[2].datapoints;
+          var current_sp = Number(speed[speed.length - 1].value);
           var current_lo = Number(longitude[longitude.length - 1].value);
           var current_la = Number(latitude[latitude.length - 1].value);
+          //encrypt to gcj to fit Tencent map
+          const encryptRes = wgs84togcj02(current_la, current_lo);
           that.setData({
-            longitude: current_lo,
-            latitude: current_la,
+            speed: current_sp,
+            longitude: encryptRes.longitude,
+            latitude:  encryptRes.latitude,
           })
+          console.log("[onenet][speed]: " + that.data.speed);
           console.log("[onenet][latitude]: " + that.data.latitude);
           console.log("[onenet][longitude]: " + that.data.longitude);
           if (status !== 200) 
@@ -193,7 +293,7 @@ Page({
       })
     })
   },
-  
+
   onReady: function(e){
     this.mapCtx = wx.createMapContext('myMap');
   },
@@ -241,7 +341,8 @@ Page({
   show_snapshots: function(e){
     var id = e.detail.markerId;
     var markers = this.data.markers;
-    for(var i = 0; i < this.data.markers.length; i++){
+    if(id == 0) return;
+    for(var i = 1; i < this.data.markers.length; i++){
       markers[i].iconPath = "image/imagepoint.png";
       markers[i].callout.borderColor = "#1485EF";
       //change imagepoint to red
@@ -294,7 +395,6 @@ Page({
       latitude: that.data.latitude,
       longitude: that.data.longitude,
       complete: (res) => {
-        console.log(res);
         if(!res.name)
         {
           this.setData({
@@ -392,7 +492,6 @@ Page({
         else 
         {
           //confirm tapped
-          console.log("want to delete");
           console.log(that.data.files.indexOf(to_delete));
           var index = that.data.files.indexOf(to_delete);
           if(index)
@@ -415,12 +514,14 @@ Page({
   //input image detail
   input: function(e){
     this.setData({
-      detail: e.detail.value
+      longitude: this.data.longitude,
+      latitude: this.data.latitude
     })
   },
 
   //upload image with location and detail
   upload_images: function(){
+    var that = this;
     //check if the user is uploading another snapshot to the same point
     for(var i = 0; i < this.data.markers.length; i++){
       var marker = this.data.markers[i];
@@ -451,10 +552,10 @@ Page({
         cancelColor: 'gray',
         cancelText: '否',
         confirmText: '是',
-        success: function(e){
+        complete: function(e){
           if(e.cancel)
           {
-            //cancelled, continue
+            that.upload_image_final();
           }
           else
           {
@@ -463,11 +564,15 @@ Page({
         }
       })
     }
+  },
+  
+  //sealing, or a bug jump from locate page to event page before the modal is shown
+  upload_image_final: function(){
     var that = this;
-    const filePath = this.data.files[0];
+    const filePath = that.data.files[0];
     //const filePath = files[i];
     //use this when uploading mutiple details
-    const cloudPath =  `events/${this.data.event.name}/${app.globalData.user.nickname}/${app.globalData.openid}_${Math.random()}_${Date.now()}.${filePath.match(/\.(\w+)$/)[1]}`;
+    const cloudPath =  `events/${that.data.event.name}/${app.globalData.user.nickname}/${app.globalData.openid}_${Math.random()}_${Date.now()}.${filePath.match(/\.(\w+)$/)[1]}`;
     wx.cloud.uploadFile({
       cloudPath,
       filePath,
@@ -478,7 +583,6 @@ Page({
         })
         var snapshots = that.data.snapshots;
         //regenerate detail
-
         if(that.data.detail != "暂无描述" && that.data.detail != "")
         {
           snapshots.detail = that.data.detail;
@@ -522,5 +626,5 @@ Page({
           })
       }
     }) 
-  },  
+  }
 })

@@ -1,2 +1,139 @@
-<!--pages/manager/event_release/event_release.wxml-->
-<text>pages/manager/event_release/event_release.wxml</text>
+<view class="page">
+  <view class="weui-cells">
+    <view class="weui-cell weui-cell_active">
+	    <view class="weui-cell__hd" style="position: relative; margin-right: 10px;">
+		    <image src="{{user.avatar}}" class="rounded-10 shadow" style="width: 80rpx; height: 80rpx; display: block;" data-action="{{user.avatar}}"></image>
+		</view>
+		<view class="weui-cell__bd ml-50">
+			<view>{{user.nickname}}({{user.realname}})</view>
+            <view style="font-size: 20rpx; color: gray;">活动发布者将作为领骑</view>
+		</view>
+	</view>
+    </view>
+    <view class="page__bd">
+        <view class="weui-cells__title">活动信息</view>
+        <view class="weui-cells weui-cells_after-title rounded-20">
+            <!--event forms-->
+
+            <!--name-->
+            <view class="weui-cell weui-cell_active">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">活动名称</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" maxlength="15" placeholder='例：黑分解休闲骑' bindinput="input_name"/>
+                </view>
+            </view>
+
+            <!--date-->
+            <view class="weui-cell weui-cell_active weui-cell_select weui-cell_select-after">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">活动日期</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <picker mode="date" value="{{event_date}}" start="{{event_date_start}}" end="{{event_date_end}}" bindchange="bind_event_date_change" value="" range="">
+                        <view class="weui-select weui-select_in-select-after">{{event_date}}</view>
+                    </picker>
+                </view>
+            </view>
+            
+            <!--time-->
+            <view class="weui-cell weui-cell_active weui-cell_select weui-cell_select-after">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">活动时间</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <picker mode="time" value="{{event_time}}" start="{{event_time_start}}" end="{{event_time_end}}" bindchange="bind_event_time_change" value="" range="">
+                        <view class="weui-select weui-select_in-select-after">{{event_time}}</view>
+                    </picker>
+                </view>
+            </view>
+
+            <!--distance-->
+            <view class="weui-cell weui-cell_active">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">里程(km)</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" placeholder='填入数字' bindinput="input_distance"/>
+                </view>
+            </view>
+
+            <!--starting point-->
+            <view class="weui-cell weui-cell_active">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">起点</view>
+                </view>
+                <view class="weui-cell__bd" id="start" bindtap="choose_location">{{name_start}}</view>
+            </view>
+
+            <!--returning point or landmark-->
+            <view class="weui-cell weui-cell_active">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">途经地标</view>
+                </view>
+                <view class="weui-cell__bd" id="return" bindtap="choose_location">{{name_return}}</view>
+            </view>
+
+            <!--difficulty-->
+            <view class="weui-cell weui-cell_active">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">难度</view>
+                </view>
+                <slider class="weui-cell__bd" min="1" max="6" step="1" bindchanging="slide_difficulty"></slider>
+                <view class="weui-slider-box__value">{{difficulty}}</view>
+            </view>
+
+        </view>
+        
+        <!--detail-->
+        <view class="weui-cells__title">活动简介</view>
+        <view class="weui-cells weui-cells_after-title rounded-20">
+            <view class="weui-cell weui-cell_active">
+                <view class="weui-cell__bd">
+                    <textarea class="weui-textarea" placeholder="填写活动介绍（路线特色、附加活动等）" style="height: 3.3em" bindinput="input_detail" maxlength="200"/>
+                    <view class="weui-textarea-counter">{{text_counter}}</view>
+                </view>
+            </view>
+        </view>
+
+        <!--poster-->
+        <view class="weui-cells__title">活动海报</view>
+        <view class="page__bd rounded-20" style="overflow: hidden;">
+        <view class="weui-cells">
+            <view class="weui-cell">
+                <view class="weui-cell__bd">
+                    <view class="weui-uploader">
+                        <view class="weui-uploader__hd">
+                          <view class="weui-uploader__overview">
+                          </view>
+                          <view class="weui-uploader__tips">{{tip}}
+                          </view>
+                        </view>
+                        <view class="weui-uploader__bd">
+                            <view class="weui-uploader__files" id="uploaderFiles">
+                                <block wx:for="{{files}}" wx:key="*this">
+                                    <view class="weui-uploader__file rounded-10 shadow" bindtap="preview" bindlongpress="delete_image" data-action="{{item}}" style="overflow: hidden;">
+                                        <image class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
+                                    </view>
+                                </block>
+                            </view>
+                            <view class="weui-uploader__input-box rounded-10" hidden="{{is_upload_add_hide}}">
+                                <view class="weui-uploader__input" bindtap="choose_image"></view>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+
+        <!--submit-->
+        <view class="weui-btn-area">
+            <button class="weui-btn shadow" style="margin-top:-30rpx;" type="primary" bindtap="submit">发布活动</button>
+        </view>
+
+        <!--bottom line-->
+        <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
+    </view>
+</view>

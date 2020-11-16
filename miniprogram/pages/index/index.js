@@ -106,12 +106,6 @@ Page({
     })
   },
 
-  goto_location: function(){
-    wx.navigateTo({
-      url: '../../pages/locate/locate',
-    })
-  },
-
   goto_user_profile: function(){
     if(!app.globalData.data_status)
     {
@@ -154,9 +148,19 @@ Page({
     }
     else
     {
-      wx.navigateTo({
-        url: '../manager/manager',
-      })
+      if(!app.globalData.user.is_manager)
+      {
+        wx.showToast({
+          title: '未授权管理员',
+          icon: 'none'
+        })
+      }
+      else
+      {
+        wx.navigateTo({
+          url: '../manager/manager',
+        })
+      }
     }
   },
 
