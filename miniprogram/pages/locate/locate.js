@@ -109,7 +109,7 @@ Page({
           borderRadius: "5px",
           borderWidth: "1px",
           borderColor: "#1485EF",
-          display: "FALSE",
+          display: "BYCLICK",
           fontSize: "10",
         };
 
