@@ -136,7 +136,7 @@ Page({
       wx.hideLoading()
     }).catch((err) => {
       wx.hideLoading()
-      console.error(err)
+      console.error("[getDatapoints][err] ", err)
       clearInterval(timer)
     })
   },
@@ -168,24 +168,20 @@ Page({
           console.log("[onenet][speed]: " + that.data.speed);
           console.log("[onenet][latitude]: " + that.data.latitude);
           console.log("[onenet][longitude]: " + that.data.longitude);
-          if (status !== 200) 
-          {
+          if (status !== 200) {
             reject(res.data)
             return ;
-          }
-          if (response.errno !== 0) 
-          {
+          } if (response.errno !== 0) {
             reject(response.error)
             return ;
-          }
-          if (response.data.datastreams.length === 0) 
-          {
+          } if (response.data.datastreams.length === 0) {
             reject("No data yet.")
           }
           //promise resolved successfully
           resolve({
-            longitude: response.data.datastreams[0].datapoints.reverse(),
-            latitude: response.data.datastreams[1].datapoints.reverse()
+            speed:     response.data.datastreams[0].datapoints.reverse(),
+            longitude: response.data.datastreams[1].datapoints.reverse(),
+            latitude:  response.data.datastreams[2].datapoints.reverse()
           })
         },
         fail: (err) => {
@@ -240,7 +236,7 @@ Page({
 
   //marker tapped
   show_snapshots: function(e){
-    console.log(e);
+    console.log("[show_snapshots][event] ", e);
     var id = e.detail.markerId;
     var markers = this.data.markers;
     for(var i = 0; i < this.data.markers.length; i++){
@@ -285,7 +281,7 @@ Page({
       latitude: that.data.latitude,
       longitude: that.data.longitude,
       complete: (res) => {
-        console.log(res);
+        console.log("[choose_location][complete] ", res);
         if(!res.name)
         {
           this.setData({
@@ -354,7 +350,7 @@ Page({
   //long press to delete image
   delete_image: function(e){
     var that = this;
-    console.log(that.data.files);
+    console.log("[delete_image][files] ", that.data.files);
     var to_delete = e.currentTarget.dataset.action;
     wx.showModal({
       title:'取消上传',
@@ -371,8 +367,7 @@ Page({
         else 
         {
           //confirm tapped
-          console.log("want to delete");
-          console.log(that.data.files.indexOf(to_delete));
+          console.log("[want to delete]", that.data.files.indexOf(to_delete));
           var index = that.data.files.indexOf(to_delete);
           if(index)
           {
@@ -468,7 +463,7 @@ Page({
         that.setData({
           event_shots: e
         })
-        console.log(that.data.event_shots);
+        console.log("[event_shots] ", that.data.event_shots);
         wx.cloud.callFunction({
           name:'update_snapshots',
           data:{
