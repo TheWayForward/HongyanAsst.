@@ -18,6 +18,7 @@ Page({
     leader_openid: "",
     tip: "点击展开",
     isHide: true,
+    can_sign: true,
     is_sign_up_hide: false,
     //button
     is_locate_permissible: false,
@@ -67,6 +68,13 @@ Page({
           participants: event.participants
         })
         var now = new Date();
+        if((event.time - now) / 86400000 < 0.041)
+        {
+          //can't sign or un-sign after the hr before the event starts
+          that.setData({
+            can_sign: false
+          })
+        }
         if((event.time - now) / 86400000 < 1)
         {
           //can enter locate page
@@ -320,10 +328,15 @@ Page({
     })
   },
 
+  //goto event tracking page
   goto_locate: function(){
     var is_signed = false;
     var that = this;
+    wx.navigateTo({
+      url: '../event/locate/locate',
+    })
     //only for signed users
+    /*
     for(var i = 0; i < this.data.participants.length; i++){
       if(app.globalData.openid == this.data.participants[i].openid)
       {
@@ -355,5 +368,6 @@ Page({
         }
       })
     }
+    */
   }
 })

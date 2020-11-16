@@ -60,7 +60,7 @@
                 <view class="weui-cell__bd">{{item.nickname}}</view>
                 <view class="weui-cell__ft">{{item.realname}}</view>
             </view>
-				<view class="button-sp-area mt-20 mb-20" style="text-align: center;">
+				<view class="button-sp-area mt-20 mb-20" style="text-align: center;" hidden="{{!can_sign}}">
 							<button class="weui-btn weui-btn_primary shadow" bindtap="sign_up" hidden="{{is_sign_up_hide}}">报名</button>
 							<button class="weui-btn weui-btn_warning shadow" hover-class="hv" style="background: #FA5159;" bindtap="un_sign_up" hidden="{{!is_sign_up_hide}}">取消报名</button>
 				</view>

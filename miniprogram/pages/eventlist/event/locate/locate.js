@@ -26,6 +26,7 @@ Page({
     //from user
     tip: "留下精彩瞬间！",
     tip_second: "当前活动：加载中",
+    tip_footer: "加载中",
     files: [],
     files_cloud_url: [],
     snapshots: {},
@@ -40,15 +41,36 @@ Page({
     //get the corresponded event
     var event = app.globalData.event;
     console.log(event);
-    //check whether the event is expired, -12h to 1d
-    var can_upload = ((((Date.now() - event.precise_time) / 86400000) >= 1) || (((Date.now() - event.precise_time) / 86400000) <= -0.5)) ? false : true;
-    //fill the basic event name info and decide whether the uploader should be shown or not
-    this.setData({
-      event: event,
-      all_snapshots_tip: "查看" + event.name + "的全部图片",
-      tip_second: "当前活动：" + event.name,
-      is_uploader_hide: !can_upload
-    })
+    var participants = event.participants;
+    var is_signed = false;
+    for(var i = 0; i < participants.length; i++){
+      if(app.globalData.user.openid == participants[i].openid) 
+      {
+        //matching current user
+        //check whether the event is expired, -12h to 1d
+        var can_upload = ((((Date.now() - event.precise_time) / 86400000) >= 1) || (((Date.now() - event.precise_time) / 86400000) <= -0.5)) ? false : true;
+        //fill the basic event name info and decide whether the uploader should be shown or not
+        this.setData({
+          event: event,
+          all_snapshots_tip: "查看" + event.name + "的全部图片",
+          tip_second: "当前活动：" + event.name,
+          is_uploader_hide: !can_upload,
+          tip_footer: "请在活动开始前12小时到活动结束后1天内上传图片"
+        })
+        is_signed = true;
+        break;
+      }
+      //cannot upload if unsigned
+      if(!is_signed)
+      {
+        this.setData({
+          event: event,
+          all_snapshots_tip: "查看" + event.name + "的全部图片",
+          is_uploader_hide: true,
+          tip_footer: "未报名活动，无法上传图片"
+        })
+      }
+    }
     //test version, dynamic later
     db.collection("events").where({
       _id: event._id

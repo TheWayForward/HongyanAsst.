@@ -104,10 +104,7 @@
         <view class="weui-footer">
             <!--line-->
             <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
-            <view class="weui-footer__text" hidden="{{!is_uploader_hide}}">非规定时间，无法上传图片</view>
-            <view class="weui-footer__text" hidden="{{is_uploader_hide}}">请在活动开始前12小时到活动结束后1天内上传图片</view>
+            <view class="weui-footer__text">{{tip_footer}}</view>
         </view>
     </view>
 </view>
-
-    
