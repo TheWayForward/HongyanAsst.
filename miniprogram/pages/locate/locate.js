@@ -76,7 +76,7 @@ Page({
           marker.realname = snapshot.realname;
           marker.taker = snapshot.nickname + " (" + snapshot.realname + ")";
           marker.detail = snapshot.detail;
-          marker.iconPath = "images/ditu-xing.png";
+          marker.iconPath = "images/imagepoint.png";
           marker.url = snapshot.url;
           marker.width = 20;
           marker.height = 20;
