@@ -106,6 +106,12 @@ Page({
     })
   },
 
+  goto_location: function(){
+    wx.navigateTo({
+      url: '../../pages/locate/locate',
+    })
+  },
+
   goto_user_profile: function(){
     if(!app.globalData.data_status)
     {

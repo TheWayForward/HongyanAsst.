@@ -17,6 +17,7 @@ Page({
     //initalize as Tian'an Men
     latitude: 39.129574,
     longitude: 116.482548,
+    speed: 0,
     markers: [],
     current_marker: {},
     event_shots: [],
@@ -28,11 +29,22 @@ Page({
     snapshots: {},
     detail: "",
     //dynamic text
-    all_snapshots_tip: "查看该活动全部图片"
+    all_snapshots_tip: "查看该活动全部图片",
+    //screen height
+    height: 0,
   },
 
   onLoad: function () {
+
     var that = this;
+    
+    wx.getSystemInfo({
+      success: (result) => {
+        that.setData({
+          height: result.windowHeight*0.9
+        })
+      },
+    })
     //test version, dynamic later
     db.collection("events").where({
       _id: "1"
@@ -53,7 +65,7 @@ Page({
           var marker = {};
           //geopoint need to be transformed to json
           var location = snapshot.location.toJSON().coordinates;
-          marker.id = i;
+          marker.id = i+1;
           marker.location = snapshot.location;
           marker.longitude = location[0];
           marker.latitude = location[1];
@@ -79,7 +91,20 @@ Page({
             fontSize: "10", 
           };
           markers.push(marker);
+          console.log("[onLoad][marker] ", marker);
         }
+
+        var marker = {
+          id: 0,
+          latitude: that.data.latitude,
+          longitude: that.data.longitude,
+          width: 20,
+          height: 20,
+          iconPath: "../../images/imagepoint.png",
+        };
+
+        markers.push(marker);
+
         console.log(markers);
         that.setData({
           markers: markers
@@ -111,7 +136,7 @@ Page({
     var that = this;
     return new Promise((resolve, reject) => {
       wx.request({
-        url: `https://api.heclouds.com/devices/${devicesId}/datapoints?datastream_id=Latitude,Logitude&limit=5`,
+        url: `https://api.heclouds.com/devices/${devicesId}/datapoints?datastream_id=Latitude,Logitude,Speed&limit=5`,
         header: {
           'content-type': 'application/json',
           'api-key': api_key
@@ -119,14 +144,18 @@ Page({
         success: (res) => {
           const status = res.statusCode
           const response = res.data
-          var longitude = response.data.datastreams[0].datapoints;
-          var latitude = response.data.datastreams[1].datapoints;
+          var speed      = response.data.datastreams[0].datapoints;
+          var longitude  = response.data.datastreams[1].datapoints;
+          var latitude   = response.data.datastreams[2].datapoints;
+          var current_sp = Number(speed[speed.length - 1].value);
           var current_lo = Number(longitude[longitude.length - 1].value);
           var current_la = Number(latitude[latitude.length - 1].value);
           that.setData({
+            speed: current_sp,
             longitude: current_lo,
             latitude: current_la,
           })
+          console.log("[onenet][speed]: " + that.data.speed);
           console.log("[onenet][latitude]: " + that.data.latitude);
           console.log("[onenet][longitude]: " + that.data.longitude);
           if (status !== 200) 
