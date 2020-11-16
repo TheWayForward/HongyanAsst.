@@ -4,7 +4,52 @@ var timer;
 var timer_snapshotgetter;
 var files_cloud_url = [];
 var app = getApp();
+var latiToCanvas=function(lat) {return lat+0.0060;};
+var logiToCanvas=function(log) {return log+0.0065;};
 const db = wx.cloud.database();
+var wgs84togcj02=function(lat, log) {
+  // is position off China mainland
+  if (log < 72.004 || log > 137.8347 || lat < 0.8293 || lat > 55.8271) {
+    return {
+      latitude:  lat,
+      longitude: log,
+    }
+  } else {
+    const Pi = 3.14159265358979324;
+    const a = 6378245.0; //坐标投影因子
+    const ee = 0.00669342162296594323; //椭球偏心率
+    
+    var transformLat = function (x, y) {
+      var ret = -100.0 + 2.0 * x + 3.0 * y + 0.2 * y * y + 0.1 * x * y + 0.2 * Math.sqrt(Math.abs(x));
+      ret += (20.0 * Math.sin(6.0 * x * Pi) + 20.0 * Math.sin(2.0 * x * Pi)) * 2.0 / 3.0;
+      ret += (20.0 * Math.sin(y * Pi) + 40.0 * Math.sin(y / 3.0 * Pi)) * 2.0 / 3.0;
+      ret += (160.0 * Math.sin(y / 12.0 * Pi) + 320 * Math.sin(y * Pi / 30.0)) * 2.0 / 3.0;
+      return ret; }
+    var transformLog = function (x, y) {
+      var ret = 300.0 + x + 2.0 * y + 0.1 * x * x + 0.1 * x * y + 0.1 * Math.sqrt(Math.abs(x));
+      ret += (20.0 * Math.sin(6.0 * x * Pi) + 20.0 * Math.sin(2.0 * x * Pi)) * 2.0 / 3.0;
+      ret += (20.0 * Math.sin(x * Pi) + 40.0 * Math.sin(x / 3.0 * Pi)) * 2.0 / 3.0;
+      ret += (150.0 * Math.sin(x / 12.0 * Pi) + 300.0 * Math.sin(x / 30.0 * Pi)) * 2.0 / 3.0;
+      return ret; }
+    var delta = function (lat, lon) {
+      var dLat = transformLat(lon - 105.0, lat - 35.0);
+      var dLon = transformLog(lon - 105.0, lat - 35.0);
+      var radLat = lat / 180.0 * Pi;
+      var magic = Math.sin(radLat);
+      magic = 1 - ee * magic * magic;
+      var sqrtMagic = Math.sqrt(magic);
+      dLat = (dLat * 180.0) / ((a * (1 - ee)) / (magic * sqrtMagic) * Pi);
+      dLon = (dLon * 180.0) / (a / sqrtMagic * Math.cos(radLat) * Pi);
+      return {'lat': dLat, 'lon': dLon};
+    }
+    
+    const d = delta(lat, log);
+    return {
+      latitude:  lat + d.lat,
+      longitude: log + d.lon,
+    }
+  }
+};
 
 Page({
   data: {
@@ -141,6 +186,7 @@ Page({
     })
   },
 
+
   //get gps datapoints
   getDatapoints: function () {
     var that = this;
@@ -160,10 +206,11 @@ Page({
           var current_sp = Number(speed[speed.length - 1].value);
           var current_lo = Number(longitude[longitude.length - 1].value);
           var current_la = Number(latitude[latitude.length - 1].value);
+          const encryptRes = wgs84togcj02(current_la, current_lo);
           that.setData({
             speed: current_sp,
-            longitude: current_lo,
-            latitude: current_la,
+            longitude: encryptRes.longitude,
+            latitude:  encryptRes.latitude,
           })
           console.log("[onenet][speed]: " + that.data.speed);
           console.log("[onenet][latitude]: " + that.data.latitude);
@@ -480,5 +527,5 @@ Page({
         that.onLoad();
       }
     }) 
-  },  
+  },
 })
