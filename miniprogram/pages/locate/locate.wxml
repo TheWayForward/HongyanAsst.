@@ -44,7 +44,7 @@
 					<view class="weui-cell__bd" bindtap="show_all_snapshots">{{all_snapshots_tip}}</view>
 				</a>
 			</view>
-			<view wx:for="{{markers}}" class="weui-panel__bd" hidden="{{is_all_Hide}}">
+			<view wx:for="{{markers}}" wx:if="{{item.isPhoto}}" class="weui-panel__bd" hidden="{{is_all_Hide}}">
 				<a class="weui-media-box weui-media-box_appmsg">
                     <!--snapshot-->
 					<view class="weui-media-box__hd rounded-10 shadow" style="overflow: hidden;" hover-class="hv">

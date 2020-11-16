@@ -16,7 +16,7 @@ var wgs84togcj02=function(lat, log) {
     }
   } else {
     const Pi = 3.14159265358979324;
-    const a = 6378245.0; //坐标投影因子
+    const a  = 6378245.0; //坐标投影因子
     const ee = 0.00669342162296594323; //椭球偏心率
     
     var transformLat = function (x, y) {
@@ -111,6 +111,7 @@ Page({
           //geopoint need to be transformed to json
           var location = snapshot.location.toJSON().coordinates;
           marker.id = i;
+          marker.isPhoto = true;
           marker.location = snapshot.location;
           marker.longitude = location[0];
           marker.latitude = location[1];
@@ -145,6 +146,7 @@ Page({
           longitude: that.data.longitude,
           width: 20,
           height: 20,
+          isPhoto: false,
           iconPath: "../../images/imagepoint.png",
         };
         marker.callout = {
@@ -289,8 +291,7 @@ Page({
     for(var i = 0; i < this.data.markers.length; i++){
       markers[i].iconPath = "../../images/imagepoint.png";
       markers[i].callout.borderColor = "#1485EF";
-      if(i == id)
-      {
+      if(i == id) {
         markers[i].iconPath = "../../images/imagepoint_selected.png";
         markers[i].callout.borderColor = "#EF2914";
       }
