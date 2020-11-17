@@ -37,12 +37,16 @@ Page({
     }).field({
       participants: true,
       leader_openid: true,
-      snapshots_count: true
+      snapshots_count: true,
+      device: true
     }).get({
       success: function(res){
         event.participants = res.data[0].participants;
         event.leader_openid = res.data[0].leader_openid;
         event.snapshots_count = res.data[0].snapshots_count;
+        event.device = res.data[0].device;
+        console.log(event);
+        //app.globalData.event = event;
         that.setData({
           participants: res.data[0].participants,
           leader_openid: res.data[0].leader_openid
@@ -142,7 +146,6 @@ Page({
       difficulty: difficulty,
       date: date,
     })
-    
   },
 
   /**
@@ -246,21 +249,42 @@ Page({
           participant.time = Date.now();
           that.data.participants.push(participant);
           console.log(that.data.participants);
+          var event = that.data.event;
+          //add an event to user
+          app.globalData.user.my_event.push({
+            _id: event._id,
+            name: event.name,
+            poster: event.poster,
+            date: event.date,
+            distance: event.distance,
+            is_signed: false
+          });
+          console.log(app.globalData.user.my_event);
           wx.cloud.callFunction({
             name: 'update_participants',
-            data: {
-              taskId: that.data.event._id,
-              my_participants: that.data.participants,
-              my_participants_count: that.data.participants.length
-            },
-          }
+              data: {
+                taskId: that.data.event._id,
+                my_participants: that.data.participants,
+                my_participants_count: that.data.participants.length
+              }
+          })
+          wx.cloud.callFunction(
+            {
+              name: "update_user_event",
+              data: {
+                openid: app.globalData.user.openid,
+                my_event: app.globalData.user.my_event
+              }
+            }
           ).then(res => {
             wx.showToast({
               title: '报名成功',
-              duration:3000
-            })
-            wx.reLaunch({
-              url: '../eventlist'
+              duration:3000,
+              success: function(res){
+                wx.reLaunch({
+                  url: '../eventlist'
+                })
+              }
             })
           })
         }
@@ -286,8 +310,11 @@ Page({
         }
         else
         {
+          //matching
+          var event = that.data.event;
+          var index_event = null;
           var participants = that.data.participants;
-          var index = null;
+          var index_participant = null;
           for(var i = 0; i < participants.length; i++){
             var p = participants[i];
             if(app.globalData.openid == that.data.leader_openid)
@@ -300,12 +327,29 @@ Page({
             }
             if(app.globalData.openid == p.openid)
             {
-              console.log("found");
-              index = i;
+              console.log("participant found");
+              index_participant = i;
             }
           }
           console.log(participants);
-          participants.splice(index,1);
+          participants.splice(index_participant,1);
+          for(var i = 0; i < app.globalData.user.my_event.length; i++){
+            var e = app.globalData.user.my_event[i];
+            if(e._id == that.data.event._id)
+            {
+              console.log("event found");
+              index_event = i;
+            }
+          }
+          app.globalData.user.my_event.splice(index_event,1);
+          console.log(app.globalData.user.my_event);
+          wx.cloud.callFunction({
+            name: "update_user_event",
+            data: {
+              openid: app.globalData.user.openid,
+              my_event: app.globalData.user.my_event
+            }
+          })
           wx.cloud.callFunction({
             name: 'update_participants',
             data: {
@@ -317,10 +361,12 @@ Page({
             wx.showToast({
               title: '已取消报名',
               icon: 'none',
-              duration: 3000
-            })
-            wx.reLaunch({
-              url: '../eventlist'
+              duration: 3000,
+              success: function(res){
+                wx.reLaunch({
+                  url: '../eventlist'
+                })
+              }
             })
           })
         }
@@ -330,44 +376,8 @@ Page({
 
   //goto event tracking page
   goto_locate: function(){
-    var is_signed = false;
-    var that = this;
     wx.navigateTo({
       url: '../event/locate/locate',
     })
-    //only for signed users
-    /*
-    for(var i = 0; i < this.data.participants.length; i++){
-      if(app.globalData.openid == this.data.participants[i].openid)
-      {
-        is_signed = true;
-      }
-    }
-    if(is_signed)
-    {
-      wx.navigateTo({
-        url: '../../eventlist/event/locate/locate',
-      })
-    }
-    else
-    {
-      wx.showModal({
-        title: '未报名',
-        content:'请在报名活动后追踪动态。',
-        confirmText: '立即报名',
-        cancelText: '取消',
-        success: function(res){
-          if(res.cancel)
-          {
-            //cancelled
-          }
-          else
-          {
-            that.sign_up();
-          }
-        }
-      })
-    }
-    */
   }
 })

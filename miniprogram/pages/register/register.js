@@ -370,7 +370,7 @@ Page({
     count.then(function(result){
       console.log(result.total);
       count = ++result.total;
-      user._id = count;
+      user._id = count.toString();
       console.log(user);
       db.collection("user").where({
         openid: app.globalData.openid

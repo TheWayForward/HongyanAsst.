@@ -68,6 +68,18 @@ Page({
                 var t = arrayContainer[i].time;
                 //reformat date, don't forget about the shit getMonth + 1
                 arrayContainer[i].date = t.getFullYear().toString() + "/" + (t.getMonth() + 1).toString() + "/" + t.getDate().toString();
+                //padstart function, adding zero to digits
+                function padstart(time){
+                  if(time.length == 1)
+                  {
+                    return ("0" + time);
+                  }
+                  else
+                  {
+                    return time;
+                  }
+                }
+                arrayContainer[i].date_time = padstart(t.getHours().toString()) + ":" + padstart(t.getMinutes().toString());
                 //reformat day
                 switch(t.getDay()){
                   case(0):

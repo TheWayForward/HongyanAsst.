@@ -18,16 +18,6 @@ Page({
   onLoad: function() {
   },
 
-  onGetUserInfo: function(e) {
-    if (!this.data.logged && e.detail.userInfo) {
-      this.setData({
-        logged: true,
-        avatarUrl: e.detail.userInfo.avatarUrl,
-        userInfo: e.detail.userInfo
-      })
-    }
-  },
-
   onPageScroll: function(e){
     if(e.scrollTop > 500)
     {

@@ -15,6 +15,7 @@
 				<view class="weui-form-preview__item">
 					<label class="weui-form-preview__label">时间</label>
 					<text class="weui-form-preview__value" selectable="true">{{date}}</text>
+					<text class="weui-form-preview__value" selectable="true">{{event.date_time}}</text>
 				</view>
 				<view class="weui-form-preview__item">
 					<label class="weui-form-preview__label">起点</label>
@@ -38,7 +39,7 @@
 				</view>
 				<view class="weui-form-preview__item">
 					<label class="weui-form-preview__label mr-50">简介</label>
-					<text class="weui-form-preview__value" style="text-align: justify; font-size: 25rpx;" selectable="true">{{event.detail}}</text>
+					<text class="weui-form-preview__value" style="text-align: right; font-size: 25rpx;" selectable="true">{{event.detail}}</text>
 				</view>
 			</view>
 		</view>

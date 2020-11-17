@@ -274,6 +274,7 @@ Page({
     })
   },
 
+  //submit event info
   submit: function(){
     var name = this.data.name;
     var distance = this.data.distance;
@@ -421,9 +422,13 @@ Page({
             data:{
               _id: _id,
               //dynamic later
-              apikey: "fhAS54e5X8HL5wcaB6ZW74oA3vo=",
               detail: detail,
-              deviceid: "644250210",
+              device: {
+                _id: "1",
+                apikey: "fhAS54e5X8HL5wcaB6ZW74oA3vo",
+                devicesid: "644250210",
+                name: "设备1"
+              },
               difficulty: difficulty,
               distance: distance,
               leader: app.globalData.user.realname,

@@ -1,7 +1,5 @@
 var app = getApp();
 const db = wx.cloud.database();
-const devicesId = "644250210";
-const api_key = "fhAS54e5X8HL5wcaB6ZW74oA3vo=";
 var timer;
 var timer_snapshotgetter;
 var files_cloud_url = [];
@@ -58,6 +56,7 @@ Page({
   data: {
     //from server
     event: {},
+    //gps device
     //image previewer shown or not
     isHide: true,
     //all image previewer shown or not
@@ -96,7 +95,6 @@ Page({
     })
     //get the corresponded event
     var event = app.globalData.event;
-    console.log(event);
     var participants = event.participants;
     var is_signed = false;
     for(var i = 0; i < participants.length; i++){
@@ -155,12 +153,12 @@ Page({
           height: 20,
           iconPath: "image/star.png",
           callout: {
-            content: devicesId,
+            content: that.data.event.device.name + "：" + that.data.event.device.deviceid,
             bgColor: "#fff",
             padding: "5px",
             borderRadius: "5px",
             borderWidth: "1px",
-            borderColor: "#1485EF",
+            borderColor: "#1296DB",
             display: "BYCLICK",
             fontSize: "10",
           },
@@ -198,8 +196,6 @@ Page({
           };
           marker.is_snapshot = true;
           markers.push(marker);
-          console.log("[onLoad][marker]",marker);
-
           //deviation, prevent markers from overlapping
           if(i >= 1)
           {
@@ -221,7 +217,7 @@ Page({
 
     //location data getter timer
     timer = setInterval(() => {
-      this.getDatapoints().then(datapoints => {
+      this.get_datapoints().then(datapoints => {
       })
     }, 10000)
 
@@ -229,7 +225,7 @@ Page({
       title: 'loading'
     })
 
-    this.getDatapoints().then((datapoints) => {
+    this.get_datapoints().then((datapoints) => {
       wx.hideLoading()
     }).catch((err) => {
       wx.hideLoading()
@@ -239,14 +235,14 @@ Page({
   },
 
   //get gps datapoints
-  getDatapoints: function () {
+  get_datapoints: function () {
     var that = this;
     return new Promise((resolve, reject) => {
       wx.request({
-        url: `https://api.heclouds.com/devices/${devicesId}/datapoints?datastream_id=Latitude,Logitude,Speed&limit=1`,
+        url: `https://api.heclouds.com/devices/${that.data.event.device.deviceid}/datapoints?datastream_id=Latitude,Logitude,Speed&limit=1`,
         header: {
           'content-type': 'application/json',
-          'api-key': api_key
+          'api-key': that.data.event.device.apikey
         },
         success: (res) => {
           const status = res.statusCode
@@ -258,11 +254,11 @@ Page({
           var current_lo = Number(longitude[longitude.length - 1].value);
           var current_la = Number(latitude[latitude.length - 1].value);
           //encrypt to gcj to fit Tencent map
-          const encryptRes = wgs84togcj02(current_la, current_lo);
+          const encrypt_res = wgs84togcj02(current_la, current_lo);
           that.setData({
             speed: current_sp,
-            longitude: encryptRes.longitude,
-            latitude:  encryptRes.latitude,
+            longitude: encrypt_res.longitude,
+            latitude:  encrypt_res.latitude,
           })
           console.log("[onenet][speed]: " + that.data.speed);
           console.log("[onenet][latitude]: " + that.data.latitude);
@@ -281,10 +277,7 @@ Page({
           {
             reject("No data yet.")
           }
-          //promise resolved successfully
           resolve({
-            longitude: response.data.datastreams[0].datapoints.reverse(),
-            latitude: response.data.datastreams[1].datapoints.reverse()
           })
         },
         fail: (err) => {
@@ -309,7 +302,7 @@ Page({
       complete: (res) => {},
     })
     this.onLoad();
-    if(this.getDatapoints())
+    if(this.get_datapoints())
     {
       wx.hideNavigationBarLoading({
         complete: (res) => {},
