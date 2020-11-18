@@ -6,6 +6,8 @@
     "pages/eventlist/event/locate/locate",
     "pages/manager/manager",
     "pages/manager/event_release/event_release",
+    "pages/manager/article_release/article_release",
+    "pages/manager/progress_release/progress_release",
     "pages/register/register",
     "pages/user_profile/user_profile",
     "pages/articlelist/articlelist",

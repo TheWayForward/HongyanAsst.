@@ -311,7 +311,7 @@ Page({
         else
         {
           //matching
-          var event = that.data.event;
+          //var event = that.data.event;
           var index_event = null;
           var participants = that.data.participants;
           var index_participant = null;

@@ -386,6 +386,7 @@ Page({
       return;
     }
 
+    //poster
     if(!this.data.files)
     {
       wx.showToast({
@@ -394,72 +395,104 @@ Page({
       })
       return;
     }
-
-
-    var files = this.data.files;
-    var time = new Date();
-    time.setFullYear(Number(this.data.event_date.slice(0,4)));
-    //don't forget about - 1
-    time.setMonth(Number(this.data.event_date.slice(5,7)) - 1);
-    time.setDate(Number(this.data.event_date.slice(8,10)));
-    time.setHours(Number(this.data.event_time.slice(0,2)));
-    time.setMinutes(Number(this.data.event_date.slice(2,4)));
-    //uploadfile and complete
-    const filePath = files[0];
-    const cloudPath =  `events/${name}/poster/${app.globalData.openid}_${Math.random()}_${Date.now()}.${filePath.match(/\.(\w+)$/)[1]}`;
-    wx.cloud.uploadFile({
-      cloudPath,
-      filePath,
+    var that = this;
+    wx.showModal({
+      title: '提示',
+      content: '确认发布活动"' + name + '"吗？',
       success: function(res){
-        files_cloud_url = res.fileID;
-        //increment
-        var count = db.collection("events").count();
-        count.then(function(result){
-          count = result.total;
-          var _id = count + 1 + "";
-          //upload to cloudbase
-          db.collection("events").add({
-            data:{
-              _id: _id,
-              //dynamic later
-              detail: detail,
-              device: {
-                _id: "1",
-                apikey: "fhAS54e5X8HL5wcaB6ZW74oA3vo",
-                devicesid: "644250210",
-                name: "设备1"
-              },
-              difficulty: difficulty,
-              distance: distance,
-              leader: app.globalData.user.realname,
-              leader_openid: app.globalData.user.openid,
-              location_return: location_return,
-              location_start: location_start,
-              name: name,
-              name_return: name_return,
-              name_start: name_start,
-              participants:[{
-                avatar: app.globalData.user.avatar,
-                nickname: app.globalData.user.nickname,
-                openid: app.globalData.user.openid,
-                realname: app.globalData.user.realname,
-                time: Date.now()
-              }],
-              participants_count: 1,
-              poster: files_cloud_url,
-              snapshots: [],
-              snapshots_count: 0,
-              time: time
+        if(res.cancel)
+        {
+          console.log("don't release");
+          return;  
+        }
+        else
+        {
+          var files = that.data.files;
+          var time = new Date();
+          time.setFullYear(Number(that.data.event_date.slice(0,4)));
+          //don't forget about - 1
+          time.setMonth(Number(that.data.event_date.slice(5,7)) - 1);
+          time.setDate(Number(that.data.event_date.slice(8,10)));
+          time.setHours(Number(that.data.event_time.slice(0,2)));
+          time.setMinutes(Number(that.data.event_date.slice(2,4)));
+          //uploadfile and complete
+          const filePath = files[0];
+          const cloudPath =  `events/${name}/poster/${app.globalData.openid}_${Math.random()}_${Date.now()}.${filePath.match(/\.(\w+)$/)[1]}`;
+          wx.cloud.uploadFile({
+            cloudPath,
+            filePath,
+            success: function(res){
+              files_cloud_url = res.fileID;
+              //increment
+              var count = db.collection("events").count();
+              count.then(function(result){
+                count = result.total;
+                var _id = count + 1 + "";
+                //upload to cloudbase
+                db.collection("events").add({
+                  data:{
+                    _id: _id,
+                    //dynamic later
+                    detail: detail,
+                    device: {
+                      _id: "1",
+                      apikey: "fhAS54e5X8HL5wcaB6ZW74oA3vo",
+                      devicesid: "644250210",
+                      name: "设备1"
+                    },
+                    difficulty: difficulty,
+                    distance: distance,
+                    leader: app.globalData.user.realname,
+                    leader_openid: app.globalData.user.openid,
+                    location_return: location_return,
+                    location_start: location_start,
+                    name: name,
+                    name_return: name_return,
+                    name_start: name_start,
+                    participants:[{
+                      avatar: app.globalData.user.avatar,
+                      nickname: app.globalData.user.nickname,
+                      openid: app.globalData.user.openid,
+                      realname: app.globalData.user.realname,
+                      time: Date.now()
+                    }],
+                    participants_count: 1,
+                    poster: files_cloud_url,
+                    snapshots: [],
+                    snapshots_count: 0,
+                    time: time
+                  }
+                })
+                app.globalData.user.my_event.push({
+                  _id: _id,
+                  name: name,
+                  poster: files_cloud_url,
+                  date: that.data.event_date.replace(new RegExp("-","g"),"/"),
+                  distance: that.data.distance,
+                  is_signed: true
+                });
+                console.log(app.globalData.user.my_event);
+                wx.cloud.callFunction(
+                {
+                  name: "update_user_event",
+                  data: {
+                    openid: app.globalData.user.openid,
+                    my_event: app.globalData.user.my_event
+                  }
+                }
+                ).then(res => {
+                  wx.showToast({
+                    title: '发布成功',
+                    duration: 3000,
+                  })
+                  wx.reLaunch({
+                    url: '../../index/index',
+                  })
+                })
+              })
             }
           })
-          wx.showToast({
-            title: '发布成功',
-            duration: 3000,
-          })
-          wx.reLaunch({
-            url: '../../index/index',
-          })
-        })
+        }
       }
     })
   }

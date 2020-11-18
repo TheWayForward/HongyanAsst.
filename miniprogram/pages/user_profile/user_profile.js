@@ -7,7 +7,7 @@ Page({
    * Page initial data
    */
   data: {
-    user: [],
+    user: {},
     isHide: false
   },
 
@@ -115,6 +115,21 @@ Page({
     wx.previewImage({
       current: e.target.dataset.action,
       urls: [e.target.dataset.action]
+    })
+  },
+
+  //go to event page after getting the corresponded event
+  goto_event: function(e){
+    var event_tapped = e.currentTarget.dataset.action;
+    db.collection("events").where({
+      _id: event_tapped._id
+    }).get({
+      success: function(res){
+        app.globalData.event = res.data[0];
+        wx.navigateTo({
+          url: '../../pages/eventlist/event/event',
+        })
+      }
     })
   }
 })

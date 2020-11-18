@@ -1,4 +1,4 @@
-// miniprogram/pages/manager.js
+// pages/manager/article_release/article_release.js
 Page({
 
   /**
@@ -62,25 +62,5 @@ Page({
    */
   onShareAppMessage: function () {
 
-  },
-
-  goto_event_release: function(){
-    wx.navigateTo({
-      url: '../manager/event_release/event_release',
-    })
-  },
-
-  goto_article_release: function(){
-    wx.showToast({
-      title: '页面建设中！',
-      icon: 'none'
-    })
-  },
-
-  goto_progress_release: function(){
-    wx.showToast({
-      title: '页面建设中！',
-      icon: 'none'
-    })
   }
 })

@@ -72,17 +72,19 @@
       <image class="bicycle_thumbnail" mode="aspectFill" src="{{item.bicycle_thumbnail}}" data-action="{{item.bicycle_thumbnail}}" bindtap="preview"/>
   </view>
   </view>
-
-  <!--add bicycles-->
-  <view style="text-align:center;padding-top:20rpx;">
-    <image src="image/add.png" style="width:150rpx;height:150rpx;"></image>
-  </view>
-
-  <!--event info group-->
-  <view class="info_group">
-    <view class="bar"></view>
-    <view class="info_group_title">我的活动</view>
-  </view>
-
-
+</view>
+<!--event info group, from user-->
+<view class="page">
+    <view class="page__bd">
+        <view class="weui-cells__title">我的活动</view>
+        <view class="weui-cells weui-cells_after-title">
+            <view wx:for="{{user.my_event}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+                <view class="weui-cell__hd">
+                    <image src="{{item.poster}}" class="rounded-10 shadow" style="margin-right: 16px;vertical-align: middle;width:30px; height: 30px;" mode="aspectFill" data-action="{{item.poster}}" bindtap="preview"></image>
+                </view>
+                <view class="weui-cell__bd" data-action="{{item}}" bindtap="goto_event">{{item.name}}</view>
+                <view class="weui-cell__ft weui-cell__ft_in-access" data-action="{{item}}" bindtap="goto_event">{{item.date}}</view>
+            </view>
+        </view>
+    </view>
 </view>

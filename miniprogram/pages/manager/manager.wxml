@@ -5,6 +5,8 @@
 </view>
 
 <button bindtap="goto_event_release" class="bg-white border">活动发布</button>
+<button bindtap="goto_article_release" class="bg-white border">资讯发布</button>
+<button bindtap="goto_progress_release" class="bg-white border">日志发布</button>
 
 <!--footer-->
 <view class="footer mt-20">
