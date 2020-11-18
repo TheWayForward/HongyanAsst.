@@ -60,8 +60,8 @@ Page({
     //all image previewer shown or not
     is_all_Hide: true,
     //initalize as Tian'an Men
-    latitude: 39.129574,
-    longitude: 116.482548,
+    latitude: 0,
+    longitude: 0,
     speed: 0,
     markers: [],
     current_marker: {},
@@ -111,6 +111,7 @@ Page({
           //geopoint need to be transformed to json
           var location = snapshot.location.toJSON().coordinates;
           marker.id = i;
+          //is photo: 如题所述. 防止定位位置被当作图片处理
           marker.isPhoto = true;
           marker.location = snapshot.location;
           marker.longitude = location[0];
