@@ -5,17 +5,49 @@
   </view>
 </view>
 
+<view class="page" hidden="{{isHide}}">
+
 <!--crews' badge-->
-<view style="text-align:center;margin-top:75rpx" hidden="{{isHide}}">
-  <image src="cloud://hongyancrew-pvmj1.686f-hongyancrew-pvmj1-1303885697/essentials/hongyancrew.png" mode="aspectFill" style="height:300rpx;width:300rpx"/>
+<view style="text-align:center;margin-top:75rpx" hover-class="hv" hover-stay-time="30">
+  <image class="shadow-filter" src="cloud://hongyancrew-pvmj1.686f-hongyancrew-pvmj1-1303885697/essentials/hongyancrew.png" mode="aspectFill" style="height:300rpx;width:300rpx"/>
 </view>
 
 <!--division-->
-<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot" hidden="{{isHide}}"></view>
+<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
+
+<!--user title-->
+<view style="align-items:center" hover-class="hv" hover-stay-time="30">
+  <image class="shadow-filter" hidden="{{isHide}}" src="../official/image/user.png" style="width:540rpx; height:155rpx; margin-left:96rpx"/>
+</view>
+
+<!--user-->
+	<view class="page__bd rounded-20" style="overflow: hidden;">
+		<view class="weui-panel weui-panel_access">
+			<view class="weui-panel__bd">
+				<a class="weui-media-box weui-media-box_appmsg" wx:for="{{u}}">
+					<view class="weui-media-box__hd">
+						<image class="weui-media-box__thumb rounded-10 shadow" data-action="{{item.avatar}}" src="{{item.avatar}}" bindtap="preview" alt></image>
+					</view>
+					<view class="weui-media-box__bd">
+						<h4 class="weui-media-box__title">{{item.nickname}}</h4>
+						<view class="weui-media-box__desc">{{item.detail}}</view>
+					</view>
+				</a>
+			</view>
+			<view class="weui-panel__ft">
+				<a class="weui-cell weui-cell_active weui-cell_access weui-cell_link">
+					<view class="weui-cell__bd">共{{u.length}}位用户</view>
+				</a>
+			</view>
+		</view>
+	</view>
+
+<!--division-->
+<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
 
 <!--developers and contributors title-->
-<view style="align-items:center">
-  <image hidden="{{isHide}}" src="../../images/contributor.png" style="width:540rpx; height:155rpx; margin-left:96rpx"/>
+<view style="align-items:center" hover-class="hv" hover-stay-time="30">
+  <image class="shadow-filter" hidden="{{isHide}}" src="../official/image/contributor.png" style="width:540rpx; height:155rpx; margin-left:96rpx"/>
 </view>
 
 <!--developers and contributors align-->
@@ -47,10 +79,10 @@
 <view class="weui-footer__text" style="margin-top:60rpx">鸿通国脉 雁启未来 车行四海 协者无疆</view>
 </view>
 </view>
-<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot" hidden="{{isHide}}"></view>
+<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
 <!--logs-->
-<view style="align-items:center">
-<image src="../../images/log.png" hidden="{{isHide}}" style="width:540rpx; height:135rpx; margin-left:96rpx"></image>
+<view style="align-items:center" hover-class="hv" hover-stay-time="30">
+<image class="shadow-filter" src="../official/image/log.png" hidden="{{isHide}}" style="width:540rpx; height:135rpx; margin-left:96rpx"></image>
 </view>
 
 <view class="page">
@@ -76,5 +108,7 @@
 	</view>
 </view>
 
-<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot" hidden="{{isHide}}"></view>
-<image src="https://www.bupt.edu.cn/__local/C/8E/F7/EE902059AE32E0E6325EFEE8F46_B2D41D06_CD58.png" style="height:160rpx; margin-left:80rpx; margin-bottom:50rpx" hidden="{{isHide}}"></image>
+<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
+<image class="shadow-filter" src="https://www.bupt.edu.cn/__local/C/8E/F7/EE902059AE32E0E6325EFEE8F46_B2D41D06_CD58.png" style="height:160rpx; margin-left:80rpx; margin-bottom:50rpx" hidden="{{isHide}}"></image>
+
+</view>

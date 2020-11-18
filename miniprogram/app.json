@@ -10,6 +10,7 @@
     "pages/manager/progress_release/progress_release",
     "pages/register/register",
     "pages/user_profile/user_profile",
+    "pages/user_show/user_show",
     "pages/articlelist/articlelist",
     "pages/article/article",
     "pages/official/official",

@@ -4,8 +4,12 @@ var progress = [];
 
 Page({
   data: {
-    p:0,
-    d:0,
+    //users
+    u: [],
+    //progress
+    p: [],
+    //developers
+    d: [],
     hnode: [{
       _id: "1",
       index_id: "1",
@@ -31,10 +35,9 @@ Page({
     //loading developer info, rendered initially
     var batchTimes_developer;
     var count_developer = db.collection("developer").count();
-
     count_developer.then(function (result) {
       count_developer = result.total;
-      batchTimes_developer = Math.ceil(count_developer / 20)
+      batchTimes_developer = Math.ceil(count_developer / 20);
       var arrayContainer = [], x = 0;
       for (var i = 0; i < batchTimes_developer; i++) {
         db.collection("developer").skip(i * 20).get({
@@ -43,7 +46,8 @@ Page({
               arrayContainer.push(res.data[j]);
             }
             x++;
-            if (x == batchTimes_developer) {
+            if (x == batchTimes_developer) 
+            {
               arrayContainer.sort(compare("_id"));
               developers = arrayContainer;
               var odd = [];
@@ -75,10 +79,9 @@ Page({
               //loading progress info
               var batchTimes;
               var count = db.collection("progress").count();
-
               count.then(function (result) {
               count = result.total;
-              batchTimes = Math.ceil(count / 20)
+              batchTimes = Math.ceil(count / 20);
               var arrayContainer = [], x = 0;
               for (var i = 0; i < batchTimes; i++) {
                 db.collection("progress").skip(i * 20).get({
@@ -121,10 +124,39 @@ Page({
   },
 
   onReady: function () {
+    var that = this;
+    //loading user info
+    var batchTimes;
+    var count = db.collection("user").count();
+    count.then(function(result){
+      count = result.total;
+      batchTimes = Math.ceil(count / 20);
+      var arrayContainer = [], x = 0;
+      for(var i = 0; i < batchTimes; i++){
+        db.collection("user").skip(i * 20).field({
+          avatar: true,
+          detail: true,
+          nickname: true
+        }).get({success: function(res){
+          for(var j = 0; j < res.data.length; j++){
+            arrayContainer.push(res.data[j]);
+          }
+          x++;
+          if(x == batchTimes)
+          {
+            console.log(arrayContainer);
+            that.setData({
+              u: arrayContainer
+            }) 
+          }
+        }
+      })
+      }
+    }) 
   },
 
   onShow: function () {
-    
+
   },
 
   onHide: function () {

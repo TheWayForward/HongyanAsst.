@@ -257,6 +257,10 @@ page {
   box-shadow: 0rpx 3rpx 3rpx 3rpx gainsboro;
 }
 
+.shadow-filter{
+  filter: drop-shadow(0rpx 15rpx 10rpx #999999);
+}
+
 .hv{
   opacity: 0.7;
 }
