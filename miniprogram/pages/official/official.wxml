@@ -36,7 +36,7 @@
 			</view>
 			<view class="weui-panel__ft">
 				<a class="weui-cell weui-cell_active weui-cell_access weui-cell_link">
-					<view class="weui-cell__bd">共{{u.length}}位用户</view>
+					<view class="weui-cell__bd" style="text-align: center; font-weight: bold;">共{{u.length}}位用户</view>
 				</a>
 			</view>
 		</view>

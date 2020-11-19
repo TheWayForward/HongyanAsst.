@@ -32,8 +32,8 @@ Page({
           isAvailable: true,
           thumbnail: true,
           title:true,
-          type: true,
-          view: true
+          tag: true,
+          view: true,
         }).get({
           success:function(res){
             for(var j = 0; j < res.data.length; j++){

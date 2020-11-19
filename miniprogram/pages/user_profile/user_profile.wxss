@@ -3,7 +3,7 @@
   border-radius: 30rpx;
   margin-top: -20rpx;
   text-align: center;
-  background-image: url(https://www.bupt.edu.cn/images/bg.png);
+  background-image: url(http://m.qpic.cn/psc?/V10ldMks1Z5QlW/bqQfVz5yrrGYSXMvKr.cqfWwSpHUrZXKXcOu9AfZ8Yv9PM9T5FboHy0vprjIbF6EDWsWixFNKjonrJ4hxx6vL2rP.yfBMdNxI4LiMnGGXeQ!/b&bo=6gHtAeoB7QEDCSw!&rf=viewer_4);
   background-attachment: fixed;
   background-size: cover;
 }
@@ -24,15 +24,8 @@
 .info_group{
   display: flex;
   line-height: 60rpx;
-}
-
-.bar{
-  margin-left: -350rpx;
-  width: 7rpx;
-  height: 40rpx;
-  align-self: center;
-  border-radius: 50rpx;
-  background: gray;
+  border-radius: 30rpx;
+  overflow: hidden;
 }
 
 .info_group_title{
@@ -44,9 +37,6 @@
 }
 
 .info_tab{
-  width: 95%;
-  border-radius: 30rpx;
-  margin-top: 20rpx;
   background: white;
   border-top: 2px dotted gainsboro;
   overflow: hidden;

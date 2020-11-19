@@ -44,7 +44,7 @@
         <view class="foot">
           <!--tag-->
           <view class="tag_block shadow rounded-5" style="">
-            <view class="tag_text" style="">{{item.type}}</view>
+            <view class="tag_text" style="">{{item.tag}}</view>
           </view>
           <!--author-->
           <view class="author my_gray" style="line-height:60rpx;margin-left:15rpx;font-size:26rpx">{{item.author}}</view>

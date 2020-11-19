@@ -1,90 +1,87 @@
-<!--all-->
-<view class="container" hidden="{{isHide}}">
-
-  <!--avatar and username-->
-  <view class="avatar_name_container pt-50 pb-25">
-    <view class="avatar_container">
-      <image src="{{user.avatar}}" class="rounded avatar shadow-bold" data-action="{{user.avatar}}" bindtap="preview"/>
-    </view>
-    <view class="name bold" style="letter-spacing:1rpx">{{user.nickname}}</view>
-    <!--update info-->
-    <view class="update_info_button" bindtap="goto_updateinfo" hover-class="hv" hover-stay-time="30">✐编辑资料</view>
-  </view>
-  
-  <!--basic info group-->
-  <view class="info_group">
-    <view class="bar"></view>
-    <view class="info_group_title">基本资料</view>
-  </view>
-
-  <!--birthday-->
-  <view class="info_tab d-flex shadow" style="margin-top:-5rpx;">
-  <view class="info_tab_image_container">
-      <image class="info_tab_image" src="../user_profile/image/time.png"/>
-    </view>
-    <view class="info_field bold my_gray">入驻时间</view>
-    <view class="info_data">{{user.birthday}}</view>
-  </view>
-
-  <!--campus-->
-  <view class="info_tab d-flex shadow">
-  <view class="info_tab_image_container">
-      <image class="info_tab_image" src="../user_profile/image/bupt.png"/>
-    </view>
-    <view class="info_field bold my_gray">所在校区</view>
-    <view class="info_data">{{user.campus}}</view>
-  </view>
-
-  <!--total diasance-->
-  <view class="info_tab d-flex shadow">
-  <view class="info_tab_image_container">
-      <image class="info_tab_image" src="../user_profile/image/distance.png"/>
-    </view>
-    <view class="info_field bold my_gray">骑行里程</view>
-    <view class="info_data">{{user.total_distance}} km</view>
-  </view>
-
-  <!--credit-->
-  <view class="info_tab d-flex shadow">
-  <view class="info_tab_image_container">
-      <image class="info_tab_image" src="../user_profile/image/credit.png"/>
-    </view>
-    <view class="info_field bold my_gray">信用积分</view>
-    <view class="info_data">{{user.credit}} </view>
-  </view>
-
-  <!--bicycle info group-->
-  <view class="info_group" style="margin-bottom:-20rpx;">
-    <view class="bar"></view>
-    <view class="info_group_title">我的车辆</view>
-  </view>
-
-  <!--bicycles-->
-  <view class="info_tab shadow-bold" style="padding-bottom:0;" wx:for="{{user.my_bicycle}}">
-  <view class="d-flex">
-    <view class="info_tab_image_container">
-      <image class="info_tab_image" src="../user_profile/image/bicycle.png"/>
-    </view>
-    <view class="info_field bold my_gray">{{item.bicycle_type}}</view>
-    <view class="info_data">{{item.bicycle_name}} </view>
-  </view>
-  <view class="bicycle_thumbnail_container">
-      <image class="bicycle_thumbnail" mode="aspectFill" src="{{item.bicycle_thumbnail}}" data-action="{{item.bicycle_thumbnail}}" bindtap="preview"/>
-  </view>
-  </view>
-</view>
 <!--event info group, from user-->
-<view class="page">
+<view class="page" hidden="{{isHide}}">
     <view class="page__bd">
-        <view class="weui-cells__title">我的活动</view>
-        <view class="weui-cells weui-cells_after-title">
-            <view wx:for="{{user.my_event}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-                <view class="weui-cell__hd">
-                    <image src="{{item.poster}}" class="rounded-10 shadow" style="margin-right: 16px;vertical-align: middle;width:30px; height: 30px;" mode="aspectFill" data-action="{{item.poster}}" bindtap="preview"></image>
-                </view>
-                <view class="weui-cell__bd" data-action="{{item}}" bindtap="goto_event">{{item.name}}</view>
-                <view class="weui-cell__ft weui-cell__ft_in-access" data-action="{{item}}" bindtap="goto_event">{{item.date}}</view>
-            </view>
-        </view>
+        
+      <!--avatar and username-->
+    <view class="avatar_name_container pt-50 pb-25">
+      <view class="avatar_container">
+        <image src="{{user.avatar}}" class="rounded avatar shadow-filter" data-action="{{user.avatar}}" bindtap="preview"/>
+      </view>
+      <view class="name bold" style="letter-spacing:1rpx">{{user.nickname}}</view>
+      <!--update info-->
+      <view class="update_info_button" bindtap="goto_user_profile_update" hover-class="hv" hover-stay-time="30">✐编辑信息</view>
     </view>
+  
+    <!--basic info group-->
+    <view class="weui-cells__title">基本信息</view>
+    <!--birthday-->
+    <view class="info_tab d-flex shadow" style="margin-top:-5rpx;">
+      <view class="info_tab_image_container">
+        <image class="info_tab_image" src="../user_profile/image/time.png"/>
+      </view>
+      <view class="info_field bold my_gray">入驻时间</view>
+      <view class="info_data">{{user.birthday}}</view>
+    </view>
+
+    <!--campus-->
+    <view class="info_tab d-flex shadow">
+      <view class="info_tab_image_container">
+        <image class="info_tab_image" src="../user_profile/image/bupt.png"/>
+      </view>
+      <view class="info_field bold my_gray">所在校区</view>
+      <view class="info_data">{{user.campus}}</view>
+    </view>
+
+    <!--total diasance-->
+    <view class="info_tab d-flex shadow">
+      <view class="info_tab_image_container">
+        <image class="info_tab_image" src="../user_profile/image/distance.png"/>
+      </view>
+      <view class="info_field bold my_gray">骑行里程</view>
+      <view class="info_data">{{user.total_distance}} km</view>
+    </view>
+
+    <!--credit-->
+    <view class="info_tab d-flex shadow">
+      <view class="info_tab_image_container">
+        <image class="info_tab_image" src="../user_profile/image/credit.png"/>
+      </view>
+      <view class="info_field bold my_gray">信用积分</view>
+      <view class="info_data">{{user.credit}} </view>
+    </view>
+
+    <!--bicycle info group-->
+    <view class="weui-cells__title">我的车辆</view>
+
+    <!--bicycles-->
+    <view class="weui-panel__bd shadow" style="background: white;">
+			<view class="weui-media-box weui-media-box_appmsg" wx:for="{{user.my_bicycle}}" hover-class="hv" hover-stay-time="30">
+				<view class="weui-media-box__hd" hover-class="hv" hover-stay-time="30">
+					<image class="weui-media-box__thumb rounded-10 shadow" src="{{item.bicycle_thumbnail}}" mode="aspectFill" data-action="{{item.bicycle_thumbnail}}" bindtap="preview" alt></image>
+				</view>
+				<view class="weui-media-box__bd">
+          <view class="d-flex">
+					  <view class="weui-media-box__title" style="font-size: 35rpx;">{{item.bicycle_name}}</view>
+					  <view class="weui-media-box__desc ml-25 rounded-10 shadow-bold" style="border: 1px solid gray; padding: 5rpx;">{{item.bicycle_type}}</view>
+          </view>
+          <view class="weui-media-box__desc">不可借</view>
+          <view class="weui-media-box__desc">待借</view>
+          <view class="weui-media-box__desc">已借</view>
+          <view class="weui-media-box__desc">借自user</view>
+				</view>
+			</view>
+		</view>
+
+
+    <view class="weui-cells__title">我的活动</view>
+    <view class="weui-cells weui-cells_after-title">
+      <view wx:for="{{user.my_event}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+        <view class="weui-cell__hd">
+          <image src="{{item.poster}}" class="rounded-10 shadow" style="margin-right: 16px;vertical-align: middle;width:30px; height: 30px;" mode="aspectFill" data-action="{{item.poster}}" bindtap="preview"></image>
+        </view>
+        <view class="weui-cell__bd" data-action="{{item}}" bindtap="goto_event">{{item.name}}</view>
+        <view class="weui-cell__ft weui-cell__ft_in-access" data-action="{{item}}" bindtap="goto_event">{{item.date}}</view>
+      </view>
+    </view>
+  </view>
 </view>

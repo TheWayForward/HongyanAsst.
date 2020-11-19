@@ -12,7 +12,7 @@
 		<view class="weui-panel weui-panel_access">
 			<view class="weui-panel__hd">当前活动</view>
 			<view class="weui-panel__bd" style="border-bottom: 1px solid #F5F5F5;"  wx:for="{{coming_event}}">
-				<a class="weui-media-box weui-media-box_appmsg">
+				<view class="weui-media-box weui-media-box_appmsg">
 					<view class="weui-cell__hd rounded-10 shadow" style="position: relative; margin-right: 10px;">
 						<image class="rounded-10 shadow" src="{{item.poster}}" mode="aspectFill" style="width: 115rpx; height: 115rpx; display: block;"></image>
 						<text class="weui-badge" style="position: absolute; top: -0.4em; right: -0.4em;" hidden="{{item.participants_count}}">{{item.participants_count}}</text>
@@ -24,7 +24,7 @@
 						<view class="weui-media-box__info__meta" data-action="{{item}}" bindtap="goto_event">领队：{{item.leader}}</view>
 					  <view class="weui-media-box__info__meta weui-media-box__info__meta_extra"></view>
 					</view>
-				</a>
+				</view>
 			</view>
 		</view>
 
@@ -32,7 +32,7 @@
 		<view class="weui-panel weui-panel_access">
 			<view class="weui-panel__hd">往期活动</view>
 			<view class="weui-panel__bd" style="border-bottom: 1px solid #F5F5F5;"  wx:for="{{previous_event}}">
-				<a class="weui-media-box weui-media-box_appmsg">
+				<view class="weui-media-box weui-media-box_appmsg">
 					<view class="weui-cell__hd rounded-10 shadow" style="position: relative; margin-right: 10px;">
 						<image class="rounded-10 shadow" src="{{item.poster}}" mode="aspectFill" style="width: 115rpx; height: 115rpx; display: block;"></image>
 						<text class="weui-badge" style="position: absolute; top: -0.4em; right: -0.4em;">{{item.participants_count}}</text>
@@ -45,13 +45,13 @@
 						<view class="weui-media-box__info__meta" data-action="{{item}}" bindtap="goto_event"></view>
 						<view class="weui-media-box__info__meta weui-media-box__info__meta_extra"></view>
 					</view>
-				</a>
+				</view>
 			</view>
 			<view class="weui-panel__ft">
-				<a class="weui-cell weui-cell_active weui-cell_access weui-cell_link">
+				<view class="weui-cell weui-cell_active weui-cell_access weui-cell_link">
 					<view class="weui-cell__bd">查看更多</view>
 					<text class="weui-cell__ft"></text>
-				</a>
+				</view>
 			</view>
 		</view>
 	</view>

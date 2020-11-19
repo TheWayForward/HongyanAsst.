@@ -387,7 +387,7 @@ Page({
     }
 
     //poster
-    if(!this.data.files)
+    if(!this.data.files.length)
     {
       wx.showToast({
         title: '未上传活动海报',
@@ -402,7 +402,6 @@ Page({
       success: function(res){
         if(res.cancel)
         {
-          console.log("don't release");
           return;  
         }
         else

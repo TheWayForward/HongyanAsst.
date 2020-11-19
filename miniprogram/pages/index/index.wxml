@@ -1,6 +1,6 @@
 <view style="text-align:center;">
-  <view>Sign up before using.</view>
-  <view>点击“账户系统”进行注册，方可使用。</view>
+  <view>{{en}}</view>
+  <view>{{ch}}</view>
 </view>
 
 <button bindtap="goto_articlelist" class="bg-white border">文章评论</button>

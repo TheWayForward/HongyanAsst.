@@ -205,6 +205,10 @@ page {
   padding-top: 100rpx
 }
 
+.ml-25{
+  margin-left: 25rpx;
+}
+
 .ml-50{
   margin-left: 50rpx;
 }

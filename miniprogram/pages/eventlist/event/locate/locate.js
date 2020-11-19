@@ -296,6 +296,10 @@ Page({
     clearInterval(timer);
   },
 
+  onHide: function(){
+    clearInterval(timer);
+  },
+
   //refresh location data
   onPullDownRefresh: function(){
     wx.showNavigationBarLoading({

@@ -1,4 +1,4 @@
-// miniprogram/pages/manager.js
+// pages/user_profile/user_profile_update/user_profile_update.js
 Page({
 
   /**
@@ -62,24 +62,5 @@ Page({
    */
   onShareAppMessage: function () {
 
-  },
-
-  goto_event_release: function(){
-    wx.navigateTo({
-      url: '../manager/event_release/event_release',
-    })
-  },
-
-  goto_article_release: function(){
-    wx.navigateTo({
-      url: '../manager/article_release/article_release',
-    })
-  },
-
-  goto_progress_release: function(){
-    wx.showToast({
-      title: '页面建设中！',
-      icon: 'none'
-    })
   }
 })

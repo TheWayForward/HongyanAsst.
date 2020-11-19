@@ -3,6 +3,8 @@ const db = wx.cloud.database();
 
 Page({
   data: {
+    en: "loading...",
+    ch: "加载中...",
     articles: [],
     search_articles: [],
     showTop: true,
@@ -16,6 +18,27 @@ Page({
   },
 
   onLoad: function() {
+  },
+
+  onShow: function(){
+    var that = this;
+    function refresh(){
+      if(app.globalData.user)
+      {
+        that.setData({
+        ch: "欢迎使用测试版。",
+        en: "Welcome."
+        })
+      }
+      else
+      {
+        that.setData({
+          ch: '点击"账户系统"进行注册，方可使用。',
+          en: "Sign up before using."
+        })
+      }
+    }
+    setTimeout(refresh,5000);
   },
 
   onPageScroll: function(e){
@@ -45,7 +68,7 @@ Page({
   },
 
   getUserInfo: function () {
-    var that = this
+    var that = this;
     wx.login({
       success: res => {
       }
