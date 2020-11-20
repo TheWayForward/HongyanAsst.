@@ -30,7 +30,8 @@
     <view>
       <!--upper thumbnail-->
       <view class="thumbnail_container">
-        <image src="{{item.thumbnail}}" mode="aspectFill" class="article_thumbnail" bindtap="preview" data-action="{{item.thumbnail}}" lazy-load="true"/>
+        <image src="{{item.thumbnail}}" mode="aspectFill" class="article_thumbnail" bindtap="preview" data-action="{{item.thumbnail}}" lazy-load="true" hidden="{{!is_loading_hide}}"/>
+        <image src="{{loading_animation}}" mode="aspectFill" class="article_thumbnail" bindtap="preview" data-action="{{item.thumbnail}}" lazy-load="true" hidden="{{is_loading_hide}}"/>
       </view>
       <!--overview-->
       <view class="overview">
@@ -38,7 +39,7 @@
         <view class="my_white" style="line-height:20rpx;margin-left:10rpx">{{item.view}}</view>
       </view>
       <!--bottom info-->
-      <view class="bottominfo" style="padding-left:15rpx;padding-right:15rpx;padding-top:15rpx" hover-class="hv" hover-stay-time="30" data-title="{{item.title}}" data-availability="{{item.isAvailable}}" data-id="{{item._id}}" bindtap="goto_article"> 
+      <view class="bottominfo" style="padding-left:15rpx;padding-right:15rpx;padding-top:15rpx" hover-class="hv" hover-stay-time="30" data-title="{{item.title}}" data-availability="{{item.isAvailable}}" data-action="{{item}}" data-id="{{item._id}}" bindtap="goto_article"> 
         <!--title-->
         <view class="title my_small" style="">{{item.title}}</view>
         <view class="foot">

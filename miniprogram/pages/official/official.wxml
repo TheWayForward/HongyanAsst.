@@ -26,7 +26,7 @@
 			<view class="weui-panel__bd">
 				<a class="weui-media-box weui-media-box_appmsg" wx:for="{{u}}">
 					<view class="weui-media-box__hd">
-						<image class="weui-media-box__thumb rounded-10 shadow" data-action="{{item.avatar}}" src="{{item.avatar}}" bindtap="preview" alt></image>
+						<image class="weui-media-box__thumb rounded-10 shadow" data-action="{{item.avatar}}" src="{{item.avatar}}" mode="aspectFill" bindtap="preview" alt></image>
 					</view>
 					<view class="weui-media-box__bd">
 						<h4 class="weui-media-box__title">{{item.nickname}}</h4>

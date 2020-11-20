@@ -72,7 +72,6 @@ Page({
               }
               arrayContainer.sort(compare("_id"));
               arrayContainer.reverse();
-              console.log(arrayContainer);
               that.setData({
                 events: arrayContainer
               })
@@ -350,7 +349,7 @@ Page({
                 db.collection("articles").add({
                   data:{
                     _id: _id,
-                    event__id: event__id,
+                    event__id: event__id ? event__id : 0,
                     author: author,
                     comment: [],
                     date: new Date(),

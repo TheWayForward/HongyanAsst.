@@ -113,8 +113,8 @@ Page({
 
   preview: function(e){
     wx.previewImage({
-      current: e.target.dataset.action,
-      urls: [e.target.dataset.action]
+      current: e.currentTarget.dataset.action,
+      urls: [e.currentTarget.dataset.action]
     })
   },
 

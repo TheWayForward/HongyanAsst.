@@ -8,6 +8,8 @@ Page({
     search_articles: [],
     showTop: true,
     isHide: true,
+    is_loading_hide: false,
+    loading_animation: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1587724074005&di=b3800cdcb75980d4dadda205e2db7329&imgtype=0&src=http%3A%2F%2F3580.wangid.com%2Ftemplate_xin%2Fmingxingbao%2Fimg%2Fmxb.gif",
     hnode: [{
       _id: "1",
       index_id: "1",
@@ -51,17 +53,27 @@ Page({
               };
               arrayContainer.sort(compare("_id"));
               arrayContainer.reverse();
-              console.log(arrayContainer);
               that.setData({
                 articles: arrayContainer,
                 search_articles: arrayContainer,
-                isHide: false
+                isHide: false,
               })
             }
           }
         })
       }
     });
+  },
+
+  onShow: function(){
+    this.onLoad();
+    var that = this;
+    function set_loading_hide_true(){
+      that.setData({
+        is_loading_hide: true
+      })
+    }
+    setTimeout(set_loading_hide_true,1500);
   },
 
   onGetUserInfo: function(e) {
@@ -107,7 +119,7 @@ Page({
           isAvailable: true,
           thumbnail: true,
           title:true,
-          type: true,
+          tag: true,
           view: true
         }).get({
           success:function(res){
@@ -161,77 +173,6 @@ Page({
       urls: [e.target.dataset.action]
     })
   },
-
-  //passing title and id
-  goto_article: function(e){
-    var isAvailable = e.currentTarget.dataset.availability;
-    if(!isAvailable)
-    {
-      wx.showToast({
-        title: 'title',
-        title: '审核中👀请耐心等待',
-        icon: 'none',
-        duration: 2000
-      })
-      return;
-    }
-    app.globalData.article_title = e.currentTarget.dataset.title;
-    app.globalData.article_id = e.currentTarget.dataset.id;
-    var title = e.currentTarget.dataset.title;
-    var id = e.currentTarget.dataset.id;
-    db.collection("articles").where({
-      title: title
-    }).get({
-      success: function(res){
-        var view = res.data[0].view + 1;
-        wx.cloud.callFunction({
-          name:'add_view',
-          data:{
-            taskId: id,
-            view: view
-           }
-           })
-          .then(res => {
-          })
-      }
-    })
-    wx.navigateTo({
-      url: '../../pages/article/article',
-    })
-  },
-
-  getUserInfo: function () {
-    var that = this
-    wx.login({
-      success: res => {
-      }
-    })
-    wx.getSetting({
-      success:function(res){
-        if (res.authSetting['scope.userInfo']){
-          wx.getUserInfo({
-            success: res => {
-            }
-          })
-        }
-        else{
-          
-          wx.showToast({
-            title: '⊗您拒绝了授权',
-            icon:'none'
-          })
-        }
-      }
-    }),
-
-    function _getUserInfo() {
-    wx.getUserInfo({
-      success: function (res) {
-        console.log(res.data);
-      }
-    })
-    }
-  },
   
   goTop: function(){
     wx.pageScrollTo({
@@ -266,5 +207,41 @@ Page({
         }
       }
     }
+  },
+
+  //passing title and id
+  goto_article: function(e){
+    var article = e.currentTarget.dataset.action;
+    if(!article.isAvailable)
+    {
+      wx.showToast({
+        title: 'title',
+        title: '审核中👀请耐心等待',
+        icon: 'none',
+        duration: 2000
+      })
+      return;
+    }
+    app.globalData.article = article;
+    db.collection("articles").where({
+      _id: article._id
+    }).get({
+      success: function(res){
+        wx.navigateTo({
+          url: '../../pages/article/article',
+        })
+        var view = res.data[0].view + 1;
+        wx.cloud.callFunction({
+          name:'add_view',
+          data:{
+            taskId: app.globalData.article._id,
+            view: view
+           }
+           })
+          .then(res => {
+          })
+      }
+    })
+    
   },
 })

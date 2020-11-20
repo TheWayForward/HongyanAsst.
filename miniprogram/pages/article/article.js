@@ -20,6 +20,7 @@ Page({
     comment: [],
     comment_array_1: [],
     comment_array_2: [],
+    event_show: {},
     avatar: "",
     nickname: '',
     details: '',
@@ -38,26 +39,42 @@ Page({
   onLoad: function (options) {
     var that = this;
     wx.getUserInfo({
-      complete: (res) => {
+      success: (res) => {
         that.setData({
           avatar: res.userInfo.avatarUrl,
           nickname: res.userInfo.nickName
         })
       },
+      fail: (res) => {
+        wx.showToast({
+          title: '您拒绝了授权',
+          icon: 'none',
+          duration: 2000,
+          success: function(res){
+            wx.navigateBack({
+              complete: (res) => {},
+            })
+          }
+        })
+      }
     })
-    article_title = app.globalData.article_title;
+    article_id = app.globalData.article._id;
     db.collection("articles").where({
-      title: article_title
+      _id: article_id
     }).field({
       _id: true,
       author: true,
       comment: true,
       date: true,
+      event__id: true,
       node: true,
+      openid: true,
+      tag: true,
       title: true,
       view: true
     }).get({
       success:function(res){
+        app.globalData.article = res.data[0];
         var comment = res.data[0].comment;
         var comment_temp_1 = [];
         var comment_temp_2 = [];
@@ -76,6 +93,34 @@ Page({
         wx.setNavigationBarTitle({
           title: res.data[0].title,
         })
+        console.log(app.globalData.article);
+        db.collection("events").where({
+          _id: res.data[0].event__id
+        }).field({
+          poster: true,
+          time: true,
+          name: true,
+          participants_count: true
+        }).get({
+          success: function(res){
+            var t = res.data[0].time;
+            res.data[0].date = t.getFullYear().toString() + "/" + (t.getMonth() + 1).toString() + "/" + t.getDate().toString();
+            that.setData({
+              event_show: res.data[0]
+            })
+          }
+        })
+        var t = res.data[0].date;
+        function padstart(time){
+          if(time.length == 1)
+          {
+            return ("0" + time);
+          }
+          else
+          {
+            return time;
+          }
+        }
         that.setData({
           _id: res.data[0]._id,
           title: res.data[0].title,
@@ -83,11 +128,12 @@ Page({
           comment: res.data[0].comment,
           comment_array_1: comment_temp_1,
           comment_array_2: comment_temp_2,
-          time: res.data[0].date.toString().slice(0,16),
+          time: t.getFullYear().toString() + "/" + (t.getMonth() + 1).toString() + "/" + t.getDate().toString() + " " + padstart(t.getHours().toString()) + ":" + padstart(t.getMinutes().toString()),
           hnode: tempnode,
           view: res.data[0].view,
           isHide: false,
         })
+        
       }
     });
     
@@ -111,6 +157,7 @@ Page({
    * Lifecycle function--Called when page hide
    */
   onHide: function () {
+    
   },
 
   /**
@@ -143,9 +190,72 @@ Page({
 
   },
 
+  preview: function(e){
+    wx.previewImage({
+      current: e.currentTarget.dataset.action,
+      urls: [e.currentTarget.dataset.action]
+    })
+  },
+
   input: function(e) {
     this.setData({
       details:e.detail.value
+    })
+  },
+
+  goto_event: function(e){
+    console.log(e.currentTarget.dataset.action);
+    var event_tapped = e.currentTarget.dataset.action;
+    db.collection("events").where({
+      _id: event_tapped._id
+    }).get({
+      success: function(res){
+        app.globalData.event = res.data[0];
+        var t = res.data[0].time;
+        app.globalData.event.date = t.getFullYear().toString() + "/" + (t.getMonth() + 1).toString() + "/" + t.getDate().toString();
+        function padstart(time){
+          if(time.length == 1)
+          {
+            return ("0" + time);
+          }
+          else
+          {
+            return time;
+          }
+        }
+        app.globalData.event.date_time = padstart(t.getHours().toString()) + ":" + padstart(t.getMinutes().toString());
+        app.globalData.event.precise_time = t.getTime();
+        //reformat day
+        switch(t.getDay()){
+          case(0):
+            app.globalData.event.day = "星期日";
+          break;
+          case(1):
+            app.globalData.event.day = "星期一";
+          break;
+          case(2):
+            app.globalData.event.day = "星期二";
+          break;
+          case(3):
+            app.globalData.event.day = "星期三";
+          break;
+          case(4):
+            app.globalData.event.day = "星期四";
+          break;
+          case(5):
+            app.globalData.event.day = "星期五";
+          break;
+          case(6):
+            app.globalData.event.day = "星期六";
+          break;
+          default:
+            app.globalData.event.day = "获取日期出错";
+          break;
+        }
+        wx.navigateTo({
+          url: '../../pages/eventlist/event/event',
+        })
+      }
     })
   },
 
@@ -240,7 +350,7 @@ Page({
             }).then(res => {
               wx.showModal({
                 cancelColor: 'grey',
-                title:'😄',
+                title:'提示',
                 content:'您的评论提交成功。',
                 confirmText:'继续阅读',
                 success: function (res) {

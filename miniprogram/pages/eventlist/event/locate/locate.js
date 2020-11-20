@@ -93,6 +93,13 @@ Page({
         })
       }
     })
+
+    //location data getter timer
+    timer = setInterval(() => {
+      this.get_datapoints().then(datapoints => {
+      })
+    }, 10000)
+
     //get the corresponded event
     var event = app.globalData.event;
     var participants = event.participants;
@@ -114,8 +121,11 @@ Page({
         if(((Date.now() - event.precise_time) / 86400000) >= 1)
         {
           this.setData({
-            tip_footer: "活动已结束"
+            tip_footer: "活动已结束",
+            speed: "--"
           })
+          //event expired, clear interval
+          clearInterval(timer);
         }
         is_signed = true;
         break;
@@ -215,11 +225,7 @@ Page({
       }
     })
 
-    //location data getter timer
-    timer = setInterval(() => {
-      this.get_datapoints().then(datapoints => {
-      })
-    }, 10000)
+    
 
     wx.showLoading({
       title: 'loading'

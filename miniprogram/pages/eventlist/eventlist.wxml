@@ -14,7 +14,7 @@
 			<view class="weui-panel__bd" style="border-bottom: 1px solid #F5F5F5;"  wx:for="{{coming_event}}">
 				<view class="weui-media-box weui-media-box_appmsg">
 					<view class="weui-cell__hd rounded-10 shadow" style="position: relative; margin-right: 10px;">
-						<image class="rounded-10 shadow" src="{{item.poster}}" mode="aspectFill" style="width: 115rpx; height: 115rpx; display: block;"></image>
+						<image class="rounded-10 shadow" src="{{item.poster}}" mode="aspectFill" style="width: 115rpx; height: 115rpx; display: block;" hidden="{{!is_loading_hide}}"></image>
 						<text class="weui-badge" style="position: absolute; top: -0.4em; right: -0.4em;" hidden="{{item.participants_count}}">{{item.participants_count}}</text>
 					</view>
 					<view class="weui-media-box__bd">

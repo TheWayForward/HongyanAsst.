@@ -1,3 +1,5 @@
+<view class="page">
+
 <view class="title" style="color:#333333">{{title}}</view>
 <view class="subalign">
   <view class="subtitle" style="color:#576B95">{{author}}</view>
@@ -15,10 +17,26 @@
 </view>
 
 <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot" hidden="{{isHide}}"></view>
+<view class="footer" hidden="{{isHide}}" wx:if="{{event_show._id}}">
+<view class="weui-footer">
+<view class="weui-footer__text">关联的活动</view>
+</view>
+<view class="weui-cells weui-cells_after-title" wx:if="{{event_show._id}}">
+      <view class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+        <view class="weui-cell__hd rounded-10 shadow" style="position: relative; margin-right: 10px;">
+						<image class="rounded-10 shadow" src="{{event_show.poster}}" mode="aspectFill" style="width: 115rpx; height: 115rpx; display: block;" data-action="{{event_show.poster}}" bindtap="preview"></image>
+						<text class="weui-badge" style="position: absolute; top: -0.4em; right: -0.4em;">{{event_show.participants_count}}</text>
+				</view>
+        <view class="weui-cell__bd" data-action="{{event_show}}" bindtap="goto_event">{{event_show.name}}</view>
+        <view class="weui-cell__ft weui-cell__ft_in-access" data-action="{{event_show}}" bindtap="goto_event">{{event_show.date}}</view>
+      </view>
+    </view>
+<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
 
+</view>
 
 <view class="comment_submission_align" hidden="{{isHide}}">
-  <image class="shadow" src="{{avatar}}" style="height:60rpx; width:60rpx; border-radius:10rpx"></image>
+  <image class="shadow" src="{{avatar}}" style="height:60rpx; width:60rpx; border-radius:10rpx" data-action="{{avatar}}" bindtap="preview"></image>
   <input style="background:#E9E9E9; width:490rpx; margin-left:15rpx; height:60rpx; border-radius:10rpx; font-size:25rpx; padding-left:20rpx; padding-right:20rpx" maxlength="200" bindinput="input" placeholder="您的评论通过审核后，将对所有用户可见"></input>
   <view class="shadow" style="height:60rpx; width:70rpx; background:#188FC8; margin-left:15rpx; border-radius:10rpx" hover-class="hv" hover-stay-time="30" bindtap="submit_comment">
     <image src="../../images/submitcomment.png" style="height:40rpx; width:45rpx; margin-top:11rpx; margin-left:14rpx"></image>
@@ -27,9 +45,9 @@
 
 <view class="comment_align" hidden="{{isHide}}">
 
-<view class="comment_container1" hidden="{{isHide}}">
+<view class="comment_container1">
 <view class="comment_inner_container1" wx:for="{{comment_array_2}}" wx:key="time" style="height:{{item.len}}rpx" hover-class="hv" hover-stay-time="30">
-<image src="{{item.avatar}}" class="avatar"></image>
+<image src="{{item.avatar}}" class="avatar" data-action="{{item.avatar}}" bindtap="preview"></image>
 <view class="comment_name">{{item.name}}</view>
 <view class="comment_time">{{item.time}}</view>
 <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot" style="width:300rpx; margin-top:20rpx"></view>
@@ -39,7 +57,7 @@
 
 <view class="comment_container1">
 <view class="comment_inner_container1" wx:for="{{comment_array_1}}" wx:key="time" style="height:{{item.len}}rpx" hover-class="hv" hover-stay-time="30">
-<image src="{{item.avatar}}" class="avatar"></image>
+<image src="{{item.avatar}}" class="avatar" data-action="{{item.avatar}}" bindtap="preview"></image>
 <view class="comment_name">{{item.name}}</view>
 <view class="comment_time">{{item.time}}</view>
 <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot" style="width:300rpx; margin-top:20rpx"></view>
@@ -48,5 +66,6 @@
 </view>
 
 </view>
-
 <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot" hidden="{{isHide}}"></view>
+</view>
+

@@ -44,6 +44,7 @@ page {
   border-radius: 10rpx;
   overflow: hidden;
   box-shadow: 0rpx 3rpx 2rpx 2rpx gainsboro;
+  position: relative;
 }
 
 .thumbnail_container{
@@ -68,6 +69,7 @@ page {
 
 .foot{
   display: flex;
+  bottom: 0;
 }
 
 .tag_block{

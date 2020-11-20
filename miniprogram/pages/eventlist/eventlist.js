@@ -9,6 +9,8 @@ Page({
    */
   data: {
     isHide: true,
+    is_loading_hide: false,
+    loading_animation: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1587724074005&di=b3800cdcb75980d4dadda205e2db7329&imgtype=0&src=http%3A%2F%2F3580.wangid.com%2Ftemplate_xin%2Fmingxingbao%2Fimg%2Fmxb.gif",
     hnode: [{
       _id: "1",
       index_id: "1",
@@ -138,11 +140,8 @@ Page({
 
   },
 
-  /**
-   * Lifecycle function--Called when page show
-   */
-  onShow: function () {
-    
+  onShow: function(){
+
   },
 
   /**

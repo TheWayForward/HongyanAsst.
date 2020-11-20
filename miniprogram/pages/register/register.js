@@ -388,6 +388,18 @@ Page({
           }
           else
           {
+            function padstart(time){
+              if(time.length == 1)
+              {
+                return ("0" + time);
+              }
+              else
+              {
+                return time;
+              }
+            }
+            var d = new Date();
+            user.birthday = d.getFullYear().toString() + "/" + (d.getMonth() + 1).toString() + "/" + d.getDay().toString();
             app.globalData.user = user;
             db.collection("user").add({
               data:{
@@ -402,7 +414,6 @@ Page({
                 email: user.email,
                 gender: user.gender,
                 is_manager: false,
-                login: true,
                 my_bicycle: user.my_bicycle,
                 my_event: [],
                 nickname: user.nickname,

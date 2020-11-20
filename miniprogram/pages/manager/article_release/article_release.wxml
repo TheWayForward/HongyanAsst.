@@ -1,4 +1,4 @@
-<view class="page" data-weui-theme="{{theme}}">
+<view class="page">
     <view class="page__bd">
 
         <view class="weui-cells__title">基本信息</view>
@@ -81,5 +81,8 @@
         <view class="weui-btn-area">
             <button class="weui-btn shadow" type="primary" bindtap="submit">发布资讯</button>
         </view>
+
+        <!--bottom line-->
+        <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
     </view>
 </view>
