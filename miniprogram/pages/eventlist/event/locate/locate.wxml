@@ -2,7 +2,7 @@
   <view class="map shadow rounded-20">
   <!--40.157306,116.288791, when onenet is down-->
     <map style="width: 100%; height: {{height}}px;" id="myMap" latitude="{{latitude}}" longitude="{{longitude}}" markers="{{markers}}" covers="{{covers}}" bindmarkertap="show_snapshots" show-location>
-        <view class="dynamic_data_group">
+        <view class="dynamic_data_group" hidden="{{is_dynamic_data_hide}}">
             <view class="dynamic_data shadow" hover-class="hv">
                 <view class="dynamic_data_title">速率：(kph)</view>
                 <view class="dynamic_data_detail">{{speed}}</view>
@@ -14,7 +14,7 @@
 		<view class="weui-panel weui-panel_access">
             <!--previewer title-->
 			<view class="weui-panel__hd">图片查看</view>
-			<view class="weui-panel__bd" hidden="{{isHide}}">
+			<view class="weui-panel__bd" hidden="{{is_image_previewer_hide}}">
 				<a class="weui-media-box weui-media-box_appmsg">
                     <!--snapshot-->
 					<view class="weui-media-box__hd rounded-10 shadow" style="overflow: hidden;" hover-class="hv">

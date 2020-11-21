@@ -13,7 +13,7 @@
 <view class="footer mt-20">
   <view class="weui-footer">
     <view class="weui-footer__links">
-      <navigator url="../../pages/official/official" class="weui-footer__link">开发日志</navigator>
+      <navigator url="../../pages/official/official" class="weui-footer__link">关于我们</navigator>
     </view>
     <view class="weui-footer__text" >Copyright © 北京邮电大学 鸿雁车协</view>
   </view>

@@ -58,7 +58,9 @@ Page({
     event: {},
     //gps device
     //image previewer shown or not
-    isHide: true,
+    is_image_previewer_hide: true,
+    //dynamic data hide or not
+    is_dynamic_data_hide: false,
     //all image previewer shown or not
     is_all_Hide: true,
     //uploader shown or not
@@ -72,7 +74,7 @@ Page({
     event_shots: [],
     event_id: null,
     //from user
-    tip: "留下精彩瞬间！",
+    tip: '点击"+"上传图片',
     tip_second: "当前活动：加载中",
     tip_footer: "加载中",
     files: [],
@@ -120,12 +122,12 @@ Page({
         })
         if(((Date.now() - event.precise_time) / 86400000) >= 1)
         {
+          clearInterval(timer);
           this.setData({
             tip_footer: "活动已结束",
-            speed: "--"
+            is_dynamic_data_hide: true
           })
           //event expired, clear interval
-          clearInterval(timer);
         }
         is_signed = true;
         break;
@@ -225,18 +227,16 @@ Page({
       }
     })
 
-    
-
     wx.showLoading({
       title: 'loading'
     })
 
     this.get_datapoints().then((datapoints) => {
-      wx.hideLoading()
+      wx.hideLoading();
     }).catch((err) => {
       wx.hideLoading()
-      console.error(err)
-      clearInterval(timer)
+      console.error(err);
+      clearInterval(timer);
     })
   },
 
@@ -251,8 +251,8 @@ Page({
           'api-key': that.data.event.device.apikey
         },
         success: (res) => {
-          const status = res.statusCode
-          const response = res.data
+          const status = res.statusCode;
+          const response = res.data;
           var speed = response.data.datastreams[0].datapoints;
           var longitude = response.data.datastreams[1].datapoints;
           var latitude = response.data.datastreams[2].datapoints;
@@ -359,7 +359,7 @@ Page({
     this.setData({
       markers: markers,
       current_marker: current_marker,
-      isHide: false
+      is_image_previewer_hide: false
     })
   },
 

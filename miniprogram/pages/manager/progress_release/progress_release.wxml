@@ -1,2 +1,44 @@
-<!--pages/manager/progress_release/progress_release.wxml-->
-<text>pages/manager/progress_release/progress_release.wxml</text>
+<view class="page">
+    <view class="page__bd">
+
+        <view class="weui-cells__title">版本与开发者</view>
+        <view class="weui-cells weui-cells_after-title">
+            <!--version title-->
+            <view class="weui-cell weui-cell_active">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">版本号</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" bindinput="input_title" placeholder="{{current_version}}" disabled="true" maxlength="10"/>
+                </view>                
+            </view>
+            <view class="weui-cell weui-cell_active weui-cell_select weui-cell_select-after">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">开发者</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <picker bindchange="bind_developer_change" range="{{developers_name}}" disabled="{{!is_developers_got}}">
+                        <view class="weui-select weui-select_in-select-after">{{current_developer_name}}</view>
+                    </picker>
+                </view>
+            </view>
+        </view> 
+            
+        <view class="weui-cells__title">内容</view>
+        <view class="weui-cells weui-cells_after-title rounded-20">
+            <view class="weui-cell weui-cell_active">
+                <view class="weui-cell__bd">
+                    <textarea class="weui-textarea" placeholder="填写特性更新、功能更新、问题修复等" style="height: 3.3em" bindinput="input_detail" maxlength="50"/>
+                    <view class="weui-textarea-counter">{{text_counter}}</view>
+                </view>
+            </view>
+        </view>
+
+        <view class="weui-btn-area">
+            <button class="weui-btn shadow" type="primary" bindtap="submit" disabled="{{!is_developers_got}}">发布日志</button>
+        </view>
+
+        <!--bottom line-->
+        <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
+    </view>
+</view>

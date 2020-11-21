@@ -77,9 +77,8 @@ Page({
   },
 
   goto_progress_release: function(){
-    wx.showToast({
-      title: '页面建设中！',
-      icon: 'none'
+    wx.navigateTo({
+      url: '../manager/progress_release/progress_release',
     })
   }
 })

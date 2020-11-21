@@ -6,6 +6,10 @@ Page({
   data: {
     //users
     u: [],
+    //user info container
+    dialog: false,
+    dialog_title: "",
+    dialog_detail: "",
     //progress
     p: [],
     //developers
@@ -34,13 +38,13 @@ Page({
 
     //loading developer info, rendered initially
     var batchTimes_developer;
-    var count_developer = db.collection("developer").count();
+    var count_developer = db.collection("developers").count();
     count_developer.then(function (result) {
       count_developer = result.total;
       batchTimes_developer = Math.ceil(count_developer / 20);
       var arrayContainer = [], x = 0;
       for (var i = 0; i < batchTimes_developer; i++) {
-        db.collection("developer").skip(i * 20).get({
+        db.collection("developers").skip(i * 20).get({
           success: function (res) {
             for (var j = 0; j < res.data.length; j++) {
               arrayContainer.push(res.data[j]);
@@ -144,7 +148,6 @@ Page({
           x++;
           if(x == batchTimes)
           {
-            console.log(arrayContainer);
             that.setData({
               u: arrayContainer
             }) 
@@ -179,10 +182,24 @@ Page({
     
   },
 
+  close: function() {
+    this.setData({
+        dialog: false,
+    });
+  },
+  
+  open: function(e) {
+    this.setData({
+        dialog: true,
+        dialog_title: e.currentTarget.dataset.nickname,
+        dialog_detail: e.currentTarget.dataset.detail
+    });
+  },
+
   preview: function (e) {
     wx.previewImage({
-      current: e.target.dataset.action,
-      urls: [e.target.dataset.action]
+      current: e.currentTarget.dataset.action,
+      urls: [e.currentTarget.dataset.action]
     })
   },
 })

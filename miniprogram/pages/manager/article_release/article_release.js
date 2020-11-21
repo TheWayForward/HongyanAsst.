@@ -27,7 +27,7 @@ Page({
     events: [],
     event_selected: {},
     //upload thumbnail
-    tip: "上传一张图片作为资讯封面",
+    tip: '点击"+"上传图片',
     is_upload_add_hide: false,
     files: [],
   },
@@ -314,11 +314,6 @@ Page({
       })
       return;
     }
-
-    console.log(this.data);
-    console.log(event__id);
-    console.log(date);
-    console.log(author);
 
     wx.showModal({
       title: '提示',

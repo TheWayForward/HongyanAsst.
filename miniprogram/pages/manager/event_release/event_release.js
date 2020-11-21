@@ -435,8 +435,8 @@ Page({
                     detail: detail,
                     device: {
                       _id: "1",
-                      apikey: "fhAS54e5X8HL5wcaB6ZW74oA3vo",
-                      devicesid: "644250210",
+                      apikey: "fhAS54e5X8HL5wcaB6ZW74oA3vo=",
+                      deviceid: "644250210",
                       name: "设备1"
                     },
                     difficulty: difficulty,

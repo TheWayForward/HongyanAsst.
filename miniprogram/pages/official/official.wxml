@@ -28,11 +28,27 @@
 					<view class="weui-media-box__hd">
 						<image class="weui-media-box__thumb rounded-10 shadow" data-action="{{item.avatar}}" src="{{item.avatar}}" mode="aspectFill" bindtap="preview" alt></image>
 					</view>
-					<view class="weui-media-box__bd">
+					<view class="weui-media-box__bd" data-nickname="{{item.nickname}}" data-detail="{{item.detail}}" bindtap="open">
 						<h4 class="weui-media-box__title">{{item.nickname}}</h4>
 						<view class="weui-media-box__desc">{{item.detail}}</view>
 					</view>
 				</a>
+				<view class="fadeIn" wx:if="{{dialog}}">
+        <view class="weui-mask" bindtap="close"></view>
+        <view class="weui-half-screen-dialog">
+            <view class="weui-half-screen-dialog__hd">
+                <view class="weui-half-screen-dialog__hd__side" bindtap="close">
+                    <a class="weui-icon-btn"><i class="weui-icon-close-thin"></i></a>
+                </view>
+                <view class="weui-half-screen-dialog__hd__main">
+                    <strong class="weui-half-screen-dialog__title">{{dialog_title}}</strong>
+                </view>
+            </view>
+            <view class="weui-half-screen-dialog__bd" style="padding-top:32px;height:50px;">
+                {{dialog_detail}}
+            </view>
+        </view>
+    	</view>
 			</view>
 			<view class="weui-panel__ft">
 				<a class="weui-cell weui-cell_active weui-cell_access weui-cell_link">
@@ -89,9 +105,9 @@
 	<view class="page__bd" style="overflow:hidden; border-radius:50rpx;">
 		<view class="weui-panel weui-panel_access">
 			<view class="weui-panel__bd">
-				<a class="weui-media-box weui-media-box_appmsg" wx:for="{{p}}">
+				<a class="weui-media-box weui-media-box_appmsg" wx:for="{{p}}" wx:if="{{item.contributor}}">
 					<view class="weui-media-box__hd">
-						<image class="weui-media-box__thumb rounded-10 shadow" src="{{item.avatar}}" alt></image>
+						<image class="weui-media-box__thumb rounded-10 shadow" src="{{item.avatar}}" mode="aspectFill" data-action="{{item.avatar}}" bindtap="preview" alt></image>
 					</view>
 					<view class="weui-media-box__bd">
 						<h4 class="weui-media-box__title">V{{item.version}}</h4>
