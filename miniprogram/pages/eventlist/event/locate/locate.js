@@ -416,7 +416,8 @@ Page({
         this.data.snapshots.realname = app.globalData.user.realname;
         this.data.snapshots.name = res.name;
         this.data.snapshots.location = db.Geo.Point(res.longitude,res.latitude);
-        this.data.snapshots.time = new Date();
+        var d = new Date();
+        this.data.snapshots.time = d.getTime();
         if(this.data.detail)
         {
           this.data.snapshots.detail = this.data.detail;
@@ -517,8 +518,7 @@ Page({
   //input image detail
   input: function(e){
     this.setData({
-      longitude: this.data.longitude,
-      latitude: this.data.latitude
+      detail: e.detail.value
     })
   },
 
@@ -567,10 +567,22 @@ Page({
         }
       })
     }
+    else
+    {
+      that.upload_image_final();
+    }
   },
   
   //sealing, or a bug jump from locate page to event page before the modal is shown
   upload_image_final: function(){
+    wx.showNavigationBarLoading({
+      complete: (res) => {},
+    })
+    wx.showToast({
+      title: '图片上传中',
+      icon: 'loading',
+      duration: 5000
+    })
     var that = this;
     const filePath = that.data.files[0];
     //const filePath = files[i];
@@ -618,13 +630,17 @@ Page({
             my_snapshot: that.data.event_shots,
           }
         }).then(res => {
-          console.log("updated successfully");
+          wx.hideNavigationBarLoading({
+            complete: (res) => {},
+          })
           wx.showToast({
             title: '上传成功',
-            duration: 3000
-          })
-          wx.reLaunch({
-            url: '../event',
+            duration: 3000,
+            success(res){
+              wx.reLaunch({
+                url: '../event',
+              })
+            }
           })
           })
       }

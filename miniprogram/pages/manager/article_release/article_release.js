@@ -172,6 +172,12 @@ Page({
     this.setData({
       is_bind_event_hide: e.detail.value
     })
+    if(!this.data.is_bind_event_hide)
+    {
+      this.setData({
+        event_selected: {}
+      })
+    }
   },
 
   select_event: function(e){
@@ -257,6 +263,8 @@ Page({
     var author = this.data.author;
     var tag = this.data.tag;
 
+    console.log(this.data);
+
     //checking
     if(!title)
     {
@@ -304,6 +312,18 @@ Page({
         icon: 'none'
       })
       return;
+    }
+
+    if(this.data.is_bind_event_hide)
+    {
+      if(!this.data.event_selected._id)
+      {
+        wx.showToast({
+          title: '请选择关联活动，或关闭"关联活动"开关',
+          icon: 'none'
+        })
+        return;
+      }
     }
 
     if(!this.data.files.length)

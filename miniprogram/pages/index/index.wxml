@@ -8,6 +8,7 @@
 <button bindtap="goto_user_profile" class="bg-white border">账户系统</button>
 <button bindtap="goto_eventlist" class="bg-white border">活动</button>
 <button bindtap="goto_manager" class="bg-white border">管理员</button>
+<button bindtap="goto_event_test" class="bg-white border">活动测试入口</button>
 
 <!--footer-->
 <view class="footer mt-20">

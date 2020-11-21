@@ -177,10 +177,21 @@ Page({
     }
   },
 
-  goto_chatroom: function(){
+  goto_event_test: function(){
     wx.showToast({
-      title: '页面建设中！',
-      icon: 'none'
+      title: '加载中',
+      icon: 'loading',
+      duration: 3000
+    })
+    db.collection("events").where({
+      _id: "5"
+    }).get({
+      success: function(res){
+        app.globalData.event = res.data[0];
+        wx.reLaunch({
+          url: '../eventlist/event/locate/locate',
+        })
+      }
     })
   }
 })
