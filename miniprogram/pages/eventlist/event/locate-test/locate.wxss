@@ -1,28 +1,28 @@
-.map {
+.map{
   margin: 10rpx;
   border: 1px dashed gray;
   overflow: hidden;
   border-radius: 20rpx;
 }
 
-/* .dynamic_data_group{
+.dynamic_data_group{
 
-} */
+}
 
-.dynamic_data {
+.dynamic_data{
   width: 175rpx;
   margin: 20rpx;
   padding: 10rpx;
   border: 2px solid gray;
   background: gainsboro;
   border-radius: 10rpx;
-
+  
 }
 
-.dynamic_data_title {
+.dynamic_data_title{
   font-weight: bold;
 }
 
-/* .dynamic_data_detail{
+.dynamic_data_detail{
 
-} */
+}

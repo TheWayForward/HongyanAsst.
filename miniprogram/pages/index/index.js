@@ -184,12 +184,12 @@ Page({
       duration: 3000
     })
     db.collection("events").where({
-      _id: "5"
+      _id: "7"
     }).get({
       success: function(res){
         app.globalData.event = res.data[0];
         wx.reLaunch({
-          url: '../eventlist/event/locate/locate',
+          url: '../eventlist/event/locate-test/locate',
         })
       }
     })
