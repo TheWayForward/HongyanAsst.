@@ -12,8 +12,7 @@ App({
     })
     var that = this;
     wx.login({
-      success: res => {
-      }
+      success: res => {}
     })
     wx.getSetting({
       success: res => {
@@ -22,7 +21,7 @@ App({
             success: res => {
               console.log(res.userInfo);
               this.globalData.userInfo = res.userInfo,
-              this.globalData.date = dayTime.slice(0,11)
+                this.globalData.date = dayTime.slice(0, 11)
             }
           })
         }
@@ -38,7 +37,7 @@ App({
     }
 
     wx.cloud.callFunction({
-      name:'get_openid',
+      name: 'get_openid',
     }).then(res => {
       var openid = res.result.openid;
       that.globalData.openid = openid;
@@ -46,18 +45,16 @@ App({
       db.collection("user").where({
         openid: openid
       }).get({
-        success: function(res){
+        success: function (res) {
           console.log(res.data[0]);
           //user exists
-          if(res.data[0])
-          {
+          if (res.data[0]) {
             that.globalData.user = res.data[0];
             //set true in order to view
             that.globalData.data_status = true;
           }
           //user do not exist
-          else
-          {
+          else {
             console.log("app: Do not exist");
             //set true in order to register
             that.globalData.data_status = true;
@@ -69,7 +66,7 @@ App({
     this.globalData = {}
   },
 
-  globalData:{
+  globalData: {
     //device
     height: 0,
     //login status
