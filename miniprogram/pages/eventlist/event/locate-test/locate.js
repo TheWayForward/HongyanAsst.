@@ -115,7 +115,7 @@ Page({
         //fill the basic event name info and decide whether the uploader should be shown or not
         this.setData({
           event: event,
-          all_snapshots_tip: "查看" + event.name + "的全部图片",
+          all_snapshots_tip: "查看 " + event.name + " 的全部图片",
           tip_second: "当前活动：" + event.name,
           is_uploader_hide: !can_upload,
           tip_footer: "请在活动开始前12小时到活动结束后1天内上传图片"
@@ -137,7 +137,7 @@ Page({
       {
         this.setData({
           event: event,
-          all_snapshots_tip: "查看" + event.name + "的全部图片",
+          all_snapshots_tip: "查看 " + event.name + " 的全部图片",
           is_uploader_hide: true,
           tip_footer: "未报名活动，无法上传图片"
         })
@@ -386,7 +386,7 @@ Page({
     {
       this.setData({
         is_all_Hide: true,
-        all_snapshots_tip: "查看" + this.data.event.name +"全部图片"
+        all_snapshots_tip: "查看 " + this.data.event.name +" 的全部图片"
       })
     }
   },
