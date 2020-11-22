@@ -91,7 +91,7 @@ Page({
     wx.getSystemInfo({
       success(res){
         that.setData({
-          height: res.windowHeight * 0.82
+          height: res.windowHeight * 0.5
         })
       }
     })
@@ -262,22 +262,21 @@ Page({
           //encrypt to gcj to fit Tencent map
           const encrypt_res = wgs84togcj02(current_la, current_lo);
           that.setData({
-            speed: current_sp,
-            longitude: encrypt_res.longitude,
-            latitude:  encrypt_res.latitude,
+            // speed: current_sp,
+            // longitude: encrypt_res.longitude,
+            // latitude:  encrypt_res.latitude,
+            speed: 0,
+            longitude: 116.294323,
+            latitude: 40.262990,
           })
           console.log("[onenet][speed]: " + that.data.speed);
           console.log("[onenet][latitude]: " + that.data.latitude);
           console.log("[onenet][longitude]: " + that.data.longitude);
-          if (status !== 200) 
-          {
-            reject(res.data)
-            return ;
-          }
-          if (response.errno !== 0) 
-          {
+          if (status !== 200) {
+            reject(res.data); return;
+          } if (response.errno !== 0) {
             reject(response.error)
-            return ;
+            return;
           }
           if (response.data.datastreams.length === 0) 
           {
@@ -547,8 +546,7 @@ Page({
       return;
     }
     //check if the detail of snapshot is provided
-    if(!this.data.detail)
-    {
+    if(!this.data.detail) {
       wx.showModal({
         title:'提示',
         content:'是否填写图片备注？',
@@ -556,25 +554,16 @@ Page({
         cancelText: '否',
         confirmText: '是',
         complete: function(e){
-          if(e.cancel)
-          {
+          if(e.cancel) {
             that.upload_image_final();
-          }
-          else
-          {
-            return;
-          }
+          } else return;
         }
       })
-    }
-    else
-    {
-      that.upload_image_final();
-    }
+    } else {that.upload_image_final();}
   },
   
   //sealing, or a bug jump from locate page to event page before the modal is shown
-  upload_image_final: function(){
+  upload_image_final: function() {
     wx.showNavigationBarLoading({
       complete: (res) => {},
     })
@@ -598,14 +587,9 @@ Page({
         })
         var snapshots = that.data.snapshots;
         //regenerate detail
-        if(that.data.detail != "暂无描述" && that.data.detail != "")
-        {
+        if(that.data.detail != "暂无描述" && that.data.detail != "") {
           snapshots.detail = that.data.detail;
-        }
-        else
-        {
-          snapshots.detail = "暂无描述";
-        }
+        } else {snapshots.detail = "暂无描述";}
         console.log(snapshots);
         //add url field
         snapshots.url = that.data.files_cloud_url;

@@ -4,6 +4,7 @@
     "pages/eventlist/eventlist",
     "pages/eventlist/event/event",
     "pages/eventlist/event/locate/locate",
+    "pages/eventlist/event/locate-test/locate",
     "pages/manager/manager",
     "pages/manager/event_release/event_release",
     "pages/manager/article_release/article_release",
