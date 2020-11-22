@@ -60,7 +60,6 @@ Page({
    * Lifecycle function--Called when page is initially rendered
    */
   onReady: function () {
-    console.log(app.globalData.date);
     var info = this.data.info_holder;
     if(info)
     {
@@ -111,6 +110,13 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+
+  preview: function(e){
+    wx.previewImage({
+      current: e.currentTarget.dataset.action,
+      urls: [e.currentTarget.dataset.action]
+    })
   },
 
   //input

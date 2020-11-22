@@ -70,7 +70,7 @@ Page({
                 arrayContainer[k].time = arrayContainer[k].time.getTime();
                 arrayContainer[k].background = "white";
               }
-              arrayContainer.sort(compare("_id"));
+              arrayContainer.sort(compare("time"));
               arrayContainer.reverse();
               that.setData({
                 events: arrayContainer

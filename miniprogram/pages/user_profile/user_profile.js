@@ -31,14 +31,54 @@ Page({
         success: function(res){
           if(res.cancel)
           {
-            wx.navigateTo({
-              url: '../../pages/index/index',
+            wx.reLaunch({
+              url: '../index/index',
             })
           }
           else
           {
-            wx.navigateTo({
-              url: '../../pages/register/register',
+            wx.openSetting({
+              complete: (res) => {
+                console.log(res.authSetting);
+                if(!res.authSetting["scope.userInfo"] || !res.authSetting["scope.userLocation"])
+                {
+                  wx.showToast({
+                    title: '为保证良好体验，请授权小程序使用您的基本信息与位置信息',
+                    icon: 'none',
+                    duration: 3000,
+                    success: function(){
+                      function relaunch(){
+                        wx.reLaunch({
+                          url: '../user_profile/user_profile',
+                        })
+                      }
+                      setTimeout(relaunch,3000);
+                    }
+                  })
+                }
+                else
+                {
+                  function relaunch(){
+                    if(!app.globalData.userInfo)
+                    {
+                      wx.reLaunch({
+                      url: '../index/index',
+                      })
+                    }
+                    else
+                    {
+                      wx.reLaunch({
+                        url: '../register/register',
+                      })
+                    }
+                  }
+                  setTimeout(relaunch,3000);
+                  wx.showToast({
+                    title: '授权成功',
+                    duration: 3000
+                  })
+                }
+              },
             })
           }
         }
@@ -65,15 +105,7 @@ Page({
    * Lifecycle function--Called when page show
    */
   onShow: function () {
-    //if the user came back from the register page
-    if(app.globalData.last_page_holder == "register")
-    {
-      app.globalData.last_page_holder = "";
-      // jump to index
-      wx.navigateTo({
-        url: '../../pages/index/index',
-      })
-    }
+    
   },
 
   /**

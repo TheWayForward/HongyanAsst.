@@ -16,8 +16,7 @@
     "pages/article/article",
     "pages/official/official",
     "pages/im/im",
-    "pages/im/room/room",
-    "pages/eventlist/event/locate-test/locate"
+    "pages/im/room/room"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",
@@ -34,6 +33,9 @@
   "permission": {
     "scope.userLocation": {
       "desc": "获取活动签到位置"
+    },
+    "scope.userInfo": {
+      "desc": "获取用户基本信息"
     }
   }
 }

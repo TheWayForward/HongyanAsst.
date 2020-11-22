@@ -10,7 +10,7 @@ var wgs84togcj02 = function(lat, log) {
   //is position off China mainland
   if (log < 72.004 || log > 137.8347 || lat < 0.8293 || lat > 55.8271) {
     return {
-      latitude:  lat,
+      latitude: lat,
       longitude: log,
     }
   } else {
@@ -228,7 +228,7 @@ Page({
     })
 
     wx.showLoading({
-      title: 'loading'
+      title: '加载中'
     })
 
     this.get_datapoints().then((datapoints) => {

@@ -204,6 +204,28 @@ Page({
   },
 
   goto_event: function(e){
+    if(!app.globalData.user)
+    {
+      wx.showModal({
+        title: "提示",
+        content: "请在注册后参加活动。",
+        cancelText: "取消",
+        confirmText: "立即注册",
+        success(res){
+          if(res.cancel)
+          {
+            return;
+          }
+          else
+          {
+            wx.reLaunch({
+              url: "../user_profile/user_profile",
+            })
+          }
+        }
+      })
+      return;
+    }
     console.log(e.currentTarget.dataset.action);
     var event_tapped = e.currentTarget.dataset.action;
     db.collection("events").where({

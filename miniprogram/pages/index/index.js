@@ -18,6 +18,11 @@ Page({
   },
 
   onLoad: function() {
+    wx.getUserInfo({
+      complete: (res) => {
+        app.globalData.userInfo = res.userInfo;
+      },
+    })
   },
 
   onShow: function(){
@@ -178,6 +183,14 @@ Page({
   },
 
   goto_event_test: function(){
+    if(!app.globalData.user)
+    {
+      wx.showToast({
+        title: '暂未获取到用户信息',
+        icon: "none"
+      })
+      return;
+    }
     wx.showToast({
       title: '加载中',
       icon: 'loading',
@@ -188,8 +201,10 @@ Page({
     }).get({
       success: function(res){
         app.globalData.event = res.data[0];
+        //test valid forever
+        app.globalData.event.precise_time = Date.now();
         wx.reLaunch({
-          url: '../eventlist/event/locate-test/locate',
+          url: '../eventlist/event/locate/locate',
         })
       }
     })

@@ -8,7 +8,8 @@ App({
 
   onLaunch: function () {
     wx.cloud.init({
-      env: 'hongyancrew-pvmj1'
+      env: 'hongyancrew-pvmj1',
+      traceUser:true
     })
     var that = this;
     wx.login({
