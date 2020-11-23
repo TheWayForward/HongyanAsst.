@@ -33,6 +33,11 @@ Page({
     location_return: null,
     difficulty: "拖动选择",
     detail: "",
+    //device
+    devices: [],
+    devices_name:[],
+    event_device: {},
+    event_device_name: "点击选择设备",
     //event additional info
     is_upload_add_hide: false,
     files: [],
@@ -48,6 +53,43 @@ Page({
       user: app.globalData.user,
       event_date_start: this.data.current_date.year + "-" + this.data.current_date.month + "-" + (this.data.current_date.date + 1),
       event_date_end: (this.data.current_date.year + 1) + "-" + this.data.current_date.month + "-" + this.data.current_date.date
+    })
+    var that = this;
+    var batchTimes;
+    var count = db.collection("events").count();
+    count.then(function(result){
+      count = result.total;
+      batchTimes = Math.ceil(count/20);
+      var arrayContainer = [],x = 0;
+      for(var i = 0; i < batchTimes; i++){
+        db.collection("devices").skip(i * 20).get({
+          success: function(res){
+            for(var j = 0; j < res.data.length; j++){
+              arrayContainer.push(res.data[j]);
+            }
+            x++;
+            if(x == batchTimes)
+            {
+              function compare(p){
+                return function(m,n){
+                  var a = m[p];
+                  var b = n[p];
+                  return a-b;
+                }
+              };
+              arrayContainer.sort(compare("_id"));
+              var devices_name = [];
+              for(var i = 0; i < arrayContainer.length; i++){
+                devices_name.push(arrayContainer[i].name);
+              }
+              that.setData({
+                devices: arrayContainer,
+                devices_name: devices_name
+              })
+            }
+          }
+        })
+      }
     })
   },
 
@@ -191,6 +233,14 @@ Page({
     }
   },
 
+  //choose a device
+  bind_event_device_change: function(e){
+    this.setData({
+      event_device: this.data.devices[e.detail.value],
+      event_device_name: this.data.devices[e.detail.value].name
+    })
+  },
+
   //input detail and change text counter
   input_detail: function(e){
     var count = e.detail.value;
@@ -280,6 +330,7 @@ Page({
     var distance = this.data.distance;
     var difficulty = this.data.difficulty;
     var detail = this.data.detail;
+    var device = this.data.event_device;
     var name_start = this.data.name_start;
     var name_return = this.data.name_return;
     var location_start = this.data.location_start;
@@ -305,25 +356,6 @@ Page({
         })
         return;
       }
-      var duplicate = false;
-      db.collection("events").where({
-        name: name
-      }).field({
-        _id: true,
-        name: true
-      }).get({
-        success: function(res){
-          if(res.data[0])
-          {
-            wx.showToast({
-              title: '与现有活动重名',
-              icon: 'none'
-            })
-            duplicate = true
-          }
-        }
-      })
-      if(duplicate) return;
     }
 
     //date
@@ -376,6 +408,17 @@ Page({
       return;
     }
 
+    //device
+    if(!this.data.event_device.name)
+    {
+      wx.showToast({
+        title: '定位设备未选择',
+        icon: 'none'
+      })
+      return;
+      
+    }
+
     //detail
     if(!this.data.detail)
     {
@@ -398,7 +441,7 @@ Page({
     var that = this;
     wx.showModal({
       title: '提示',
-      content: '确认发布活动"' + name + '"吗？',
+      content: '发布活动"' + name + '"吗？请务必确认信息无误。',
       success: function(res){
         if(res.cancel)
         {
@@ -413,7 +456,7 @@ Page({
           time.setMonth(Number(that.data.event_date.slice(5,7)) - 1);
           time.setDate(Number(that.data.event_date.slice(8,10)));
           time.setHours(Number(that.data.event_time.slice(0,2)));
-          time.setMinutes(Number(that.data.event_date.slice(2,4)));
+          time.setMinutes(Number(that.data.event_time.slice(3,5)));
           //uploadfile and complete
           const filePath = files[0];
           const cloudPath =  `events/${name}/poster/${app.globalData.openid}_${Math.random()}_${Date.now()}.${filePath.match(/\.(\w+)$/)[1]}`;
@@ -441,6 +484,7 @@ Page({
                     },
                     difficulty: difficulty,
                     distance: distance,
+                    device: device,
                     leader: app.globalData.user.realname,
                     leader_openid: app.globalData.user.openid,
                     location_return: location_return,
@@ -471,6 +515,9 @@ Page({
                   is_signed: true
                 });
                 console.log(app.globalData.user.my_event);
+                wx.showLoading({
+                  title: '发布中',
+                })
                 wx.cloud.callFunction(
                 {
                   name: "update_user_event",
@@ -480,12 +527,17 @@ Page({
                   }
                 }
                 ).then(res => {
+                  wx.hideLoading({
+                    complete: (res) => {},
+                  })
                   wx.showToast({
                     title: '发布成功',
                     duration: 3000,
-                  })
-                  wx.reLaunch({
-                    url: '../../index/index',
+                    success: function(res){
+                      wx.reLaunch({
+                        url: '../../index/index',
+                      })
+                    }
                   })
                 })
               })

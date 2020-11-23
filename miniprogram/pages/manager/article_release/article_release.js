@@ -26,6 +26,7 @@ Page({
     is_bind_event_hide: false,
     events: [],
     event_selected: {},
+    disabled: true,
     //upload thumbnail
     tip: '点击"+"上传图片',
     is_upload_add_hide: false,
@@ -36,6 +37,9 @@ Page({
    * Lifecycle function--Called when page load
    */
   onLoad: function (options) {
+    wx.showLoading({
+      title: '获取关联活动中',
+    })
     var that = this;
     var batchTimes;
     var count = db.collection("events").count();
@@ -50,7 +54,7 @@ Page({
           poster: true,
           time: true
         }).get({
-          success:function(res){
+          success: function(res){
             for(var j = 0; j < res.data.length; j++){
               arrayContainer.push(res.data[j]);
             }
@@ -73,7 +77,11 @@ Page({
               arrayContainer.sort(compare("time"));
               arrayContainer.reverse();
               that.setData({
-                events: arrayContainer
+                events: arrayContainer,
+                disabled: false
+              })
+              wx.hideLoading({
+                complete: (res) => {},
               })
             }
           }
@@ -284,25 +292,6 @@ Page({
         })
         return;
       }
-      var duplicate = false;
-      db.collection("articles").where({
-        title: title
-      }).field({
-        _id: true,
-        title: true
-      }).get({
-        success: function(res){
-          if(res.data[0])
-          {
-            wx.showToast({
-              title: '与现有资讯重名',
-              icon: 'none'
-            })
-            duplicate = true
-          }
-        }
-      })
-      if(duplicate) return;
     }
 
     if(tag == "请选择资讯类别标签")

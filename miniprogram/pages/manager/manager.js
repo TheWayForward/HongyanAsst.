@@ -80,5 +80,11 @@ Page({
     wx.navigateTo({
       url: '../manager/progress_release/progress_release',
     })
+  },
+
+  goto_device_add: function(){
+    wx.navigateTo({
+      url: '../manager/device_manage/device_manage',
+    })
   }
 })

@@ -22,13 +22,16 @@ Page({
     is_sign_up_hide: false,
     //button
     is_locate_permissible: false,
-    button_text: "加载中",
+    button_text:"加载中",
   },
 
   /**
    * Lifecycle function--Called when page load
    */
   onLoad: function (options) {
+    wx.showLoading({
+      title: '加载中',
+    })
     var that = this;
     //get the event tapped
     var event = app.globalData.event;
@@ -40,7 +43,7 @@ Page({
       snapshots_count: true,
       device: true
     }).get({
-      success: function (res) {
+      success: function(res){
         event.participants = res.data[0].participants;
         event.leader_openid = res.data[0].leader_openid;
         event.snapshots_count = res.data[0].snapshots_count;
@@ -51,17 +54,19 @@ Page({
           participants: res.data[0].participants,
           leader_openid: res.data[0].leader_openid
         })
-        for (var i = 0; i < res.data[0].participants.length; i++) {
+        for(var i = 0; i < res.data[0].participants.length; i++){
           //set default color as white
           event.participants[i].background = "#FFFFFF";
-          if (app.globalData.openid == res.data[0].participants[i].openid) {
+          if(app.globalData.openid == res.data[0].participants[i].openid)
+          {
             //hi-light your self
             event.participants[i].background = "#F6F6F6"
             that.setData({
               is_sign_up_hide: true
             })
           }
-          if (res.data[0].leader_openid == res.data[0].participants[i].openid) {
+          if(res.data[0].leader_openid == res.data[0].participants[i].openid)
+          {
             //bold the leader
             event.participants[i].bold = "bold";
           }
@@ -70,62 +75,73 @@ Page({
           participants: event.participants
         })
         var now = new Date();
-        if ((event.time - now) / 86400000 < 0.041) {
+        if((event.time - now) / 86400000 < 0.041)
+        {
           //can't sign or un-sign after the hr before the event starts
           that.setData({
             can_sign: false
           })
         }
-        if ((event.time - now) / 86400000 < 1) {
+        if((event.time - now) / 86400000 < 1)
+        {
           //can enter locate page
           that.setData({
             is_locate_permissible: true
           })
-          if (event.snapshots_count) {
+          if(event.snapshots_count)
+          {
             //totality
             that.setData({
-              button_text: "动态追踪" + "(" + event.snapshots_count + ")"
-            })
-          } else {
-            //no snapshots yet
-            that.setData({
-              button_text: "动态追踪(暂无)"
+            button_text: "动态追踪" + "(" + event.snapshots_count + ")"
             })
           }
-        } else {
+          else
+          {
+            //no snapshots yet
+            that.setData({
+            button_text: "动态追踪(暂无)"
+            })
+          }
+        }
+        else
+        {
           that.setData({
             //post time, cannot enter locate page
             is_locate_permissible: false,
             button_text: "活动尚未开始"
           })
         }
+        wx.hideLoading({
+          complete: (res) => {},
+        })
       }
     })
     //giving stars
     var difficulty = "";
-    switch (event.difficulty) {
-      case (1):
+    switch(event.difficulty){
+      case(1):
         difficulty = "★☆☆☆☆";
-        break;
-      case (2):
+      break;
+      case(2):
         difficulty = "★★☆☆☆";
-        break;
-      case (3):
+      break;
+      case(3):
         difficulty = "★★★☆☆";
-        break;
-      case (4):
+      break;
+      case(4):
         difficulty = "★★★★☆";
-        break;
-      case (5):
+      break;
+      case(5):
         difficulty = "★★★★★";
-        break;
+      break;
       default:
         difficulty = "警告：未知难度！";
-        break;
+      break;
     }
     var date = event.date + " (" + event.day + ")";
     //if no participant, show "no participants yet"
-    if (!event.participants_count) {
+    if(!event.participants_count)
+    {
       this.setData({
         tip: "暂无"
       })
@@ -188,7 +204,7 @@ Page({
   },
 
   //preview image
-  preview: function (e) {
+  preview: function(e){
     wx.previewImage({
       current: e.currentTarget.dataset.action,
       urls: [e.currentTarget.dataset.action]
@@ -196,14 +212,17 @@ Page({
   },
 
   //show more participants
-  show_participants: function () {
-    if (!this.data.event.participants_count) return;
-    if (this.data.isHide) {
+  show_participants: function(){
+    if(!this.data.event.participants_count) return;
+    if(this.data.isHide)
+    {
       this.setData({
         isHide: false,
         tip: "收起"
       })
-    } else {
+    }
+    else
+    {
       this.setData({
         isHide: true,
         tip: "点击展开"
@@ -212,7 +231,7 @@ Page({
   },
 
   //sign up for the event
-  sign_up: function () {
+  sign_up: function(){
     var that = this;
     wx.showModal({
       title: '提示',
@@ -220,10 +239,13 @@ Page({
       cancelColor: 'gray',
       cancelText: '取消',
       confirmText: '确定',
-      success: function (res) {
-        if (res.cancel) {
+      success: function(res){
+        if(res.cancel)
+        {
           //cancelled
-        } else {
+        }
+        else
+        {
           //get sign-up necessities from globalData
           var participant = {};
           participant.avatar = app.globalData.user.avatar;
@@ -246,23 +268,25 @@ Page({
           console.log(app.globalData.user.my_event);
           wx.cloud.callFunction({
             name: 'update_participants',
-            data: {
-              taskId: that.data.event._id,
-              my_participants: that.data.participants,
-              my_participants_count: that.data.participants.length
-            }
+              data: {
+                taskId: that.data.event._id,
+                my_participants: that.data.participants,
+                my_participants_count: that.data.participants.length
+              }
           })
-          wx.cloud.callFunction({
-            name: "update_user_event",
-            data: {
-              openid: app.globalData.user.openid,
-              my_event: app.globalData.user.my_event
+          wx.cloud.callFunction(
+            {
+              name: "update_user_event",
+              data: {
+                openid: app.globalData.user.openid,
+                my_event: app.globalData.user.my_event
+              }
             }
-          }).then(res => {
+          ).then(res => {
             wx.showToast({
               title: '报名成功',
-              duration: 3000,
-              success: function (res) {
+              duration:3000,
+              success: function(res){
                 wx.reLaunch({
                   url: '../eventlist'
                 })
@@ -275,7 +299,7 @@ Page({
   },
 
   //unsign this event
-  un_sign_up: function () {
+  un_sign_up: function(){
     var that = this;
     wx.showModal({
       title: '提示',
@@ -285,39 +309,45 @@ Page({
       //warning color
       confirmColor: '#FA5159',
       confirmText: '确定',
-      success: function (res) {
-        if (res.cancel) {
+      success: function(res){
+        if(res.cancel)
+        {
           //cancelled
-        } else {
+        }
+        else
+        {
           //matching
           //var event = that.data.event;
           var index_event = null;
           var participants = that.data.participants;
           var index_participant = null;
-          for (var i = 0; i < participants.length; i++) {
+          for(var i = 0; i < participants.length; i++){
             var p = participants[i];
-            if (app.globalData.openid == that.data.leader_openid) {
+            if(app.globalData.openid == that.data.leader_openid)
+            {
               wx.showToast({
                 title: '您是领骑，不能取消报名！',
                 icon: 'none'
               })
               return;
             }
-            if (app.globalData.openid == p.openid) {
+            if(app.globalData.openid == p.openid)
+            {
               console.log("participant found");
               index_participant = i;
             }
           }
           console.log(participants);
-          participants.splice(index_participant, 1);
-          for (var i = 0; i < app.globalData.user.my_event.length; i++) {
+          participants.splice(index_participant,1);
+          for(var i = 0; i < app.globalData.user.my_event.length; i++){
             var e = app.globalData.user.my_event[i];
-            if (e._id == that.data.event._id) {
+            if(e._id == that.data.event._id)
+            {
               console.log("event found");
               index_event = i;
             }
           }
-          app.globalData.user.my_event.splice(index_event, 1);
+          app.globalData.user.my_event.splice(index_event,1);
           console.log(app.globalData.user.my_event);
           wx.cloud.callFunction({
             name: "update_user_event",
@@ -338,7 +368,7 @@ Page({
               title: '已取消报名',
               icon: 'none',
               duration: 3000,
-              success: function (res) {
+              success: function(res){
                 wx.reLaunch({
                   url: '../eventlist'
                 })
@@ -351,7 +381,7 @@ Page({
   },
 
   //goto event tracking page
-  goto_locate: function () {
+  goto_locate: function(){
     wx.navigateTo({
       url: '../event/locate/locate',
     })

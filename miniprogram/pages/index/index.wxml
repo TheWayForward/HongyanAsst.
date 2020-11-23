@@ -1,21 +1,34 @@
+<view class="page">
+
 <view style="text-align:center;">
   <view>{{en}}</view>
   <view>{{ch}}</view>
 </view>
 
-<button bindtap="goto_articlelist" class="bg-white border">文章评论</button>
-<button bindtap="goto_gallery" class="bg-white border">车协照相馆</button>
-<button bindtap="goto_user_profile" class="bg-white border">账户系统</button>
-<button bindtap="goto_eventlist" class="bg-white border">活动</button>
-<button bindtap="goto_manager" class="bg-white border">管理员</button>
-<button bindtap="goto_event_test" class="bg-white border">活动测试入口</button>
+<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
+
+<view class="btn_align">
+  <view bindtap="goto_articlelist" class="btn_normal">资讯评论</view>
+  <view bindtap="goto_gallery" class="btn_normal">车协相册</view>
+  <view bindtap="goto_user_profile" class="btn_normal">我的车协</view>
+  <view bindtap="goto_eventlist" class="btn_normal">骑行活动</view>
+</view>
+
+<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
+
+<view class="btn_align">
+  <view bindtap="goto_manager" class="btn_long">管理员</view>
+  <view bindtap="goto_event_test" class="btn_long">活动测试</view>
+</view>
 
 <!--footer-->
-<view class="footer mt-20">
+<view class="footer mt-20" style="position:fixed; bottom: 30rpx; text-align: center; left: 0; right: 0; margin:0 auto;">
   <view class="weui-footer">
     <view class="weui-footer__links">
       <navigator url="../../pages/official/official" class="weui-footer__link">关于我们</navigator>
     </view>
     <view class="weui-footer__text" >Copyright © 北京邮电大学 鸿雁车协</view>
   </view>
+</view>
+
 </view>

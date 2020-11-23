@@ -4,13 +4,9 @@ var timer;
 var timer_snapshotgetter;
 var files_cloud_url = [];
 //Tencent map uses the gcj02 coordinate offset
-var latiToCanvas = function (lat) {
-  return lat + 0.0060;
-};
-var logiToCanvas = function (log) {
-  return log + 0.0065;
-};
-var wgs84togcj02 = function (lat, log) {
+var latiToCanvas = function(lat) {return lat + 0.0060;};
+var logiToCanvas = function(log) {return log + 0.0065;};
+var wgs84togcj02 = function(lat, log) {
   //is position off China mainland
   if (log < 72.004 || log > 137.8347 || lat < 0.8293 || lat > 55.8271) {
     return {
@@ -23,21 +19,19 @@ var wgs84togcj02 = function (lat, log) {
     const a = 6378245.0;
     //eccentricity
     const ee = 0.00669342162296594323;
-
+    
     var transformLat = function (x, y) {
       var ret = -100.0 + 2.0 * x + 3.0 * y + 0.2 * y * y + 0.1 * x * y + 0.2 * Math.sqrt(Math.abs(x));
       ret += (20.0 * Math.sin(6.0 * x * Pi) + 20.0 * Math.sin(2.0 * x * Pi)) * 2.0 / 3.0;
       ret += (20.0 * Math.sin(y * Pi) + 40.0 * Math.sin(y / 3.0 * Pi)) * 2.0 / 3.0;
       ret += (160.0 * Math.sin(y / 12.0 * Pi) + 320 * Math.sin(y * Pi / 30.0)) * 2.0 / 3.0;
-      return ret;
-    }
+      return ret; }
     var transformLog = function (x, y) {
       var ret = 300.0 + x + 2.0 * y + 0.1 * x * x + 0.1 * x * y + 0.1 * Math.sqrt(Math.abs(x));
       ret += (20.0 * Math.sin(6.0 * x * Pi) + 20.0 * Math.sin(2.0 * x * Pi)) * 2.0 / 3.0;
       ret += (20.0 * Math.sin(x * Pi) + 40.0 * Math.sin(x / 3.0 * Pi)) * 2.0 / 3.0;
       ret += (150.0 * Math.sin(x / 12.0 * Pi) + 300.0 * Math.sin(x / 30.0 * Pi)) * 2.0 / 3.0;
-      return ret;
-    }
+      return ret; }
     var delta = function (lat, lon) {
       var dLat = transformLat(lon - 105.0, lat - 35.0);
       var dLon = transformLog(lon - 105.0, lat - 35.0);
@@ -47,14 +41,11 @@ var wgs84togcj02 = function (lat, log) {
       var sqrtMagic = Math.sqrt(magic);
       dLat = (dLat * 180.0) / ((a * (1 - ee)) / (magic * sqrtMagic) * Pi);
       dLon = (dLon * 180.0) / (a / sqrtMagic * Math.cos(radLat) * Pi);
-      return {
-        'lat': dLat,
-        'lon': dLon
-      };
+      return {'lat': dLat, 'lon': dLon};
     }
     const d = delta(lat, log);
     return {
-      latitude: lat + d.lat,
+      latitude:  lat + d.lat,
       longitude: log + d.lon,
     }
   }
@@ -74,6 +65,8 @@ Page({
     is_all_Hide: true,
     //uploader shown or not
     is_uploader_hide: true,
+    //add shown or not
+    is_upload_add_hide: false,
     height: 0,
     latitude: 0,
     longitude: 0,
@@ -84,7 +77,7 @@ Page({
     event_id: null,
     //from user
     tip: '点击"+"上传图片',
-    tip_second: "当前活动：加载中",
+    tip_second: '',
     tip_footer: "加载中",
     files: [],
     files_cloud_url: [],
@@ -96,38 +89,43 @@ Page({
   },
 
   onLoad: function () {
+    wx.showLoading({
+      title: '加载中',
+    })
     var that = this;
     wx.getSystemInfo({
-      success(res) {
+      success(res){
         that.setData({
-          height: res.windowHeight * 0.5
+          height: res.windowHeight * 0.618
         })
       }
     })
 
     //location data getter timer
     timer = setInterval(() => {
-      this.get_datapoints().then(datapoints => {})
+      this.get_datapoints().then(datapoints => {
+      })
     }, 10000)
 
     //get the corresponded event
     var event = app.globalData.event;
     var participants = event.participants;
     var is_signed = false;
-    for (var i = 0; i < participants.length; i++) {
-      if (app.globalData.user.openid == participants[i].openid) {
+    for(var i = 0; i < participants.length; i++){
+      if(app.globalData.user.openid == participants[i].openid) 
+      {
         //matching current user
         //check whether the event is expired, -12h to 1d
         var can_upload = ((((Date.now() - event.precise_time) / 86400000) >= 1) || (((Date.now() - event.precise_time) / 86400000) <= -0.5)) ? false : true;
         //fill the basic event name info and decide whether the uploader should be shown or not
         this.setData({
           event: event,
-          all_snapshots_tip: "查看 " + event.name + " 的全部图片",
-          tip_second: "当前活动：" + event.name,
+          all_snapshots_tip: "查看" + event.name + "的全部图片",
           is_uploader_hide: !can_upload,
           tip_footer: "请在活动开始前12小时到活动结束后1天内上传图片"
         })
-        if (((Date.now() - event.precise_time) / 86400000) >= 1) {
+        if(((Date.now() - event.precise_time) / 86400000) >= 1)
+        {
           clearInterval(timer);
           this.setData({
             tip_footer: "活动已结束",
@@ -139,10 +137,11 @@ Page({
         break;
       }
       //cannot upload if unsigned
-      if (!is_signed) {
+      if(!is_signed)
+      {
         this.setData({
           event: event,
-          all_snapshots_tip: "查看 " + event.name + " 的全部图片",
+          all_snapshots_tip: "查看" + event.name + "的全部图片",
           is_uploader_hide: true,
           tip_footer: "未报名活动，无法上传图片"
         })
@@ -154,7 +153,7 @@ Page({
       _id: true,
       snapshots: true
     }).get({
-      success: function (res) {
+      success: function(res){
         //all shots taken in the event
         var snapshots = res.data[0].snapshots
         that.setData({
@@ -181,7 +180,7 @@ Page({
           },
           is_snapshot: false
         };
-        for (var i = 0; i < snapshots.length; i++) {
+        for(var i = 0; i < snapshots.length; i++){
           var snapshot = snapshots[i];
           var marker = {};
           //geopoint need to be transformed to json
@@ -209,16 +208,18 @@ Page({
             borderWidth: "1px",
             borderColor: "#1485EF",
             display: "ALWAYS",
-            fontSize: "10",
+            fontSize: "10", 
           };
           marker.is_snapshot = true;
           markers.push(marker);
           //deviation, prevent markers from overlapping
-          if (i >= 1) {
-            for (var j = 1; j < markers.length; j++) {
-              if (marker.location == markers[j].location) {
+          if(i >= 1)
+          {
+            for(var j = 1; j < markers.length; j++){
+              if(marker.location == markers[j].location)
+              {
                 markers[j].longitude += i * 0.0002;
-                markers[j].latitude += i * 0.0002;
+                markers[j].latitude += i * 0.0002; 
               }
             }
           }
@@ -227,11 +228,10 @@ Page({
         that.setData({
           markers: markers
         })
+        wx.hideLoading({
+          complete: (res) => {},
+        })
       }
-    })
-
-    wx.showLoading({
-      title: '加载中'
     })
 
     this.get_datapoints().then((datapoints) => {
@@ -267,23 +267,27 @@ Page({
           that.setData({
             speed: current_sp,
             longitude: encrypt_res.longitude,
-            latitude: encrypt_res.latitude,
+            latitude:  encrypt_res.latitude,
           })
           console.log("[onenet][speed]: " + that.data.speed);
           console.log("[onenet][latitude]: " + that.data.latitude);
           console.log("[onenet][longitude]: " + that.data.longitude);
-          if (status !== 200) {
+          if (status !== 200) 
+          {
             reject(res.data)
-            return;
+            return ;
           }
-          if (response.errno !== 0) {
+          if (response.errno !== 0) 
+          {
             reject(response.error)
-            return;
+            return ;
           }
-          if (response.data.datastreams.length === 0) {
+          if (response.data.datastreams.length === 0) 
+          {
             reject("No data yet.")
           }
-          resolve({})
+          resolve({
+          })
         },
         fail: (err) => {
           reject(err)
@@ -292,26 +296,27 @@ Page({
     })
   },
 
-  onReady: function (e) {
+  onReady: function(e){
     this.mapCtx = wx.createMapContext('myMap');
   },
 
   //stop timer from getting data when idle
-  onUnload: function () {
+  onUnload: function(){
     clearInterval(timer);
   },
 
-  onHide: function () {
+  onHide: function(){
     clearInterval(timer);
   },
 
   //refresh location data
-  onPullDownRefresh: function () {
+  onPullDownRefresh: function(){
     wx.showNavigationBarLoading({
       complete: (res) => {},
     })
     this.onLoad();
-    if (this.get_datapoints()) {
+    if(this.get_datapoints())
+    {
       wx.hideNavigationBarLoading({
         complete: (res) => {},
       })
@@ -322,7 +327,9 @@ Page({
           })
         },
       })
-    } else {
+    }
+    else
+    {
       wx.hideNavigationBarLoading({
         complete: (res) => {},
       })
@@ -337,15 +344,16 @@ Page({
   },
 
   //marker tapped
-  show_snapshots: function (e) {
+  show_snapshots: function(e){
     var id = e.detail.markerId;
     var markers = this.data.markers;
-    if (id == 0) return;
-    for (var i = 1; i < this.data.markers.length; i++) {
+    if(id == 0) return;
+    for(var i = 1; i < this.data.markers.length; i++){
       markers[i].iconPath = "image/imagepoint.png";
       markers[i].callout.borderColor = "#1485EF";
       //change imagepoint to red
-      if (i == id) {
+      if(i == id)
+      {
         markers[i].iconPath = "image/imagepoint_selected.png";
         markers[i].callout.borderColor = "#EF2914";
       }
@@ -359,41 +367,48 @@ Page({
   },
 
   //show all tab tapped
-  show_all_snapshots: function () {
+  show_all_snapshots: function(){
     //no snapshot
     var event = this.data.event;
-    if (!this.data.event.snapshots_count) {
+    if(!this.data.event.snapshots_count)
+    {
       this.setData({
         all_snapshots_tip: "暂无图片"
       })
       return;
     }
     //has snapshots
-    if (this.data.is_all_Hide) {
+    if(this.data.is_all_Hide)
+    {
       this.setData({
         is_all_Hide: false,
         all_snapshots_tip: "收起"
       })
-    } else {
+    }
+    else
+    {
       this.setData({
         is_all_Hide: true,
-        all_snapshots_tip: "查看 " + this.data.event.name + " 的全部图片"
+        all_snapshots_tip: "查看" + this.data.event.name +"全部图片"
       })
     }
   },
 
   //using offical plugin to get the corresponded location by tapping
-  choose_location: function () {
+  choose_location: function(){
     var that = this;
     wx.chooseLocation({
       latitude: that.data.latitude,
       longitude: that.data.longitude,
       complete: (res) => {
-        if (!res.name) {
+        if(!res.name)
+        {
           this.setData({
             tip: "未选中位置，点我重新选择"
           })
-        } else {
+        }
+        else
+        {
           this.setData({
             tip: res.name
           })
@@ -403,12 +418,15 @@ Page({
         this.data.snapshots.nickname = app.globalData.user.nickname;
         this.data.snapshots.realname = app.globalData.user.realname;
         this.data.snapshots.name = res.name;
-        this.data.snapshots.location = db.Geo.Point(res.longitude, res.latitude);
+        this.data.snapshots.location = db.Geo.Point(res.longitude,res.latitude);
         var d = new Date();
         this.data.snapshots.time = d.getTime();
-        if (this.data.detail) {
+        if(this.data.detail)
+        {
           this.data.snapshots.detail = this.data.detail;
-        } else {
+        }
+        else
+        {
           this.data.snapshots.detail = "暂无描述";
         }
       },
@@ -416,8 +434,9 @@ Page({
   },
 
   //the rider choose an image from snapshots just taken
-  choose_image: function () {
-    if (this.data.files.length >= 1) {
+  choose_image: function(){
+    if(this.data.files.length >= 1)
+    {
       wx.showToast({
         title: '每位用户单个地点最多上传一张图片',
         icon: "none"
@@ -434,17 +453,20 @@ Page({
       success: function (res) {
         //check the size of the image
         var maxsize = 4000000;
-        if (res.tempFiles[0].size > maxsize) {
+        if(res.tempFiles[0].size > maxsize)
+        {
           var original_size = (res.tempFiles[0].size / 1000000).toFixed(2);
           wx.showToast({
-            title: '图片过大(' + original_size + 'MB' + ')，请取消勾选"原图"或另行上传较小的图片',
+            title: '图片过大(' + original_size + 'MB' +')，请取消勾选"原图"或另行上传较小的图片',
             icon: 'none'
           })
           return;
         }
         //return file path and attach to page data filepath array
         that.setData({
-          files: that.data.files.concat(res.tempFilePaths)
+          files: that.data.files.concat(res.tempFilePaths),
+          is_upload_add_hide: true,
+          tip_second: "长按图片删除"
         });
       }
     })
@@ -460,31 +482,40 @@ Page({
   },
 
   //long press to delete image
-  delete_image: function (e) {
+  delete_image: function(e){
     var that = this;
     console.log(that.data.files);
     var to_delete = e.currentTarget.dataset.action;
     wx.showModal({
-      title: '取消上传',
-      content: '不再上传这张照片？',
+      title:'取消上传',
+      content:'不再上传这张照片？',
       cancelColor: 'gray',
       cancelText: '取消',
       confirmColor: '#E1251B',
-      confirmText: '确定',
-      success: function (res) {
-        if (res.cancel) {
+      confirmText:'确定',
+      success: function (res){
+        if(res.cancel) 
+        {
           //cancel tapped
-        } else {
+        } 
+        else 
+        {
           //confirm tapped
           console.log(that.data.files.indexOf(to_delete));
           var index = that.data.files.indexOf(to_delete);
-          if (index) {
+          if(index)
+          {
             that.setData({
-              files: that.data.files.splice(index - 1, 1)
+              files: that.data.files.splice(index - 1,1)
             })
-          } else {
+          }
+          else
+          {
             that.setData({
-              files: []
+              files: [],
+              tip: '点击"+"选择位置，上传图片',
+              tip_second: "",
+              is_upload_add_hide: false
             })
           }
         }
@@ -493,19 +524,20 @@ Page({
   },
 
   //input image detail
-  input: function (e) {
+  input: function(e){
     this.setData({
       detail: e.detail.value
     })
   },
 
   //upload image with location and detail
-  upload_images: function () {
+  upload_images: function(){
     var that = this;
     //check if the user is uploading another snapshot to the same point
-    for (var i = 0; i < this.data.markers.length; i++) {
+    for(var i = 0; i < this.data.markers.length; i++){
       var marker = this.data.markers[i];
-      if (marker.openid == app.globalData.openid && marker.name == this.data.snapshots.name) {
+      if(marker.openid == app.globalData.openid && marker.name == this.data.snapshots.name)
+      {
         wx.showToast({
           icon: 'none',
           title: '每位用户单个地点最多上传一张图片',
@@ -514,7 +546,8 @@ Page({
       }
     }
     //check if the location is specified
-    if (!this.data.snapshots.name) {
+    if(!this.data.snapshots.name)
+    {
       wx.showToast({
         icon: 'none',
         title: '未选择位置',
@@ -522,28 +555,64 @@ Page({
       return;
     }
     //check if the detail of snapshot is provided
-    if (!this.data.detail) {
+    if(!this.data.detail)
+    {
       wx.showModal({
-        title: '提示',
-        content: '是否填写图片备注？',
+        title:'提示',
+        content:'是否填写图片备注？',
         cancelColor: 'gray',
         cancelText: '否',
         confirmText: '是',
-        complete: function (e) {
-          if (e.cancel) {
-            that.upload_image_final();
-          } else {
+        complete: function(e){
+          if(e.cancel)
+          {
+            wx.showModal({
+              title: '提示',
+              content: '确认上传该照片到'+ that.data.snapshots.name +"？",
+              cancelText: '取消',
+              confirmText: '确认',
+              success: function(res){
+                if(res.cancel)
+                {
+                  return;
+                }
+                else
+                {
+                  that.upload_image_final();
+                }
+              }
+            })
+          }
+          else
+          {
             return;
           }
         }
       })
-    } else {
-      that.upload_image_final();
+    }
+    else
+    {
+      wx.showModal({
+        title: '提示',
+        content: '确认上传该照片到'+ that.data.snapshots.name +"？",
+        cancelText: '取消',
+        confirmText: '确认',
+        success: function(res){
+          if(res.cancel)
+          {
+            return;
+          }
+          else
+          {
+            that.upload_image_final();
+          }
+        }
+      })
     }
   },
-
+  
   //sealing, or a bug jump from locate page to event page before the modal is shown
-  upload_image_final: function () {
+  upload_image_final: function(){
     wx.showNavigationBarLoading({
       complete: (res) => {},
     })
@@ -556,20 +625,23 @@ Page({
     const filePath = that.data.files[0];
     //const filePath = files[i];
     //use this when uploading mutiple details
-    const cloudPath = `events/${that.data.event.name}/${app.globalData.user.nickname}/${app.globalData.openid}_${Math.random()}_${Date.now()}.${filePath.match(/\.(\w+)$/)[1]}`;
+    const cloudPath =  `events/${that.data.event.name}/${app.globalData.user.nickname}/${app.globalData.openid}_${Math.random()}_${Date.now()}.${filePath.match(/\.(\w+)$/)[1]}`;
     wx.cloud.uploadFile({
       cloudPath,
       filePath,
-      success: function (res) {
+      success: function(res){
         files_cloud_url = res.fileID;
         that.setData({
           files_cloud_url: files_cloud_url
         })
         var snapshots = that.data.snapshots;
         //regenerate detail
-        if (that.data.detail != "暂无描述" && that.data.detail != "") {
+        if(that.data.detail != "暂无描述" && that.data.detail != "")
+        {
           snapshots.detail = that.data.detail;
-        } else {
+        }
+        else
+        {
           snapshots.detail = "暂无描述";
         }
         console.log(snapshots);
@@ -602,14 +674,14 @@ Page({
           wx.showToast({
             title: '上传成功',
             duration: 3000,
-            success(res) {
+            success(res){
               wx.reLaunch({
                 url: '../event',
               })
             }
           })
-        })
+          })
       }
-    })
+    }) 
   }
 })

@@ -1,20 +1,15 @@
 <!--starting with manager-->
 <view style="text-align:center;">
-  <view>Managers are bound to the orgnization.</view>
-  <view>管理员可进行活动发布等操作。</view>
+  <view>Managers think twice.</view>
+  <view>管理员应有大局意识和责任心。</view>
 </view>
 
-<button bindtap="goto_event_release" class="bg-white border">活动发布</button>
-<button bindtap="goto_article_release" class="bg-white border">资讯发布</button>
-<button bindtap="goto_progress_release" class="bg-white border">日志发布</button>
+<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
 
-<!--footer-->
-<view class="footer mt-20">
-  <view class="weui-footer">
-    <view class="weui-footer__links">
-      <navigator url="../official/official" class="weui-footer__link">开发日志</navigator>
-    </view>
-    <view class="weui-footer__text" >Copyright © 北京邮电大学 鸿雁车协</view>
-  </view>
+<view class="btn_align">
+  <view bindtap="goto_event_release" class="btn_normal">活动发布</view>
+  <view bindtap="goto_article_release" class="btn_normal">资讯发布</view>
+  <view bindtap="goto_progress_release" class="btn_normal">日志发布</view>
+  <view bindtap="goto_device_add" class="btn_normal">添加设备</view>
 </view>
 

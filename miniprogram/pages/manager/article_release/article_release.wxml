@@ -79,7 +79,7 @@
         </view>
 
         <view class="weui-btn-area">
-            <button class="weui-btn shadow" type="primary" bindtap="submit">发布资讯</button>
+            <button class="weui-btn shadow" type="primary" bindtap="submit" disabled="{{disabled}}">发布资讯</button>
         </view>
 
         <!--bottom line-->

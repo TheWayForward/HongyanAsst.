@@ -268,3 +268,52 @@ page {
 .hv{
   opacity: 0.7;
 }
+
+/*personal attributes*/
+.btn_align{
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  text-align: center;
+  align-items: center;
+}
+
+.btn_normal{
+  height: 170rpx;
+  width: 170rpx;
+  line-height: 170rpx;
+  background: gainsboro;
+  border: 1rpx solid gray;
+  border-radius: 10rpx;
+  margin: 10rpx;
+  text-align: center;
+  align-items: center;
+  box-shadow: 0rpx 3rpx 1rpx 1rpx gainsboro;
+  opacity: 1.0;
+}
+
+.btn_normal:active{
+  opacity: 0.7;
+  transform: scale(0.85);
+  transition: 0.3s ease;
+}
+
+.btn_long{
+  height: 120rpx;
+  width: 730rpx;
+  line-height: 120rpx;
+  background: gainsboro;
+  border: 1rpx solid gray;
+  border-radius: 10rpx;
+  margin: 10rpx;
+  text-align: center;
+  align-items: center;
+  box-shadow: 0rpx 3rpx 1rpx 1rpx gainsboro;
+  opacity: 1.0;
+}
+
+.btn_long:active{
+  opacity: 0.7;
+  transform: scale(0.8);
+  transition: 0.3s ease;
+}

@@ -19,6 +19,7 @@ Page({
     ],
     events: [],
     previous_event: [],
+    current_event: [],
     coming_event: []
   },
 
@@ -26,6 +27,9 @@ Page({
    * Lifecycle function--Called when page load
    */
   onLoad: function (options) {
+    wx.showLoading({
+      title: '获取活动中',
+    })
     var that = this;
     //maximum batch 5, we create a batch getter
     var batchTimes;
@@ -65,6 +69,7 @@ Page({
               //arrayContainer.reverse();
               //previous and coming, in accordance with time comparison
               var previous_event = [];
+              var current_event = [];
               var coming_event = [];
               for(var i = 0; i < arrayContainer.length; i++){
                 var t = arrayContainer[i].time;
@@ -111,20 +116,31 @@ Page({
                 }
                 //there are bugs in date object transfer, so set up a millisecond time in order to recover
                 arrayContainer[i].precise_time = Date.parse(t);
-                if(t <= now)
+                if(now - t >= (86400000) )
                 {
                   previous_event.push(arrayContainer[i]);
+                }
+                else if((t - now < (86400000 / 2)) && ((now - t) < 86400000))
+                {
+                  current_event.push(arrayContainer[i]);
                 }
                 else
                 {
                   coming_event.push(arrayContainer[i]);
                 }
               }
+              previous_event.sort(compare("precise_time"));
+              current_event.sort(compare("precise_time"));
+              coming_event.sort(compare("precise_time"));
               that.setData({
                 events: arrayContainer,
                 previous_event: previous_event.reverse(),
+                current_event: current_event.reverse(),
                 coming_event: coming_event.reverse(),
                 isHide: false
+              })
+              wx.hideLoading({
+                complete: (res) => {},
               })
             }
           }
@@ -195,21 +211,7 @@ Page({
     event.time = new Date();
     event.time = d;
     app.globalData.event = event;
-    var event_status_code;
     //set event status code
-    if(event.time <= now)
-    {
-      //if previous event, set status code as 1
-      console.log("previous event",event);
-      event_status_code = 1;
-    }
-    else
-    {
-      //if coming event, set status code as 2
-      console.log("coming event",event);
-      event_status_code = 2
-    }
-    app.globalData.event_status_code = event_status_code;
     wx.navigateTo({
       url: '../eventlist/event/event',
     })

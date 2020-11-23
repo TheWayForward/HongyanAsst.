@@ -47,6 +47,12 @@ page {
   position: relative;
 }
 
+.article_block:active{
+  transform: scale(0.9);
+  opacity: 0.7;
+  transition: 0.1s ease;
+}
+
 .thumbnail_container{
   width: 100%;
 }

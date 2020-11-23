@@ -23,6 +23,9 @@ Page({
    * Lifecycle function--Called when page load
    */
   onLoad: function (options) {
+    wx.showLoading({
+      title: '获取开发者名单',
+    })
     var that = this;
     db.collection("progress").where({
       _id: "version"
@@ -55,6 +58,9 @@ Page({
                 developers_name: nameContainer,
                 current_developer_name: "选择作出贡献的开发者",
                 is_developers_got: true
+              })
+              wx.hideLoading({
+                complete: (res) => {},
               })
             }
           }
@@ -158,7 +164,7 @@ Page({
     var detail = this.data.detail;
     var d = new Date();
     var year = d.getFullYear() + "";
-    var date = d.getMonth() + "/" + d.getDate();
+    var date = (d.getMonth() + 1) + "/" + d.getDate();
     wx.showModal({
       title: "提示",
       content: "确认发布开发日志？",

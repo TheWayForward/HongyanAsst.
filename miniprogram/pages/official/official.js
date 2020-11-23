@@ -27,7 +27,6 @@ Page({
 
   onLoad: function (options) {
     var that = this;
-
     function compare(p) {
       return function (m, n) {
         var a = m[p];
@@ -35,7 +34,6 @@ Page({
         return a - b;
       }
     }
-
     //loading developer info, rendered initially
     var batchTimes_developer;
     var count_developer = db.collection("developers").count();
@@ -78,7 +76,6 @@ Page({
               that.setData({
                 developers_1: even,
                 developers_2: odd,
-                isHide:false,
               })
               //loading progress info
               var batchTimes;
@@ -111,6 +108,7 @@ Page({
                         }
                       }
                       that.setData({
+                        isHide: false,
                         p: arrayContainer,
                       })
                     }
@@ -123,8 +121,6 @@ Page({
         })
       }
     });
-
-    
   },
 
   onReady: function () {

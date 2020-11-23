@@ -71,7 +71,7 @@
 <!--left-->
 <view class="developer_container">
 <view class="developer_inner_container" wx:for="{{developers_2}}" wx:key="_id" style="background-color:{{item.color}}; height:{{item.len}}rpx" hover-class="hv" hover-stay-time="30">
-<image src="{{item.avatar}}" class="avatar" data-action="{{item.avatar}}" bindtap="preview"></image>
+<image src="{{item.avatar}}" class="avatar shadow" data-action="{{item.avatar}}" bindtap="preview"></image>
 <view class="developer_name">{{item.name}}</view>
 <view class="developer_group">{{item.group}}</view>
 <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot" style="width:300rpx; margin-top:20rpx"></view>

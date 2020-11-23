@@ -228,7 +228,7 @@ Page({
     }).get({
       success: function(res){
         wx.navigateTo({
-          url: '../../pages/article/article',
+          url: '../articlelist/article/article',
         })
         var view = res.data[0].view + 1;
         wx.cloud.callFunction({

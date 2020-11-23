@@ -31,7 +31,7 @@
                     <view class="weui-label">活动日期</view>
                 </view>
                 <view class="weui-cell__bd">
-                    <picker mode="date" value="{{event_date}}" start="{{event_date_start}}" end="{{event_date_end}}" bindchange="bind_event_date_change" value="" range="">
+                    <picker mode="date" value="{{event_date}}" start="{{event_date_start}}" end="{{event_date_end}}" bindchange="bind_event_date_change">
                         <view class="weui-select weui-select_in-select-after">{{event_date}}</view>
                     </picker>
                 </view>
@@ -43,7 +43,7 @@
                     <view class="weui-label">活动时间</view>
                 </view>
                 <view class="weui-cell__bd">
-                    <picker mode="time" value="{{event_time}}" start="{{event_time_start}}" end="{{event_time_end}}" bindchange="bind_event_time_change" value="" range="">
+                    <picker mode="time" value="{{event_time}}" start="{{event_time_start}}" end="{{event_time_end}}" bindchange="bind_event_time_change">
                         <view class="weui-select weui-select_in-select-after">{{event_time}}</view>
                     </picker>
                 </view>
@@ -86,6 +86,21 @@
 
         </view>
         
+        <!--device-->
+        <view class="weui-cells__title">辅助工具</view>
+        <view class="weui-cells weui-cells_after-title">
+            <view class="weui-cell weui-cell_active weui-cell_select weui-cell_select-after">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">定位设备</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <picker value="{{event_device}}" range="{{devices_name}}" bindchange="bind_event_device_change">
+                        <view class="weui-select weui-select_in-select-after">{{event_device_name}}</view>
+                    </picker>
+                </view>
+            </view>
+        </view>
+
         <!--detail-->
         <view class="weui-cells__title">活动简介</view>
         <view class="weui-cells weui-cells_after-title rounded-20">

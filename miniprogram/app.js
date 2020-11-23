@@ -7,6 +7,9 @@ var dayTime = util.formatTime(new Date());
 App({
 
   onLaunch: function () {
+    wx.showLoading({
+      title: '加载中',
+    })
     wx.cloud.init({
       env: 'hongyancrew-pvmj1',
       traceUser:true
@@ -52,7 +55,20 @@ App({
           //user exists
           if(res.data[0])
           {
-            that.globalData.user = res.data[0];
+            //sorting to time decending
+            for(var i = 0; i < user.my_event.length; i++){
+              user.my_event[i].precise_time = Date.parse(user.my_event[i].date);
+            }
+            function compare(p){
+              return function(m,n){
+                var a = m[p];
+                var b = n[p];
+                return a-b;
+              }
+            };
+            user.my_event.sort(compare("precise_time"));
+            user.my_event.reverse();
+            that.globalData.user = user;
             //set true in order to view
             that.globalData.data_status = true;
           }
@@ -63,6 +79,9 @@ App({
             //set true in order to register
             that.globalData.data_status = true;
           }
+          wx.hideLoading({
+            complete: (res) => {},
+          })
         }
       });
     })

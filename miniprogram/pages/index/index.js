@@ -204,7 +204,7 @@ Page({
         //test valid forever
         app.globalData.event.precise_time = Date.now();
         wx.reLaunch({
-          url: '../eventlist/event/locate-test/locate',
+          url: '../eventlist/event/locate/locate',
         })
       }
     })

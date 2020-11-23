@@ -1,0 +1,53 @@
+<view class="page">
+    <view class="page__bd">
+
+        <view class="weui-cells__title">活动定位辅助设备信息</view>
+        <view class="weui-cells weui-cells_after-title">
+            <!--device id-->
+            <view class="weui-cell weui-cell_active">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">设备编号</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" placeholder="{{id}}" disabled="true" maxlength="10"/>
+                </view>                
+            </view>
+            <!--device name-->
+            <view class="weui-cell weui-cell_active">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">设备名称</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" bindinput="input_name" placeholder="填写自定义名称、协议等信息" maxlength="15"/>
+                </view>                
+            </view>
+            <!--PAAS device id-->
+            <view class="weui-cell weui-cell_active">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">DeviceId</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" bindinput="input_deviceid" placeholder="填写平台设备id"/>
+                </view>                
+            </view>
+            <!--PAAS device apikey-->
+            <view class="weui-cell weui-cell_active">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">APIKey</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" bindinput="input_apikey" placeholder="填写平台设备密钥"/>
+                </view>                
+            </view>
+        </view> 
+            
+        
+
+        <view class="weui-btn-area">
+            <button class="weui-btn shadow" type="primary" bindtap="submit" disabled="{{disabled}}">添加设备</button>
+        </view>
+
+        <!--bottom line-->
+        <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
+    </view>
+</view>
