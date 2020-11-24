@@ -10,6 +10,7 @@ Page({
     //select tag
     title: "",
     tags: [
+      "车协",
       "活动",
       "新闻",
       "产品",

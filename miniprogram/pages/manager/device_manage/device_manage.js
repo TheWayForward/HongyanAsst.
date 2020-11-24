@@ -20,7 +20,7 @@ Page({
    */
   onLoad: function (options) {
     wx.showLoading({
-      title: '获取设备列表',
+      title: '获取设备列表中',
     })
     var that = this;
     var batchTimes;

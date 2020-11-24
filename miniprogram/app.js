@@ -55,6 +55,7 @@ App({
           //user exists
           if(res.data[0])
           {
+            var user = res.data[0];
             //sorting to time decending
             for(var i = 0; i < user.my_event.length; i++){
               user.my_event[i].precise_time = Date.parse(user.my_event[i].date);

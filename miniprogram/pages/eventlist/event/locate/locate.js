@@ -213,14 +213,14 @@ Page({
           marker.is_snapshot = true;
           markers.push(marker);
           //deviation, prevent markers from overlapping
-          if(i >= 1)
-          {
-            for(var j = 1; j < markers.length; j++){
-              if(marker.location == markers[j].location)
-              {
-                markers[j].longitude += i * 0.0002;
-                markers[j].latitude += i * 0.0002; 
-              }
+        }
+        for(var i = 0; i < markers.length; i++){
+          var marker = markers[i];
+          for(var j  = 0; j < markers.length; j++){
+            if(markers[j].location == marker.location)
+            {
+              markers[j].longitude += i * 0.0002;
+              markers[j].latitude += i * 0.0002; 
             }
           }
         }
@@ -675,9 +675,10 @@ Page({
             title: '上传成功',
             duration: 3000,
             success(res){
-              wx.reLaunch({
-                url: '../event',
+              wx.pageScrollTo({
+                scrollTop: 0,
               })
+              setTimeout(that.onLoad,3000);
             }
           })
           })

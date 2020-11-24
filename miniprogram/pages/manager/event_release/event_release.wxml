@@ -145,7 +145,7 @@
 
         <!--submit-->
         <view class="weui-btn-area">
-            <button class="weui-btn shadow" style="margin-top:-30rpx;" type="primary" bindtap="submit">发布活动</button>
+            <button class="weui-btn shadow" style="margin-top:-30rpx;" type="primary" bindtap="submit" disabled="{{disabled}}">发布活动</button>
         </view>
 
         <!--bottom line-->

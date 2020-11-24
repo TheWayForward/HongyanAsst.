@@ -9,7 +9,7 @@
                     <view class="weui-label">标题</view>
                 </view>
                 <view class="weui-cell__bd">
-                    <input class="weui-input" bindinput="input_title" placeholder="输入文章标题" maxlength="20"/>
+                    <input class="weui-input" bindinput="input_title" placeholder="输入文章标题" maxlength="50"/>
                 </view>                
             </view>
             <!--article tag-->

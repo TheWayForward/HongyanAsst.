@@ -174,11 +174,27 @@ Page({
 
   },
 
-  /**
-   * Page event handler function--Called when user drop down
-   */
-  onPullDownRefresh: function () {
-
+  onPullDownRefresh: function(){
+    var that = this;
+    wx.showLoading({
+      title: '活动刷新中',
+      success: function(){
+      }
+    })
+    function refresh(){
+      that.onLoad();
+      wx.hideLoading({
+        complete: (res) => {
+          wx.showToast({
+            title: '刷新成功',
+          })
+          wx.stopPullDownRefresh({
+            complete: (res) => {},
+          })
+        },
+      })
+    }
+    setTimeout(refresh,2000);
   },
 
   /**

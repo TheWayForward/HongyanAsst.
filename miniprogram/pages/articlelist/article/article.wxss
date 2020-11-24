@@ -1,4 +1,4 @@
-page{
+.page{
   background: #F5F5F5
 }
 
@@ -40,11 +40,6 @@ page{
   margin-bottom: 50rpx;
 }
 
-.submit_comment:active{
-  transform: scale(0.95);
-  transition: 0.2s ease;
-}
-
 .comment_align{
   display: flex;
 }
@@ -66,7 +61,7 @@ page{
   height: 300rpx;
 }
 
-.comment_inner_container1:hover{
+.comment_inner_container1:active{
   transform: rotate(360deg);
   transition: 0.3s ease;
 }

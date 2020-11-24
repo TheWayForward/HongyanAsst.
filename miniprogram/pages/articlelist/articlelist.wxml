@@ -7,7 +7,7 @@
 
 <!--to top button-->
 <view hover-class="hv" hover-stay-time="30">
-  <image src='http://m.qpic.cn/psc?/V10ldMks1Z5QlW/TmEUgtj9EK6.7V8ajmQrEPfkM1nl3J09FGot6wPesmw02oPEavSAyVQ1CSzNQYVz*b9EetX9VgERFKIsilbadBUBHg7I6CMvbYums3DiLHQ!/b&bo=cQBnAHEAZwADGTw!&rf=viewer_4' class='goTop' hidden='{{showTop}}' bindtap='goTop'/>
+  <image src='http://m.qpic.cn/psc?/V10ldMks1Z5QlW/TmEUgtj9EK6.7V8ajmQrEPfkM1nl3J09FGot6wPesmw02oPEavSAyVQ1CSzNQYVz*b9EetX9VgERFKIsilbadBUBHg7I6CMvbYums3DiLHQ!/b&bo=cQBnAHEAZwADGTw!&rf=viewer_4' class='goTop shadow-filter' hidden='{{showTop}}' bindtap='goTop'/>
 </view>
 
 <!--search bar-->
@@ -26,7 +26,7 @@
 <view class="container articles" style="padding-top:20rpx;margin-top:100rpx;" hidden="{{isHide}}">
   
   <!--article block-->
-  <view class="article_block" wx:for="{{search_articles}}"> 
+  <view class="article_block shadow-bold" wx:for="{{search_articles}}"> 
     <view>
       <!--upper thumbnail-->
       <view class="thumbnail_container">
@@ -41,17 +41,21 @@
       <!--bottom info-->
       <view class="bottominfo" style="padding-left:15rpx;padding-right:15rpx;padding-top:15rpx" hover-class="hv" hover-stay-time="30" data-title="{{item.title}}" data-availability="{{item.isAvailable}}" data-action="{{item}}" data-id="{{item._id}}" bindtap="goto_article"> 
         <!--title-->
-        <view class="title my_small" style="">{{item.title}}</view>
+        <view class="title" style="">{{item.title}}</view>
         <view class="foot">
           <!--tag-->
           <view class="tag_block shadow rounded-5" style="">
             <view class="tag_text" style="">{{item.tag}}</view>
           </view>
           <!--author-->
-          <view class="author my_gray" style="line-height:60rpx;margin-left:15rpx;font-size:26rpx">{{item.author}}</view>
+          <view class="author my_gray" style="line-height:60rpx;margin-left:20rpx;font-size:26rpx;">{{item.author}}</view>
+          <!--time posted-->
+          <view class="my_gray" style="line-height:60rpx;margin-left:20rpx;font-size:26rpx;">{{item.time}}</view>
         </view>  
       </view>
     </view>
   </view>
 </view>
 </view>
+
+<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>

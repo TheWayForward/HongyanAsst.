@@ -343,6 +343,9 @@ Page({
       }
       else
       {
+        wx.showLoading({
+          title: '评论提交中',
+        })
         wx.cloud.callFunction({
           name:'s_check_text',
           data:{
@@ -360,29 +363,22 @@ Page({
                 my_comment: comment,
               }
             }).then(res => {
-              wx.showModal({
-                cancelColor: 'grey',
-                title:'提示',
-                content:'您的评论提交成功。',
-                confirmText:'继续阅读',
-                success: function (res) {
-                  if (res.cancel) 
-                  {
-                  } 
-                  else 
-                  {
-                    wx.pageScrollTo({
-                    scrollTop: 0,
-                    })
-                  }
-                },
+              wx.hideLoading({
+                complete: (res) => {},
+              })
+              wx.showToast({
+                title: '提交成功',
+                duration: 2000,
+                success: function(){
+                  setTimeout(that.onLoad,2000);
+                }
               })
             })
           }
           else
           {
             wx.showToast({
-              title: '🚫包含敏感字哦!',
+              title: '评论包含敏感字',
               icon: 'none',
               duration: 3000
             })

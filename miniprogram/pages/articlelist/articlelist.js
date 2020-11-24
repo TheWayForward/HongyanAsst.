@@ -35,6 +35,7 @@ Page({
           thumbnail: true,
           title:true,
           tag: true,
+          date: true,
           view: true,
         }).get({
           success:function(res){
@@ -51,7 +52,21 @@ Page({
                   return a-b;
                 }
               };
-              arrayContainer.sort(compare("_id"));
+              function padstart(time){
+                if(time.length == 1)
+                {
+                  return ("0" + time);
+                }
+                else
+                {
+                  return time;
+                }
+              }
+              for(var i = 0; i < arrayContainer.length; i++){
+                var t = arrayContainer[i].date;
+                arrayContainer[i].time = t.getFullYear().toString() + "/" + (t.getMonth() + 1).toString() + "/" + t.getDate().toString() + " " + padstart(t.getHours().toString()) + ":" + padstart(t.getMinutes().toString());
+              }
+              arrayContainer.sort(compare("date"));
               arrayContainer.reverse();
               that.setData({
                 articles: arrayContainer,
@@ -102,65 +117,26 @@ Page({
   },
 
   onPullDownRefresh: function(){
-    wx.showNavigationBarLoading({
-      complete: (res) => {},
-    })
     var that = this;
-    var batchTimes;
-    var count = db.collection("articles").count();
-    count.then(function(result){
-      count = result.total;
-      batchTimes = Math.ceil(count/20);
-      var arrayContainer = [], x = 0;
-      for(var i = 0; i < batchTimes; i++){
-        db.collection("articles").skip(i * 20).field({
-          _id: true,
-          author: true,
-          isAvailable: true,
-          thumbnail: true,
-          title:true,
-          tag: true,
-          view: true
-        }).get({
-          success:function(res){
-            for(var j = 0; j < res.data.length; j++){
-              arrayContainer.push(res.data[j]);
-            }
-            x++;
-            if(x == batchTimes)
-            {
-              function compare(p){
-                return function(m,n){
-                  var a = m[p];
-                  var b = n[p];
-                  return a-b;
-                }
-              };
-              arrayContainer.sort(compare("_id"));
-              arrayContainer.reverse();
-              that.setData({
-                articles: arrayContainer,
-                search_articles: arrayContainer,
-                isHide: false
-              })
-            }
-          }
-        })
+    wx.showLoading({
+      title: '资讯刷新中',
+      success: function(){
       }
-    });
-    if(that.data.articles)
-    {
-      wx.hideNavigationBarLoading({
-        complete: (res) => {},
-      })
-      wx.stopPullDownRefresh({
+    })
+    function refresh(){
+      that.onLoad();
+      wx.hideLoading({
         complete: (res) => {
           wx.showToast({
             title: '刷新成功',
           })
+          wx.stopPullDownRefresh({
+            complete: (res) => {},
+          })
         },
       })
     }
+    setTimeout(refresh,2000);
   },
 
   showinfo: function(){
@@ -198,7 +174,7 @@ Page({
       var search_list = [];
       list = this.data.articles;
       for(var i = 0; i < list.length;i++){
-        if(list[i].title.indexOf(str) >= 0 || list[i].type.indexOf(str) >= 0)
+        if(list[i].title.indexOf(str) >= 0 || list[i].tag.indexOf(str) >= 0)
         {
           search_list.push(list[i]);
           this.setData({
@@ -208,7 +184,6 @@ Page({
       }
     }
   },
-
   //passing title and id
   goto_article: function(e){
     var article = e.currentTarget.dataset.action;
@@ -216,7 +191,7 @@ Page({
     {
       wx.showToast({
         title: 'title',
-        title: '审核中👀请耐心等待',
+        title: '资讯审核中',
         icon: 'none',
         duration: 2000
       })

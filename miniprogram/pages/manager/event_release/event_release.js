@@ -42,13 +42,17 @@ Page({
     is_upload_add_hide: false,
     files: [],
     //others
-    tip: '点击"+"上传图片'
+    tip: '点击"+"上传图片',
+    disabled: true
   },
 
   /**
    * Lifecycle function--Called when page load
    */
   onLoad: function (options) {
+    wx.showLoading({
+      title: '设备信息获取中'
+    })
     this.setData({
       user: app.globalData.user,
       event_date_start: this.data.current_date.year + "-" + this.data.current_date.month + "-" + (this.data.current_date.date + 1),
@@ -84,7 +88,11 @@ Page({
               }
               that.setData({
                 devices: arrayContainer,
-                devices_name: devices_name
+                devices_name: devices_name,
+                disabled: false
+              })
+              wx.hideLoading({
+                complete: (res) => {},
               })
             }
           }

@@ -20,8 +20,8 @@
 					<view class="weui-media-box__bd">
 						<h4 class="weui-media-box__title bold" data-action="{{item}}" bindtap="goto_event">{{item.name}}</h4>
 						<view class="weui-media-box__desc" data-action="{{item}}" bindtap="goto_event">{{item.detail}}</view>
-						<view class="weui-media-box__info__meta" data-action="{{item}}" bindtap="goto_event">时间：{{item.date}}</view>
-						<view class="weui-media-box__info__meta" data-action="{{item}}" bindtap="goto_event">领队：{{item.leader}}</view>
+						<view class="weui-media-box__info__meta mt-5" data-action="{{item}}" bindtap="goto_event">🕒 {{item.date}}</view>
+						<view class="weui-media-box__info__meta mt-5" data-action="{{item}}" bindtap="goto_event">🚴‍♂️ {{item.leader}}</view>
 					  <view class="weui-media-box__info__meta weui-media-box__info__meta_extra"></view>
 					</view>
 				</view>
@@ -40,8 +40,8 @@
 					<view class="weui-media-box__bd">
 						<h4 class="weui-media-box__title bold" data-action="{{item}}" bindtap="goto_event">{{item.name}}</h4>
 						<view class="weui-media-box__desc" data-action="{{item}}" bindtap="goto_event">{{item.detail}}</view>
-						<view class="weui-media-box__info__meta" data-action="{{item}}" bindtap="goto_event">时间：{{item.date}}</view>
-						<view class="weui-media-box__info__meta" data-action="{{item}}" bindtap="goto_event">领队：{{item.leader}}</view>
+						<view class="weui-media-box__info__meta mt-5" data-action="{{item}}" bindtap="goto_event">🕒 {{item.date}}</view>
+						<view class="weui-media-box__info__meta mt-5" data-action="{{item}}" bindtap="goto_event">🚴‍♂️ {{item.leader}}</view>
 					  <view class="weui-media-box__info__meta weui-media-box__info__meta_extra"></view>
 					</view>
 				</view>
@@ -60,8 +60,8 @@
 					<view class="weui-media-box__bd">
 						<h4 class="weui-media-box__title bold" data-action="{{item}}" bindtap="goto_event">{{item.name}}</h4>
 						<view class="weui-media-box__desc" data-action="{{item}}" bindtap="goto_event">{{item.detail}}</view>
-						<view class="weui-media-box__info__meta" data-action="{{item}}" bindtap="goto_event">时间：{{item.date}}</view>
-						<view class="weui-media-box__info__meta" data-action="{{item}}" bindtap="goto_event">领队：{{item.leader}}</view>
+						<view class="weui-media-box__info__meta mt-5" data-action="{{item}}" bindtap="goto_event">🕒 {{item.date}}</view>
+						<view class="weui-media-box__info__meta mt-5" data-action="{{item}}" bindtap="goto_event">🚴‍♂️ {{item.leader}}</view>
 						<view class="weui-media-box__info__meta" data-action="{{item}}" bindtap="goto_event"></view>
 						<view class="weui-media-box__info__meta weui-media-box__info__meta_extra"></view>
 					</view>

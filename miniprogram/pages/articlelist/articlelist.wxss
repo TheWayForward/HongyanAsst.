@@ -1,7 +1,7 @@
 @import "../../style/weui.wxss";
 @import "../official/official.wxss";
 
-page {
+.page {
   background: #F4F4F4;
   display: flex;
   flex-direction: column;
@@ -25,26 +25,29 @@ page {
   position: fixed;
   bottom: 20px;
   right: 15px;
-  width: 25px;
-  height: 25px;
+  width: 45px;
+  height: 40px;
   z-index: 15;
 }
 
+.goTop:active{
+  opacity: 0.7;
+  transform: scale(0.95);
+  transition: 0.3s ease;
+}
+
 .articles{
-  flex-direction: row;
-  flex-flow: row wrap;  
+  flex-direction: column; 
 }
 
 .article_block{
-  height: 390rpx;
-  width: 47%;
-  margin-left: 15rpx;
-  margin-bottom: 15rpx;
+  width: 92%;
+  margin: 15rpx;
+  padding-bottom: 10rpx;
   background: #FFFFFF;
-  border-radius: 10rpx;
+  border-radius: 20rpx;
   overflow: hidden;
-  box-shadow: 0rpx 3rpx 2rpx 2rpx gainsboro;
-  position: relative;
+  box-shadow: 0rpx 3rpx 4rpx 2rpx gainsboro;
 }
 
 .article_block:active{
@@ -58,8 +61,8 @@ page {
 }
 
 .article_thumbnail{
-  width: 360rpx;
-  height: 240rpx;
+  width: 100%;
+  height: 340rpx
 }
 
 .overview{
@@ -71,6 +74,7 @@ page {
 .title{
   margin-top:10rpx;
   text-align: justify;
+  font-size: 30rpx;
 }
 
 .foot{
