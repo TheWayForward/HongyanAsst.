@@ -84,11 +84,22 @@ Page({
     snapshots: {},
     snapshots_count: null,
     detail: "",
+    input_value: "",
     //dynamic text
     all_snapshots_tip: "查看该活动全部图片",
   },
 
   onLoad: function () {
+    this.setData({
+      input_value: "",
+      snapshots: {},
+      detail: "",
+      files: [],
+      files_cloud_url: [],
+      tip: '点击"+"上传图片',
+      tip_second: '',
+      is_upload_add_hide: false
+    })
     wx.showLoading({
       title: '加载中',
     })
@@ -167,6 +178,9 @@ Page({
           longitude: that.data.longitude,
           width: 20,
           height: 20,
+          anchor: {
+            x: 0.5, y: 0.5
+          },
           iconPath: "image/star.png",
           callout: {
             content: that.data.event.device.name + "：" + that.data.event.device.deviceid,
@@ -678,7 +692,7 @@ Page({
               wx.pageScrollTo({
                 scrollTop: 0,
               })
-              setTimeout(that.onLoad,3000);
+              setTimeout(that.onLoad,1000);
             }
           })
         })

@@ -86,7 +86,7 @@
             <view class="weui-cells weui-cells_after-title">
                 <view class="weui-cell weui-cell_active">
                     <view class="weui-cell__bd">
-                        <input class="weui-input" placeholder="说点儿什么..." maxlength="30" bindinput="input"/>
+                        <input class="weui-input" value="{{input_value}}" placeholder="说点儿什么..." maxlength="30" bindinput="input"/>
                     </view>
                 </view>
             </view>
