@@ -40,6 +40,11 @@
   margin-bottom: 50rpx;
 }
 
+.submit_comment:active{
+  transform: scale(0.95);
+  transition: 0.1s ease;
+}
+
 .comment_align{
   display: flex;
 }
@@ -62,8 +67,8 @@
 }
 
 .comment_inner_container1:active{
-  transform: rotate(360deg);
-  transition: 0.3s ease;
+  transform: scale(0.95);
+  transition: 0.1s ease;
 }
 
 .avatar{

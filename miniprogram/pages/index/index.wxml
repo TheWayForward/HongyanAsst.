@@ -1,8 +1,15 @@
 <view class="page">
 
-<view style="text-align:center;">
+<!--update requirement-->
+<view style="text-align:center;" hidden="{{!update_required}}">
+  <view>当前微信版本：{{wechat_version}}</view>
+  <view>建议您升级微信至{{wechat_version_min}}或更高版本以体验完整功能！</view>
+</view>
+
+<view style="text-align:center;" hidden="{{update_required}}">
   <view>{{en}}</view>
   <view>{{ch}}</view>
+  <view>{{wechat_version_min}}</view>
 </view>
 
 <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
@@ -19,6 +26,10 @@
 <view class="btn_align">
   <view bindtap="goto_manager" class="btn_long">管理员</view>
   <view bindtap="goto_event_test" class="btn_long">活动测试</view>
+</view>
+
+<view class="btn_align">
+  <view bindtap="goto_feedback" class="btn_long">问题反馈</view>
 </view>
 
 <!--footer-->

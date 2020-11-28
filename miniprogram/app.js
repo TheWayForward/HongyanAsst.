@@ -7,6 +7,7 @@ var dayTime = util.formatTime(new Date());
 App({
 
   onLaunch: function () {
+    var that = this;
     wx.showLoading({
       title: '加载中',
     })
@@ -14,7 +15,6 @@ App({
       env: 'hongyancrew-pvmj1',
       traceUser:true
     })
-    var that = this;
     wx.login({
       success: res => {
       }
@@ -41,6 +41,7 @@ App({
       })
     }
 
+    //get inside user info
     wx.cloud.callFunction({
       name:'get_openid',
     }).then(res => {
@@ -56,7 +57,10 @@ App({
           if(res.data[0])
           {
             var user = res.data[0];
-            //sorting to time decending
+            var t = new Date(user.birthday);
+            //giving birthday string
+            user.birthday_string = t.getFullYear().toString() + "/" + (t.getMonth() + 1).toString() + "/" + t.getDate().toString();
+            //sorting event to time decending
             for(var i = 0; i < user.my_event.length; i++){
               user.my_event[i].precise_time = Date.parse(user.my_event[i].date);
             }
@@ -87,10 +91,32 @@ App({
       });
     })
 
-    this.globalData = {}
+    //get miniprogram version
+    db.collection("basic").where({
+      _id: "version"
+    }).get({
+      success: function(res){
+        that.globalData.miniprogram_version = res.data[0].version;
+      }
+    })
+
+    //get wechat version requirement
+    db.collection("basic").where({
+      _id: "wechat_version_min"
+    }).get({
+      success: function(res){
+        that.globalData.wechat_version_min = res.data[0].version;
+      }
+    })
+
+    this.globalData = {};
   },
 
   globalData:{
+    //miniprogram version
+    miniprogram_version: "",
+    //current wechat version
+    wechat_version_min: "",
     //device
     height: 0,
     //login status
@@ -104,12 +130,6 @@ App({
     last_page_holder: "",
     //current event info
     event: {},
-    //status code definition
-    //0: initial status
-    //1: previous event
-    //2: coming event
-    //3: coming event(has signed)
-    event_status_code: 0,
     //loading animation
     loading_animation: {
       thumbnail: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1587724074005&di=b3800cdcb75980d4dadda205e2db7329&imgtype=0&src=http%3A%2F%2F3580.wangid.com%2Ftemplate_xin%2Fmingxingbao%2Fimg%2Fmxb.gif"

@@ -15,13 +15,52 @@ Page({
       node: '<img style="border-radius:15px; width: 862px !important; height: auto !important; vertical-align: middle; visibility: visible !important; max-width: 100%; " src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1587724074005&di=b3800cdcb75980d4dadda205e2db7329&imgtype=0&src=http%3A%2F%2F3580.wangid.com%2Ftemplate_xin%2Fmingxingbao%2Fimg%2Fmxb.gif" crossorigin="anonymous" data-w="1080" data-type="jpeg" data-src="https://mmbiz.qpic.cn/mmbiz_jpg/VzFuMauwoqTc6bRD4ibOr9ib60UjMDe4jLVkxsI8zYVAibUfFdEibricL0C3fwrIFJlWCIAsZ0yULMvJgZggtOniaqGA/640?wx_fmt=jpeg" data-ratio="0.3740741" _width="862px" data-fail="0">'
     },
     ],
+    //version check
+    wechat_version: "",
+    wechat_version_min: "",
+    update_required: false
   },
 
   onLoad: function() {
+    var that = this;
     wx.getUserInfo({
       complete: (res) => {
         app.globalData.userInfo = res.userInfo;
       },
+    })
+    db.collection("basic").where({
+      _id: "wechat_version_min"
+    }).get({
+      success: function(res){
+        var wechat_version = wx.getSystemInfoSync().version;
+        var wechat_version_min = res.data[0].version;
+        that.setData({
+          wechat_version: wechat_version,
+          wechat_version_min: wechat_version_min
+        })
+        //compare version
+        function compare_version(ver1,ver2){
+          ver1 = ver1.split(".");
+          ver2 = ver2.split(".");
+          for(var i = 0; i < 3; i++){
+            ver1[i] = Number(ver1[i]);
+            ver2[i] = Number(ver2[i]);
+          }
+          var ver1_weight = ver1[0] * 1000 + ver1[1] * 100 + ver1[2];
+          var ver2_weight = ver2[0] * 1000 + ver2[1] * 100 + ver2[2];
+          return ver1_weight > ver2_weight ? false : true;
+        }
+        if(!compare_version(wechat_version_min,wechat_version))
+        {
+          that.setData({
+            update_required: true
+          })
+        }
+      }
+    })
+    this.setData({
+      wechat_version: wx.getSystemInfoSync().version,
+      wechat_version_min: app.globalData.wechat_version_min
     })
   },
 
@@ -38,7 +77,7 @@ Page({
       else
       {
         that.setData({
-          ch: '点击"账户系统"进行注册，方可使用。',
+          ch: '点击"我的车协"进行注册，方可使用。',
           en: "Sign up before using."
         })
       }
@@ -134,9 +173,18 @@ Page({
     }
     else
     {
-      wx.navigateTo({
-        url: '../../pages/user_profile/user_profile',
-      })
+      if(!app.globalData.user)
+      {
+        wx.navigateTo({
+          url: '../register/register',
+        })
+      }
+      else
+      {
+        wx.navigateTo({
+          url: '../user_profile/user_profile',
+        })
+      }
     }
   },
 
@@ -207,6 +255,12 @@ Page({
           url: '../eventlist/event/locate/locate',
         })
       }
+    })
+  },
+
+  goto_feedback: function(){
+    wx.navigateTo({
+      url: '../feedback/feedback',
     })
   }
 })

@@ -17,12 +17,14 @@ Page({
     view: " ",
     title: " ",
     isHide: true,
+    is_granted: true,
     comment: [],
     comment_array_1: [],
     comment_array_2: [],
     event_show: {},
     avatar: "",
     nickname: '',
+    input_value: '',
     details: '',
     time: '',
     hnode: [{
@@ -47,14 +49,20 @@ Page({
       },
       fail: (res) => {
         wx.showToast({
-          title: '您拒绝了授权',
+          title: '未授权用户信息',
           icon: 'none',
           duration: 2000,
           success: function(res){
-            wx.navigateBack({
-              complete: (res) => {},
-            })
+            function reject(){
+              wx.navigateBack({
+                complete: (res) => {},
+              })
+            }
+            setTimeout(reject,500);
           }
+        })
+        that.setData({
+          
         })
       }
     })
@@ -370,6 +378,9 @@ Page({
                 title: '提交成功',
                 duration: 2000,
                 success: function(){
+                  that.setData({
+                    input_value: ''
+                  })
                   setTimeout(that.onLoad,2000);
                 }
               })

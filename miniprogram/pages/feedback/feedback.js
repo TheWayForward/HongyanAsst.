@@ -7,13 +7,15 @@ Page({
    * Page initial data
    */
   data: {
+    detail: '',
+    disabled: false
   },
 
   /**
    * Lifecycle function--Called when page load
    */
   onLoad: function (options) {
-    console.log(app.globalData.wechat_version_min);
+
   },
 
   /**
@@ -65,27 +67,48 @@ Page({
 
   },
 
-  goto_event_release: function(){
-    wx.navigateTo({
-      url: '../manager/event_release/event_release',
+  input_detail: function(e){
+    this.setData({
+      detail: e.detail.value
     })
   },
 
-  goto_article_release: function(){
-    wx.navigateTo({
-      url: '../manager/article_release/article_release',
-    })
-  },
-
-  goto_progress_release: function(){
-    wx.navigateTo({
-      url: '../manager/progress_release/progress_release',
-    })
-  },
-
-  goto_device_add: function(){
-    wx.navigateTo({
-      url: '../manager/device_manage/device_manage',
-    })
+  submit: function(){
+    var detail = this.data.detail
+    var that = this;
+    if(!detail)
+    {
+      wx.showToast({
+        title: '反馈不能为空',
+        icon: 'none'
+      })
+      return;
+    }
+    else
+    {
+      var d = new Date();
+      db.collection("feedback").add({
+        data: {
+          time: d,
+          detail: detail
+        },success: function(res){
+          that.setData({
+            disabled: true
+          })
+          wx.showToast({
+            title: '提交成功',
+            duration: 3000,
+            success: function(){
+              function refresh(){
+                wx.reLaunch({
+                  url: '../index/index',
+                })
+              }
+              setTimeout(refresh,3000);
+            }
+          })
+        }
+      })
+    }
   }
 })

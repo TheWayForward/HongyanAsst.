@@ -51,7 +51,7 @@ Page({
    */
   onLoad: function (options) {
     wx.showLoading({
-      title: '设备信息获取中'
+      title: '设备列表获取中'
     })
     this.setData({
       user: app.globalData.user,
@@ -482,14 +482,8 @@ Page({
                 db.collection("events").add({
                   data:{
                     _id: _id,
-                    //dynamic later
                     detail: detail,
-                    device: {
-                      _id: "1",
-                      apikey: "fhAS54e5X8HL5wcaB6ZW74oA3vo=",
-                      deviceid: "644250210",
-                      name: "设备1"
-                    },
+                    device: device,
                     difficulty: difficulty,
                     distance: distance,
                     device: device,

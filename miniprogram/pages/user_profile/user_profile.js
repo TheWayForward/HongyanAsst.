@@ -16,81 +16,14 @@ Page({
    */
   onLoad: function (options) {
     var that = this;
-    if(!app.globalData.user)
-    {
-      console.log("user_profile: Do not exist");
-      this.setData({
-        isHide: true
-      })
-      wx.showModal({
-        title: '提示',
-        content: '非注册用户。',
-        cancelColor: 'gray',
-        cancelText: '取消',
-        confirmText: '立即注册',
-        success: function(res){
-          if(res.cancel)
-          {
-            wx.reLaunch({
-              url: '../index/index',
-            })
-          }
-          else
-          {
-            wx.openSetting({
-              complete: (res) => {
-                console.log(res.authSetting);
-                if(!res.authSetting["scope.userInfo"] || !res.authSetting["scope.userLocation"])
-                {
-                  wx.showToast({
-                    title: '为保证良好体验，请授权小程序使用您的基本信息与位置信息',
-                    icon: 'none',
-                    duration: 3000,
-                    success: function(){
-                      function relaunch(){
-                        wx.reLaunch({
-                          url: '../user_profile/user_profile',
-                        })
-                      }
-                      setTimeout(relaunch,3000);
-                    }
-                  })
-                }
-                else
-                {
-                  function relaunch(){
-                    if(!app.globalData.userInfo)
-                    {
-                      wx.reLaunch({
-                      url: '../index/index',
-                      })
-                    }
-                    else
-                    {
-                      wx.reLaunch({
-                        url: '../register/register',
-                      })
-                    }
-                  }
-                  setTimeout(relaunch,3000);
-                  wx.showToast({
-                    title: '授权成功',
-                    duration: 3000
-                  })
-                }
-              },
-            })
-          }
-        }
-      })
-    }
-    else
-    {
-      that.setData({
-        user: app.globalData.user
-      })
-      console.log(that.data.user);
-    }
+    var user = app.globalData.user;
+    var t = new Date(user.birthday);
+    //giving birthday string
+    user.birthday_string = t.getFullYear().toString() + "/" + (t.getMonth() + 1).toString() + "/" + t.getDate().toString();
+    that.setData({
+      user: user,
+    })
+    console.log(that.data.user);
   },
 
   /**

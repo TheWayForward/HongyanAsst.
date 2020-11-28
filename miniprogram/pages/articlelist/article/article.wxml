@@ -37,7 +37,7 @@
 
 <view class="comment_submission_align" hidden="{{isHide}}">
   <image class="shadow" src="{{avatar}}" style="height:60rpx; width:60rpx; border-radius:10rpx" data-action="{{avatar}}" bindtap="preview"></image>
-  <input style="background:#E9E9E9; width:490rpx; margin-left:15rpx; height:60rpx; border-radius:10rpx; font-size:25rpx; padding-left:20rpx; padding-right:20rpx" maxlength="200" bindinput="input" placeholder="您的评论通过审核后，将对所有用户可见"></input>
+  <input style="background:#E9E9E9; width:490rpx; margin-left:15rpx; height:60rpx; border-radius:10rpx; font-size:25rpx; padding-left:20rpx; padding-right:20rpx" maxlength="200" bindinput="input" value="{{input_value}}" placeholder="您的评论通过审核后，将对所有用户可见"></input>
   <view class="shadow submit_comment" style="height:60rpx; width:70rpx; background:#188FC8; margin-left:15rpx; border-radius:10rpx" hover-class="hv" hover-stay-time="30" bindtap="submit_comment">
     <image src="image/submitcomment.png" style="height:40rpx; width:45rpx; margin-top:11rpx; margin-left:14rpx"></image>
   </view>

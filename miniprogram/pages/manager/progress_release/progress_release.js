@@ -27,14 +27,8 @@ Page({
       title: '获取开发者名单',
     })
     var that = this;
-    db.collection("progress").where({
-      _id: "version"
-    }).get({
-      success: function(res){
-        that.setData({
-          current_version: res.data[0].version
-        })
-      }
+    that.setData({
+      current_version: app.globalData.miniprogram_version
     })
     var count = db.collection("developers").count();
     var batchTimes;

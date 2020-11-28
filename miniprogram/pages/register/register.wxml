@@ -1,7 +1,9 @@
-<!--weui as bootstrap-->
 <view class="page">
   <view class="weui-cells">
-    <view class="weui-cell weui-cell_active">
+    <view>
+        <button open-type="getUserInfo" bindgetuserinfo="get_userinfo" class="weui-btn shadow mt-20 mb-20" style="background-color: #42A5F5;" hover-class="hv" hover-stay-time="30" hidden="{{is_get_userinfo_hide}}">授权用户信息</button>
+    </view>
+    <view class="weui-cell weui-cell_active" hidden="{{!is_get_userinfo_hide}}">
 				<view class="weui-cell__hd" style="position: relative; margin-right: 10px;">
 					<image src="{{avatar}}" class="rounded-10 shadow" style="width: 80rpx; height: 80rpx; display: block;" mode="aspectFill" data-action="{{avatar}}" bindtap="preview"></image>
 				</view>
@@ -99,7 +101,7 @@
         <view class="weui-cells weui-cells_after-title">
             <view class="weui-cell weui-cell_active">
                 <view class="weui-cell__bd">
-                    <textarea class="weui-textarea" placeholder="我玩车多长时间了？我喜欢如何骑车？我的优势……" style="height: 3.3em" bindinput="input_detail" maxlength="200"/>
+                    <textarea class="weui-textarea" placeholder="说点儿什么..." style="height: 3.3em" bindinput="input_detail" maxlength="200"/>
                     <view class="weui-textarea-counter">{{text_counter}}</view>
                 </view>
             </view>
@@ -115,7 +117,7 @@
 
         <!--submit-->
         <view class="weui-btn-area">
-            <button class="weui-btn shadow" style="margin-top:-30rpx;" type="primary" bindtap="submit" disabled="{{!isChecked}}">立即注册</button>
+            <button class="weui-btn shadow" style="margin-top:-30rpx;" type="primary" bindtap="submit" disabled="{{!isChecked}}" hidden="{{is_register_button_hide}}">立即注册</button>
         </view>
 
         <!--bottom line-->

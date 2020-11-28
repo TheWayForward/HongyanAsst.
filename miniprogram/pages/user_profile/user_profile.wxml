@@ -20,7 +20,7 @@
         <image class="info_tab_image" src="../user_profile/image/time.png"/>
       </view>
       <view class="info_field bold my_gray">入驻时间</view>
-      <view class="info_data">{{user.birthday}}</view>
+      <view class="info_data">{{user.birthday_string}}</view>
     </view>
 
     <!--campus-->

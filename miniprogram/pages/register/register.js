@@ -11,6 +11,8 @@ Page({
     info_holder: {},
     avatar: "http://m.qpic.cn/psc?/V10ldMks1Z5QlW/bqQfVz5yrrGYSXMvKr.cqTPtnUN7zJo2Kz37cZDcRRVc2vsiXputSKNVw*8pyqRyadlrvjrlbmkEtqNUG8hmTkJqtNAHKJgK8D*TrAEQeuk!/b&bo=9AFpAfQBaQECCS0!&rf=viewer_4",
     wechat_nickname: "昵称加载中",
+    //user info verification and hidden
+    is_get_userinfo_hide: false,
     genders: [
       "男",
       "女",
@@ -42,32 +44,43 @@ Page({
     email: "",
     detail: "",
     text_counter:"0/200",
-    isChecked: false
+    isChecked: false,
+    is_register_button_hide: false
   },
 
   /**
    * Lifecycle function--Called when page load
    */
   onLoad: function (options) {
-    //prevent from err of undefined
-    this.setData({
-      info_holder: app.globalData
+    var that = this;
+    wx.getUserInfo({
+      complete: (res) => {
+        if(res.err_code == -12006)
+        {
+          wx.showToast({
+            title: '未获取到您的基本信息，请点击页面顶部按钮进行授权',
+            icon: 'none',
+            duration: 5000
+          })
+        }
+        else
+        {
+          var userinfo = res.userInfo;
+          that.setData({
+            avatar: userinfo.avatarUrl,
+            wechat_nickname: userinfo.nickName,
+            is_get_userinfo_hide: true
+          })
+        }
+      },
     })
-    app.globalData.last_page_holder = "register";
   },
 
   /**
    * Lifecycle function--Called when page is initially rendered
    */
   onReady: function () {
-    var info = this.data.info_holder;
-    if(info)
-    {
-      this.setData({
-        avatar: info.userInfo.avatarUrl,
-        wechat_nickname: info.userInfo.nickName
-      })
-    }
+
   },
 
   /**
@@ -117,6 +130,30 @@ Page({
       current: e.currentTarget.dataset.action,
       urls: [e.currentTarget.dataset.action]
     })
+  },
+
+  //get userinfo
+  get_userinfo: function(e){
+    console.log(e);
+    if(e.detail.errMsg == "getUserInfo:fail auth deny")
+    {
+      wx.showToast({
+        title: '请点击弹框右侧绿色按钮完成授权',
+        icon: 'none',
+        duration: 5000
+      })
+    }
+    else
+    {
+      var userinfo = JSON.parse(e.detail.rawData);
+      app.globalData.userInfo = userinfo;
+      console.log(userinfo);
+      this.setData({
+        avatar: userinfo.avatarUrl,
+        wechat_nickname: userinfo.nickName,
+        is_get_userinfo_hide: true
+      })
+    }
   },
 
   //input
@@ -193,6 +230,7 @@ Page({
     var that = this;
     //assignment
     var realname = this.data.realname;
+    var nickname = this.data.wechat_nickname;
     var gender = this.data.genderIndex;
     var campus = this.data.campusIndex;
     var dept = this.data.deptIndex;
@@ -201,6 +239,16 @@ Page({
     var email = this.data.email;
     var detail = this.data.detail;
     var isChecked = this.data.isChecked;
+
+    if(nickname == "昵称加载中")
+    {
+      wx.showToast({
+        title: '未获取到您的基本信息，请点击页面顶部按钮进行授权后进行注册',
+        icon: 'none',
+        duration: 3000
+      })
+      return;
+    }
 
     //realname: must be Chinese
     if(!realname)
@@ -363,14 +411,13 @@ Page({
     user.total_distance = 0;
     if(!this.data.detail)
     {
-      user.detail = "这个人很懒，" + (user.gender == "男" ? "他" : "她") + "什么也没留下。";
+      user.detail = "这个人很懒，" + (user.gender == "男" ? "他" : (user.gender == "保密") ? "TA" : "她") + "什么也没留下。";
     }
     else
     {
       user.detail = this.data.detail;
     }
     user.openid = app.globalData.openid;
-    user.birthday = app.globalData.date;
     //_id increment
     var count = db.collection("user").count();
     count.then(function(result){
@@ -394,6 +441,12 @@ Page({
           }
           else
           {
+            that.setData({
+              is_register_button_hide: true
+            })
+            wx.showLoading({
+              title: '注册中',
+            })
             function padstart(time){
               if(time.length == 1)
               {
@@ -405,7 +458,7 @@ Page({
               }
             }
             var d = new Date();
-            user.birthday = d.getFullYear().toString() + "/" + (d.getMonth() + 1).toString() + "/" + d.getDay().toString();
+            user.birthday = d.getTime();
             app.globalData.user = user;
             db.collection("user").add({
               data:{
@@ -429,12 +482,20 @@ Page({
                 total_distance: 0
               }
             })
+            wx.hideLoading({
+              complete: (res) => {},
+            })
             wx.showToast({
               title: '注册成功',
-              duration: 3000
-            })
-            wx.reLaunch({
-              url: '../../pages/index/index',
+              duration: 3000,
+              success: function(){
+                function refresh(){
+                  wx.reLaunch({
+                    url: '../index/index',
+                  })
+                }
+                setTimeout(refresh,3000);
+              }
             })
           }
         }

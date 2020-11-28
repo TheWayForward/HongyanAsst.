@@ -39,7 +39,7 @@ Page({
    */
   onLoad: function (options) {
     wx.showLoading({
-      title: '获取关联活动中',
+      title: '关联活动获取中',
     })
     var that = this;
     var batchTimes;

@@ -681,7 +681,7 @@ Page({
               setTimeout(that.onLoad,3000);
             }
           })
-          })
+        })
       }
     }) 
   }
