@@ -49,7 +49,8 @@ Page({
           poster: true,
           participants_count: true,
           time: true,
-          leader: true
+          leader: true,
+          view: true
         }).get({
           success:function(res){
             for(var j = 0; j < res.data.length; j++){
@@ -227,9 +228,20 @@ Page({
     event.time = new Date();
     event.time = d;
     app.globalData.event = event;
-    //set event status code
+    console.log(event);
+    var _id = event.id;
+    var view = event.view + 1;
     wx.navigateTo({
       url: '../eventlist/event/event',
     })
+    wx.cloud.callFunction({
+      name:'add_event_view',
+      data:{
+        taskId: app.globalData.event._id,
+        view: view
+       }
+       })
+      .then(res => {
+      })
   }
 })

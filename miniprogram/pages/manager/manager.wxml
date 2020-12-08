@@ -10,6 +10,11 @@
   <view bindtap="goto_event_release" class="btn_normal">活动发布</view>
   <view bindtap="goto_article_release" class="btn_normal">资讯发布</view>
   <view bindtap="goto_progress_release" class="btn_normal">日志发布</view>
-  <view bindtap="goto_device_add" class="btn_normal">添加设备</view>
+  <view bindtap="goto_device_manage" class="btn_normal">添加设备</view>
 </view>
-
+<view class="btn_align">
+  <view bindtap="goto_bicycle_manage" class="btn_normal">车辆管理</view>
+  <view bindtap="goto_" class="btn_normal"></view>
+  <view bindtap="goto_" class="btn_normal"></view>
+  <view bindtap="goto_" class="btn_normal"></view>
+</view>

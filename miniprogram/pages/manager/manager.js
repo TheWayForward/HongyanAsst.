@@ -83,9 +83,15 @@ Page({
     })
   },
 
-  goto_device_add: function(){
+  goto_device_manage: function(){
     wx.navigateTo({
       url: '../manager/device_manage/device_manage',
+    })
+  },
+
+  goto_bicycle_manage: function(){
+    wx.navigateTo({
+      url: '../manager/bicycle_manage/bicycle_manage',
     })
   }
 })

@@ -1,6 +1,5 @@
 const app = getApp();
 const db = wx.cloud.database();
-var util = require("../../utils/util");
 
 Page({
   data: {
@@ -207,7 +206,7 @@ Page({
         })
         var view = res.data[0].view + 1;
         wx.cloud.callFunction({
-          name:'add_view',
+          name:'add_article_view',
           data:{
             taskId: app.globalData.article._id,
             view: view

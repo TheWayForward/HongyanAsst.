@@ -14,7 +14,7 @@
 			<view class="weui-panel__bd" style="border-bottom: 1px solid #F5F5F5;"  wx:for="{{coming_event}}">
 				<view class="weui-media-box weui-media-box_appmsg">
 					<view class="weui-cell__hd rounded-10 shadow" style="position: relative; margin-right: 10px;">
-						<image class="rounded-10 shadow" src="{{item.poster}}" mode="aspectFill" style="width: 115rpx; height: 115rpx; display: block;" hidden="{{!is_loading_hide}}"></image>
+						<image class="rounded-10 shadow" src="{{item.poster}}" mode="aspectFill" style="width: 115rpx; height: 115rpx; display: block;" hidden="{{!is_loading_hide}}" data-action="{{item.poster}}" bindtap="preview"></image>
 						<text class="weui-badge" style="position: absolute; top: -0.4em; right: -0.4em;" hidden="{{item.participants_count}}">{{item.participants_count}}</text>
 					</view>
 					<view class="weui-media-box__bd">
@@ -22,6 +22,7 @@
 						<view class="weui-media-box__desc" data-action="{{item}}" bindtap="goto_event">{{item.detail}}</view>
 						<view class="weui-media-box__info__meta mt-5" data-action="{{item}}" bindtap="goto_event">🕒 {{item.date}}</view>
 						<view class="weui-media-box__info__meta mt-5" data-action="{{item}}" bindtap="goto_event">🚴‍♂️ {{item.leader}}</view>
+						<view class="weui-media-box__info__meta mt-5" data-action="{{item}}" bindtap="goto_event">👁️ {{item.view}}</view>
 					  <view class="weui-media-box__info__meta weui-media-box__info__meta_extra"></view>
 					</view>
 				</view>
@@ -34,7 +35,7 @@
 			<view class="weui-panel__bd" style="border-bottom: 1px solid #F5F5F5;"  wx:for="{{current_event}}">
 				<view class="weui-media-box weui-media-box_appmsg">
 					<view class="weui-cell__hd rounded-10 shadow" style="position: relative; margin-right: 10px;">
-						<image class="rounded-10 shadow" src="{{item.poster}}" mode="aspectFill" style="width: 115rpx; height: 115rpx; display: block;" hidden="{{!is_loading_hide}}"></image>
+						<image class="rounded-10 shadow" src="{{item.poster}}" mode="aspectFill" style="width: 115rpx; height: 115rpx; display: block;" hidden="{{!is_loading_hide}}" data-action="{{item.poster}}" bindtap="preview"></image>
 						<text class="weui-badge" style="position: absolute; top: -0.4em; right: -0.4em;" hidden="{{item.participants_count}}">{{item.participants_count}}</text>
 					</view>
 					<view class="weui-media-box__bd">
@@ -42,6 +43,7 @@
 						<view class="weui-media-box__desc" data-action="{{item}}" bindtap="goto_event">{{item.detail}}</view>
 						<view class="weui-media-box__info__meta mt-5" data-action="{{item}}" bindtap="goto_event">🕒 {{item.date}}</view>
 						<view class="weui-media-box__info__meta mt-5" data-action="{{item}}" bindtap="goto_event">🚴‍♂️ {{item.leader}}</view>
+						<view class="weui-media-box__info__meta mt-5" data-action="{{item}}" bindtap="goto_event">👁️ {{item.view}}</view>
 					  <view class="weui-media-box__info__meta weui-media-box__info__meta_extra"></view>
 					</view>
 				</view>
@@ -54,7 +56,7 @@
 			<view class="weui-panel__bd" style="border-bottom: 1px solid #F5F5F5;"  wx:for="{{previous_event}}">
 				<view class="weui-media-box weui-media-box_appmsg">
 					<view class="weui-cell__hd rounded-10 shadow" style="position: relative; margin-right: 10px;">
-						<image class="rounded-10 shadow" src="{{item.poster}}" mode="aspectFill" style="width: 115rpx; height: 115rpx; display: block;"></image>
+						<image class="rounded-10 shadow" src="{{item.poster}}" mode="aspectFill" style="width: 115rpx; height: 115rpx; display: block;" data-action="{{item.poster}}" bindtap="preview"></image>
 						<text class="weui-badge" style="position: absolute; top: -0.4em; right: -0.4em;">{{item.participants_count}}</text>
 					</view>
 					<view class="weui-media-box__bd">
@@ -62,6 +64,7 @@
 						<view class="weui-media-box__desc" data-action="{{item}}" bindtap="goto_event">{{item.detail}}</view>
 						<view class="weui-media-box__info__meta mt-5" data-action="{{item}}" bindtap="goto_event">🕒 {{item.date}}</view>
 						<view class="weui-media-box__info__meta mt-5" data-action="{{item}}" bindtap="goto_event">🚴‍♂️ {{item.leader}}</view>
+						<view class="weui-media-box__info__meta mt-5" data-action="{{item}}" bindtap="goto_event">👁️ {{item.view}}</view>
 						<view class="weui-media-box__info__meta" data-action="{{item}}" bindtap="goto_event"></view>
 						<view class="weui-media-box__info__meta weui-media-box__info__meta_extra"></view>
 					</view>

@@ -36,7 +36,7 @@
                     <view class="weui-label">APIKey</view>
                 </view>
                 <view class="weui-cell__bd">
-                    <input class="weui-input" bindinput="input_apikey" placeholder="填写平台设备密钥"/>
+                    <input class="weui-input" bindinput="input_apikey" password="true" placeholder="填写平台设备密钥"/>
                 </view>                
             </view>
         </view> 
