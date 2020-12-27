@@ -11,11 +11,10 @@
 </view>
 
 <!--search bar-->
-<view class="" style="position:fixed;width:100%">
+<view style="position:fixed;width:100%">
   <view class="search_align rounded-10 d-flex">
     <image src="../../images/search.png" mode="widthFill" style="height:70rpx;width:90rpx;margin-left:10rpx;margin-right:20rpx;"></image>
     <input placeholder="按题目或标签搜索资讯" class="input" bindinput="input">
-      
     </input>
   </view>
 </view>
@@ -35,7 +34,7 @@
       </view>
       <!--overview-->
       <view class="overview">
-        <image src="../../images/view.png" style="width: 35rpx;height: 20rpx;" bindtap="preview" data-action="{{item.thumbnail}}"></image>
+        <image src="../../images/view.png" class="shadow-filter" style="width: 35rpx;height: 20rpx;" bindtap="preview" data-action="{{item.thumbnail}}"></image>
         <view class="my_white" style="line-height:20rpx;margin-left:10rpx">{{item.view}}</view>
       </view>
       <!--bottom info-->
@@ -58,4 +57,7 @@
 </view>
 </view>
 
-<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
+<view class="weui-footer">
+  <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
+  <view class="weui-footer__text" class="mb-20">{{total_result}}</view>
+</view>

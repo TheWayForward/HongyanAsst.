@@ -505,7 +505,8 @@ Page({
                     poster: files_cloud_url,
                     snapshots: [],
                     snapshots_count: 0,
-                    time: time
+                    time: time,
+                    view: 0
                   }
                 })
                 app.globalData.user.my_event.push({

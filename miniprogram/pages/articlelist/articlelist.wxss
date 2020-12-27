@@ -8,19 +8,6 @@
   justify-content: flex-start;
 }
 
-.search_align{
-  background: #F6F6F6;
-  padding:20rpx 20rpx 20rpx 20rpx;
- }
-
-.input{
-  background: gainsboro;
-  border-radius: 60rpx;
-  height: 70rpx;
-  width: 100%;
-  padding:0rpx 20rpx 0rpx 20rpx;
-}
-
 .goTop{
   position: fixed;
   bottom: 20px;
@@ -99,6 +86,7 @@
 
 .my_white{
   color: white;
+  text-shadow: 0px 2px 1px #555;
 }
 
 .my_big{

@@ -8,6 +8,7 @@ Page({
     showTop: true,
     isHide: true,
     is_loading_hide: false,
+    total_result: "加载中...",
     loading_animation: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1587724074005&di=b3800cdcb75980d4dadda205e2db7329&imgtype=0&src=http%3A%2F%2F3580.wangid.com%2Ftemplate_xin%2Fmingxingbao%2Fimg%2Fmxb.gif",
     hnode: [{
       _id: "1",
@@ -71,6 +72,7 @@ Page({
                 articles: arrayContainer,
                 search_articles: arrayContainer,
                 isHide: false,
+                total_result: `共${arrayContainer.length}篇资讯`
               })
             }
           }
@@ -161,7 +163,8 @@ Page({
     if(!str)
     {
       this.setData({
-        search_articles: that.data.articles
+        search_articles: that.data.articles,
+        total_result: `共${that.data.articles.length}篇资讯`
       })
     }
     else
@@ -171,15 +174,32 @@ Page({
       })
       var list = [];
       var search_list = [];
+      var invalid_count = 0;
       list = this.data.articles;
       for(var i = 0; i < list.length;i++){
         if(list[i].title.indexOf(str) >= 0 || list[i].tag.indexOf(str) >= 0)
         {
           search_list.push(list[i]);
-          this.setData({
-            search_articles: search_list
-          })
         }
+        if(list[i].title.indexOf(str) == -1 && list[i].tag.indexOf(str) == -1)
+        {
+          invalid_count++;
+        }
+      }
+      this.setData({
+        search_articles: search_list
+      })
+      if(invalid_count == list.length)
+      {
+        this.setData({
+          total_result: "未找到相关资讯"
+        })
+      }
+      else
+      {
+        this.setData({
+          total_result: `共${search_list.length}篇资讯`
+        })
       }
     }
   },

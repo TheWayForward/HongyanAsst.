@@ -325,3 +325,16 @@ page {
   transform: scale(0.95);
   transition: 0.1s ease;
 }
+
+.search_align{
+  background: #F6F6F6;
+  padding:20rpx 20rpx 20rpx 20rpx;
+ }
+
+.input{
+  background: gainsboro;
+  border-radius: 60rpx;
+  height: 70rpx;
+  width: 100%;
+  padding:0rpx 20rpx 0rpx 20rpx;
+}
