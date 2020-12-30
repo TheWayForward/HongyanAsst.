@@ -5,8 +5,9 @@ var util = require("utils/util");
 var dayTime = util.formatTime(new Date());
 
 App({
-
+  
   onLaunch: function () {
+    console.log("new collaborator");
     var that = this;
     wx.showLoading({
       title: '加载中',
