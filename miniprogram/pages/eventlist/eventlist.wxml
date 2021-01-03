@@ -1,10 +1,3 @@
-<!--loading animation-->
-<view class="cview" style="margin-top:200rpx;" hidden="{{!isHide}}">
-  <view wx:for="{{hnode}}" wx:key="_id" class="html">
-    <rich-text class="html" selectable="true" nodes='{{item.node}}'></rich-text>
-  </view>
-</view>
-
 <!--main list, coming and previous-->
 <view class="page" hidden="{{isHide}}">
 	<view class="page__bd" style="overflow:hidden; border-radius:50rpx; border: 1px solid #F5F5F5;">

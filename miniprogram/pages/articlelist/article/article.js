@@ -27,15 +27,13 @@ Page({
     input_value: "",
     details: "",
     time: "",
-    hnode: [{
-      _id: "1",
-      index_id: "1",
-      node: '<img style="border-radius:15px; width: 862px !important; height: auto !important; vertical-align: middle; visibility: visible !important; max-width: 100%; " src="http://m.qpic.cn/psc?/V10ldMks1Z5QlW/bqQfVz5yrrGYSXMvKr.cqTPtnUN7zJo2Kz37cZDcRRVc2vsiXputSKNVw*8pyqRyadlrvjrlbmkEtqNUG8hmTkJqtNAHKJgK8D*TrAEQeuk!/b&bo=9AFpAfQBaQECCS0!&rf=viewer_4">'
-      },
-    ],
+    hnode: [],
   },
 
-  onLoad: function (options) {
+  onLoad: function () {
+    wx.showLoading({
+      title: '资讯加载中',
+    })
     var that = this;
     var article_id = app.globalData.article._id;
     //get article by id
@@ -59,7 +57,7 @@ Page({
           title: res.data[0].title,
         })
         //comment division
-        var comment = res.data[0].comment;
+        var comment = res.data[0].comment.reverse();
         var comment_temp_1 = [];
         var comment_temp_2 = [];
         //dividing comments into 2 groups
@@ -84,6 +82,9 @@ Page({
               event_show: res.data[0]
             })
           }
+        })
+        wx.hideLoading({
+          success: (res) => {},
         })
         that.setData({
           _id: res.data[0]._id,
@@ -114,6 +115,9 @@ Page({
               title: '未授权用户信息',
               icon: 'none',
               duration: 2000,
+            })
+            that.setData({
+              comment_count: `${that.data.comment_count}，授权用户信息方可评论`
             })
           }
         })
@@ -250,6 +254,7 @@ Page({
         userinfo: e.detail.userInfo,
         is_comment_submission_hide: false
       })
+      this.onLoad();
     }
   },   
 

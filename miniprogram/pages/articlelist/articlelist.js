@@ -11,11 +11,13 @@ Page({
     isHide: true,
     is_loading_hide: false,
     total_result: "加载中...",
-    loading_animation: app.globalData.cycling_animation,
     input_value: ""
   },
 
   onLoad: function() {
+    wx.showLoading({
+      title: '资讯加载中',
+    })
     var that = this;
     //maximum batch 5, we create a batch getter
     var batchTimes;
@@ -51,6 +53,9 @@ Page({
                 search_articles: arrayContainer,
                 isHide: false,
                 total_result: `共${arrayContainer.length}篇资讯`
+              })
+              wx.hideLoading({
+                success: (res) => {},
               })
             }
           }

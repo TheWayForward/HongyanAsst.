@@ -1,8 +1,3 @@
-<!--loading animation-->
-<view class="loading_animation_align" style="margin-top:200rpx;" hidden="{{!isHide}}">
-  <image src="../../images/loading.gif" mode="aspectFill" class="loading_animation"></image>
-</view>
-
 <!--to top button-->
 <view hover-class="hv" hover-stay-time="30">
   <image src='image/top.png' class='go_top shadow-filter' hidden='{{show_top}}' bindtap='go_top'/>

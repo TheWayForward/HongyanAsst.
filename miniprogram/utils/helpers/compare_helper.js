@@ -1,11 +1,13 @@
+//versatile comparison
 function compare(p){
   return function(m,n){
     var a = m[p];
     var b = n[p];
-    return a-b;
+    return a - b;
   }
 };
 
+//version comparison
 function compare_version(ver1,ver2){
   ver1 = ver1.split(".");
   ver2 = ver2.split(".");
@@ -18,7 +20,16 @@ function compare_version(ver1,ver2){
   return ver1_weight > ver2_weight ? false : true;
 }
 
+//time comparison
+function compare_time_for_event(event_time,now){
+  var oneday = 86400000;
+  if(now - event_time >= oneday) return "previous_event";
+  else if(event_time - now >= oneday) return "coming_event";
+  else return "current_event";
+}
+
 module.exports = {
   compare: compare,
-  compare_version: compare_version
+  compare_version: compare_version,
+  compare_time_for_event: compare_time_for_event
 }

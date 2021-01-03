@@ -1,7 +1,6 @@
 const app = getApp();
 const db = wx.cloud.database();
 var d = new Date();
-var files_cloud_url = "";
 
 Page({
 
@@ -101,51 +100,30 @@ Page({
     })
   },
 
-  /**
-   * Lifecycle function--Called when page is initially rendered
-   */
   onReady: function () {
 
   },
 
-  /**
-   * Lifecycle function--Called when page show
-   */
   onShow: function () {
 
   },
 
-  /**
-   * Lifecycle function--Called when page hide
-   */
   onHide: function () {
 
   },
 
-  /**
-   * Lifecycle function--Called when page unload
-   */
   onUnload: function () {
 
   },
 
-  /**
-   * Page event handler function--Called when user drop down
-   */
   onPullDownRefresh: function () {
 
   },
 
-  /**
-   * Called when page reach bottom
-   */
   onReachBottom: function () {
 
   },
 
-  /**
-   * Called when user click on the top right corner to share
-   */
   onShareAppMessage: function () {
 
   },
@@ -472,7 +450,7 @@ Page({
             cloudPath,
             filePath,
             success: function(res){
-              files_cloud_url = res.fileID;
+              var files_cloud_url = res.fileID;
               //increment
               var count = db.collection("events").count();
               count.then(function(result){

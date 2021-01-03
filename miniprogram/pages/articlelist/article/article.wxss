@@ -85,4 +85,5 @@
   margin-right: 25rpx;
   text-indent: 25rpx;
   margin-top: -30rpx;
+  word-wrap: break-word;
 }

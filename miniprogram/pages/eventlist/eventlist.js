@@ -1,34 +1,22 @@
 const db = wx.cloud.database();
 const app = getApp();
-const now = new Date();
+var compare_helper = require("../../utils/helpers/compare_helper");
+var time_helper = require("../../utils/helpers/time_helper");
 
 Page({
 
-  /**
-   * Page initial data
-   */
   data: {
     isHide: true,
     is_loading_hide: false,
-    loading_animation: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1587724074005&di=b3800cdcb75980d4dadda205e2db7329&imgtype=0&src=http%3A%2F%2F3580.wangid.com%2Ftemplate_xin%2Fmingxingbao%2Fimg%2Fmxb.gif",
-    hnode: [{
-      _id: "1",
-      index_id: "1",
-      node: '<img style="border-radius:15px; width: 862px !important; height: auto !important; vertical-align: middle; visibility: visible !important; max-width: 100%; " src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1587724074005&di=b3800cdcb75980d4dadda205e2db7329&imgtype=0&src=http%3A%2F%2F3580.wangid.com%2Ftemplate_xin%2Fmingxingbao%2Fimg%2Fmxb.gif" crossorigin="anonymous" data-w="1080" data-type="jpeg" data-src="https://mmbiz.qpic.cn/mmbiz_jpg/VzFuMauwoqTc6bRD4ibOr9ib60UjMDe4jLVkxsI8zYVAibUfFdEibricL0C3fwrIFJlWCIAsZ0yULMvJgZggtOniaqGA/640?wx_fmt=jpeg" data-ratio="0.3740741" _width="862px" data-fail="0">'
-    },
-    ],
     events: [],
     previous_event: [],
     current_event: [],
     coming_event: []
   },
 
-  /**
-   * Lifecycle function--Called when page load
-   */
   onLoad: function (options) {
     wx.showLoading({
-      title: '获取活动中',
+      title: '活动加载中',
     })
     var that = this;
     //maximum batch 5, we create a batch getter
@@ -59,80 +47,28 @@ Page({
             x++;
             if(x == batchTimes)
             {
-              function compare(p){
-                return function(m,n){
-                  var a = m[p];
-                  var b = n[p];
-                  return a-b;
-                }
-              };
-              arrayContainer.sort(compare("_id"));
-              //arrayContainer.reverse();
-              //previous and coming, in accordance with time comparison
+              arrayContainer.sort(compare_helper.compare("time"));
+              //previous, current and coming, in accordance with time comparison
               var previous_event = [];
               var current_event = [];
               var coming_event = [];
               for(var i = 0; i < arrayContainer.length; i++){
-                var t = arrayContainer[i].time;
-                //reformat date, don't forget about the shit getMonth + 1
-                arrayContainer[i].date = t.getFullYear().toString() + "/" + (t.getMonth() + 1).toString() + "/" + t.getDate().toString();
-                //padstart function, adding zero to digits
-                function padstart(time){
-                  if(time.length == 1)
-                  {
-                    return ("0" + time);
-                  }
-                  else
-                  {
-                    return time;
-                  }
-                }
-                arrayContainer[i].date_time = padstart(t.getHours().toString()) + ":" + padstart(t.getMinutes().toString());
-                //reformat day
-                switch(t.getDay()){
-                  case(0):
-                    arrayContainer[i].day = "星期日";
-                  break;
-                  case(1):
-                    arrayContainer[i].day = "星期一";
-                  break;
-                  case(2):
-                    arrayContainer[i].day = "星期二";
-                  break;
-                  case(3):
-                    arrayContainer[i].day = "星期三";
-                  break;
-                  case(4):
-                    arrayContainer[i].day = "星期四";
-                  break;
-                  case(5):
-                    arrayContainer[i].day = "星期五";
-                  break;
-                  case(6):
-                    arrayContainer[i].day = "星期六";
-                  break;
-                  default:
-                    arrayContainer[i].day = "获取日期出错";
-                  break;
-                }
-                //there are bugs in date object transfer, so set up a millisecond time in order to recover
-                arrayContainer[i].precise_time = Date.parse(t);
-                if(now - t >= (86400000) )
-                {
-                  previous_event.push(arrayContainer[i]);
-                }
-                else if((t - now < (86400000 / 2)) && ((now - t) < 86400000))
-                {
-                  current_event.push(arrayContainer[i]);
-                }
-                else
-                {
-                  coming_event.push(arrayContainer[i]);
+                arrayContainer[i].date = time_helper.format_time(arrayContainer[i].time).date;
+                arrayContainer[i].date_time = time_helper.format_time(arrayContainer[i].time).time;
+                arrayContainer[i].precise_time = time_helper.format_time(arrayContainer[i].time).precise_time;
+                arrayContainer[i].day = time_helper.format_time(arrayContainer[i].time).day_to_ch();
+                switch(compare_helper.compare_time_for_event(arrayContainer[i].time,new Date())){
+                  case("previous_event"):
+                    previous_event.push(arrayContainer[i]);
+                    break;
+                  case("current_event"):
+                    current_event.push(arrayContainer[i]);
+                    break;
+                  case("coming_event"):
+                    coming_event.push(arrayContainer[i]);
+                    break;
                 }
               }
-              previous_event.sort(compare("precise_time"));
-              current_event.sort(compare("precise_time"));
-              coming_event.sort(compare("precise_time"));
               that.setData({
                 events: arrayContainer,
                 previous_event: previous_event.reverse(),
@@ -150,9 +86,6 @@ Page({
     });
   },
 
-  /**
-   * Lifecycle function--Called when page is initially rendered
-   */
   onReady: function () {
 
   },
@@ -161,16 +94,10 @@ Page({
 
   },
 
-  /**
-   * Lifecycle function--Called when page hide
-   */
   onHide: function () {
 
   },
 
-  /**
-   * Lifecycle function--Called when page unload
-   */
   onUnload: function () {
 
   },
@@ -198,16 +125,10 @@ Page({
     setTimeout(refresh,2000);
   },
 
-  /**
-   * Called when page reach bottom
-   */
   onReachBottom: function () {
 
   },
 
-  /**
-   * Called when user click on the top right corner to share
-   */
   onShareAppMessage: function () {
 
   },
