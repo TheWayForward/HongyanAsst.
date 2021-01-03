@@ -110,6 +110,7 @@ App({
     })
 
     this.globalData = {};
+    console.log("new collaborator");
   },
 
   globalData:{
