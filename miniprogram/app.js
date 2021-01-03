@@ -7,6 +7,7 @@ var dayTime = util.formatTime(new Date());
 App({
   
   onLaunch: function () {
+    console.log("new collaborator");
     var that = this;
     wx.showLoading({
       title: '加载中',
@@ -110,7 +111,6 @@ App({
     })
 
     this.globalData = {};
-    console.log("new collaborator");
   },
 
   globalData:{
