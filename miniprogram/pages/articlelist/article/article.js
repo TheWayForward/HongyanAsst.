@@ -1,32 +1,32 @@
 const app = getApp();
 const db = wx.cloud.database();
-var util = require('../../../utils/util');
-var dayTime = util.formatTime(new Date());
-var article_title;
-var article_id;
+var time_helper = require('../../../utils/helpers/time_helper');
 
 Page({
 
-  /**
-   * Page initial data
-   */
   data: {
     _id: "",
-    time: " ",
-    author: " ",
-    view: " ",
-    title: " ",
+    time: "",
+    author: "",
+    view: 0,
+    title: "",
+    comment_count: "",
     isHide: true,
+    is_comment_submission_hide: true,
     is_granted: true,
+    show_top: true,
+    is_submission_available: true,
+    //double comment stream
     comment: [],
     comment_array_1: [],
     comment_array_2: [],
     event_show: {},
+    userinfo: {},
     avatar: "",
-    nickname: '',
-    input_value: '',
-    details: '',
-    time: '',
+    nickname: "",
+    input_value: "",
+    details: "",
+    time: "",
     hnode: [{
       _id: "1",
       index_id: "1",
@@ -35,38 +35,10 @@ Page({
     ],
   },
 
-  /**
-   * Lifecycle function--Called when page load
-   */
   onLoad: function (options) {
     var that = this;
-    wx.getUserInfo({
-      success: (res) => {
-        that.setData({
-          avatar: res.userInfo.avatarUrl,
-          nickname: res.userInfo.nickName
-        })
-      },
-      fail: (res) => {
-        wx.showToast({
-          title: '未授权用户信息',
-          icon: 'none',
-          duration: 2000,
-          success: function(res){
-            function reject(){
-              wx.navigateBack({
-                complete: (res) => {},
-              })
-            }
-            setTimeout(reject,500);
-          }
-        })
-        that.setData({
-          
-        })
-      }
-    })
-    article_id = app.globalData.article._id;
+    var article_id = app.globalData.article._id;
+    //get article by id
     db.collection("articles").where({
       _id: article_id
     }).field({
@@ -83,6 +55,10 @@ Page({
     }).get({
       success:function(res){
         app.globalData.article = res.data[0];
+        wx.setNavigationBarTitle({
+          title: res.data[0].title,
+        })
+        //comment division
         var comment = res.data[0].comment;
         var comment_temp_1 = [];
         var comment_temp_2 = [];
@@ -93,15 +69,7 @@ Page({
           else
             comment_temp_2.push(comment[i]);
         }
-        var tempnode = [{
-          _id: "1",
-          index_id: "1",
-          node: res.data[0].node
-        }]
-        wx.setNavigationBarTitle({
-          title: res.data[0].title,
-        })
-        console.log(app.globalData.article);
+        //get event bound
         db.collection("events").where({
           _id: res.data[0].event__id
         }).field({
@@ -111,24 +79,12 @@ Page({
           participants_count: true
         }).get({
           success: function(res){
-            var t = res.data[0].time;
-            res.data[0].date = t.getFullYear().toString() + "/" + (t.getMonth() + 1).toString() + "/" + t.getDate().toString();
+            res.data[0].date = time_helper.format_time(res.data[0].time).date;
             that.setData({
               event_show: res.data[0]
             })
           }
         })
-        var t = res.data[0].date;
-        function padstart(time){
-          if(time.length == 1)
-          {
-            return ("0" + time);
-          }
-          else
-          {
-            return time;
-          }
-        }
         that.setData({
           _id: res.data[0]._id,
           title: res.data[0].title,
@@ -136,64 +92,90 @@ Page({
           comment: res.data[0].comment,
           comment_array_1: comment_temp_1,
           comment_array_2: comment_temp_2,
-          time: t.getFullYear().toString() + "/" + (t.getMonth() + 1).toString() + "/" + t.getDate().toString() + " " + padstart(t.getHours().toString()) + ":" + padstart(t.getMinutes().toString()),
-          hnode: tempnode,
+          comment_count: comment[0] ? `共${comment.length}条评论` : "暂无评论",
+          time: time_helper.format_time(res.data[0].date).date_time,
+          hnode: [{
+            _id: "1",
+            index_id: "1",
+            node: res.data[0].node
+          }],
           view: res.data[0].view,
           isHide: false,
         })
-        
+        wx.getUserInfo({
+          success: (res) => {
+            that.setData({
+              userinfo: res.userInfo,
+              is_comment_submission_hide: false
+            })
+          },
+          fail: (res) => {
+            wx.showToast({
+              title: '未授权用户信息',
+              icon: 'none',
+              duration: 2000,
+            })
+          }
+        })
       }
     });
-    
-   
   },
 
-  /**
-   * Lifecycle function--Called when page is initially rendered
-   */
   onReady: function () {
+
   },
 
-  /**
-   * Lifecycle function--Called when page show
-   */
   onShow: function () {
     
   },
 
-  /**
-   * Lifecycle function--Called when page hide
-   */
   onHide: function () {
     
   },
 
-  /**
-   * Lifecycle function--Called when page unload
-   */
-  onUnload: function () {
-    this.setData({
-      hnode:0
+  onPageScroll: function(e){
+    if(e.scrollTop > 500)
+    {
+      this.setData({
+        show_top: false
+      })
+    }
+    else
+    {
+      //to top icon shown
+      this.setData({
+        show_top: true
+      })
+    }
+  },
+
+  onPullDownRefresh: function(){
+    var that = this;
+    wx.showLoading({
+      title: '资讯刷新中',
+      success: function(){
+      }
     })
+    function refresh(){
+      that.onLoad();
+      wx.hideLoading({
+        complete: (res) => {
+          wx.showToast({
+            title: '刷新成功',
+          })
+          wx.stopPullDownRefresh({
+            complete: (res) => {},
+          })
+        },
+      })
+    }
+    setTimeout(refresh,2000);
   },
 
-  /**
-   * Page event handler function--Called when user drop down
-   */
-  onPullDownRefresh: function () {
-    
-  },
-
-  /**
-   * Called when page reach bottom
-   */
   onReachBottom: function () {
 
   },
 
-  /**
-   * Called when user click on the top right corner to share
-   */
   onShareAppMessage: function () {
 
   },
@@ -205,9 +187,15 @@ Page({
     })
   },
 
-  input: function(e) {
+  input: function(e){
     this.setData({
       details:e.detail.value
+    })
+  },
+
+  go_top: function(){
+    wx.pageScrollTo({
+      scrollTop: 0
     })
   },
 
@@ -220,74 +208,50 @@ Page({
         cancelText: "取消",
         confirmText: "立即注册",
         success(res){
-          if(res.cancel)
-          {
-            return;
-          }
-          else
+          if(res.confirm)
           {
             wx.reLaunch({
-              url: "../user_profile/user_profile",
+              url: '../../register/register',
             })
           }
         }
       })
       return;
     }
-    console.log(e.currentTarget.dataset.action);
     var event_tapped = e.currentTarget.dataset.action;
     db.collection("events").where({
       _id: event_tapped._id
     }).get({
       success: function(res){
         app.globalData.event = res.data[0];
-        var t = res.data[0].time;
-        app.globalData.event.date = t.getFullYear().toString() + "/" + (t.getMonth() + 1).toString() + "/" + t.getDate().toString();
-        function padstart(time){
-          if(time.length == 1)
-          {
-            return ("0" + time);
-          }
-          else
-          {
-            return time;
-          }
-        }
-        app.globalData.event.date_time = padstart(t.getHours().toString()) + ":" + padstart(t.getMinutes().toString());
-        app.globalData.event.precise_time = t.getTime();
-        //reformat day
-        switch(t.getDay()){
-          case(0):
-            app.globalData.event.day = "星期日";
-          break;
-          case(1):
-            app.globalData.event.day = "星期一";
-          break;
-          case(2):
-            app.globalData.event.day = "星期二";
-          break;
-          case(3):
-            app.globalData.event.day = "星期三";
-          break;
-          case(4):
-            app.globalData.event.day = "星期四";
-          break;
-          case(5):
-            app.globalData.event.day = "星期五";
-          break;
-          case(6):
-            app.globalData.event.day = "星期六";
-          break;
-          default:
-            app.globalData.event.day = "获取日期出错";
-          break;
-        }
+        app.globalData.event.date = time_helper.format_time(res.data[0].time).date;
+        app.globalData.event.date_time = time_helper.format_time(res.data[0].time).date_time;
+        app.globalData.event.precise_time = time_helper.format_time(res.data[0].time).precise_time;
+        app.globalData.event.day = time_helper.format_time(res.data[0].time).weekday;
         wx.navigateTo({
           url: '../../eventlist/event/event',
         })
       }
     })
   },
+
+  get_userinfo: function(e){
+    console.log(e);
+    if(e.detail.errMsg == "getUserInfo:fail auth deny")
+    {
+      wx.showToast({
+        title: '授权失败',
+        duration: 2000
+      })
+    }
+    else
+    {
+      this.setData({
+        userinfo: e.detail.userInfo,
+        is_comment_submission_hide: false
+      })
+    }
+  },   
 
   submit_comment: function () {
     var that = this;
@@ -302,100 +266,76 @@ Page({
     }
     else
     {
-      var now = dayTime.toString();
-      now = now.slice(0,16);
-      var article_id = that.data._id;
-      var my_comment = new Object();
-      my_comment.avatar = that.data.avatar;
+      //show loading
+      wx.showLoading({
+        title: '评论提交中',
+      })
+      //disable the button to prevent from double-submission
+      this.setData({
+        is_submission_available: false
+      })
+      //initialize comment with detail
+      var my_comment = {};
+      my_comment.avatar = that.data.userinfo.avatarUrl;
+      my_comment.nickname = that.data.userinfo.nickName;
       my_comment.detail = that.data.details;
-      my_comment.name = that.data.nickname;
-      my_comment.time = dayTime.toString().slice(0,16);
+      my_comment.openid = app.globalData.openid;
+      my_comment.time = time_helper.format_time(new Date()).date_time;
       my_comment.len = 0;
-      var l = my_comment.detail.length;
-      console.log(my_comment);
-      if(l <= 20)
+      if(my_comment.detail.length <= 20)
       {
         my_comment.len = 200;
       }
       else
       {
-        my_comment.len = 600 * Math.floor(l / 10) / Math.sqrt(l) ;
+        my_comment.len = 600 * Math.floor(my_comment.detail.length / 10) / Math.sqrt(my_comment.detail.length) ;
       }
-      var count = 0;
-      var comment = that.data.comment;
-      for(var i = 0; i< comment.length; i++)
-      {
-        if(comment[i].name == my_comment.name)
-        {
-          count++;
+      wx.cloud.callFunction({
+        name:'s_check_text',
+        //sensitivity check
+        data:{
+          text:that.data.details
         }
-      }
-      if(count >= 3)
-      {
-        wx.showModal({
-          cancelColor: 'grey',
-          title:'提示',
-          content:'抱歉，您评论过多，未提交该评论。',
-          confirmText:'继续阅读',
-          success: function (res) {
-            if (res.cancel) 
-            {
-            }  
-            else {
-              wx.pageScrollTo({
-                scrollTop: 0,
+      }).then(res => {
+        var check = res.result.code
+        if(check == 200)
+        {
+          var comment = that.data.comment;
+          comment.push(my_comment);
+          wx.cloud.callFunction({
+            name: "add_article_comment",
+            data: {
+              //get article by id
+              taskId: that.data._id,
+              my_comment: comment
+            },
+            success(res){
+              that.onLoad();
+              wx.hideLoading({
+                success: (res) => {
+                  wx.showToast({
+                    title: '提交成功',
+                    duration: 2000
+                  })
+                },
+              })
+              that.setData({
+                is_submission_available: true,
+                input_value: "",
+                details: ""
               })
             }
-          },
-        })
-      }
-      else
-      {
-        wx.showLoading({
-          title: '评论提交中',
-        })
-        wx.cloud.callFunction({
-          name:'s_check_text',
-          data:{
-          text:that.data.details
-          }
-        }).then(res => {
-          var check = res.result.code
-          if(check == 200)
-          {
-            comment.push(my_comment);
-            wx.cloud.callFunction({
-              name:'add_comment',
-              data:{
-                taskId: article_id.toString(),
-                my_comment: comment,
-              }
-            }).then(res => {
-              wx.hideLoading({
-                complete: (res) => {},
-              })
-              wx.showToast({
-                title: '提交成功',
-                duration: 2000,
-                success: function(){
-                  that.setData({
-                    input_value: ''
-                  })
-                  setTimeout(that.onLoad,2000);
-                }
-              })
-            })
-          }
-          else
-          {
-            wx.showToast({
-              title: '评论包含敏感字',
-              icon: 'none',
-              duration: 3000
-            })
-          }
-        })
-      }
+          })
+        }
+        else
+        {
+          wx.showToast({
+            title: '评论包含敏感字',
+            icon: 'none',
+            duration: 3000
+          })
+        }
+      })
      } 
   }
 })

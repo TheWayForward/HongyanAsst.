@@ -1,47 +1,37 @@
 wx.cloud.init();
-const app = getApp();
 const db = wx.cloud.database();
-var util = require("utils/util");
-var dayTime = util.formatTime(new Date());
+var compare_helper = require("utils/helpers/compare_helper");
 
 App({
-  
+
   onLaunch: function () {
     var that = this;
+    //loading animation
     wx.showLoading({
       title: '加载中',
     })
+
+    //init cloud environment
     wx.cloud.init({
       env: 'hongyancrew-pvmj1',
       traceUser:true
     })
-    wx.login({
-      success: res => {
-      }
-    })
+
+    //cannot be done when user info is unauthorized
     wx.getSetting({
       success: res => {
         if (res.authSetting['scope.userInfo']) {
           wx.getUserInfo({
             success: res => {
               console.log(res.userInfo);
-              this.globalData.userInfo = res.userInfo,
-              this.globalData.date = dayTime.slice(0,11)
+              this.globalData.user_info = res.userInfo
             }
           })
         }
       }
     })
 
-    if (!wx.cloud) {
-      console.error('nocloud')
-    } else {
-      wx.cloud.init({
-        traceUser: true,
-      })
-    }
-
-    //get inside user info
+    //get account info from database
     wx.cloud.callFunction({
       name:'get_openid',
     }).then(res => {
@@ -57,32 +47,27 @@ App({
           if(res.data[0])
           {
             var user = res.data[0];
-            var t = new Date(user.birthday);
-            //giving birthday string
-            user.birthday_string = t.getFullYear().toString() + "/" + (t.getMonth() + 1).toString() + "/" + t.getDate().toString();
             //sorting event to time decending
             for(var i = 0; i < user.my_event.length; i++){
               user.my_event[i].precise_time = Date.parse(user.my_event[i].date);
             }
-            function compare(p){
-              return function(m,n){
-                var a = m[p];
-                var b = n[p];
-                return a-b;
-              }
-            };
-            user.my_event.sort(compare("precise_time"));
-            user.my_event.reverse();
+            user.my_event.sort(compare_helper.compare("precise_time")).reverse();
+            //end processing
             that.globalData.user = user;
-            //set true in order to view
-            that.globalData.data_status = true;
           }
           //user do not exist
           else
           {
-            console.log("app: Do not exist");
-            //set true in order to register
-            that.globalData.data_status = true;
+            console.log("[app][user_validation]: Do not exist");
+            wx.hideLoading({
+              success: (res) => {
+                wx.showToast({
+                  title: '您尚未注册，将以游客模式登录',
+                  icon: 'none',
+                  duration: 3000
+                })
+              },
+            })
           }
           wx.hideLoading({
             complete: (res) => {},
@@ -91,49 +76,28 @@ App({
       });
     })
 
-    //get miniprogram version
-    db.collection("basic").where({
-      _id: "version"
-    }).get({
-      success: function(res){
-        that.globalData.miniprogram_version = res.data[0].version;
-      }
-    })
-
-    //get wechat version requirement
-    db.collection("basic").where({
-      _id: "wechat_version_min"
-    }).get({
-      success: function(res){
-        that.globalData.wechat_version_min = res.data[0].version;
-      }
-    })
-
+    //init globalData
     this.globalData = {};
   },
 
   globalData:{
     //miniprogram version
     miniprogram_version: "",
-    //current wechat version
+    //minimum wechat version supported
     wechat_version_min: "",
-    //device
-    height: 0,
-    //login status
-    data_status: false,
-    //date
-    date: "",
+    //clcying animation gif url
+    cycling_animation: "",
+    //device system info
+    system_info: {},
     //current user info
     user: {},
-    userInfo: null,
+    user_info: {},
+    openid: "",
     article: {},
+    //for page cancellation
     last_page_holder: "",
     //current event info
     event: {},
-    //loading animation
-    loading_animation: {
-      thumbnail: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1587724074005&di=b3800cdcb75980d4dadda205e2db7329&imgtype=0&src=http%3A%2F%2F3580.wangid.com%2Ftemplate_xin%2Fmingxingbao%2Fimg%2Fmxb.gif"
-    }
   },
 
 })

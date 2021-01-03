@@ -1,21 +1,18 @@
 const app = getApp();
 const db = wx.cloud.database();
+var compare_helper = require("../../utils/helpers/compare_helper");
+var time_helper = require("../../utils/helpers/time_helper");
 
 Page({
   data: {
     articles: [],
     search_articles: [],
-    showTop: true,
+    show_top: true,
     isHide: true,
     is_loading_hide: false,
     total_result: "加载中...",
-    loading_animation: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1587724074005&di=b3800cdcb75980d4dadda205e2db7329&imgtype=0&src=http%3A%2F%2F3580.wangid.com%2Ftemplate_xin%2Fmingxingbao%2Fimg%2Fmxb.gif",
-    hnode: [{
-      _id: "1",
-      index_id: "1",
-      node: '<img style="border-radius:15px; width: 862px !important; height: auto !important; vertical-align: middle; visibility: visible !important; max-width: 100%; " src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1587724074005&di=b3800cdcb75980d4dadda205e2db7329&imgtype=0&src=http%3A%2F%2F3580.wangid.com%2Ftemplate_xin%2Fmingxingbao%2Fimg%2Fmxb.gif" crossorigin="anonymous" data-w="1080" data-type="jpeg" data-src="https://mmbiz.qpic.cn/mmbiz_jpg/VzFuMauwoqTc6bRD4ibOr9ib60UjMDe4jLVkxsI8zYVAibUfFdEibricL0C3fwrIFJlWCIAsZ0yULMvJgZggtOniaqGA/640?wx_fmt=jpeg" data-ratio="0.3740741" _width="862px" data-fail="0">'
-    },
-    ],
+    loading_animation: app.globalData.cycling_animation,
+    input_value: ""
   },
 
   onLoad: function() {
@@ -31,7 +28,7 @@ Page({
         db.collection("articles").skip(i * 20).field({
           _id: true,
           author: true,
-          isAvailable: true,
+          is_available: true,
           thumbnail: true,
           title:true,
           tag: true,
@@ -45,29 +42,10 @@ Page({
             x++;
             if(x == batchTimes)
             {
-              function compare(p){
-                return function(m,n){
-                  var a = m[p];
-                  var b = n[p];
-                  return a-b;
-                }
-              };
-              function padstart(time){
-                if(time.length == 1)
-                {
-                  return ("0" + time);
-                }
-                else
-                {
-                  return time;
-                }
-              }
               for(var i = 0; i < arrayContainer.length; i++){
-                var t = arrayContainer[i].date;
-                arrayContainer[i].time = t.getFullYear().toString() + "/" + (t.getMonth() + 1).toString() + "/" + t.getDate().toString() + " " + padstart(t.getHours().toString()) + ":" + padstart(t.getMinutes().toString());
+                arrayContainer[i].time = time_helper.format_time(arrayContainer[i].date).date_time;
               }
-              arrayContainer.sort(compare("date"));
-              arrayContainer.reverse();
+              arrayContainer.sort(compare_helper.compare("date")).reverse();
               that.setData({
                 articles: arrayContainer,
                 search_articles: arrayContainer,
@@ -84,35 +62,27 @@ Page({
   onShow: function(){
     this.onLoad();
     var that = this;
+    //lazy load animation
     function set_loading_hide_true(){
       that.setData({
         is_loading_hide: true
       })
     }
-    setTimeout(set_loading_hide_true,1500);
-  },
-
-  onGetUserInfo: function(e) {
-    if (!this.data.logged && e.detail.userInfo) {
-      this.setData({
-        logged: true,
-        avatarUrl: e.detail.userInfo.avatarUrl,
-        userInfo: e.detail.userInfo
-      })
-    }
+    setTimeout(set_loading_hide_true,1000);
   },
 
   onPageScroll: function(e){
     if(e.scrollTop > 500)
     {
       this.setData({
-        showTop: false
+        show_top: false
       })
     }
     else
     {
+      //to top icon shown
       this.setData({
-        showTop: true
+        show_top: true
       })
     }
   },
@@ -140,18 +110,14 @@ Page({
     setTimeout(refresh,2000);
   },
 
-  showinfo: function(){
-    console.log(this.data.articles);
-  },
-
   preview: function (e) {
     wx.previewImage({
-      current: e.target.dataset.action,
-      urls: [e.target.dataset.action]
+      current: e.currentTarget.dataset.action,
+      urls: [e.currentTarget.dataset.action]
     })
   },
   
-  goTop: function(){
+  go_top: function(){
     wx.pageScrollTo({
       scrollTop: 0,
     })
@@ -187,7 +153,8 @@ Page({
         }
       }
       this.setData({
-        search_articles: search_list
+        search_articles: search_list,
+        input_value: e.detail.value
       })
       if(invalid_count == list.length)
       {
@@ -203,13 +170,22 @@ Page({
       }
     }
   },
-  //passing title and id
+
+  input_clear: function(){
+    var that = this;
+    if(!this.data.input_value) return;
+    this.setData({
+      input_value: "",
+      search_articles: that.data.articles,
+      total_result: `共${that.data.articles.length}篇资讯`
+    })
+  },
+
   goto_article: function(e){
     var article = e.currentTarget.dataset.action;
-    if(!article.isAvailable)
+    if(!article.is_available)
     {
       wx.showToast({
-        title: 'title',
         title: '资讯审核中',
         icon: 'none',
         duration: 2000
@@ -231,11 +207,8 @@ Page({
             taskId: app.globalData.article._id,
             view: view
            }
-           })
-          .then(res => {
-          })
+        })
       }
-    })
-    
+    }) 
   },
 })

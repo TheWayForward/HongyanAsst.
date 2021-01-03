@@ -1,20 +1,12 @@
 const app = getApp();
 const db = wx.cloud.database();
+var compare_helper = require("../../utils/helpers/compare_helper");
 
 Page({
   data: {
-    en: "loading...",
     ch: "加载中...",
-    articles: [],
-    search_articles: [],
     showTop: true,
     isHide: true,
-    hnode: [{
-      _id: "1",
-      index_id: "1",
-      node: '<img style="border-radius:15px; width: 862px !important; height: auto !important; vertical-align: middle; visibility: visible !important; max-width: 100%; " src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1587724074005&di=b3800cdcb75980d4dadda205e2db7329&imgtype=0&src=http%3A%2F%2F3580.wangid.com%2Ftemplate_xin%2Fmingxingbao%2Fimg%2Fmxb.gif" crossorigin="anonymous" data-w="1080" data-type="jpeg" data-src="https://mmbiz.qpic.cn/mmbiz_jpg/VzFuMauwoqTc6bRD4ibOr9ib60UjMDe4jLVkxsI8zYVAibUfFdEibricL0C3fwrIFJlWCIAsZ0yULMvJgZggtOniaqGA/640?wx_fmt=jpeg" data-ratio="0.3740741" _width="862px" data-fail="0">'
-    },
-    ],
     //version check
     wechat_version: "",
     wechat_version_min: "",
@@ -23,44 +15,33 @@ Page({
 
   onLoad: function() {
     var that = this;
-    wx.getUserInfo({
-      complete: (res) => {
-        app.globalData.userInfo = res.userInfo;
-      },
-    })
-    db.collection("basic").where({
-      _id: "wechat_version_min"
-    }).get({
-      success: function(res){
-        var wechat_version = wx.getSystemInfoSync().version;
-        var wechat_version_min = res.data[0].version;
-        that.setData({
-          wechat_version: wechat_version,
-          wechat_version_min: wechat_version_min
-        })
-        //compare version
-        function compare_version(ver1,ver2){
-          ver1 = ver1.split(".");
-          ver2 = ver2.split(".");
-          for(var i = 0; i < 3; i++){
-            ver1[i] = Number(ver1[i]);
-            ver2[i] = Number(ver2[i]);
-          }
-          var ver1_weight = ver1[0] * 1000 + ver1[1] * 100 + ver1[2];
-          var ver2_weight = ver2[0] * 1000 + ver2[1] * 100 + ver2[2];
-          return ver1_weight > ver2_weight ? false : true;
-        }
-        if(!compare_version(wechat_version_min,wechat_version))
-        {
-          that.setData({
-            update_required: true
-          })
-        }
+
+    //get device system info, such as batterylevel, screen, system version, etc.
+    wx.getSystemInfo({
+      success(res){
+        app.globalData.system_info = res;
       }
     })
-    this.setData({
-      wechat_version: wx.getSystemInfoSync().version,
-      wechat_version_min: app.globalData.wechat_version_min
+    
+    //get dynamic info
+    db.collection("basic").get({
+      success: function(res){
+        app.globalData.miniprogram_version = res.data[0].version;
+        app.globalData.wechat_version_min = res.data[1].version;
+        app.globalData.cycling_animation = res.data[2].url;
+        if(compare_helper.compare_version(app.globalData.system_info.version,app.globalData.wechat_version_min))
+        {
+          //system version lower than minimum version required
+          that.setData({
+            ch: `微信当前版本${app.globalData.system_info.version}，建议升级至${app.globalData.wechat_version_min}以上版本。`
+          })
+        }
+        else
+        {
+          //system version meets requirement
+
+        }
+      }
     })
   },
 
@@ -71,82 +52,38 @@ Page({
       {
         that.setData({
         ch: "欢迎使用测试版。",
-        en: "Welcome."
         })
       }
       else
       {
-        that.setData({
-          ch: '点击"我的车协"进行注册，方可使用。',
-          en: "Sign up before using."
-        })
+        if(!app.globalData.user_info)
+        {
+          that.setData({
+            ch: '点击"我的车协"进行注册，方可使用。',
+          })
+        }
       }
     }
     setTimeout(refresh,5000);
   },
 
-  onPageScroll: function(e){
-    if(e.scrollTop > 500)
-    {
-      this.setData({
-        showTop: false
-      })
-    }
-    else
-    {
-      this.setData({
-        showTop: true
-      })
-    }
-  },
-
-  showinfo: function(){
-    console.log(this.data.articles);
-  },
-
-  preview: function (e) {
-    wx.previewImage({
-      current: e.target.dataset.action,
-      urls: [e.target.dataset.action]
-    })
-  },
-
-  getUserInfo: function () {
+  onPullDownRefresh: function(){
     var that = this;
-    wx.login({
-      success: res => {
-      }
+    wx.showLoading({
+      title: '刷新中',
     })
-    wx.getSetting({
-      success:function(res){
-        if (res.authSetting['scope.userInfo']){
-          wx.getUserInfo({
-            success: res => {
-            }
-          })
-        }
-        else{
-          
-          wx.showToast({
-            title: '⊗您拒绝了授权',
-            icon:'none'
-          })
-        }
-      }
-    }),
-
-    function _getUserInfo() {
-    wx.getUserInfo({
-      success: function (res) {
-        console.log(res.data);
-      }
-    })
-    }
-  },
-  
-  goTop: function(){
-    wx.pageScrollTo({
-      scrollTop: 0,
+    that.onLoad();
+    that.onShow();
+    wx.stopPullDownRefresh({
+      success: (res) => {
+        wx.hideLoading({
+          success: (res) => {
+            wx.showToast({
+              title: '刷新成功',
+            })
+          },
+        })
+      },
     })
   },
 
@@ -164,7 +101,7 @@ Page({
   },
 
   goto_user_profile: function(){
-    if(!app.globalData.data_status)
+    if(!app.globalData.user_info)
     {
       wx.showToast({
         title: '暂未获取到用户信息',

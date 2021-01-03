@@ -138,9 +138,9 @@ Page({
     if(e.detail.errMsg == "getUserInfo:fail auth deny")
     {
       wx.showToast({
-        title: '请点击弹框右侧绿色按钮完成授权',
+        title: '授权失败',
         icon: 'none',
-        duration: 5000
+        duration: 2000
       })
     }
     else

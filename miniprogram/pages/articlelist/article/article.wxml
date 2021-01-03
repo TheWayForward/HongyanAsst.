@@ -1,27 +1,32 @@
 <view class="page">
 
-<view class="title" style="color:#333333">{{title}}</view>
-<view class="subalign">
-  <view class="subtitle" style="color:#576B95">{{author}}</view>
-  <view class="subtitle" style="color:#B7B7B7">{{time}}</view>
-</view>
-
-<view class="cview">
-  <view wx:for="{{hnode}}" wx:key="_id" class="html">
-  <parser html="{{item.node}}"></parser>
+  <!--to top button-->
+  <view hover-class="hv" hover-stay-time="30">
+    <image src='../image/top.png' class='go_top shadow-filter' hidden='{{show_top}}' bindtap='go_top'/>
   </view>
-</view>
 
-<view class="subalign" hidden="{{isHide}}">
-<view class="subtitle" style="color:#B7B7B7">阅读：{{view}}</view>
-</view>
+  <view class="title" style="color:#333333">{{title}}</view>
+  <view class="subalign">
+    <view class="subtitle" style="color:#576B95">{{author}}</view>
+    <view class="subtitle" style="color:#B7B7B7">{{time}}</view>
+  </view>
 
-<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot" hidden="{{isHide}}"></view>
-<view class="footer" hidden="{{isHide}}" wx:if="{{event_show._id}}">
-<view class="weui-footer">
-<view class="weui-footer__text">关联的活动</view>
-</view>
-<view class="weui-cells weui-cells_after-title" wx:if="{{event_show._id}}">
+  <view class="cview">
+    <view wx:for="{{hnode}}" wx:key="_id" class="html">
+    <parser html="{{item.node}}"></parser>
+    </view>
+  </view>
+
+  <view class="subalign" hidden="{{isHide}}">
+    <view class="subtitle" style="color:#B7B7B7">阅读：{{view}}</view>
+  </view>
+
+  <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot" hidden="{{isHide}}"></view>
+  <view class="footer" hidden="{{isHide}}" wx:if="{{event_show._id}}">
+  <view class="weui-footer">
+      <view class="weui-footer__text">关联的活动</view>
+  </view>
+  <view class="weui-cells weui-cells_after-title" wx:if="{{event_show._id}}">
       <view class="weui-cell weui-cell_access" hover-class="weui-cell_active">
         <view class="weui-cell__hd rounded-10 shadow" style="position: relative; margin-right: 10px;">
 						<image class="rounded-10 shadow" src="{{event_show.poster}}" mode="aspectFill" style="width: 115rpx; height: 115rpx; display: block;" data-action="{{event_show.poster}}" bindtap="preview"></image>
@@ -31,16 +36,23 @@
         <view class="weui-cell__ft weui-cell__ft_in-access" data-action="{{event_show}}" bindtap="goto_event">{{event_show.date}}</view>
       </view>
     </view>
-<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
-
+  <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
 </view>
 
-<view class="comment_submission_align" hidden="{{isHide}}">
-  <image class="shadow" src="{{avatar}}" style="height:60rpx; width:60rpx; border-radius:10rpx" data-action="{{avatar}}" bindtap="preview"></image>
-  <input style="background:#E9E9E9; width:490rpx; margin-left:15rpx; height:60rpx; border-radius:10rpx; font-size:25rpx; padding-left:20rpx; padding-right:20rpx" maxlength="200" bindinput="input" value="{{input_value}}" placeholder="您的评论通过审核后，将对所有用户可见"></input>
-  <view class="shadow submit_comment" style="height:60rpx; width:70rpx; background:#188FC8; margin-left:15rpx; border-radius:10rpx" hover-class="hv" hover-stay-time="30" bindtap="submit_comment">
-    <image src="image/submitcomment.png" style="height:40rpx; width:45rpx; margin-top:11rpx; margin-left:14rpx"></image>
+<!--comment submission-->
+<view class="comment_submission_align" hidden="{{is_comment_submission_hide}}">
+  <image class="comment_submission_avatar shadow" src="{{userinfo.avatarUrl}}" data-action="{{userinfo.avatarUrl}}" bindtap="preview"></image>
+  <input class="comment_submission_input" maxlength="200" bindinput="input" value="{{input_value}}" placeholder="在此输入您的评论，点击右侧按钮进行提交"></input>
+  <view class="comment_submission_box shadow" hover-class="hv" hover-stay-time="30" bindtap="submit_comment">
+    <button class="comment_submission_button" disabled="{{!is_submission_available}}">
+      <image class="comment_submission_button_image" src="image/submitcomment.png"></image>
+    </button>
   </view>
+</view>
+
+<!--get user info for comment submission-->
+<view class="user_info_grant_align" hidden="{{isHide}}">
+  <button open-type="getUserInfo" bindgetuserinfo="get_userinfo" class="weui-btn shadow mt-20 mb-20" style="background-color: #42A5F5;" hover-class="hv" hover-stay-time="30" hidden="{{!is_comment_submission_hide}}">授权用户信息</button>
 </view>
 
 <view class="comment_align" hidden="{{isHide}}">
@@ -48,7 +60,7 @@
 <view class="comment_container1">
 <view class="comment_inner_container1" wx:for="{{comment_array_2}}" wx:key="time" style="height:{{item.len}}rpx" hover-class="hv" hover-stay-time="30">
 <image src="{{item.avatar}}" class="avatar" data-action="{{item.avatar}}" bindtap="preview"></image>
-<view class="comment_name">{{item.name}}</view>
+<view class="comment_name">{{item.nickname}}</view>
 <view class="comment_time">{{item.time}}</view>
 <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot" style="width:300rpx; margin-top:20rpx"></view>
 <view class="comment_details">{{item.detail}}</view>
@@ -58,7 +70,7 @@
 <view class="comment_container1">
 <view class="comment_inner_container1" wx:for="{{comment_array_1}}" wx:key="time" style="height:{{item.len}}rpx" hover-class="hv" hover-stay-time="30">
 <image src="{{item.avatar}}" class="avatar" data-action="{{item.avatar}}" bindtap="preview"></image>
-<view class="comment_name">{{item.name}}</view>
+<view class="comment_name">{{item.nickname}}</view>
 <view class="comment_time">{{item.time}}</view>
 <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot" style="width:300rpx; margin-top:20rpx"></view>
 <view class="comment_details">{{item.detail}}</view>
@@ -66,6 +78,9 @@
 </view>
 
 </view>
-<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot" hidden="{{isHide}}"></view>
+  <view class="weui-footer" hidden="{{isHide}}">
+    <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
+    <view class="weui-footer__text" class="mb-20">{{comment_count}}</view>
+  </view>
 </view>
 

@@ -34,17 +34,6 @@
   width:90%;
 }
 
-.comment_submission_align{
-  margin-left: 38rpx;
-  display: flex;
-  margin-bottom: 50rpx;
-}
-
-.submit_comment:active{
-  transform: scale(0.95);
-  transition: 0.1s ease;
-}
-
 .comment_align{
   display: flex;
 }

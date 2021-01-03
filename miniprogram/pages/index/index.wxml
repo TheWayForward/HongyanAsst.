@@ -33,7 +33,7 @@
 </view>
 
 <!--footer-->
-<view class="footer mt-20" style="position:fixed; bottom: 30rpx; text-align: center; left: 0; right: 0; margin:0 auto;">
+<view class="footer bottom_fixed mt-20">
   <view class="weui-footer">
     <view class="weui-footer__links">
       <navigator url="../../pages/official/official" class="weui-footer__link">关于我们</navigator>
