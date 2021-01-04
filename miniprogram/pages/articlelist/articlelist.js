@@ -2,6 +2,7 @@ const app = getApp();
 const db = wx.cloud.database();
 var compare_helper = require("../../utils/helpers/compare_helper");
 var time_helper = require("../../utils/helpers/time_helper");
+var notification_helper = require("../../utils/helpers/notification_helper");
 
 Page({
   data: {
@@ -187,13 +188,20 @@ Page({
   },
 
   goto_article: function(e){
+    wx.showLoading({
+      title: '加载中'
+    })
     var article = e.currentTarget.dataset.action;
     if(!article.is_available)
     {
-      wx.showToast({
-        title: '资讯审核中',
-        icon: 'none',
-        duration: 2000
+      wx.hideLoading({
+        success: (res) => {
+          wx.showToast({
+            title: '资讯审核中',
+            icon: 'none',
+            duration: 2000
+          })
+        },
       })
       return;
     }
@@ -202,16 +210,30 @@ Page({
       _id: article._id
     }).get({
       success: function(res){
-        wx.navigateTo({
-          url: '../articlelist/article/article',
-        })
-        var view = res.data[0].view + 1;
         wx.cloud.callFunction({
           name:'add_article_view',
           data:{
             taskId: app.globalData.article._id,
-            view: view
-           }
+            view: res.data[0].view + 1
+          },
+          success(res){
+            console.log("[cloudfunction][add_article_view]: add successfully");
+            wx.hideLoading({
+              success: (res) => {
+                wx.navigateTo({
+                  url: '../articlelist/article/article',
+                })
+              },
+            })
+          },
+          fail(res){
+            console.log("[cloudfunction][add_article_view]: failed to add");
+            wx.hideLoading({
+              success: (res) => {
+                notification_helper.show_toast_without_icon("获取数据失败，请下拉刷新页面后访问资讯",2000)
+              },
+            })
+          }
         })
       }
     }) 

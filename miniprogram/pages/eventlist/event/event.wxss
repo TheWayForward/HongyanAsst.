@@ -4,6 +4,10 @@
 }
 
 .poster{
+  height: 520rpx;
+}
+
+.poster_image{
   filter: drop-shadow(0rpx 15rpx 10rpx #999999);
   margin: 22rpx;
   width: 94%;

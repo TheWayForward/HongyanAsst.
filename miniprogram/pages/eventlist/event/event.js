@@ -1,14 +1,16 @@
 const app = getApp();
 const db = wx.cloud.database();
+var compare_helper = require("../../../utils/helpers/compare_helper");
+var time_helper = require("../../../utils/helpers/time_helper");
+var notification_helper = require("../../../utils/helpers/notification_helper");
+var versatile_helper = require("../../../utils/helpers/versatile_helper");
 
 Page({
 
-  /**
-   * Page initial data
-   */
   data: {
     event: {},
     //toFixed cannot be applied in html
+    swiper: [],
     date: "加载中",
     distance: "加载中",
     //difficulty stars
@@ -16,8 +18,9 @@ Page({
     //participants
     participants: [],
     leader_openid: "",
-    tip: "点击展开",
+    tip: "▼",
     isHide: true,
+    is_participants_hide: true,
     can_sign: true,
     is_sign_up_hide: false,
     //button
@@ -25,10 +28,7 @@ Page({
     button_text:"加载中",
   },
 
-  /**
-   * Lifecycle function--Called when page load
-   */
-  onLoad: function (options) {
+  onLoad: function () {
     wx.showLoading({
       title: '加载中',
     })
@@ -41,19 +41,22 @@ Page({
       participants: true,
       leader_openid: true,
       snapshots_count: true,
+      snapshots: true,
       device: true
     }).get({
       success: function(res){
         event.participants = res.data[0].participants;
         event.leader_openid = res.data[0].leader_openid;
         event.snapshots_count = res.data[0].snapshots_count;
+        event.snapshots = res.data[0].snapshots;
         event.device = res.data[0].device;
-        console.log(event);
-        //app.globalData.event = event;
-        that.setData({
-          participants: res.data[0].participants,
-          leader_openid: res.data[0].leader_openid
-        })
+        event.swiper = [event.poster];
+        //set swiper image array
+        for(var i = 0; i < event.snapshots.length; i++){
+          event.swiper.push(event.snapshots[i].url);
+          if(i > 5) break;
+        }
+        //bold and hi-light
         for(var i = 0; i < res.data[0].participants.length; i++){
           //set default color as white
           event.participants[i].background = "#FFFFFF";
@@ -72,134 +75,44 @@ Page({
           }
         }
         that.setData({
-          participants: event.participants
+          event: event,
+          distance: event.distance.toFixed(2) + " km",
+          difficulty: versatile_helper.difficulty_to_stars(event.difficulty),
+          date: `${event.date}(${event.day})`,
+          participants: event.participants,
+          leader_openid: res.data[0].leader_openid,
+          can_sign: compare_helper.compare_time_for_event_sign(event.time, new Date()),
+          is_locate_permissible: compare_helper.compare_time_for_event_locate(event.time,new Date()) ? true : false,
+          button_text: compare_helper.compare_time_for_event_locate(event.time,new Date()) ? (event.snapshots_count ? `动态追踪(${event.snapshots_count})` : "动态追踪(暂无)") : "活动尚未开始",
+          isHide: false
         })
-        var now = new Date();
-        if((event.time - now) / 86400000 < 0.041)
-        {
-          //can't sign or un-sign after the hr before the event starts
-          that.setData({
-            can_sign: false
-          })
-        }
-        if((event.time - now) / 86400000 < 1)
-        {
-          //can enter locate page
-          that.setData({
-            is_locate_permissible: true
-          })
-          if(event.snapshots_count)
-          {
-            //totality
-            that.setData({
-            button_text: "动态追踪" + "(" + event.snapshots_count + ")"
-            })
-          }
-          else
-          {
-            //no snapshots yet
-            that.setData({
-            button_text: "动态追踪(暂无)"
-            })
-          }
-        }
-        else
-        {
-          that.setData({
-            //post time, cannot enter locate page
-            is_locate_permissible: false,
-            button_text: "活动尚未开始"
-          })
-        }
         wx.hideLoading({
-          complete: (res) => {},
+          success: (res) => {
+          },
         })
       }
     })
-    //giving stars
-    var difficulty = "";
-    switch(event.difficulty){
-      case(1):
-        difficulty = "★☆☆☆☆";
-      break;
-      case(2):
-        difficulty = "★★☆☆☆";
-      break;
-      case(3):
-        difficulty = "★★★☆☆";
-      break;
-      case(4):
-        difficulty = "★★★★☆";
-      break;
-      case(5):
-        difficulty = "★★★★★";
-      break;
-      default:
-        difficulty = "警告：未知难度！";
-      break;
-    }
-    var date = event.date + " (" + event.day + ")";
-    //if no participant, show "no participants yet"
-    if(!event.participants_count)
-    {
-      this.setData({
-        tip: "暂无"
+  },
+
+  onPullDownRefresh: function () {
+    wx.showLoading({
+      title: '活动刷新中',
+    })
+    var that = this;
+    function refresh(){
+      that.onLoad();
+      wx.hideLoading({
+        complete: (res) => {
+          wx.showToast({
+            title: '刷新成功',
+          })
+          wx.stopPullDownRefresh({
+            complete: (res) => {},
+          })
+        },
       })
     }
-    this.setData({
-      event: event,
-      distance: event.distance.toFixed(2) + " km",
-      difficulty: difficulty,
-      date: date,
-    })
-  },
-
-  /**
-   * Lifecycle function--Called when page is initially rendered
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * Lifecycle function--Called when page show
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * Lifecycle function--Called when page hide
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * Lifecycle function--Called when page unload
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * Page event handler function--Called when user drop down
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * Called when page reach bottom
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * Called when user click on the top right corner to share
-   */
-  onShareAppMessage: function () {
+    setTimeout(refresh,2000);
 
   },
 
@@ -213,21 +126,11 @@ Page({
 
   //show more participants
   show_participants: function(){
-    if(!this.data.event.participants_count) return;
-    if(this.data.isHide)
-    {
-      this.setData({
-        isHide: false,
-        tip: "收起"
-      })
-    }
-    else
-    {
-      this.setData({
-        isHide: true,
-        tip: "点击展开"
-      })
-    }
+    var that = this;
+    this.setData({
+      is_participants_hide: that.data.is_participants_hide ? false : true,
+      tip: that.data.is_participants_hide ? "▲" : "▼"
+    })
   },
 
   //sign up for the event

@@ -2,7 +2,7 @@
 
   <!--to top button-->
   <view hover-class="hv" hover-stay-time="30">
-    <image src='../image/top.png' class='go_top shadow-filter' hidden='{{show_top}}' bindtap='go_top'/>
+    <image src='../image/top.png' class='go_top' hidden='{{show_top}}' bindtap='go_top'/>
   </view>
 
   <view class="title" style="color:#333333">{{title}}</view>
@@ -45,7 +45,8 @@
   <input class="comment_submission_input" maxlength="200" bindinput="input" value="{{input_value}}" placeholder="在此输入您的评论，点击右侧按钮进行提交"></input>
   <view class="comment_submission_box shadow" hover-class="hv" hover-stay-time="30" bindtap="submit_comment">
     <button class="comment_submission_button" disabled="{{!is_submission_available}}">
-      <image class="comment_submission_button_image" src="image/submitcomment.png"></image>
+      <image class="comment_submission_button_image" src="image/submitcomment.png" hidden="{{!is_submission_available}}"></image>
+      <i class="weui-loading" hidden="{{is_submission_available}}"></i>
     </button>
   </view>
 </view>

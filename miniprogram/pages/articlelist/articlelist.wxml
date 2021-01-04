@@ -1,6 +1,6 @@
 <!--to top button-->
 <view hover-class="hv" hover-stay-time="30">
-  <image src='image/top.png' class='go_top shadow-filter' hidden='{{show_top}}' bindtap='go_top'/>
+  <image src='image/top.png' class='go_top' hidden='{{show_top}}' bindtap='go_top'/>
 </view>
 
 <!--search bar-->

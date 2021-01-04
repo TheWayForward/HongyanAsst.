@@ -2,12 +2,12 @@ const db = wx.cloud.database();
 const app = getApp();
 var compare_helper = require("../../utils/helpers/compare_helper");
 var time_helper = require("../../utils/helpers/time_helper");
+var notification_helper = require("../../utils/helpers/notification_helper");
 
 Page({
 
   data: {
     isHide: true,
-    is_loading_hide: false,
     events: [],
     previous_event: [],
     current_event: [],
@@ -24,7 +24,7 @@ Page({
     var count = db.collection("events").count();
     count.then(function(result){
       count = result.total;
-      batchTimes = Math.ceil(count/20);
+      batchTimes = Math.ceil(count / 20);
       var arrayContainer = [], x = 0;
       for(var i = 0; i < batchTimes; i++){
         db.collection("events").skip(i * 20).field({
@@ -86,22 +86,6 @@ Page({
     });
   },
 
-  onReady: function () {
-
-  },
-
-  onShow: function(){
-
-  },
-
-  onHide: function () {
-
-  },
-
-  onUnload: function () {
-
-  },
-
   onPullDownRefresh: function(){
     var that = this;
     wx.showLoading({
@@ -125,14 +109,6 @@ Page({
     setTimeout(refresh,2000);
   },
 
-  onReachBottom: function () {
-
-  },
-
-  onShareAppMessage: function () {
-
-  },
-
   preview: function (e) {
     wx.previewImage({
       current: e.target.dataset.action,
@@ -142,27 +118,38 @@ Page({
 
   //send data to event page
   goto_event: function(e){
+    wx.showLoading({
+      title: '活动加载中',
+    })
+    //get event from tap
     var event = e.target.dataset.action;
     //event date recovery
-    var d = new Date();
-    d.setTime(event.precise_time);
-    event.time = new Date();
-    event.time = d;
+    event.time = new Date(event.precise_time);
     app.globalData.event = event;
-    console.log(event);
-    var _id = event.id;
-    var view = event.view + 1;
-    wx.navigateTo({
-      url: '../eventlist/event/event',
-    })
     wx.cloud.callFunction({
-      name:'add_event_view',
-      data:{
+      name: 'add_event_view',
+      data: {
         taskId: app.globalData.event._id,
-        view: view
-       }
-       })
-      .then(res => {
-      })
+        view: ++event.view
+      },
+      success(res){
+        console.log("[cloudfunction][add_event_view]: add successfully");
+        wx.hideLoading({
+          success: (res) => {
+            wx.navigateTo({
+              url: '../eventlist/event/event',
+            })
+          },
+        })
+      },
+      fail(res){
+        console.log("[cloudfunction][add_event_view]: failed to add");
+        wx.hideLoading({
+          success: (res) => {
+            notification_helper.show_toast_without_icon("获取数据失败，请下拉刷新页面后访问活动",2000);
+          },
+        })
+      }
+    })
   }
 })

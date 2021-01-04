@@ -1,6 +1,7 @@
 const app = getApp();
 const db = wx.cloud.database();
 var compare_helper = require("../../utils/helpers/compare_helper");
+var notification_helper = require("../../utils/helpers/notification_helper");
 
 Page({
   data: {
@@ -15,7 +16,6 @@ Page({
 
   onLoad: function() {
     var that = this;
-
     //get device system info, such as batterylevel, screen, system version, etc.
     wx.getSystemInfo({
       success(res){
@@ -32,6 +32,7 @@ Page({
         if(compare_helper.compare_version(app.globalData.system_info.version,app.globalData.wechat_version_min))
         {
           //system version lower than minimum version required
+          console.log("[index]: wechat update required");
           that.setData({
             ch: `微信当前版本${app.globalData.system_info.version}，建议升级至${app.globalData.wechat_version_min}以上版本。`
           })
@@ -94,19 +95,13 @@ Page({
   },
 
   goto_gallery: function(){
-    wx.showToast({
-      title: '页面建设中！',
-      icon: 'none'
-    })
+    notification_helper.show_toast_without_icon("页面建设中",2000);
   },
 
   goto_user_profile: function(){
     if(!app.globalData.user_info)
     {
-      wx.showToast({
-        title: '暂未获取到用户信息',
-        icon: "none"
-      })
+      notification_helper.show_toast_without_icon("暂未获取到用户信息",2000);
     }
     else
     {
@@ -128,10 +123,7 @@ Page({
   goto_eventlist: function(){
     if(!app.globalData.user)
     {
-      wx.showToast({
-        title: '暂未获取到用户信息',
-        icon: "none"
-      })
+      notification_helper.show_toast_without_icon("暂未获取到用户信息",2000);
     }
     else
     {
@@ -144,19 +136,13 @@ Page({
   goto_manager: function(){
     if(!app.globalData.user)
     {
-      wx.showToast({
-        title: '暂未获取到用户信息',
-        icon: "none"
-      })
+      notification_helper.show_toast_without_icon("暂未获取到用户信息",2000);
     }
     else
     {
       if(!app.globalData.user.is_manager)
       {
-        wx.showToast({
-          title: '未授权管理员',
-          icon: 'none'
-        })
+        notification_helper.show_toast_without_icon("未授权管理员",2000);
       }
       else
       {
@@ -170,19 +156,14 @@ Page({
   goto_event_test: function(){
     if(!app.globalData.user)
     {
-      wx.showToast({
-        title: '暂未获取到用户信息',
-        icon: "none"
-      })
+      notification_helper.show_toast_without_icon("暂未获取到用户信息",2000);
       return;
     }
-    wx.showToast({
-      title: '加载中',
-      icon: 'loading',
-      duration: 3000
+    wx.showLoading({
+      title: 'title',
     })
     db.collection("events").where({
-      _id: "7"
+      name: "蟒山骑行"
     }).get({
       success: function(res){
         app.globalData.event = res.data[0];

@@ -1,12 +1,10 @@
 const app = getApp();
 const db = wx.cloud.database();
-var d = new Date();
+var time_helper = require("../../../utils/helpers/time_helper");
+
 
 Page({
 
-  /**
-   * Page initial data
-   */
   data: {
     user: {},
     //dynamic counter
@@ -19,9 +17,9 @@ Page({
     event_time_end: "23:59",
     event_time: "选择活动时间",
     current_date: {
-      year: d.getFullYear(),
-      month: d.getMonth() + 1,
-      date: d.getDate()
+      year: time_helper.format_time(new Date()).year,
+      month: time_helper.format_time(new Date()).month,
+      date: time_helper.format_time(new Date()).day
     },
     //event basic info
     name: "",
@@ -50,7 +48,7 @@ Page({
    */
   onLoad: function (options) {
     wx.showLoading({
-      title: '设备列表获取中'
+      title: '加载中'
     })
     this.setData({
       user: app.globalData.user,

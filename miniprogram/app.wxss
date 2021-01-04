@@ -157,6 +157,14 @@ page {
 }
 
 /*bootstrap*/
+.margin-0{
+  margin: 0;
+}
+
+.padding-0{
+  padding: 0;
+}
+
 .center{
   margin: 0 auto;
 }

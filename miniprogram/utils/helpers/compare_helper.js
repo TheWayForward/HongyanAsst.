@@ -28,8 +28,22 @@ function compare_time_for_event(event_time,now){
   else return "current_event";
 }
 
+function compare_time_for_event_sign(event_time,now){
+  var oneday = 86400000, onehour = 0.041
+  if((event_time - now) / oneday < onehour) return false;
+  else return true;
+}
+
+function compare_time_for_event_locate(event_time,now){
+  var oneday = 86400000;
+  if((event_time - now) / oneday < 1) return true;
+  else return false;
+}
+
 module.exports = {
   compare: compare,
   compare_version: compare_version,
-  compare_time_for_event: compare_time_for_event
+  compare_time_for_event: compare_time_for_event,
+  compare_time_for_event_sign: compare_time_for_event_sign,
+  compare_time_for_event_locate: compare_time_for_event_locate
 }
