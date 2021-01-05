@@ -1,7 +1,8 @@
 const app = getApp();
 const db = wx.cloud.database();
+var compare_helper = require("../../../utils/helpers/compare_helper");
 var time_helper = require("../../../utils/helpers/time_helper");
-
+var notification_helper = require("../../../utils/helpers/notification_helper");
 
 Page({
 
@@ -40,27 +41,19 @@ Page({
     files: [],
     //others
     tip: '点击"+"上传图片',
-    disabled: true
+    is_submission_available: false
   },
 
-  /**
-   * Lifecycle function--Called when page load
-   */
-  onLoad: function (options) {
+  onLoad: function () {
     wx.showLoading({
       title: '加载中'
-    })
-    this.setData({
-      user: app.globalData.user,
-      event_date_start: this.data.current_date.year + "-" + this.data.current_date.month + "-" + (this.data.current_date.date + 1),
-      event_date_end: (this.data.current_date.year + 1) + "-" + this.data.current_date.month + "-" + this.data.current_date.date
     })
     var that = this;
     var batchTimes;
     var count = db.collection("events").count();
     count.then(function(result){
       count = result.total;
-      batchTimes = Math.ceil(count/20);
+      batchTimes = Math.ceil(count / 20);
       var arrayContainer = [],x = 0;
       for(var i = 0; i < batchTimes; i++){
         db.collection("devices").skip(i * 20).get({
@@ -71,22 +64,18 @@ Page({
             x++;
             if(x == batchTimes)
             {
-              function compare(p){
-                return function(m,n){
-                  var a = m[p];
-                  var b = n[p];
-                  return a-b;
-                }
-              };
-              arrayContainer.sort(compare("_id"));
+              arrayContainer.sort(compare_helper.compare("_id"));
               var devices_name = [];
               for(var i = 0; i < arrayContainer.length; i++){
                 devices_name.push(arrayContainer[i].name);
               }
               that.setData({
+                user: app.globalData.user,
+                event_date_start: that.data.current_date.year + "-" + that.data.current_date.month + "-" + (that.data.current_date.date + 1),
+                event_date_end: (that.data.current_date.year + 1) + "-" + that.data.current_date.month + "-" + that.data.current_date.date,
                 devices: arrayContainer,
                 devices_name: devices_name,
-                disabled: false
+                is_submission_available: false
               })
               wx.hideLoading({
                 complete: (res) => {},
@@ -96,34 +85,6 @@ Page({
         })
       }
     })
-  },
-
-  onReady: function () {
-
-  },
-
-  onShow: function () {
-
-  },
-
-  onHide: function () {
-
-  },
-
-  onUnload: function () {
-
-  },
-
-  onPullDownRefresh: function () {
-
-  },
-
-  onReachBottom: function () {
-
-  },
-
-  onShareAppMessage: function () {
-
   },
 
   input_name: function(e){
@@ -227,18 +188,13 @@ Page({
 
   //input detail and change text counter
   input_detail: function(e){
-    var count = e.detail.value;
-    var c = count.length + "/" + 200;
     this.setData({
       detail : e.detail.value,
-      text_counter: c
+      text_counter: `${e.detail.value.length}/200`
     });
-    if(count.length == 200)
+    if(e.detail.value.length == 200)
     {
-      wx.showToast({
-        title: '文字数量已达上限',
-        icon: 'none'
-      })
+      notification_helper.show_toast_without_icon("文字数量已达上限",2000);
     }
   },
 
@@ -310,122 +266,97 @@ Page({
 
   //submit event info
   submit: function(){
-    var name = this.data.name;
-    var distance = this.data.distance;
-    var difficulty = this.data.difficulty;
-    var detail = this.data.detail;
-    var device = this.data.event_device;
-    var name_start = this.data.name_start;
-    var name_return = this.data.name_return;
-    var location_start = this.data.location_start;
-    var location_return = this.data.location_return;
+    var that = this;
+    that.setData({
+      is_submission_available: false
+    })
+    var name = that.data.name;
+    var distance = that.data.distance;
+    var difficulty = that.data.difficulty;
+    var detail = that.data.detail;
+    var device = that.data.event_device;
+    var name_start = that.data.name_start;
+    var name_return = that.data.name_return;
+    var location_start = that.data.location_start;
+    var location_return = that.data.location_return;
     //check
 
     //name, "/" excluded
     if(!name)
     {
-      wx.showToast({
-        title: '未填写活动名称',
-        icon: 'none'
-      })
+      notification_helper.show_toast_without_icon("未填写活动名称",2000);
       return;
     }
     else
     {
       if(name.indexOf("/") != -1)
       {
-        wx.showToast({
-          title: '活动名称不能含有"/"',
-          icon: 'none'
-        })
+        notification_helper.show_toast_without_icon("活动名称不能含有\"/\"",2000);
         return;
       }
     }
 
     //date
-    if(this.data.event_date == "发布期限为一年")
+    if(that.data.event_date == "发布期限为一年")
     {
-      wx.showToast({
-        title: '活动日期未选择',
-        icon: 'none'
-      })
+      notification_helper.show_toast_without_icon("活动日期未选择",2000);
       return;
     }
 
     //time
-    if(this.data.event_time == "选择活动时间")
+    if(that.data.event_time == "选择活动时间")
     {
-      wx.showToast({
-        title: '活动时间未选择',
-        icon: 'none'
-      })
+      notification_helper.show_toast_without_icon("活动时间未选择",2000);
       return;
     }
 
     //distance
     if(!distance)
     {
-      wx.showToast({
-        title: '距离格式不正确',
-        icon: 'none'
-      })
+      notification_helper.show_toast_without_icon("距离输入有误",2000);
       return;
     }
 
     //points
-    if((!this.data.location_start) || (!this.data.location_return))
+    if((!that.data.location_start) || (!that.data.location_return))
     {
-      wx.showToast({
-        title: '请选择起点与途经地标',
-        icon: 'none'
-      })
+      notification_helper.show_toast_without_icon("选择地点、途经地标未选择",2000);
       return;
     }
 
     //difficulty
     if(difficulty == "拖动选择")
     {
-      wx.showToast({
-        title: '活动难度未选择',
-        icon: 'none'
-      })
+      notification_helper.show_toast_without_icon("活动难度未选择",2000);
       return;
     }
 
     //device
-    if(!this.data.event_device.name)
+    if(!that.data.event_device.name)
     {
-      wx.showToast({
-        title: '定位设备未选择',
-        icon: 'none'
-      })
+      notification_helper.show_toast_without_icon("定位设备未选择",2000);
       return;
       
     }
 
     //detail
-    if(!this.data.detail)
+    if(!that.data.detail)
     {
-      wx.showToast({
-        title: '未填写活动简介',
-        icon: 'none'
-      })
+      notification_helper.show_toast_without_icon("活动简介未填写",2000);
       return;
     }
 
     //poster
-    if(!this.data.files.length)
+    if(!that.data.files.length)
     {
-      wx.showToast({
-        title: '未上传活动海报',
-        icon: 'none'
-      })
+      notification_helper.show_toast_without_icon("活动海报未上传",2000);
       return;
     }
-    var that = this;
+
+
     wx.showModal({
       title: '提示',
-      content: '发布活动"' + name + '"吗？请务必确认信息无误。',
+      content: `发布活动"${name}"吗？请务必确认信息无误。`,
       success: function(res){
         if(res.cancel)
         {
@@ -433,10 +364,10 @@ Page({
         }
         else
         {
+
           var files = that.data.files;
           var time = new Date();
           time.setFullYear(Number(that.data.event_date.slice(0,4)));
-          //don't forget about - 1
           time.setMonth(Number(that.data.event_date.slice(5,7)) - 1);
           time.setDate(Number(that.data.event_date.slice(8,10)));
           time.setHours(Number(that.data.event_time.slice(0,2)));
@@ -452,12 +383,10 @@ Page({
               //increment
               var count = db.collection("events").count();
               count.then(function(result){
-                count = result.total;
-                var _id = count + 1 + "";
                 //upload to cloudbase
                 db.collection("events").add({
                   data:{
-                    _id: _id,
+                    _id: result.total + 1 + "",
                     detail: detail,
                     device: device,
                     difficulty: difficulty,
@@ -486,7 +415,7 @@ Page({
                   }
                 })
                 app.globalData.user.my_event.push({
-                  _id: _id,
+                  _id: result.total + 1 + "",
                   name: name,
                   poster: files_cloud_url,
                   date: that.data.event_date.replace(new RegExp("-","g"),"/"),
@@ -496,6 +425,7 @@ Page({
                 console.log(app.globalData.user.my_event);
                 wx.showLoading({
                   title: '发布中',
+                  mask: true
                 })
                 wx.cloud.callFunction(
                 {

@@ -4,6 +4,7 @@ var compare_helper = require("../../../utils/helpers/compare_helper");
 var time_helper = require("../../../utils/helpers/time_helper");
 var notification_helper = require("../../../utils/helpers/notification_helper");
 var versatile_helper = require("../../../utils/helpers/versatile_helper");
+var timer_onLoad;
 
 Page({
 
@@ -29,9 +30,6 @@ Page({
   },
 
   onLoad: function () {
-    wx.showLoading({
-      title: '加载中',
-    })
     var that = this;
     //get the event tapped
     var event = app.globalData.event;
@@ -39,6 +37,7 @@ Page({
       name: event.name
     }).field({
       participants: true,
+      participants_count: true,
       leader_openid: true,
       snapshots_count: true,
       snapshots: true,
@@ -46,6 +45,7 @@ Page({
     }).get({
       success: function(res){
         event.participants = res.data[0].participants;
+        event.participants_count = res.data[0].participants_count;
         event.leader_openid = res.data[0].leader_openid;
         event.snapshots_count = res.data[0].snapshots_count;
         event.snapshots = res.data[0].snapshots;
@@ -74,6 +74,7 @@ Page({
             event.participants[i].bold = "bold";
           }
         }
+        console.log(timer_onLoad);
         that.setData({
           event: event,
           distance: event.distance.toFixed(2) + " km",
@@ -84,14 +85,14 @@ Page({
           can_sign: compare_helper.compare_time_for_event_sign(event.time, new Date()),
           is_locate_permissible: compare_helper.compare_time_for_event_locate(event.time,new Date()) ? true : false,
           button_text: compare_helper.compare_time_for_event_locate(event.time,new Date()) ? (event.snapshots_count ? `动态追踪(${event.snapshots_count})` : "动态追踪(暂无)") : "活动尚未开始",
-          isHide: false
-        })
-        wx.hideLoading({
-          success: (res) => {
-          },
+          isHide: false,
         })
       }
     })
+  },
+
+  onShow: function(){
+    timer_onLoad = setInterval(this.onLoad,5000);
   },
 
   onPullDownRefresh: function () {
@@ -113,7 +114,10 @@ Page({
       })
     }
     setTimeout(refresh,2000);
+  },
 
+  onUnload: function(){
+    clearInterval(timer_onLoad);
   },
 
   //preview image
@@ -138,11 +142,10 @@ Page({
     var that = this;
     wx.showModal({
       title: '提示',
-      content: '确认报名参加活动"' + that.data.event.name + '"?',
-      cancelColor: 'gray',
+      content: `确认报名参加活动"${that.data.event.name}"?`,
       cancelText: '取消',
       confirmText: '确定',
-      success: function(res){
+      success(res){
         if(res.cancel)
         {
           //cancelled
@@ -283,7 +286,6 @@ Page({
     })
   },
 
-  //goto event tracking page
   goto_locate: function(){
     wx.navigateTo({
       url: '../event/locate/locate',

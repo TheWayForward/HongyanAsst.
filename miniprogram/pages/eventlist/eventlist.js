@@ -54,7 +54,7 @@ Page({
               var coming_event = [];
               for(var i = 0; i < arrayContainer.length; i++){
                 arrayContainer[i].date = time_helper.format_time(arrayContainer[i].time).date;
-                arrayContainer[i].date_time = time_helper.format_time(arrayContainer[i].time).time;
+                arrayContainer[i].date_time = time_helper.format_time(arrayContainer[i].time).time.slice(0,5);
                 arrayContainer[i].precise_time = time_helper.format_time(arrayContainer[i].time).precise_time;
                 arrayContainer[i].day = time_helper.format_time(arrayContainer[i].time).day_to_ch();
                 switch(compare_helper.compare_time_for_event(arrayContainer[i].time,new Date())){
@@ -120,6 +120,7 @@ Page({
   goto_event: function(e){
     wx.showLoading({
       title: '活动加载中',
+      mask: true
     })
     //get event from tap
     var event = e.target.dataset.action;

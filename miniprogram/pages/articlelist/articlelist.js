@@ -189,7 +189,8 @@ Page({
 
   goto_article: function(e){
     wx.showLoading({
-      title: '加载中'
+      title: '加载中',
+      mask: true
     })
     var article = e.currentTarget.dataset.action;
     if(!article.is_available)
