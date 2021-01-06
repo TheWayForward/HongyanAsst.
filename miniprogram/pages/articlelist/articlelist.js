@@ -16,9 +16,12 @@ Page({
   },
 
   onLoad: function() {
-    wx.showLoading({
-      title: '资讯加载中',
-    })
+    if(!this.data.articles[0])
+    {
+      wx.showLoading({
+        title: '资讯加载中',
+      })
+    }
     var that = this;
     //maximum batch 5, we create a batch getter
     var batchTimes;
@@ -37,6 +40,7 @@ Page({
           tag: true,
           date: true,
           view: true,
+          comment_count: true
         }).get({
           success:function(res){
             for(var j = 0; j < res.data.length; j++){
@@ -53,7 +57,8 @@ Page({
                 articles: arrayContainer,
                 search_articles: arrayContainer,
                 isHide: false,
-                total_result: `共${arrayContainer.length}篇资讯`
+                total_result: `共${arrayContainer.length}篇资讯`,
+                is_loading_hide: true
               })
               wx.hideLoading({
                 success: (res) => {},
@@ -66,15 +71,14 @@ Page({
   },
 
   onShow: function(){
-    this.onLoad();
     var that = this;
-    //lazy load animation
-    function set_loading_hide_true(){
-      that.setData({
-        is_loading_hide: true
-      })
-    }
-    setTimeout(set_loading_hide_true,1000);
+    db.collection("articles").watch({
+      onChange(e){
+        that.onLoad();
+      },
+      onError(e){
+      }
+    })
   },
 
   onPageScroll: function(e){

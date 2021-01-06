@@ -6,13 +6,13 @@ function difficulty_to_stars(difficulty){
     case(2):
       return "★★☆☆☆";
       break;
-    case(2):
+    case(3):
       return "★★★☆☆";
       break;
-    case(2):
+    case(4):
       return "★★★★☆";
       break;
-    case(2):
+    case(5):
       return "★★★★★";
       break;
     default:

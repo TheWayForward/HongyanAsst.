@@ -173,6 +173,10 @@ page {
   display: flex;
 }
 
+.d-inline-block{
+  display: inline-block;
+}
+
 .bg-white{
   background: white;
 }
@@ -219,6 +223,10 @@ page {
 
 .ml-50{
   margin-left: 50rpx;
+}
+
+.mr-20{
+  margin-right: 20rpx;
 }
 
 .mr-50{

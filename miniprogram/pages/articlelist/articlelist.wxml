@@ -24,16 +24,19 @@
     <view>
       <!--upper thumbnail-->
       <view class="thumbnail_container" style="text-align:center;">
-        <image src="{{item.thumbnail}}" mode="aspectFill" class="article_thumbnail" bindtap="preview" data-action="{{item.thumbnail}}" lazy-load="true" hidden="{{!is_loading_hide}}"/>
-        <image src="{{loading_animation}}" mode="aspectFill" class="article_thumbnail_loading"  hidden="{{is_loading_hide}}"/>
+        <image src="{{item.thumbnail}}" mode="aspectFill" class="article_thumbnail" bindtap="preview" data-action="{{item.thumbnail}}" lazy-load="true"/>
       </view>
       <!--overview-->
       <view class="overview">
+        <!--views-->
         <image src="image/view.png" class="shadow-filter" style="width:35rpx;height:20rpx;z-index:5;" bindtap="preview" data-action="{{item.thumbnail}}"></image>
-        <view class="my_white" style="line-height:20rpx;margin-left:10rpx">{{item.view}}</view>
+        <view class="my_white mr-20" style="line-height:20rpx;margin-left:10rpx">{{item.view}}</view>
+        <!--comments-->
+        <image src="image/submitcomment.png" class="shadow-filter" style="width:30rpx;height:25rpx;z-index:5;" bindtap="preview" data-action="{{item.thumbnail}}"></image>
+        <view class="my_white" style="line-height:20rpx;margin-left:10rpx">{{item.comment_count}}</view>
       </view>
       <!--bottom info-->
-      <view class="bottominfo" style="padding-left:15rpx;padding-right:15rpx;padding-top:15rpx" hover-class="hv" hover-stay-time="30" data-title="{{item.title}}" data-availability="{{item.isAvailable}}" data-action="{{item}}" data-id="{{item._id}}" bindtap="goto_article"> 
+      <view class="bottominfo" style="padding-left:15rpx;padding-right:15rpx;padding-top:15rpx" hover-class="hv" hover-stay-time="30" data-title="{{item.title}}" data-action="{{item}}" data-id="{{item._id}}" bindtap="goto_article"> 
         <!--title-->
         <view class="title" style="">{{item.title}}</view>
         <view class="foot">

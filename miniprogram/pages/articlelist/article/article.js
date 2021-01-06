@@ -1,5 +1,6 @@
 const app = getApp();
 const db = wx.cloud.database();
+const notification_helper = require('../../../utils/helpers/notification_helper');
 var time_helper = require('../../../utils/helpers/time_helper');
 
 Page({
@@ -31,9 +32,12 @@ Page({
   },
 
   onLoad: function () {
-    wx.showLoading({
-      title: '资讯加载中',
-    })
+    if(!this.data.comment[0])
+    {
+      wx.showLoading({
+        title: '资讯加载中',
+      })
+    }
     var that = this;
     var article_id = app.globalData.article._id;
     //get article by id
@@ -43,6 +47,7 @@ Page({
       _id: true,
       author: true,
       comment: true,
+      comment_count: true,
       date: true,
       event__id: true,
       node: true,
@@ -104,13 +109,13 @@ Page({
           isHide: false,
         })
         wx.getUserInfo({
-          success: (res) => {
+          success(res){
             that.setData({
               userinfo: res.userInfo,
               is_comment_submission_hide: false
             })
           },
-          fail: (res) => {
+          fail(res){
             wx.showToast({
               title: '未授权用户信息',
               icon: 'none',
@@ -125,16 +130,17 @@ Page({
     });
   },
 
-  onReady: function () {
-
-  },
-
-  onShow: function () {
-    
-  },
-
-  onHide: function () {
-    
+  onShow: function(){
+    var that = this;
+    db.collection("articles").where({
+      _id: app.globalData.article._id
+    }).watch({
+      onChange(e){
+        that.onLoad();
+      },
+      onError(e){
+      }
+    })
   },
 
   onPageScroll: function(e){
@@ -174,14 +180,6 @@ Page({
       })
     }
     setTimeout(refresh,2000);
-  },
-
-  onReachBottom: function () {
-
-  },
-
-  onShareAppMessage: function () {
-
   },
 
   preview: function(e){
@@ -312,7 +310,8 @@ Page({
             data: {
               //get article by id
               taskId: that.data._id,
-              my_comment: comment
+              my_comment: comment,
+              my_comment_count: comment.length
             },
             success(res){
               that.onLoad();
@@ -329,6 +328,9 @@ Page({
                 input_value: "",
                 details: ""
               })
+            },
+            fail(res){
+              notification_helper.show_toast_without_icon("获取数据失败，请下拉刷新页面",2000);
             }
           })
         }

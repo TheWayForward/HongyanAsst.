@@ -45,7 +45,7 @@
   <input class="comment_submission_input" maxlength="200" bindinput="input" value="{{input_value}}" placeholder="在此输入您的评论，点击右侧按钮进行提交"></input>
   <view class="comment_submission_box shadow" hover-class="hv" hover-stay-time="30" bindtap="submit_comment">
     <button class="comment_submission_button" disabled="{{!is_submission_available}}">
-      <image class="comment_submission_button_image" src="image/submitcomment.png" hidden="{{!is_submission_available}}"></image>
+      <image class="comment_submission_button_image" src="../image/submitcomment.png" hidden="{{!is_submission_available}}"></image>
       <i class="weui-loading" hidden="{{is_submission_available}}"></i>
     </button>
   </view>

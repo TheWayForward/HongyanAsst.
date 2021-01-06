@@ -5,7 +5,7 @@
 		    <image src="{{user.avatar}}" class="rounded-10 shadow" style="width: 80rpx; height: 80rpx; display: block;" data-action="{{user.avatar}}"></image>
 		</view>
 		<view class="weui-cell__bd ml-50">
-			<view>{{user.nickname}}({{user.realname}})</view>
+			<view>{{user.nickname}}</view>
             <view style="font-size: 20rpx; color: gray;">活动发布者将作为领骑</view>
 		</view>
 	</view>
@@ -89,7 +89,13 @@
         <!--device-->
         <view class="weui-cells__title">辅助工具</view>
         <view class="weui-cells weui-cells_after-title">
-            <view class="weui-cell weui-cell_active weui-cell_select weui-cell_select-after">
+            <view class="weui-cell weui-cell_switch">
+            <view class="weui-cell__bd">使用定位设备</view>
+                <view class="weui-cell__ft">
+                    <switch bindchange="show_bind_device"/>
+                </view>
+            </view>
+            <view class="weui-cell weui-cell_active weui-cell_select weui-cell_select-after" hidden="{{is_bind_device_hide}}">
                 <view class="weui-cell__hd">
                     <view class="weui-label">定位设备</view>
                 </view>
@@ -145,7 +151,7 @@
 
         <!--submit-->
         <view class="weui-btn-area">
-            <button class="weui-btn shadow" style="margin-top:-30rpx;" type="primary" bindtap="submit" disabled="{{is_submission_available}}">发布活动</button>
+            <button class="weui-btn shadow" style="margin-top:-30rpx;" type="primary" bindtap="submit" disabled="{{!is_submission_available}}"><view class="d-inline-block" hidden="{{is_submission_available}}"><i class="weui-loading"></i></view>发布活动</button>
         </view>
 
         <!--bottom line-->

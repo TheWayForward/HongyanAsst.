@@ -14,10 +14,13 @@ Page({
     coming_event: []
   },
 
-  onLoad: function (options) {
-    wx.showLoading({
-      title: '活动加载中',
-    })
+  onLoad: function () {
+    if(!this.data.events[0])
+    {
+      wx.showLoading({
+        title: '活动加载中',
+      })
+    }
     var that = this;
     //maximum batch 5, we create a batch getter
     var batchTimes;
@@ -84,6 +87,17 @@ Page({
         })
       }
     });
+  },
+
+  onShow: function(){
+    var that = this;
+    db.collection("events").watch({
+      onChange(e){
+        that.onLoad();
+      },
+      onError(e){
+      }
+    })
   },
 
   onPullDownRefresh: function(){

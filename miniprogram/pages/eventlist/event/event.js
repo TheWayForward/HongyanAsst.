@@ -4,7 +4,6 @@ var compare_helper = require("../../../utils/helpers/compare_helper");
 var time_helper = require("../../../utils/helpers/time_helper");
 var notification_helper = require("../../../utils/helpers/notification_helper");
 var versatile_helper = require("../../../utils/helpers/versatile_helper");
-var timer_onLoad;
 
 Page({
 
@@ -34,7 +33,7 @@ Page({
     //get the event tapped
     var event = app.globalData.event;
     db.collection("events").where({
-      name: event.name
+      _id: event._id
     }).field({
       participants: true,
       participants_count: true,
@@ -74,7 +73,6 @@ Page({
             event.participants[i].bold = "bold";
           }
         }
-        console.log(timer_onLoad);
         that.setData({
           event: event,
           distance: event.distance.toFixed(2) + " km",
@@ -82,7 +80,7 @@ Page({
           date: `${event.date}(${event.day})`,
           participants: event.participants,
           leader_openid: res.data[0].leader_openid,
-          can_sign: compare_helper.compare_time_for_event_sign(event.time, new Date()),
+          can_sign: compare_helper.compare_time_for_event_sign(event.time, new Date()) ? (res.data[0].leader_openid == app.globalData.user.openid ? false : true) : false,
           is_locate_permissible: compare_helper.compare_time_for_event_locate(event.time,new Date()) ? true : false,
           button_text: compare_helper.compare_time_for_event_locate(event.time,new Date()) ? (event.snapshots_count ? `动态追踪(${event.snapshots_count})` : "动态追踪(暂无)") : "活动尚未开始",
           isHide: false,
@@ -92,7 +90,18 @@ Page({
   },
 
   onShow: function(){
-    timer_onLoad = setInterval(this.onLoad,5000);
+    var that = this;
+    console.log(app.globalData.event)
+    db.collection("events").where({
+      _id: app.globalData.event._id
+    }).watch({
+      onChange(e){
+        //participants changed, refresh
+        that.onLoad();
+      },
+      onError(e){
+      }
+    })
   },
 
   onPullDownRefresh: function () {
@@ -114,10 +123,6 @@ Page({
       })
     }
     setTimeout(refresh,2000);
-  },
-
-  onUnload: function(){
-    clearInterval(timer_onLoad);
   },
 
   //preview image
@@ -152,6 +157,10 @@ Page({
         }
         else
         {
+          wx.showLoading({
+            title: "报名中",
+            mask: true
+          })  
           //get sign-up necessities from globalData
           var participant = {};
           participant.avatar = app.globalData.user.avatar;
@@ -160,7 +169,6 @@ Page({
           participant.realname = app.globalData.user.realname;
           participant.time = Date.now();
           that.data.participants.push(participant);
-          console.log(that.data.participants);
           var event = that.data.event;
           //add an event to user
           app.globalData.user.my_event.push({
@@ -171,33 +179,55 @@ Page({
             distance: event.distance,
             is_signed: false
           });
-          console.log(app.globalData.user.my_event);
+          wx.showLoading({
+            title: '更新参与者名单',
+            mask: true
+          })
           wx.cloud.callFunction({
             name: 'update_participants',
-              data: {
+            data: {
                 taskId: that.data.event._id,
                 my_participants: that.data.participants,
                 my_participants_count: that.data.participants.length
-              }
-          })
-          wx.cloud.callFunction(
-            {
-              name: "update_user_event",
-              data: {
-                openid: app.globalData.user.openid,
-                my_event: app.globalData.user.my_event
-              }
+            },
+            success(res){
+              console.log("[cloudfunction][update_participants]: updated successfully");
+              wx.showLoading({
+                title: '更新活动列表',
+                mask: true
+              })
+              wx.cloud.callFunction(
+                {
+                  name: "update_user_event",
+                  data: {
+                    openid: app.globalData.user.openid,
+                    my_event: app.globalData.user.my_event
+                  },
+                  success(res){
+                    console.log("[cloudfunction][update_user_event]: updated successfully");
+                    wx.hideLoading({
+                      success(res){
+                        wx.showToast({
+                          title: '报名成功',
+                          mask: true
+                        })
+                        that.setData({
+                          is_sign_up_hide: true
+                        })
+                      },
+                    })
+                  },
+                  fail(res){
+                    console.log("[cloudfunction][update_user_event]: failed to update");
+                    notification_helper.show_toast_without_icon("获取数据失败，请下拉刷新页面",2000);
+                  }
+                }
+              )
+            },
+            fail(res){
+              console.log("[cloudfunction][update_participants]: failed to update");
+              notification_helper.show_toast_without_icon("获取数据失败，请下拉刷新页面",2000);
             }
-          ).then(res => {
-            wx.showToast({
-              title: '报名成功',
-              duration:3000,
-              success: function(res){
-                wx.reLaunch({
-                  url: '../eventlist'
-                })
-              }
-            })
           })
         }
       }
@@ -222,13 +252,12 @@ Page({
         }
         else
         {
-          //matching
-          //var event = that.data.event;
-          var index_event = null;
+          wx.showLoading({
+            title: "取消报名中",
+            mask: true
+          }) 
           var participants = that.data.participants;
-          var index_participant = null;
           for(var i = 0; i < participants.length; i++){
-            var p = participants[i];
             if(app.globalData.openid == that.data.leader_openid)
             {
               wx.showToast({
@@ -237,30 +266,22 @@ Page({
               })
               return;
             }
-            if(app.globalData.openid == p.openid)
+            if(app.globalData.openid == participants[i].openid)
             {
-              console.log("participant found");
-              index_participant = i;
+              participants.splice(i,1);
+              break;
             }
           }
-          console.log(participants);
-          participants.splice(index_participant,1);
           for(var i = 0; i < app.globalData.user.my_event.length; i++){
-            var e = app.globalData.user.my_event[i];
-            if(e._id == that.data.event._id)
+            if(app.globalData.user.my_event[i]._id == that.data.event._id)
             {
-              console.log("event found");
-              index_event = i;
+              app.globalData.user.my_event.splice(i,1);
+              break;
             }
           }
-          app.globalData.user.my_event.splice(index_event,1);
-          console.log(app.globalData.user.my_event);
-          wx.cloud.callFunction({
-            name: "update_user_event",
-            data: {
-              openid: app.globalData.user.openid,
-              my_event: app.globalData.user.my_event
-            }
+          wx.showLoading({
+            title: '更新参与者名单',
+            mask: true
           })
           wx.cloud.callFunction({
             name: 'update_participants',
@@ -268,18 +289,44 @@ Page({
               taskId: that.data.event._id,
               my_participants: participants,
               my_participants_count: participants.length
+            },
+            success(res){
+              console.log("[cloudfunction][update_participants]: updated successfully");
+              wx.showLoading({
+                title: '更新活动列表',
+                mask: true
+              })
+              wx.cloud.callFunction({
+                name: "update_user_event",
+                data: {
+                  openid: app.globalData.user.openid,
+                  my_event: app.globalData.user.my_event
+                },
+                success(res){
+                  console.log("[cloudfunction][update_user_event]: updated successfully");
+                  wx.hideLoading({
+                    success(res){
+                      wx.showToast({
+                        title: '已取消报名',
+                        icon: 'none',
+                        mask: true
+                      })
+                      that.setData({
+                        is_sign_up_hide: false
+                      })
+                    }
+                  })
+                },
+                fail(res){
+                  console.log("[cloudfunction][update_user_event]: failed to update");
+                  notification_helper.show_toast_without_icon("获取数据失败，请下拉刷新页面",2000);
+                }
+              })
+            },
+            fail(res){
+              console.log("[cloudfunction][update_participants]: failed to update");
+              notification_helper.show_toast_without_icon("获取数据失败，请下拉刷新页面",2000);
             }
-          }).then(res => {
-            wx.showToast({
-              title: '已取消报名',
-              icon: 'none',
-              duration: 3000,
-              success: function(res){
-                wx.reLaunch({
-                  url: '../eventlist'
-                })
-              }
-            })
           })
         }
       }

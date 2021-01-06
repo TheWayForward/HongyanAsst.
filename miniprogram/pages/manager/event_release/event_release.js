@@ -7,7 +7,11 @@ var notification_helper = require("../../../utils/helpers/notification_helper");
 Page({
 
   data: {
-    user: {},
+    user: {
+      nickname: "加载中",
+      realname: "",
+      avatar: "../../../images/loading.gif"
+    },
     //dynamic counter
     text_counter: "0/200",
     //event basic info
@@ -32,6 +36,7 @@ Page({
     difficulty: "拖动选择",
     detail: "",
     //device
+    is_bind_device_hide: true,
     devices: [],
     devices_name:[],
     event_device: {},
@@ -75,7 +80,7 @@ Page({
                 event_date_end: (that.data.current_date.year + 1) + "-" + that.data.current_date.month + "-" + that.data.current_date.date,
                 devices: arrayContainer,
                 devices_name: devices_name,
-                is_submission_available: false
+                is_submission_available: true
               })
               wx.hideLoading({
                 complete: (res) => {},
@@ -120,7 +125,7 @@ Page({
     if(e.target.id == "start")
     {
       wx.chooseLocation({
-        complete: (res) => {
+        complete(res){
           if(!res.name)
           {
             that.setData({
@@ -141,7 +146,7 @@ Page({
     else
     {
       wx.chooseLocation({
-        complete: (res) => {
+        complete(res){
           if(!res.name)
           {
             that.setData({
@@ -186,6 +191,22 @@ Page({
     })
   },
 
+  show_bind_device: function(e){
+    if(e.detail.value)
+    {
+      this.setData({
+        is_bind_device_hide: false
+      })
+    }
+    else
+    {
+      this.setData({
+        is_bind_device_hide: true,
+        event_device: {}
+      })
+    }
+  },
+
   //input detail and change text counter
   input_detail: function(e){
     this.setData({
@@ -215,7 +236,7 @@ Page({
       count: 1,
       //take a snapshot or choose a photo
       sourceType: ['album', 'camera'],
-      success: function (res) {
+      success(res){
         //check the size of the image
         var maxsize = 4000000;
         if(res.tempFiles[0].size > maxsize)
@@ -247,7 +268,7 @@ Page({
       cancelText: '取消',
       confirmColor: '#E1251B',
       confirmText:'确定',
-      success: function (res){
+      success(res){
         if(res.cancel)
         {
           //if cancelled, continue
@@ -267,9 +288,6 @@ Page({
   //submit event info
   submit: function(){
     var that = this;
-    that.setData({
-      is_submission_available: false
-    })
     var name = that.data.name;
     var distance = that.data.distance;
     var difficulty = that.data.difficulty;
@@ -279,7 +297,6 @@ Page({
     var name_return = that.data.name_return;
     var location_start = that.data.location_start;
     var location_return = that.data.location_return;
-    //check
 
     //name, "/" excluded
     if(!name)
@@ -353,7 +370,6 @@ Page({
       return;
     }
 
-
     wx.showModal({
       title: '提示',
       content: `发布活动"${name}"吗？请务必确认信息无误。`,
@@ -364,8 +380,13 @@ Page({
         }
         else
         {
-
-          var files = that.data.files;
+          that.setData({
+            is_submission_available: false
+          })
+          wx.showLoading({
+            title: '图片上传中',
+            mask: true
+          })
           var time = new Date();
           time.setFullYear(Number(that.data.event_date.slice(0,4)));
           time.setMonth(Number(that.data.event_date.slice(5,7)) - 1);
@@ -373,12 +394,16 @@ Page({
           time.setHours(Number(that.data.event_time.slice(0,2)));
           time.setMinutes(Number(that.data.event_time.slice(3,5)));
           //uploadfile and complete
-          const filePath = files[0];
-          const cloudPath =  `events/${name}/poster/${app.globalData.openid}_${Math.random()}_${Date.now()}.${filePath.match(/\.(\w+)$/)[1]}`;
+          const filePath = that.data.files[0];
+          const cloudPath = `events/${name}_${Date.now()}/poster/${app.globalData.openid}_${Math.random()}_${Date.now()}.${filePath.match(/\.(\w+)$/)[1]}`;
           wx.cloud.uploadFile({
             cloudPath,
             filePath,
             success: function(res){
+              wx.showLoading({
+                title: '活动发布中',
+                mask: true
+              })
               var files_cloud_url = res.fileID;
               //increment
               var count = db.collection("events").count();
@@ -423,32 +448,30 @@ Page({
                   is_signed: true
                 });
                 console.log(app.globalData.user.my_event);
-                wx.showLoading({
-                  title: '发布中',
-                  mask: true
-                })
                 wx.cloud.callFunction(
                 {
                   name: "update_user_event",
                   data: {
                     openid: app.globalData.user.openid,
                     my_event: app.globalData.user.my_event
+                  },
+                  success(res){
+                    wx.showToast({
+                      title: '发布成功',
+                      duration: 2000,
+                      mask: true,
+                      success(res){
+                        function refresh(){
+                          wx.reLaunch({
+                            url: '../../index/index',
+                          })
+                        }
+                        setTimeout(refresh,2000);
+                      }
+                    })
                   }
                 }
-                ).then(res => {
-                  wx.hideLoading({
-                    complete: (res) => {},
-                  })
-                  wx.showToast({
-                    title: '发布成功',
-                    duration: 3000,
-                    success: function(res){
-                      wx.reLaunch({
-                        url: '../../index/index',
-                      })
-                    }
-                  })
-                })
+                )
               })
             }
           })

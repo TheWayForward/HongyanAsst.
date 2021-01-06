@@ -72,7 +72,7 @@
         </view>
 		</view>
     <!--locate button-->
-    <view class="button-sp-area mt-20 mb-20 locate_align" style="text-align: center; display: flex;">
+    <view class="bottom_fixed" style="text-align: center; display: flex;">
 			<button class="weui-btn weui-btn_primary shadow" bindtap="goto_locate" disabled="{{!is_locate_permissible}}">{{button_text}}</button>
 		</view>
 	</view>
