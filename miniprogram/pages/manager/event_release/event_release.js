@@ -287,6 +287,7 @@ Page({
 
   //submit event info
   submit: function(){
+    
     var that = this;
     var name = that.data.name;
     var distance = that.data.distance;
@@ -337,7 +338,19 @@ Page({
     //points
     if((!that.data.location_start) || (!that.data.location_return))
     {
-      notification_helper.show_toast_without_icon("选择地点、途经地标未选择",2000);
+      notification_helper.show_toast_without_icon("起点、途经地标未选择",2000);
+      return;
+    }
+
+    if(that.data.name_start == "未选中位置，点我重新选择" || that.data.name_return == "未选中位置，点我重新选择")
+    {
+      notification_helper.show_toast_without_icon("起点、途经地标未选择",2000);
+      return;
+    }
+
+    if(that.data.name_start == that.data.name_return)
+    {
+      notification_helper.show_toast_without_icon("起点与途经地标位置重复",2000);
       return;
     }
 
@@ -346,14 +359,6 @@ Page({
     {
       notification_helper.show_toast_without_icon("活动难度未选择",2000);
       return;
-    }
-
-    //device
-    if(!that.data.event_device.name)
-    {
-      notification_helper.show_toast_without_icon("定位设备未选择",2000);
-      return;
-      
     }
 
     //detail
@@ -396,6 +401,7 @@ Page({
           //uploadfile and complete
           const filePath = that.data.files[0];
           const cloudPath = `events/${name}_${Date.now()}/poster/${app.globalData.openid}_${Math.random()}_${Date.now()}.${filePath.match(/\.(\w+)$/)[1]}`;
+          console.log(that.data);
           wx.cloud.uploadFile({
             cloudPath,
             filePath,

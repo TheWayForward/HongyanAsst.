@@ -1,56 +1,10 @@
-var app = getApp();
+const app = getApp();
 const db = wx.cloud.database();
+var compare_helper = require("../../../../utils/helpers/compare_helper");
+var time_helper = require("../../../../utils/helpers/time_helper");
+var notification_helper = require("../../../../utils/helpers/notification_helper");
+var location_helper = require("../../../../utils/helpers/location_helper");
 var timer;
-var timer_snapshotgetter;
-var files_cloud_url = [];
-//Tencent map uses the gcj02 coordinate offset
-var latiToCanvas = function(lat) {return lat + 0.0060;};
-var logiToCanvas = function(log) {return log + 0.0065;};
-var wgs84togcj02 = function(lat, log) {
-  //is position off China mainland
-  if (log < 72.004 || log > 137.8347 || lat < 0.8293 || lat > 55.8271) {
-    return {
-      latitude: lat,
-      longitude: log,
-    }
-  } else {
-    const Pi = 3.14159265358979324;
-    //coordinate projection factor
-    const a = 6378245.0;
-    //eccentricity
-    const ee = 0.00669342162296594323;
-    
-    var transformLat = function (x, y) {
-      var ret = -100.0 + 2.0 * x + 3.0 * y + 0.2 * y * y + 0.1 * x * y + 0.2 * Math.sqrt(Math.abs(x));
-      ret += (20.0 * Math.sin(6.0 * x * Pi) + 20.0 * Math.sin(2.0 * x * Pi)) * 2.0 / 3.0;
-      ret += (20.0 * Math.sin(y * Pi) + 40.0 * Math.sin(y / 3.0 * Pi)) * 2.0 / 3.0;
-      ret += (160.0 * Math.sin(y / 12.0 * Pi) + 320 * Math.sin(y * Pi / 30.0)) * 2.0 / 3.0;
-      return ret; }
-    var transformLog = function (x, y) {
-      var ret = 300.0 + x + 2.0 * y + 0.1 * x * x + 0.1 * x * y + 0.1 * Math.sqrt(Math.abs(x));
-      ret += (20.0 * Math.sin(6.0 * x * Pi) + 20.0 * Math.sin(2.0 * x * Pi)) * 2.0 / 3.0;
-      ret += (20.0 * Math.sin(x * Pi) + 40.0 * Math.sin(x / 3.0 * Pi)) * 2.0 / 3.0;
-      ret += (150.0 * Math.sin(x / 12.0 * Pi) + 300.0 * Math.sin(x / 30.0 * Pi)) * 2.0 / 3.0;
-      return ret; }
-    var delta = function (lat, lon) {
-      var dLat = transformLat(lon - 105.0, lat - 35.0);
-      var dLon = transformLog(lon - 105.0, lat - 35.0);
-      var radLat = lat / 180.0 * Pi;
-      var magic = Math.sin(radLat);
-      magic = 1 - ee * magic * magic;
-      var sqrtMagic = Math.sqrt(magic);
-      dLat = (dLat * 180.0) / ((a * (1 - ee)) / (magic * sqrtMagic) * Pi);
-      dLon = (dLon * 180.0) / (a / sqrtMagic * Math.cos(radLat) * Pi);
-      return {'lat': dLat, 'lon': dLon};
-    }
-    const d = delta(lat, log);
-    return {
-      latitude:  lat + d.lat,
-      longitude: log + d.lon,
-    }
-  }
-};
-
 
 Page({
   data: {
@@ -67,7 +21,7 @@ Page({
     is_uploader_hide: true,
     //add shown or not
     is_upload_add_hide: false,
-    height: 0,
+    height: 300,
     latitude: 0,
     longitude: 0,
     speed: 0,
@@ -90,223 +44,39 @@ Page({
   },
 
   onLoad: function () {
-    this.setData({
-      input_value: "",
-      snapshots: {},
-      detail: "",
-      files: [],
-      files_cloud_url: [],
-      tip: '点击"+"上传图片',
-      tip_second: '',
-      is_upload_add_hide: false
-    })
     wx.showLoading({
       title: '加载中',
     })
     var that = this;
-    wx.getSystemInfo({
-      success(res){
-        that.setData({
-          height: res.windowHeight * 0.618
-        })
-      }
-    })
-
-    //location data getter timer
-    timer = setInterval(() => {
-      this.get_datapoints().then(datapoints => {
-      })
-    }, 10000)
-
-    //get the corresponded event
     var event = app.globalData.event;
-    var participants = event.participants;
-    var is_signed = false;
-    for(var i = 0; i < participants.length; i++){
-      if(app.globalData.user.openid == participants[i].openid) 
-      {
-        //matching current user
-        //check whether the event is expired, -12h to 1d
-        var can_upload = ((((Date.now() - event.precise_time) / 86400000) >= 1) || (((Date.now() - event.precise_time) / 86400000) <= -0.5)) ? false : true;
-        //fill the basic event name info and decide whether the uploader should be shown or not
-        this.setData({
-          event: event,
-          all_snapshots_tip: "查看" + event.name + "的全部图片",
-          is_uploader_hide: !can_upload,
-          tip_footer: "请在活动开始前12小时到活动结束后1天内上传图片"
-        })
-        if(((Date.now() - event.precise_time) / 86400000) >= 1)
-        {
-          clearInterval(timer);
-          this.setData({
-            tip_footer: "活动已结束",
-            is_dynamic_data_hide: true
-          })
-          //event expired, clear interval
-        }
-        is_signed = true;
-        break;
-      }
-      //cannot upload if unsigned
-      if(!is_signed)
-      {
-        this.setData({
-          event: event,
-          all_snapshots_tip: "查看" + event.name + "的全部图片",
-          is_uploader_hide: true,
-          tip_footer: "未报名活动，无法上传图片"
-        })
-      }
-    }
-    db.collection("events").where({
-      _id: event._id
-    }).field({
-      _id: true,
-      snapshots: true
-    }).get({
-      success: function(res){
-        //all shots taken in the event
-        var snapshots = res.data[0].snapshots
-        that.setData({
-          event_id: res.data[0]._id,
-          event_shots: snapshots
-        })
-        var markers = [];
-        markers[0] = {
-          id: 0,
-          latitude: that.data.latitude,
-          longitude: that.data.longitude,
-          width: 20,
-          height: 20,
-          anchor: {
-            x: 0.5, y: 0.5
-          },
-          iconPath: "image/star.png",
-          callout: {
-            content: that.data.event.device.name + "：" + that.data.event.device.deviceid,
-            bgColor: "#fff",
-            padding: "5px",
-            borderRadius: "5px",
-            borderWidth: "1px",
-            borderColor: "#1296DB",
-            display: "BYCLICK",
-            fontSize: "10",
-          },
-          is_snapshot: false
-        };
-        for(var i = 0; i < snapshots.length; i++){
-          var snapshot = snapshots[i];
-          var marker = {};
-          //geopoint need to be transformed to json
-          var location = snapshot.location.toJSON().coordinates;
-          marker.id = i + 1;
-          marker.location = snapshot.location;
-          marker.longitude = location[0];
-          marker.latitude = location[1];
-          marker.openid = snapshot.openid;
-          marker.name = snapshot.name;
-          marker.avatar = snapshot.avatar;
-          marker.nickname = snapshot.nickname;
-          marker.realname = snapshot.realname;
-          marker.taker = snapshot.nickname + " (" + snapshot.realname + ")";
-          marker.detail = snapshot.detail;
-          marker.iconPath = "image/imagepoint.png";
-          marker.url = snapshot.url;
-          marker.width = 20;
-          marker.height = 20;
-          marker.callout = {
-            content: snapshot.detail,
-            bgColor: "#fff",
-            padding: "5px",
-            borderRadius: "5px",
-            borderWidth: "1px",
-            borderColor: "#1485EF",
-            display: "ALWAYS",
-            fontSize: "10", 
-          };
-          marker.is_snapshot = true;
-          markers.push(marker);
-          //deviation, prevent markers from overlapping
-        }
-        for(var i = 0; i < markers.length; i++){
-          var marker = markers[i];
-          for(var j  = 0; j < markers.length; j++){
-            if(markers[j].location == marker.location)
-            {
-              markers[j].longitude += i * 0.0002;
-              markers[j].latitude += i * 0.0002; 
-            }
-          }
-        }
-        console.log(markers);
-        that.setData({
-          markers: markers
-        })
-        wx.hideLoading({
-          complete: (res) => {},
-        })
-      }
+    console.log(event);
+    that.setData({
+      event: app.globalData.event
     })
-
-    this.get_datapoints().then((datapoints) => {
-      wx.hideLoading();
-    }).catch((err) => {
-      wx.hideLoading()
-      console.error(err);
-      clearInterval(timer);
-    })
-  },
-
-  //get gps datapoints
-  get_datapoints: function () {
-    var that = this;
-    return new Promise((resolve, reject) => {
-      wx.request({
-        url: `https://api.heclouds.com/devices/${that.data.event.device.deviceid}/datapoints?datastream_id=Latitude,Logitude,Speed&limit=1`,
-        header: {
-          'content-type': 'application/json',
-          'api-key': that.data.event.device.apikey
-        },
-        success: (res) => {
-          const status = res.statusCode;
-          const response = res.data;
-          var speed = response.data.datastreams[0].datapoints;
-          var longitude = response.data.datastreams[1].datapoints;
-          var latitude = response.data.datastreams[2].datapoints;
-          var current_sp = Number(speed[speed.length - 1].value);
-          var current_lo = Number(longitude[longitude.length - 1].value);
-          var current_la = Number(latitude[latitude.length - 1].value);
-          //encrypt to gcj to fit Tencent map
-          const encrypt_res = wgs84togcj02(current_la, current_lo);
-          that.setData({
-            speed: current_sp,
-            longitude: encrypt_res.longitude,
-            latitude:  encrypt_res.latitude,
-          })
-          console.log("[onenet][speed]: " + that.data.speed);
-          console.log("[onenet][latitude]: " + that.data.latitude);
-          console.log("[onenet][longitude]: " + that.data.longitude);
-          if (status !== 200) 
-          {
-            reject(res.data)
-            return ;
-          }
-          if (response.errno !== 0) 
-          {
-            reject(response.error)
-            return ;
-          }
-          if (response.data.datastreams.length === 0) 
-          {
-            reject("No data yet.")
-          }
-          resolve({
-          })
-        },
-        fail: (err) => {
-          reject(err)
-        }
+    if(!event.device._id)
+    {
+      //event without device, set map focus as the starting point
+      that.setData({
+        longitude: event.location_start.longitude,
+        latitude: event.location_start.latitude,
+        is_dynamic_data_hide: true
       })
+    }
+    else
+    {
+      //event with device, set map focus as device location
+      location_helper.get_datapoints_from_onenet(event.device).then((location_info) => {
+        that.setData({
+          longitude: location_info.longitude,
+          latitude: location_info.latitude,
+          is_dynamic_data_hide: true
+        })
+      });
+    }
+    wx.hideLoading({
+      success(){
+        
+      }
     })
   },
 
@@ -644,9 +414,8 @@ Page({
       cloudPath,
       filePath,
       success: function(res){
-        files_cloud_url = res.fileID;
         that.setData({
-          files_cloud_url: files_cloud_url
+          files_cloud_url: res.fileID
         })
         var snapshots = that.data.snapshots;
         //regenerate detail

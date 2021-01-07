@@ -29,6 +29,13 @@ Page({
   },
 
   onLoad: function () {
+    if(!this.data.event)
+    {
+      wx.showLoading({
+        title: '加载中',
+        mask: true
+      })
+    }
     var that = this;
     //get the event tapped
     var event = app.globalData.event;
@@ -38,6 +45,8 @@ Page({
       participants: true,
       participants_count: true,
       leader_openid: true,
+      location_start: true,
+      location_return: true,
       snapshots_count: true,
       snapshots: true,
       device: true
@@ -46,6 +55,8 @@ Page({
         event.participants = res.data[0].participants;
         event.participants_count = res.data[0].participants_count;
         event.leader_openid = res.data[0].leader_openid;
+        event.location_start = res.data[0].location_start;
+        event.location_return = res.data[0].location_return;
         event.snapshots_count = res.data[0].snapshots_count;
         event.snapshots = res.data[0].snapshots;
         event.device = res.data[0].device;
@@ -91,7 +102,6 @@ Page({
 
   onShow: function(){
     var that = this;
-    console.log(app.globalData.event)
     db.collection("events").where({
       _id: app.globalData.event._id
     }).watch({
@@ -334,8 +344,14 @@ Page({
   },
 
   goto_locate: function(){
+    wx.showLoading({
+      title: '加载中',
+      mask: true,
+    })
     wx.navigateTo({
       url: '../event/locate/locate',
+    })
+    wx.hideLoading({
     })
   }
 })

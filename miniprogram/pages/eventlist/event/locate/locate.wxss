@@ -1,6 +1,6 @@
 .map{
   margin: 10rpx;
-  border: 1px dashed gray;
+  border: 1px solid gainsboro;
   overflow: hidden;
   border-radius: 20rpx;
 }
