@@ -5,6 +5,7 @@ var compare_helper = require("utils/helpers/compare_helper");
 App({
 
   onLaunch: function () {
+
     var that = this;
     //loading animation
     wx.showLoading({

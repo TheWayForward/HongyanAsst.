@@ -4,7 +4,7 @@ var compare_helper = require("../../../../utils/helpers/compare_helper");
 var time_helper = require("../../../../utils/helpers/time_helper");
 var notification_helper = require("../../../../utils/helpers/notification_helper");
 var location_helper = require("../../../../utils/helpers/location_helper");
-var timer;
+var location_timer;
 
 Page({
   data: {
@@ -22,6 +22,8 @@ Page({
     //add shown or not
     is_upload_add_hide: false,
     height: 300,
+    timer: 0,
+    location_delta_count: 0,
     latitude: 0,
     longitude: 0,
     speed: 0,
@@ -44,18 +46,21 @@ Page({
   },
 
   onLoad: function () {
+    wx.setNavigationBarTitle({
+      title: app.globalData.event.name,
+    })
     wx.showLoading({
       title: '加载中',
     })
     var that = this;
     var event = app.globalData.event;
-    console.log(event);
     that.setData({
       event: app.globalData.event
     })
-    if(!event.device._id)
+    if(!event.device._id || !compare_helper.compare_time_for_event_locate_timer(event.time,new Date()))
     {
       //event without device, set map focus as the starting point
+      //get data for once at least, then decide by the time of event and now
       that.setData({
         longitude: event.location_start.longitude,
         latitude: event.location_start.latitude,
@@ -66,16 +71,59 @@ Page({
     {
       //event with device, set map focus as device location
       location_helper.get_datapoints_from_onenet(event.device).then((location_info) => {
+        //get data for once at least, then decide by the time of event and now
         that.setData({
           longitude: location_info.longitude,
           latitude: location_info.latitude,
           is_dynamic_data_hide: true
         })
+        if(compare_helper.compare_time_for_event_locate_timer(event.time,new Date()))
+        {
+          function get_datapoints(){
+            var location_info_past = {};
+            if(that.data.latitude)
+            {
+              location_info_past = {
+                speed: that.data.speed,
+                longitude: that.data.longitude,
+                latitude: that.data.latitude,
+                timestamp: new Date()
+              }
+            }
+            location_helper.get_datapoints_from_onenet(event.device).then((location_info) => {
+              if(compare_helper.compare_location_info(location_info,location_info_past))
+              {
+                //frozen once
+                that.setData({
+                  location_delta_count: ++that.data.location_delta_count
+                })
+                console.log(that.data.location_delta_count);
+                if(that.data.location_delta_count == 10)
+                {
+                  //frozen for 20 seconds
+                  clearInterval(that.data.timer);
+                  that.data.timer = setInterval(get_datapoints,15000);
+                }
+              }
+              else
+              {
+                //moving
+                clearInterval(that.data.timer);
+                that.data.timer = setInterval(get_datapoints,2000);
+              }
+              that.setData({
+                longitude: location_info.longitude,
+                latitude: location_info.latitude,
+                is_dynamic_data_hide: true
+              })
+            })
+          }
+          that.data.timer = setInterval(get_datapoints,2000);
+        }
       });
     }
     wx.hideLoading({
-      success(){
-        
+      success(){ 
       }
     })
   },
@@ -86,45 +134,14 @@ Page({
 
   //stop timer from getting data when idle
   onUnload: function(){
-    clearInterval(timer);
+    clearInterval(this.data.timer);
   },
 
   onHide: function(){
-    clearInterval(timer);
   },
 
   //refresh location data
   onPullDownRefresh: function(){
-    wx.showNavigationBarLoading({
-      complete: (res) => {},
-    })
-    this.onLoad();
-    if(this.get_datapoints())
-    {
-      wx.hideNavigationBarLoading({
-        complete: (res) => {},
-      })
-      wx.stopPullDownRefresh({
-        complete: (res) => {
-          wx.showToast({
-            title: '位置已更新',
-          })
-        },
-      })
-    }
-    else
-    {
-      wx.hideNavigationBarLoading({
-        complete: (res) => {},
-      })
-      wx.stopPullDownRefresh({
-        complete: (res) => {
-          wx.showToast({
-            title: '网络异常，请稍候重试',
-          })
-        },
-      })
-    }
   },
 
   //marker tapped

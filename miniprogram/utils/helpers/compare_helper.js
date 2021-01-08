@@ -1,9 +1,10 @@
 //versatile comparison
+var oneday = 86400000;
+var onehour = 0.041;
+
 function compare(p){
   return function(m,n){
-    var a = m[p];
-    var b = n[p];
-    return a - b;
+    return m[p] - n[p];
   }
 };
 
@@ -22,22 +23,25 @@ function compare_version(ver1,ver2){
 
 //time comparison
 function compare_time_for_event(event_time,now){
-  var oneday = 86400000;
-  if(now - event_time >= oneday) return "previous_event";
-  else if(event_time - now >= oneday) return "coming_event";
-  else return "current_event";
+  return now - event_time >= oneday ? "previous_event" : (event_time - now >= oneday ? "coming_event" : "current_event");
 }
 
-function compare_time_for_event_sign(event_time,now){
-  var oneday = 86400000, onehour = 0.041
-  if((event_time - now) / oneday < onehour) return false;
-  else return true;
+function compare_time_for_event_sign(event_time,now){ onehour = 0.041
+  return (event_time - now) / oneday > onehour ? true : false;
 }
 
 function compare_time_for_event_locate(event_time,now){
-  var oneday = 86400000;
-  if((event_time - now) / oneday < 1) return true;
-  else return false;
+  return (event_time - now) / oneday < 1 ? true : false;
+}
+
+function compare_time_for_event_locate_timer(event_time,now){
+  return (event_time - now) / oneday < 0.5 && (now - event_time) / oneday < 1 ? true : false;
+}
+
+function compare_location_info(location_info,location_info_past){
+  var delta_latitude = Math.abs(location_info.latitude - location_info_past.latitude);
+  var delta_longitude = Math.abs(location_info.longitude - location_info_past.longitude);
+  if(delta_latitude <= 0.00001 && delta_longitude <= 0.00001) return true;
 }
 
 module.exports = {
@@ -45,5 +49,7 @@ module.exports = {
   compare_version: compare_version,
   compare_time_for_event: compare_time_for_event,
   compare_time_for_event_sign: compare_time_for_event_sign,
-  compare_time_for_event_locate: compare_time_for_event_locate
+  compare_time_for_event_locate: compare_time_for_event_locate,
+  compare_time_for_event_locate_timer: compare_time_for_event_locate_timer,
+  compare_location_info: compare_location_info
 }

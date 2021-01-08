@@ -70,7 +70,8 @@ function get_datapoints_from_onenet(device){
         resolve({
             speed: Number(res.data.data.datastreams[0].datapoints[0].value),
             longitude: Number(res.data.data.datastreams[1].datapoints[0].value),
-            latitude: Number(res.data.data.datastreams[2].datapoints[0].value)
+            latitude: Number(res.data.data.datastreams[2].datapoints[0].value),
+            timestamp: new Date(Date.parse(res.data.data.datastreams[0].datapoints[0].at.replace(/-/g, "/")))
         })
       },
       fail(res){
@@ -80,8 +81,6 @@ function get_datapoints_from_onenet(device){
     })
   })
 }
-
-
 
 module.exports = {
   latitude_to_canvas: latitude_to_canvas,

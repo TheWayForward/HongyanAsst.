@@ -71,14 +71,6 @@ Page({
   },
 
   onShow: function(){
-    var that = this;
-    db.collection("articles").watch({
-      onChange(e){
-        that.onLoad();
-      },
-      onError(e){
-      }
-    })
   },
 
   onPageScroll: function(e){

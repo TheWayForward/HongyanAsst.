@@ -29,6 +29,9 @@ Page({
   },
 
   onLoad: function () {
+    wx.setNavigationBarTitle({
+      title: app.globalData.event.name,
+    })
     if(!this.data.event)
     {
       wx.showLoading({
@@ -217,12 +220,12 @@ Page({
                     console.log("[cloudfunction][update_user_event]: updated successfully");
                     wx.hideLoading({
                       success(res){
+                        that.setData({
+                          is_sign_up_hide: true
+                        })
                         wx.showToast({
                           title: '报名成功',
                           mask: true
-                        })
-                        that.setData({
-                          is_sign_up_hide: true
                         })
                       },
                     })
@@ -316,13 +319,13 @@ Page({
                   console.log("[cloudfunction][update_user_event]: updated successfully");
                   wx.hideLoading({
                     success(res){
+                      that.setData({
+                        is_sign_up_hide: false
+                      })
                       wx.showToast({
                         title: '已取消报名',
                         icon: 'none',
                         mask: true
-                      })
-                      that.setData({
-                        is_sign_up_hide: false
                       })
                     }
                   })

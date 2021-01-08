@@ -90,14 +90,6 @@ Page({
   },
 
   onShow: function(){
-    var that = this;
-    db.collection("events").watch({
-      onChange(e){
-        that.onLoad();
-      },
-      onError(e){
-      }
-    })
   },
 
   onPullDownRefresh: function(){
