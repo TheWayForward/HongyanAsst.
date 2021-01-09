@@ -38,6 +38,10 @@ function compare_time_for_event_locate_timer(event_time,now){
   return (event_time - now) / oneday < 0.5 && (now - event_time) / oneday < 1 ? true : false;
 }
 
+function compare_time_for_event_locate_uploader(event_time,now){
+  return (event_time - now) / oneday < onehour && (now - event_time) / oneday < 1 ? true : false;
+}
+
 function compare_location_info(location_info,location_info_past){
   var delta_latitude = Math.abs(location_info.latitude - location_info_past.latitude);
   var delta_longitude = Math.abs(location_info.longitude - location_info_past.longitude);
@@ -51,5 +55,6 @@ module.exports = {
   compare_time_for_event_sign: compare_time_for_event_sign,
   compare_time_for_event_locate: compare_time_for_event_locate,
   compare_time_for_event_locate_timer: compare_time_for_event_locate_timer,
-  compare_location_info: compare_location_info
+  compare_location_info: compare_location_info,
+  compare_time_for_event_locate_uploader: compare_time_for_event_locate_uploader
 }

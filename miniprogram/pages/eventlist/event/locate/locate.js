@@ -4,6 +4,7 @@ var compare_helper = require("../../../../utils/helpers/compare_helper");
 var time_helper = require("../../../../utils/helpers/time_helper");
 var notification_helper = require("../../../../utils/helpers/notification_helper");
 var location_helper = require("../../../../utils/helpers/location_helper");
+var versatile_helper = require("../../../../utils/helpers/versatile_helper");
 var location_timer;
 
 Page({
@@ -16,7 +17,7 @@ Page({
     //dynamic data hide or not
     is_dynamic_data_hide: false,
     //all image previewer shown or not
-    is_all_Hide: true,
+    is_snapshots_hide: true,
     //uploader shown or not
     is_uploader_hide: true,
     //add shown or not
@@ -29,7 +30,6 @@ Page({
     speed: 0,
     markers: [],
     current_marker: {},
-    event_shots: [],
     event_id: null,
     //from user
     tip: '点击"+"上传图片',
@@ -49,21 +49,27 @@ Page({
     wx.setNavigationBarTitle({
       title: app.globalData.event.name,
     })
-    wx.showLoading({
-      title: '加载中',
-    })
+    if(!this.data.event)
+    {
+      wx.showLoading({
+        title: '加载中',
+      })
+    }
     var that = this;
     var event = app.globalData.event;
     that.setData({
-      event: app.globalData.event
+      event: event,
+      is_uploader_hide: app.globalData.user.openid ? (compare_helper.compare_time_for_event_locate_uploader(event.time,new Date()) ? false : true) : true,
+      all_snapshots_tip: event.snapshots[0] ? `查看活动"${event.name}"全部图片(${event.snapshots_count})` : `暂无图片`
     })
     if(!event.device._id || !compare_helper.compare_time_for_event_locate_timer(event.time,new Date()))
     {
-      //event without device, set map focus as the starting point
+      //event without device or previous event, set map focus as the starting point
       //get data for once at least, then decide by the time of event and now
       that.setData({
         longitude: event.location_start.longitude,
         latitude: event.location_start.latitude,
+        markers: versatile_helper.delete_location_info_for_markers(versatile_helper.generate_markers(event.snapshots,"image/imagepoint.png")),
         is_dynamic_data_hide: true
       })
     }
@@ -75,6 +81,7 @@ Page({
         that.setData({
           longitude: location_info.longitude,
           latitude: location_info.latitude,
+          markers: versatile_helper.attach_location_info_to_markers(location_info,event.device,versatile_helper.generate_markers(event.snapshots),"image/star.png"),
           is_dynamic_data_hide: true
         })
         if(compare_helper.compare_time_for_event_locate_timer(event.time,new Date()))
@@ -128,8 +135,17 @@ Page({
     })
   },
 
-  onReady: function(e){
-    this.mapCtx = wx.createMapContext('myMap');
+  onShow: function(){
+    var that = this;
+    db.collection("events").where({
+      _id: app.globalData.event._id
+    }).watch({
+      onChange(e){
+        that.onLoad();
+      },
+      onError(e){
+      }
+    })
   },
 
   //stop timer from getting data when idle
@@ -137,62 +153,37 @@ Page({
     clearInterval(this.data.timer);
   },
 
-  onHide: function(){
-  },
-
-  //refresh location data
-  onPullDownRefresh: function(){
-  },
-
   //marker tapped
-  show_snapshots: function(e){
+  show_snapshot_from_map: function(e){
     var id = e.detail.markerId;
     var markers = this.data.markers;
-    if(id == 0) return;
-    for(var i = 1; i < this.data.markers.length; i++){
-      markers[i].iconPath = "image/imagepoint.png";
-      markers[i].callout.borderColor = "#1485EF";
-      //change imagepoint to red
-      if(i == id)
-      {
-        markers[i].iconPath = "image/imagepoint_selected.png";
-        markers[i].callout.borderColor = "#EF2914";
-      }
+    if(markers[0].is_snapshot)
+    {
+      //markers without location
+      this.setData({
+        is_image_previewer_hide: false,
+        markers: versatile_helper.hilight_marker(markers,id,"image/imagepoint.png","image/imagepoint_selected.png"),
+        current_marker: markers[id]
+      })
     }
-    var current_marker = markers[id];
-    this.setData({
-      markers: markers,
-      current_marker: current_marker,
-      is_image_previewer_hide: false
+  },
+
+  show_snapshot_from_list: function(e){
+    var that = this;
+    that.setData({
+      latitude: e.currentTarget.dataset.action.latitude,
+      longitude: e.currentTarget.dataset.action.longitude,
+      markers: versatile_helper.hilight_marker(that.data.markers,e.currentTarget.dataset.action.id,"image/imagepoint.png","image/imagepoint_selected.png"),
+      current_marker: e.currentTarget.dataset.action
     })
   },
 
-  //show all tab tapped
   show_all_snapshots: function(){
-    //no snapshot
-    var event = this.data.event;
-    if(!this.data.event.snapshots_count)
-    {
-      this.setData({
-        all_snapshots_tip: "暂无图片"
-      })
-      return;
-    }
-    //has snapshots
-    if(this.data.is_all_Hide)
-    {
-      this.setData({
-        is_all_Hide: false,
-        all_snapshots_tip: "收起"
-      })
-    }
-    else
-    {
-      this.setData({
-        is_all_Hide: true,
-        all_snapshots_tip: "查看" + this.data.event.name +"全部图片"
-      })
-    }
+    var that = this;
+    this.setData({
+      is_snapshots_hide: !that.data.is_snapshots_hide,
+      all_snapshots_tip: that.data.event.snapshots_count ? (that.data.is_snapshots_hide ? "收起" : `查看活动"${that.data.event.name}"全部图片(${that.data.event.snapshots_count})`) : "暂无图片"
+    })
   },
 
   //using offical plugin to get the corresponded location by tapping

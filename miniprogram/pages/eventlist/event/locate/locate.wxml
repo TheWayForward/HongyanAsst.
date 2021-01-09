@@ -1,7 +1,7 @@
 <view class="page">
   <view class="map shadow rounded-20">
   <!--40.157306,116.288791, when onenet is down-->
-    <map style="width: 100%; height: {{height}}px;" id="myMap" latitude="{{latitude}}" longitude="{{longitude}}" markers="{{markers}}" covers="{{covers}}" bindmarkertap="show_snapshots" show-location>
+    <map style="width: 100%; height: {{height}}px;" id="myMap" latitude="{{latitude}}" longitude="{{longitude}}" markers="{{markers}}" covers="{{covers}}" bindmarkertap="show_snapshot_from_map" show-location>
         <view class="dynamic_data_group" hidden="{{is_dynamic_data_hide}}">
             <view class="dynamic_data shadow" hover-class="hv">
                 <view class="dynamic_data_title">速率：(kph)</view>
@@ -34,13 +34,13 @@
 					<view class="weui-cell__bd" bindtap="show_all_snapshots">{{all_snapshots_tip}}</view>
 				</a>
 			</view>
-			<view wx:for="{{markers}}" wx:if="{{item.is_snapshot}}" class="weui-panel__bd" hidden="{{is_all_Hide}}">
+			<view wx:for="{{markers}}" wx:if="{{item.is_snapshot}}" class="weui-panel__bd" hidden="{{is_snapshots_hide}}" >
 				<a class="weui-media-box weui-media-box_appmsg">
                     <!--snapshot-->
 					<view class="weui-media-box__hd rounded-10 shadow" style="overflow: hidden;" hover-class="hv">
 						<image class="weui-media-box__thumb" src="{{item.url}}" mode="aspectFill" bindtap="preview" data-action="{{item.url}}" lazy-load="true" alt></image>
 					</view>
-					<view class="weui-media-box__bd">
+					<view class="weui-media-box__bd" bindtap="show_snapshot_from_list" data-action="{{item}}">
                         <!--image name-->
 						<view class="weui-media-box__title" style="word-wrap: break-word;word-break: normal;">{{item.name}}</view>
                         <!--image desc-->
