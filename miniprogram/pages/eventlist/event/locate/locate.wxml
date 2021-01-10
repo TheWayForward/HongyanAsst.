@@ -1,11 +1,19 @@
 <view class="page">
   <view class="map shadow rounded-20">
   <!--40.157306,116.288791, when onenet is down-->
-    <map style="width: 100%; height: {{height}}px;" id="myMap" latitude="{{latitude}}" longitude="{{longitude}}" markers="{{markers}}" covers="{{covers}}" bindmarkertap="show_snapshot_from_map" show-location>
+    <map style="width: 100%; height: {{height}}px;" id="myMap" latitude="{{latitude}}" longitude="{{longitude}}" markers="{{markers}}" show-compass="true" bindmarkertap="show_snapshot_from_map" bindregionchange="get_map_info" scale="{{map_scale}}" min-scale="8" show-location>
         <view class="dynamic_data_group" hidden="{{is_dynamic_data_hide}}">
             <view class="dynamic_data shadow" hover-class="hv">
                 <view class="dynamic_data_title">速率：(kph)</view>
                 <view class="dynamic_data_detail">{{speed}}</view>
+            </view>
+        </view>
+        <view class="map_scale_align">
+            <view class="map_scale_btn shadow padding-0 overflow-hidden" hover-class="hv" hover-stay-time="30" bindtap="map_zoom_in">
+                <image src="../../../../images/zoom_in.png" class="map_scale_btn_image"></image>
+            </view>
+            <view class="map_scale_btn shadow padding-0 overflow-hidden" hover-class="hv" hover-stay-time="30" bindtap="map_zoom_out">
+                <image src="../../../../images/zoom_out.png" class="map_scale_btn_image"></image>
             </view>
         </view>
     </map>
@@ -20,37 +28,25 @@
 					<view class="weui-media-box__hd rounded-10 shadow" style="overflow: hidden;" hover-class="hv">
 						<image class="weui-media-box__thumb" src="{{current_marker.url}}" mode="aspectFill" bindtap="preview" data-action="{{current_marker.url}}" lazy-load="true" alt></image>
 					</view>
-					<view class="weui-media-box__bd">
+					<view class="weui-media-box__bd" data-action="{{current_marker}}" bindtap="location_focus">
                         <!--image name-->
 						<view class="weui-media-box__title" style="word-wrap: break-word;word-break: normal;">{{current_marker.name}}</view>
                         <!--image desc-->
-						<view class="weui-media-box__desc">拍摄:{{current_marker.taker}}</view>
+                        <view class="weui-media-box__desc">📷 {{current_marker.taker}}</view>
+                        <view class="weui-media-box__desc">🕒 {{current_marker.time_string}}</view>
 					</view>
 				</a>
 			</view>
-			<view class="weui-panel__ft">
-				<a class="weui-cell weui-cell_active weui-cell_access weui-cell_link">
-                    <!--show all images in this event-->
-					<view class="weui-cell__bd" bindtap="show_all_snapshots">{{all_snapshots_tip}}</view>
-				</a>
-			</view>
-			<view wx:for="{{markers}}" wx:if="{{item.is_snapshot}}" class="weui-panel__bd" hidden="{{is_snapshots_hide}}" >
-				<a class="weui-media-box weui-media-box_appmsg">
-                    <!--snapshot-->
-					<view class="weui-media-box__hd rounded-10 shadow" style="overflow: hidden;" hover-class="hv">
-						<image class="weui-media-box__thumb" src="{{item.url}}" mode="aspectFill" bindtap="preview" data-action="{{item.url}}" lazy-load="true" alt></image>
-					</view>
-					<view class="weui-media-box__bd" bindtap="show_snapshot_from_list" data-action="{{item}}">
-                        <!--image name-->
-						<view class="weui-media-box__title" style="word-wrap: break-word;word-break: normal;">{{item.name}}</view>
-                        <!--image desc-->
-						<view class="weui-media-box__desc">拍摄:{{item.taker}}</view>
-					</view>
-				</a>
-			</view>
+            <scroll-view scroll-x="true" scroll-with-animation="true" style="width:100%;white-space:nowrap;" class="d-flex">
+			    <view wx:for="{{markers}}" wx:if="{{item.is_snapshot}}" class="d-inline-block" hover-class="hv" hover-stay-time="30" data-action="{{item}}" bindtap="show_snapshot_from_list">
+                    <image class="list_image shadow rounded-10" mode="aspectFill" src="{{item.url}}"></image>
+                </view>
+                <!--offset-->
+                <view class="d-inline-block" style="width:30rpx;"></view>
+            </scroll-view>
 		</view>
 	</view>
-    <view class="page__bd rounded-20" style="overflow: hidden;" hidden="{{is_uploader_hide}}">
+    <view class="page__bd rounded-20" style="overflow: hidden;">
         <view class="weui-cells">
         <view class="weui-panel weui-panel_access">
             <!--uploader title-->
@@ -59,39 +55,38 @@
             <view class="weui-cell">
                 <view class="weui-cell__bd">
                     <view class="weui-uploader">
-                        <view class="weui-uploader__hd">
-                          <view class="weui-uploader__overview">
-                              <view class="weui-uploader__title">{{tip}}</view>
-                          </view>
-                          <view class="weui-uploader__tips" wx:if="{{tip_second[0]}}">
-                            {{tip_second}}
-                          </view>
-                        </view>
                         <view class="weui-uploader__bd">
-                            <view class="weui-uploader__files" id="uploaderFiles">
-                                <block wx:for="{{files}}" wx:key="*this">
-                                    <view class="weui-uploader__file rounded-10 shadow" bindtap="preview" bindlongpress="delete_image" data-action="{{item}}" style="overflow: hidden;">
-                                        <image class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
+                            <view class="weui-uploader__files">
+                                <block wx:for="{{files}}">
+                                    <view class="weui-uploader__file rounded-10 shadow" style="overflow:hidden;">
+                                        <image class="weui-uploader__img" src="{{item}}" mode="aspectFill"/>
+                                        <view class="upload_image_delete_cover" bindtap="delete_image">
+                                            <!--trash-->
+                                            <image class="upload_image_delete" mode="aspectFill" src="../../../../images/trash.png"></image>
+                                        </view>
                                     </view>
                                 </block>
                             </view>
-                            <view class="weui-uploader__input-box rounded-10" hidden="{{is_upload_add_hide}}">
+                            <view class="weui-uploader__input-box rounded-10 shadow" hidden="{{is_upload_add_hide}}">
                                 <view class="weui-uploader__input" bindtap="choose_image"></view>
+                            </view>
+                            <view class="d-inline-block rounded-10 shadow" style="width:70%;height:96px;background:#EDEDED;margin-left:10rpx;border:none;overflow:hidden;">
+                                <view class="weui-cell">
+						            <view class="weui-cell__bd padding-0">
+							            <textarea bindinput="input" value="{{input_value}}" class="weui-textarea w-100" placeholder="填写图片备注" maxlength="50"></textarea>
+						            </view>
+					            </view>
                             </view>
                         </view>
                     </view>
                 </view>
             </view>
-            <view class="weui-cells__title">图片备注</view>
-            <view class="weui-cells weui-cells_after-title">
-                <view class="weui-cell weui-cell_active">
-                    <view class="weui-cell__bd">
-                        <input class="weui-input" value="{{input_value}}" placeholder="说点儿什么..." maxlength="30" bindinput="input"/>
-                    </view>
-                </view>
+            <view class="weui-cell__bd" style="margin-left:20rpx;">
+                <image src="{{choose_location_image}}" class="d-inline-block upload_image_choose_loaction" bindtap="choose_location"></image>
+                <input class="input shadow upload_image_loaction" placeholder="打开定位，点击左侧图标，选取图片位置" value="{{snapshot.name}}" disabled="true"></input>
             </view>
             <view class="weui-cell">
-                <button class="weui-btn shadow" type="primary" disabled="{{!files.length}}" bindtap="upload_images">上传</button>
+                <button class="weui-btn shadow" type="primary" disabled="{{!is_upload_available}}" bindtap="upload_image">上传</button>
             </view>
         </view>
     </view>

@@ -1,3 +1,5 @@
+var time_helper = require("../helpers/time_helper");
+
 function difficulty_to_stars(difficulty){
   switch(difficulty){
     case(1):
@@ -31,6 +33,8 @@ function generate_markers(snapshots,iconpath){
       latitude: snapshots[i].location.toJSON().coordinates[1],
       openid: snapshots[i].openid,
       name: snapshots[i].name,
+      time: snapshots[i].time,
+      time_string: time_helper.format_time(new Date(snapshots[i].time)).date_time,
       avatar: snapshots[i].avatar,
       nickname: snapshots[i].nickname,
       realname: snapshots[i].realname,
@@ -66,7 +70,6 @@ function generate_markers(snapshots,iconpath){
 }
 
 function delete_location_info_for_markers(markers){
-  console.log(markers);
   for(var i = 0; i < markers.length - 1; i++){
     markers[i + 1].id--;
     markers[i] = markers[i + 1];
@@ -115,10 +118,15 @@ function hilight_marker(markers,marker_id,iconpath_normal,iconpath_selected){
   return markers;
 }
 
+function generate_cloudpath_for_snapshots(event,user,file){
+  return `events/${event.poster.split("/")[4]}/snapshots/${user.nickname}_${user.openid}_${Math.random()}_${Date.now()}.${file.match(/\.(\w+)$/)[1]}`;
+}
+
 module.exports = {
   difficulty_to_stars: difficulty_to_stars,
   generate_markers: generate_markers,
   attach_location_info_to_markers: attach_location_info_to_markers,
   delete_location_info_for_markers: delete_location_info_for_markers,
-  hilight_marker: hilight_marker
+  hilight_marker: hilight_marker,
+  generate_cloudpath_for_snapshots: generate_cloudpath_for_snapshots
 }

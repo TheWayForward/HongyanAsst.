@@ -169,6 +169,10 @@ page {
   margin: 0 auto;
 }
 
+.overflow-hidden{
+  overflow: hidden;
+}
+
 .d-flex{
   display: flex;
 }
@@ -193,8 +197,20 @@ page {
   display: flex;
 }
 
+.p-20{
+  padding: 20rpx;
+}
+
 .pl-10{
   padding-left: 10rpx;
+}
+
+.pl-20{
+  padding-left: 20rpx;
+}
+
+.pr-20{
+  padding-right: 20rpx;
 }
 
 .pb-25{
@@ -207,6 +223,10 @@ page {
 
 .pb-100{
   padding-bottom: 100rpx;
+}
+
+.pt-25{
+  padding-top: 25rpx;
 }
 
 .pt-50{
@@ -462,4 +482,20 @@ page {
   height: 40rpx; 
   width: 40rpx;
   margin-top: 10rpx;
+}
+
+.upload_image_delete_cover{
+  background: gainsboro;
+  margin-top: -60rpx;
+  height: 60rpx;
+  text-align: center;
+  width: 100%;
+  opacity: 0.9;
+}
+
+.upload_image_delete{
+  height: 50rpx;
+  width: 50rpx;
+  margin-top: 5rpx;
+  align-self: center;
 }

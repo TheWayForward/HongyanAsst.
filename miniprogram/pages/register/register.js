@@ -475,6 +475,7 @@ Page({
                 is_manager: false,
                 my_bicycle: user.my_bicycle,
                 my_event: [],
+                my_snapshots: [],
                 nickname: user.nickname,
                 openid: app.globalData.openid,
                 realname: user.realname,

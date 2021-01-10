@@ -252,7 +252,7 @@ Page({
     var that = this;
     wx.showModal({
       title: '提示',
-      content: '不再参加活动"' + that.data.event.name + '"?',
+      content: `不再参加活动"${that.data.event.name}"?`,
       cancelColor: 'gray',
       cancelText: '取消',
       //warning color

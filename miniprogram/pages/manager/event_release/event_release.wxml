@@ -125,21 +125,19 @@
             <view class="weui-cell">
                 <view class="weui-cell__bd">
                     <view class="weui-uploader">
-                        <view class="weui-uploader__hd">
-                          <view class="weui-uploader__overview">
-                          </view>
-                          <view class="weui-uploader__tips">{{tip}}
-                          </view>
-                        </view>
                         <view class="weui-uploader__bd">
-                            <view class="weui-uploader__files" id="uploaderFiles">
-                                <block wx:for="{{files}}" wx:key="*this">
-                                    <view class="weui-uploader__file rounded-10 shadow" bindtap="preview" bindlongpress="delete_image" data-action="{{item}}" style="overflow: hidden;">
-                                        <image class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
+                            <view class="weui-uploader__files">
+                                <block wx:for="{{files}}">
+                                    <view class="weui-uploader__file rounded-10 shadow" style="overflow:hidden;">
+                                        <image class="weui-uploader__img" src="{{item}}" mode="aspectFill"/>
+                                        <view class="upload_image_delete_cover" bindtap="delete_image">
+                                            <!--trash-->
+                                            <image class="upload_image_delete" mode="aspectFill" src="../../../images/trash.png"></image>
+                                        </view>
                                     </view>
                                 </block>
                             </view>
-                            <view class="weui-uploader__input-box rounded-10" hidden="{{is_upload_add_hide}}">
+                            <view class="weui-uploader__input-box rounded-10 shadow" hidden="{{is_upload_add_hide}}">
                                 <view class="weui-uploader__input" bindtap="choose_image"></view>
                             </view>
                         </view>

@@ -16,13 +16,54 @@
   border: 2px solid gray;
   background: gainsboro;
   border-radius: 10rpx;
-  
 }
 
 .dynamic_data_title{
   font-weight: bold;
 }
 
-.dynamic_data_detail{
+.map_scale_align{
+  position: absolute;
+  right: 0;
+  bottom: 40rpx;
+}
 
+.map_scale_btn{
+  width: 75rpx;
+  height: 75rpx;
+  border-radius: 10rpx;
+  margin-bottom: 10rpx;
+  margin-right: 10rpx;
+}
+
+.map_scale_btn_image{
+  width: 75rpx;
+  height: 75rpx;
+}
+
+.list_image{
+  height: 200rpx;
+  width: 200rpx;
+  margin-left: 30rpx;
+  margin-top: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.upload_image_loaction{
+  display: inline-block;
+  line-height: 70rpx;
+  width: 78%;
+  background: #EDEDED;
+  margin-left: 25rpx;
+}
+
+.upload_image_choose_loaction{
+  width: 75rpx;
+  height: 75rpx
+}
+
+.upload_image_choose_loaction:active{
+  opacity: 0.7;
+  scale: 0.95;
+  transition: 0.3s ease;
 }

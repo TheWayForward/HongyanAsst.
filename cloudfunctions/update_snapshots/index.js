@@ -10,7 +10,8 @@ exports.main = async (event, context) => {
   return await new Promise((resolve, reject) => {
     db.collection('events').doc(event.taskId).update({
       data: {
-        snapshots: event.my_snapshot
+        snapshots: event.my_snapshot,
+        snapshots_count: event.my_snapshot_count
       }
     })
   }).then(console.log("[update_snapshots][updated successfully]"))

@@ -11,7 +11,7 @@ exports.main = async (event, context) => {
       openid: event.openid
     }).update({
       data: {
-        my_event: event.my_event
+        my_snapshots: event.my_snapshots
       }
     })
       .then(console.log)

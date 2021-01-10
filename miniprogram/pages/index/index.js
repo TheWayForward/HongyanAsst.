@@ -127,8 +127,14 @@ Page({
     }
     else
     {
-      wx.navigateTo({
-        url: '../../pages/eventlist/eventlist',
+      wx.showLoading({
+        title: '加载中',
+        mask: true,
+        success(res){
+          wx.navigateTo({
+            url: '../../pages/eventlist/eventlist',
+          })
+        }
       })
     }
   },
@@ -161,6 +167,7 @@ Page({
     }
     wx.showLoading({
       title: 'title',
+      mask: true
     })
     db.collection("events").where({
       name: "蟒山骑行"
