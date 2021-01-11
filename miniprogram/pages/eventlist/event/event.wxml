@@ -1,7 +1,7 @@
 <view class="page" hidden="{{isHide}}">
 	<view class="page__bd" style="margin-bottom: 120rpx;">
 		<view style="border-radius: 20rpx;" hover-class="hv" hover-stay-time="30">
-			<swiper class="poster" indicator-dots="true" autoplay="true" >
+			<swiper class="poster" indicator-dots="true" autoplay="true">
 				<swiper-item wx:for="{{event.swiper}}">
 					<image class="poster_image" src="{{item}}" mode="aspectFill" data-action="{{item}}" bindtap="preview"></image>
 				</swiper-item>
@@ -9,44 +9,45 @@
 		</view>
 		<view class="weui-cells">
 			<view class="weui-form-preview">
-			<view class="weui-form-preview__hd">
-				<view class="weui-form-preview__item" style="font-weight: bold;">
-					<label class="weui-form-preview__label">活动名称</label>
-					<text class="weui-form-preview__value" selectable="true">{{event.name}}</text>
+				<view class="weui-form-preview__hd">
+					<view class="weui-form-preview__item" style="font-weight: bold;">
+						<label class="weui-form-preview__label">活动名称</label>
+						<text class="weui-form-preview__value" user-select="true">{{event.name}}</text>
+					</view>
+				</view>
+				<view class="weui-form-preview__bd">
+					<view class="weui-form-preview__item">
+						<label class="weui-form-preview__label">时间</label>
+						<text class="weui-form-preview__value" user-select="true">{{date}}</text>
+						<text class="weui-form-preview__value" user-select="true">{{event.date_time}}</text>
+					</view>
+					<view class="weui-form-preview__item">
+						<label class="weui-form-preview__label">起点</label>
+						<text class="weui-form-preview__value" user-select="true">{{event.name_start}}</text>
+					</view>
+					<view class="weui-form-preview__item">
+						<label class="weui-form-preview__label">途经地标</label>
+						<text class="weui-form-preview__value" user-select="true">{{event.name_return}}</text>
+					</view>
+					<view class="weui-form-preview__item">
+						<label class="weui-form-preview__label">骑行里程</label>
+						<text class="weui-form-preview__value" user-select="true">{{distance}}</text>
+					</view>
+					<view class="weui-form-preview__item">
+						<label class="weui-form-preview__label">难度</label>
+						<text class="weui-form-preview__value" user-select="true">{{difficulty}}</text>
+					</view>
+					<view class="weui-form-preview__item">
+						<label class="weui-form-preview__label">领队</label>
+						<text class="weui-form-preview__value" user-select="true">{{event.leader}}</text>
+					</view>
+					<view class="weui-form-preview__item">
+						<label class="weui-form-preview__label mr-50">简介</label>
+						<text class="weui-form-preview__value" style="text-align: right; font-size: 25rpx;"
+							user-select="true">{{event.detail}}</text>
+					</view>
 				</view>
 			</view>
-			<view class="weui-form-preview__bd">
-				<view class="weui-form-preview__item">
-					<label class="weui-form-preview__label">时间</label>
-					<text class="weui-form-preview__value" selectable="true">{{date}}</text>
-					<text class="weui-form-preview__value" selectable="true">{{event.date_time}}</text>
-				</view>
-				<view class="weui-form-preview__item">
-					<label class="weui-form-preview__label">起点</label>
-					<text class="weui-form-preview__value" selectable="true">{{event.name_start}}</text>
-				</view>
-				<view class="weui-form-preview__item">
-					<label class="weui-form-preview__label">途经地标</label>
-					<text class="weui-form-preview__value" selectable="true">{{event.name_return}}</text>
-				</view>
-				<view class="weui-form-preview__item">
-					<label class="weui-form-preview__label">骑行里程</label>
-					<text class="weui-form-preview__value" selectable="true">{{distance}}</text>
-				</view>
-				<view class="weui-form-preview__item">
-					<label class="weui-form-preview__label">难度</label>
-					<text class="weui-form-preview__value" selectable="true">{{difficulty}}</text>
-				</view>
-				<view class="weui-form-preview__item">
-					<label class="weui-form-preview__label">领队</label>
-					<text class="weui-form-preview__value" selectable="true">{{event.leader}}</text>
-				</view>
-				<view class="weui-form-preview__item">
-					<label class="weui-form-preview__label mr-50">简介</label>
-					<text class="weui-form-preview__value" style="text-align: right; font-size: 25rpx;" selectable="true">{{event.detail}}</text>
-				</view>
-			</view>
-		</view>
 		</view>
 		<!--participants-->
 		<view class="weui-cells">
@@ -57,23 +58,28 @@
 				</view>
 				<view class="weui-cell__ft">{{tip}}</view>
 			</view>
-        <view class="weui-cells weui-cells_after-title" hidden="{{is_participants_hide}}">
-            <view class="weui-cell weui-cell_example" style="background: {{item.background}};font-weight:{{item.bold}};" wx:for="{{participants}}" hover-class="hv" hover-stay-time="30">
-                <view class="weui-cell__hd">
-                    <image class="rounded-10 shadow" src="{{item.avatar}}" style="margin-right: 16px;vertical-align: middle;width:50rpx; height: 50rpx;" mode="aspectFill" data-action="{{item.avatar}}" bindtap="preview" lazy-load="true"></image>
-                </view>
-                <view class="weui-cell__bd">{{item.nickname}}</view>
-                <view class="weui-cell__ft">{{item.realname}}</view>
-            </view>
-				<view class="button-sp-area mt-20 mb-20" style="text-align: center;" hidden="{{!can_sign}}">
-							<button class="weui-btn weui-btn_primary shadow" bindtap="sign_up" hidden="{{is_sign_up_hide}}">报名</button>
-							<button class="weui-btn weui-btn_warning shadow" hover-class="hv" style="background: #FA5159;" bindtap="un_sign_up" hidden="{{!is_sign_up_hide}}">取消报名</button>
+			<view class="weui-cells weui-cells_after-title" hidden="{{is_participants_hide}}">
+				<view class="weui-cell weui-cell_example" style="background: {{item.background}};font-weight:{{item.bold}};"
+					wx:for="{{participants}}" hover-class="hv" hover-stay-time="30">
+					<view class="weui-cell__hd">
+						<image class="rounded-10 shadow" src="{{item.avatar}}"
+							style="margin-right: 16px;vertical-align: middle;width:50rpx; height: 50rpx;" mode="aspectFill"
+							data-action="{{item.avatar}}" bindtap="preview" lazy-load="true"></image>
+					</view>
+					<view class="weui-cell__bd">{{item.nickname}}</view>
+					<view class="weui-cell__ft">{{item.realname}}</view>
 				</view>
-        </view>
+				<view class="button-sp-area mt-20 mb-20" style="text-align: center;" hidden="{{!can_sign}}">
+					<button class="weui-btn weui-btn_primary shadow" bindtap="sign_up" hidden="{{is_sign_up_hide}}">报名</button>
+					<button class="weui-btn weui-btn_warning shadow" hover-class="hv" style="background: #FA5159;"
+						bindtap="un_sign_up" hidden="{{!is_sign_up_hide}}">取消报名</button>
+				</view>
+			</view>
 		</view>
-    <!--locate button-->
-    <view class="bottom_fixed" style="text-align: center; display: flex;">
-			<button class="weui-btn weui-btn_primary shadow" bindtap="goto_locate" disabled="{{!is_locate_permissible}}">{{button_text}}</button>
+		<!--locate button-->
+		<view class="bottom_fixed" style="text-align: center; display: flex;">
+			<button class="weui-btn weui-btn_primary shadow" bindtap="goto_locate"
+				disabled="{{!is_locate_permissible}}">{{button_text}}</button>
 		</view>
 	</view>
 </view>

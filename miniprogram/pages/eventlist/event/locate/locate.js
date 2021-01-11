@@ -10,6 +10,7 @@ Page({
   data: {
     //from server
     event: {},
+    is_image_list_hide: true,
     is_image_previewer_hide: true,
     is_dynamic_data_hide: false,
     is_snapshots_hide: true,
@@ -19,6 +20,7 @@ Page({
     height: 300,
     map_scale: 16,
     timer: 0,
+    watcher: 0,
     location_delta_count: 0,
     latitude: 0,
     longitude: 0,
@@ -51,11 +53,13 @@ Page({
     that.setData({
       event: event,
       is_uploader_hide: app.globalData.user.openid ? (compare_helper.compare_time_for_event_locate_uploader(event.time,new Date()) ? false : true) : true,
-      all_snapshots_tip: event.snapshots[0] ? `查看活动"${event.name}"全部图片(${event.snapshots_count})` : `暂无图片`
+      tip_footer: compare_helper.compare_time_for_event_locate_uploader(event.time,new Date()) ? (app.globalData.user.openid ? "请在活动开始前一小时至活动开始后一日内上传图片" : "请注册后上传图片") : "非活动时间，不能上传图片",
+      all_snapshots_tip: event.snapshots[0] ? `查看活动"${event.name}"全部图片(${event.snapshots_count})` : `暂无图片`,
+      is_image_list_hide: event.snapshots[0] ? false : true
     })
     wx.hideLoading({
       success(){
-        db.collection("events").where({
+        that.data.watcher = db.collection("events").where({
           _id: app.globalData.event._id
         }).watch({
           onChange(e){
@@ -76,7 +80,8 @@ Page({
                 }
                 that.setData({
                   event: event,
-                  markers: !event.device._id || !compare_helper.compare_time_for_event_locate_timer(event.time,new Date()) ? versatile_helper.delete_location_info_for_markers(versatile_helper.generate_markers(event.snapshots,"image/imagepoint.png")) : versatile_helper.attach_location_info_to_markers(location_info,event.device,versatile_helper.generate_markers(event.snapshots),"image/star.png")
+                  markers: (!event.device._id || !compare_helper.compare_time_for_event_locate_timer(event.time,new Date())) ? versatile_helper.delete_location_info_for_markers(versatile_helper.generate_markers(event.snapshots,"image/imagepoint.png")) : versatile_helper.attach_location_info_to_markers(location_info,event.device,versatile_helper.generate_markers(event.snapshots),"image/star.png"),
+                  is_image_list_hide: event.snapshots[0] ? false : true
                 })
               }
             })
@@ -111,7 +116,7 @@ Page({
           longitude: location_info.longitude,
           latitude: location_info.latitude,
           markers: versatile_helper.attach_location_info_to_markers(location_info,event.device,versatile_helper.generate_markers(event.snapshots),"image/star.png"),
-          is_dynamic_data_hide: true
+          is_dynamic_data_hide: false
         })
         if(compare_helper.compare_time_for_event_locate_timer(event.time,new Date()))
         {
@@ -133,10 +138,12 @@ Page({
                 that.setData({
                   location_delta_count: ++that.data.location_delta_count
                 })
-                console.log(that.data.location_delta_count);
                 if(that.data.location_delta_count >= 10)
                 {
                   //frozen for 20 seconds
+                  that.setData({
+                    speed: "--"
+                  })
                   clearInterval(that.data.timer);
                   that.data.timer = setInterval(get_datapoints,15000);
                 }
@@ -144,14 +151,17 @@ Page({
               else
               {
                 //moving
-                that.data.location_delta_count = 0;
+                that.setData({
+                  location_delta_count: 0,
+                  speed: location_info.speed
+                })
                 clearInterval(that.data.timer);
                 that.data.timer = setInterval(get_datapoints,2000);
               }
               that.setData({
                 longitude: location_info.longitude,
                 latitude: location_info.latitude,
-                is_dynamic_data_hide: true
+                is_dynamic_data_hide: false
               })
             })
           }
@@ -163,10 +173,12 @@ Page({
 
   onHide: function(){
     clearInterval(this.data.timer);
+    this.data.watcher.close();
   },
 
   onUnload: function(){
     clearInterval(this.data.timer);
+    this.data.watcher.close();
   },
 
   //preview image in this page

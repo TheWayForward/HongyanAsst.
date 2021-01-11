@@ -50,8 +50,17 @@ const format_time = (date) => {
     //full string with padstart
     date_time: [year, month, day].map(format_number).join('/') + ' ' + [hour, minute, second].map(format_number).join(':'),
     precise_time: date.getTime(),
-    
   }
+}
+
+function set_time_for_event(event_date,event_time){
+  var time = new Date();
+  time.setFullYear(Number(event_date.slice(0,4)));
+  time.setMonth(Number(event_date.slice(5,7)) - 1);
+  time.setDate(Number(event_date.slice(8,10)));
+  time.setHours(Number(event_time.slice(0,2)));
+  time.setMinutes(Number(event_time.slice(3,5)));
+  return time;
 }
 
 const format_number = (n) => {
@@ -60,5 +69,6 @@ const format_number = (n) => {
 }
 
 module.exports = {
-  format_time: format_time
+  format_time: format_time,
+  set_time_for_event: set_time_for_event
 }

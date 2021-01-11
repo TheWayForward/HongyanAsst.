@@ -3,9 +3,7 @@
   <view>Managers think twice.</view>
   <view>管理员应有大局意识和责任心。</view>
 </view>
-
 <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
-
 <view class="btn_align">
   <view bindtap="goto_event_release" class="btn_normal">活动发布</view>
   <view bindtap="goto_article_release" class="btn_normal">资讯发布</view>

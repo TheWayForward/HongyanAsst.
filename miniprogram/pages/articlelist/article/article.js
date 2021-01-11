@@ -2,6 +2,7 @@ const app = getApp();
 const db = wx.cloud.database();
 const notification_helper = require('../../../utils/helpers/notification_helper');
 var time_helper = require('../../../utils/helpers/time_helper');
+const versatile_helper = require('../../../utils/helpers/versatile_helper');
 
 Page({
 
@@ -29,6 +30,7 @@ Page({
     details: "",
     time: "",
     hnode: [],
+    watcher: 0,
   },
 
   onLoad: function () {
@@ -132,7 +134,7 @@ Page({
 
   onShow: function(){
     var that = this;
-    db.collection("articles").where({
+    that.data.watcher = db.collection("articles").where({
       _id: app.globalData.article._id
     }).watch({
       onChange(e){
@@ -180,6 +182,14 @@ Page({
       })
     }
     setTimeout(refresh,2000);
+  },
+
+  onHide: function(){
+    this.data.watcher.close();
+  },
+
+  onUnload: function(){
+    this.data.watcher.close();
   },
 
   preview: function(e){
@@ -278,21 +288,14 @@ Page({
         is_submission_available: false
       })
       //initialize comment with detail
-      var my_comment = {};
-      my_comment.avatar = that.data.userinfo.avatarUrl;
-      my_comment.nickname = that.data.userinfo.nickName;
-      my_comment.detail = that.data.details;
-      my_comment.openid = app.globalData.openid;
-      my_comment.time = time_helper.format_time(new Date()).date_time;
-      my_comment.len = 0;
-      if(my_comment.detail.length <= 20)
-      {
-        my_comment.len = 200;
-      }
-      else
-      {
-        my_comment.len = 600 * Math.floor(my_comment.detail.length / 10) / Math.sqrt(my_comment.detail.length) ;
-      }
+      var my_comment = {
+        avatar: that.data.userinfo.avatarUrl,
+        nickname: that.data.userinfo.nickName,
+        detail: that.data.details,
+        openid: app.globalData.openid,
+        time: time_helper.format_time(new Date()).date_time,
+        len: versatile_helper.get_length_for_block(that.data.details.length)
+      };
       wx.cloud.callFunction({
         name:'s_check_text',
         //sensitivity check
@@ -303,15 +306,14 @@ Page({
         var check = res.result.code
         if(check == 200)
         {
-          var comment = that.data.comment;
-          comment.push(my_comment);
+          that.data.comment.push(my_comment);
           wx.cloud.callFunction({
             name: "add_article_comment",
             data: {
               //get article by id
               taskId: that.data._id,
-              my_comment: comment,
-              my_comment_count: comment.length
+              my_comment: that.data.comment,
+              my_comment_count: that.data.comment.length
             },
             success(res){
               that.onLoad();

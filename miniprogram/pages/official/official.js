@@ -1,115 +1,90 @@
+const app = getApp();
 const db = wx.cloud.database()
 var developers = [];
-var progress = [];
+var compare_helper = require("../../utils/helpers/compare_helper");
+var time_helper = require("../../utils/helpers/time_helper");
+var notification_helper = require("../../utils/helpers/notification_helper");
+var location_helper = require("../../utils/helpers/location_helper");
+var versatile_helper = require("../../utils/helpers/versatile_helper");
 
 Page({
   data: {
-    //users
-    u: [],
+    //users    
+    users: [],
+    version: "",
     //user info container
     dialog: false,
     dialog_title: "",
     dialog_detail: "",
-    //progress
-    p: [],
-    //developers
-    d: [],
-    hnode: [{
-      _id: "1",
-      index_id: "1",
-      node: '<img style="border-radius:15px; width: 862px !important; height: auto !important; vertical-align: middle; visibility: visible !important; max-width: 100%; " src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1587724074005&di=b3800cdcb75980d4dadda205e2db7329&imgtype=0&src=http%3A%2F%2F3580.wangid.com%2Ftemplate_xin%2Fmingxingbao%2Fimg%2Fmxb.gif" crossorigin="anonymous" data-w="1080" data-type="jpeg" data-src="https://mmbiz.qpic.cn/mmbiz_jpg/VzFuMauwoqTc6bRD4ibOr9ib60UjMDe4jLVkxsI8zYVAibUfFdEibricL0C3fwrIFJlWCIAsZ0yULMvJgZggtOniaqGA/640?wx_fmt=jpeg" data-ratio="0.3740741" _width="862px" data-fail="0">'
-    },
-    ],
-    developers_1:[],
-    developers_2:[],
-    isHide:true,
+    progress: [],
+    developers: [],
+    developers_1: [],
+    developers_2: [],
+    isHide: true,
   },
 
-  onLoad: function (options) {
+  onLoad: function () {
+    wx.showLoading({
+      title: '加载中',
+      mask: true
+    })
     var that = this;
-    function compare(p) {
-      return function (m, n) {
-        var a = m[p];
-        var b = n[p];
-        return a - b;
-      }
-    }
     //loading developer info, rendered initially
-    var batchTimes_developer;
-    var count_developer = db.collection("developers").count();
-    count_developer.then(function (result) {
-      count_developer = result.total;
-      batchTimes_developer = Math.ceil(count_developer / 20);
+    var batchTimes;
+    var count = db.collection("developers").count();
+    count.then(function (result) {
+      count = result.total;
+      batchTimes = Math.ceil(count / 20);
       var arrayContainer = [], x = 0;
-      for (var i = 0; i < batchTimes_developer; i++) {
+      for (var i = 0; i < batchTimes; i++) {
         db.collection("developers").skip(i * 20).get({
           success: function (res) {
             for (var j = 0; j < res.data.length; j++) {
               arrayContainer.push(res.data[j]);
             }
             x++;
-            if (x == batchTimes_developer) 
+            if (x == batchTimes) 
             {
-              arrayContainer.sort(compare("_id"));
-              developers = arrayContainer;
-              var odd = [];
-              var even = [];
+              arrayContainer.sort(compare_helper.compare("_id"));
+              var odd = [],even = [];
               for(var k = 0; k < arrayContainer.length; k++) {
-                var l = arrayContainer[k].details.length;
-                if(l <= 20)
-                {
-                arrayContainer[k].len = 200;
-                }
-                else
-                {
-                arrayContainer[k].len = 600 * Math.floor(l / 10) / Math.sqrt(l) ;
-                }
-                if(k % 2)
-                {
-                  even.push(arrayContainer[k]);
-                }
-                else
-                {
-                  odd.push(arrayContainer[k]);
-                }
+                arrayContainer[k].len = versatile_helper.get_length_for_block(arrayContainer[k].details.length);
+                k % 2 ? even.push(arrayContainer[k]) : odd.push(arrayContainer[k]);
               }
               that.setData({
+                developers: arrayContainer,
                 developers_1: even,
                 developers_2: odd,
               })
               //loading progress info
-              var batchTimes;
-              var count = db.collection("progress").count();
+              count = db.collection("progress").count();
               count.then(function (result) {
               count = result.total;
               batchTimes = Math.ceil(count / 20);
               var arrayContainer = [], x = 0;
               for (var i = 0; i < batchTimes; i++) {
                 db.collection("progress").skip(i * 20).get({
-                  success: function (res) {
+                  success(res){
                     for (var j = 0; j < res.data.length; j++) {
                       arrayContainer.push(res.data[j]);
                     }
                     x++;
                     if (x == batchTimes) 
                     {
-                      arrayContainer.sort(compare("_id"));
+                      arrayContainer.sort(compare_helper.compare("_id"));
                       arrayContainer.reverse();
                       //assigning image(avatar) field for corresponded progress
                       for(var i = 0; i < arrayContainer.length; i++){
-                        var progress = arrayContainer[i];
-                        for(var j = 0; j < developers.length; j++){
-                          var developer = developers[j];
-                          if(progress.contributor == developer.name)
+                        for(var j = 0; j < that.data.developers.length; j++){
+                          if(arrayContainer[i].contributor == that.data.developers[j].name)
                           {
-                            progress.avatar = developer.avatar;  
-                            arrayContainer[i] = progress;
+                            arrayContainer[i].avatar = that.data.developers[j].avatar;  
+                            break;
                           }
                         }
                       }
                       that.setData({
-                        isHide: false,
-                        p: arrayContainer,
+                        progress: arrayContainer,
                       })
                     }
                   }
@@ -138,44 +113,24 @@ Page({
           detail: true,
           nickname: true
         }).get({success: function(res){
-          for(var j = 0; j < res.data.length; j++){
-            arrayContainer.push(res.data[j]);
+            for(var j = 0; j < res.data.length; j++){
+              arrayContainer.push(res.data[j]);
+            }
+            x++;
+            if(x == batchTimes)
+            {
+              that.setData({
+                isHide: false,
+                users: arrayContainer,
+                version: app.globalData.miniprogram_version
+              })
+              wx.hideLoading({
+              }) 
+            }
           }
-          x++;
-          if(x == batchTimes)
-          {
-            that.setData({
-              u: arrayContainer
-            }) 
-          }
-        }
-      })
+        })
       }
     }) 
-  },
-
-  onShow: function () {
-
-  },
-
-  onHide: function () {
-    
-  },
-
-  onUnload: function () {
-    
-  },
-
-  onPullDownRefresh: function () {
-    
-  },
-
-  onReachBottom: function () {
-    
-  },
-
-  onShareAppMessage: function () {
-    
   },
 
   close: function() {
@@ -186,9 +141,9 @@ Page({
   
   open: function(e) {
     this.setData({
-        dialog: true,
-        dialog_title: e.currentTarget.dataset.nickname,
-        dialog_detail: e.currentTarget.dataset.detail
+      dialog: true,
+      dialog_title: e.currentTarget.dataset.nickname,
+      dialog_detail: e.currentTarget.dataset.detail
     });
   },
 

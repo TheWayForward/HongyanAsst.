@@ -1,11 +1,12 @@
 const app = getApp();
 const db = wx.cloud.database();
+var compare_helper = require("../../../utils/helpers/compare_helper");
+var time_helper = require("../../../utils/helpers/time_helper");
+var notification_helper = require("../../../utils/helpers/notification_helper");
+var versatile_helper = require("../../../utils/helpers/versatile_helper");
 
 Page({
 
-  /**
-   * Page initial data
-   */
   data: {
     //select tag
     title: "",
@@ -28,25 +29,20 @@ Page({
     events: [],
     event_selected: {},
     disabled: true,
-    //upload thumbnail
-    tip: '点击"+"上传图片',
     is_upload_add_hide: false,
     files: [],
   },
 
-  /**
-   * Lifecycle function--Called when page load
-   */
   onLoad: function (options) {
     wx.showLoading({
-      title: '关联活动获取中',
+      title: '加载中',
     })
     var that = this;
     var batchTimes;
     var count = db.collection("events").count();
     count.then(function(result){
       count = result.total;
-      batchTimes = Math.ceil(count/20);
+      batchTimes = Math.ceil(count / 20);
       var arrayContainer = [], x = 0;
       for(var i = 0; i < batchTimes; i++){
         db.collection("events").skip(i * 20).field({
@@ -62,20 +58,12 @@ Page({
             x++;
             if(x == batchTimes)
             {
-              function compare(p){
-                return function(m,n){
-                  var a = m[p];
-                  var b = n[p];
-                  return a-b;
-                }
-              };
               for(var k = 0; k < arrayContainer.length; k++){
-                var t = arrayContainer[k].time;
-                arrayContainer[k].date = t.getFullYear().toString() + "/" + (t.getMonth() + 1).toString() + "/" + t.getDate().toString();
+                arrayContainer[k].date = time_helper.format_time(arrayContainer[k].time).date;
                 arrayContainer[k].time = arrayContainer[k].time.getTime();
                 arrayContainer[k].background = "white";
               }
-              arrayContainer.sort(compare("time"));
+              arrayContainer.sort(compare_helper.compare("time"));
               arrayContainer.reverse();
               that.setData({
                 events: arrayContainer,
@@ -106,49 +94,33 @@ Page({
 
   //article tags
   bind_tag_change: function(e){
-    var index = Number(e.detail.value);
     this.setData({
-      tag: this.data.tags[index]
+      tag: this.data.tags[Number(e.detail.value)]
     })
   },
 
   //author can be current manager or the org
   bind_author_change: function(e){
-    if(e.detail.value)
-    {
-      this.setData({
-        author: "鸿雁车协"
-      })
-    }
-    else
-    {
-      this.setData({
-        author: app.globalData.user.nickname + "(" + app.globalData.user.realname + ")"
-      })
-    }
+    this.setData({
+      author: e.detail.value ? "鸿雁车协" : `${app.globalData.user.nickname}(${app.globalData.user.realname})`
+    })
   },
 
   show_bind_event: function(e){
-    this.setData({
-      is_bind_event_hide: e.detail.value
+    var that = this;
+    that.setData({
+      is_bind_event_hide: e.detail.value,
+      event_selected: e.detail.value ? that.data.event_selected : {}
     })
-    if(!this.data.is_bind_event_hide)
-    {
-      this.setData({
-        event_selected: {}
-      })
-    }
   },
 
   select_event: function(e){
     var events = this.data.events;
     var event_selected = e.currentTarget.dataset.action;
-    console.log(event_selected);
     for(var i = 0; i < events.length; i++){
       events[i].background = "white"
       if(event_selected._id == events[i]._id)
       {
-        console.log(i);
         events[i].background = "#F5F5F5";
       }
     }
@@ -208,7 +180,6 @@ Page({
           that.setData({
             files: [],
             is_upload_add_hide: false,
-            tip: '点击"+"上传图片'
           })
         }
       }
@@ -217,68 +188,41 @@ Page({
 
   submit: function(){
     var that = this;
-    var title = this.data.title;
-    var event__id = this.data.event_selected._id;
-    var date = new Date();
-    var author = this.data.author;
-    var tag = this.data.tag;
-
-    console.log(this.data);
-
-    //checking
-    if(!title)
+    if(!that.data.title)
     {
-      wx.showToast({
-        title: '未填写资讯名称',
-        icon: 'none'
-      })
+      notification_helper.show_toast_without_icon("资讯名称未填写",2000);
       return;
     }
     else
     {
-      if(title.indexOf("/") != -1)
+      if(that.data.title.indexOf("/") != -1)
       {
-        wx.showToast({
-          title: '资讯名称不能含有"/"',
-          icon: 'none'
-        })
+        notification_helper.show_toast_without_icon("资讯名称不能含有\"/\"",2000);
+        return;
+      }
+    }
+    if(that.data.tag == "请选择资讯类别标签")
+    {
+      notification_helper.show_toast_without_icon("资讯类别标签未选择",2000);
+      return;
+    }
+    if(that.data.is_bind_event_hide)
+    {
+      if(!that.data.event_selected._id)
+      {
+        notification_helper.show_toast_without_icon("请选择关联活动，或关闭\"关联活动\"选项",2000);
         return;
       }
     }
 
-    if(tag == "请选择资讯类别标签")
+    if(!that.data.files.length)
     {
-      wx.showToast({
-        title: '未选择资讯类别标签',
-        icon: 'none'
-      })
+      notification_helper.show_toast_without_icon("资讯封面未上传",2000);
       return;
     }
-
-    if(this.data.is_bind_event_hide)
-    {
-      if(!this.data.event_selected._id)
-      {
-        wx.showToast({
-          title: '请选择关联活动，或关闭"关联活动"开关',
-          icon: 'none'
-        })
-        return;
-      }
-    }
-
-    if(!this.data.files.length)
-    {
-      wx.showToast({
-        title: '未上传资讯封面',
-        icon: 'none'
-      })
-      return;
-    }
-
     wx.showModal({
       title: '提示',
-      content: '确认发布资讯"' + title + '"吗？',
+      content: `确认发布资讯"${that.data.title}"吗？`,
       success: function(res){
         if(res.cancel)
         {
@@ -286,51 +230,70 @@ Page({
         }
         else
         {
-          var files = that.data.files;
-          //uploadfile and complete
-          const filePath = files[0];
-          const cloudPath =  `articles/${title}/${app.globalData.openid}_${Math.random()}_${Date.now()}.${filePath.match(/\.(\w+)$/)[1]}`;
+          that.setData({
+            disabled: true
+          })
+          wx.showLoading({
+            title: '图片上传中',
+            mask: true
+          })
           wx.cloud.uploadFile({
-            cloudPath,
-            filePath,
+            cloudPath: versatile_helper.generate_cloudpath_for_article(that.data.title,app.globalData.user,that.data.files[0]),
+            filePath: that.data.files[0],
             success: function(res){
-              var files_cloud_url = res.fileID;
-              console.log(res.fileID);
-              //increment
+              wx.showLoading({
+                title: '相关数据上传中',
+                mask: true
+              })
               var count = db.collection("articles").count();
               count.then(function(result){
                 count = result.total;
-                var _id = count + 1 + "";
                 //upload to cloudbase
                 db.collection("articles").add({
                   data:{
-                    _id: _id,
-                    event__id: event__id ? event__id : 0,
-                    author: author,
+                    _id: count + 1 + "",
+                    event__id: that.data.event_selected._id ? that.data.event_selected._id : 0,
+                    author: that.data.author,
                     comment: [],
+                    comment_count: 0,
                     date: new Date(),
+                    is_available: false,
                     isAvailable: false,
                     node: "",
                     openid: app.globalData.user.openid,
-                    thumbnail: files_cloud_url,
-                    title: title,
-                    tag: tag,
+                    thumbnail: res.fileID,
+                    title: that.data.title,
+                    tag: that.data.tag,
                     view: 0
                   },
                   success: function(res){
+                    wx.hideLoading({
+                    })
                     wx.showToast({
                       title: '发布成功',
+                      mask: true,
                       duration: 3000,
-                      success: function(res){
+                      success(res){
                         wx.reLaunch({
-                          url: '../../articlelist/articlelist',
+                          url: '../../index/index',
                         })
                       }
-                      }
-                    )
+                    })
+                  },
+                  fail(res){
+                    console.log("[cloud_database][events]: failed to add");
+                    notification_helper.show_toast_without_icon("上传失败，请刷新页面重试",2000);
                   }
+                })       
+              })
+            },
+            fail(res){
+              console.log(res);
+              wx.hideLoading({
+                success(res){
+                  console.log("[upload_image]: cloud upload error")
+                  notification_helper.show_toast_without_icon("上传失败，请刷新页面重试",2000);
                 }
-                )       
               })
             }
           })

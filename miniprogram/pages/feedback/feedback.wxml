@@ -4,8 +4,9 @@
         <view class="weui-cells weui-cells_after-title rounded-20">
             <view class="weui-cell weui-cell_active">
                 <view class="weui-cell__bd">
-                    <textarea class="weui-textarea" placeholder="描述您在测试中遇到的问题" style="height: 3.3em" bindinput="input_detail" maxlength="500"/>
-                </view>
+                    <textarea class="weui-textarea" placeholder="描述您在测试中遇到的问题" style="height: 3.3em"
+                        bindinput="input_detail" maxlength="500" />
+                    </view>
             </view>
         </view>
 
@@ -17,4 +18,3 @@
         <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
     </view>
 </view>
-

@@ -3,6 +3,7 @@ const db = wx.cloud.database();
 var compare_helper = require("../../../utils/helpers/compare_helper");
 var time_helper = require("../../../utils/helpers/time_helper");
 var notification_helper = require("../../../utils/helpers/notification_helper");
+var versatile_helper = require("../../../utils/helpers/versatile_helper");
 
 Page({
 
@@ -285,99 +286,69 @@ Page({
     })
   },
 
-  //submit event info
   submit: function(){
-    
     var that = this;
-    var name = that.data.name;
-    var distance = that.data.distance;
-    var difficulty = that.data.difficulty;
-    var detail = that.data.detail;
-    var device = that.data.event_device;
-    var name_start = that.data.name_start;
-    var name_return = that.data.name_return;
-    var location_start = that.data.location_start;
-    var location_return = that.data.location_return;
-
-    //name, "/" excluded
-    if(!name)
+    if(!that.data.name)
     {
       notification_helper.show_toast_without_icon("未填写活动名称",2000);
       return;
     }
     else
     {
-      if(name.indexOf("/") != -1)
+      if(that.data.name.indexOf("/") != -1)
       {
         notification_helper.show_toast_without_icon("活动名称不能含有\"/\"",2000);
         return;
       }
     }
-
-    //date
     if(that.data.event_date == "发布期限为一年")
     {
       notification_helper.show_toast_without_icon("活动日期未选择",2000);
       return;
     }
-
-    //time
     if(that.data.event_time == "选择活动时间")
     {
       notification_helper.show_toast_without_icon("活动时间未选择",2000);
       return;
     }
-
-    //distance
-    if(!distance)
+    if(!that.data.distance)
     {
       notification_helper.show_toast_without_icon("距离输入有误",2000);
       return;
     }
-
-    //points
     if((!that.data.location_start) || (!that.data.location_return))
     {
       notification_helper.show_toast_without_icon("起点、途经地标未选择",2000);
       return;
     }
-
     if(that.data.name_start == "未选中位置，点我重新选择" || that.data.name_return == "未选中位置，点我重新选择")
     {
       notification_helper.show_toast_without_icon("起点、途经地标未选择",2000);
       return;
     }
-
     if(that.data.name_start == that.data.name_return)
     {
       notification_helper.show_toast_without_icon("起点与途经地标位置重复",2000);
       return;
     }
-
-    //difficulty
-    if(difficulty == "拖动选择")
+    if(that.data.difficulty == "拖动选择")
     {
       notification_helper.show_toast_without_icon("活动难度未选择",2000);
       return;
     }
-
-    //detail
     if(!that.data.detail)
     {
       notification_helper.show_toast_without_icon("活动简介未填写",2000);
       return;
     }
-
-    //poster
     if(!that.data.files.length)
     {
       notification_helper.show_toast_without_icon("活动海报未上传",2000);
       return;
     }
-
     wx.showModal({
       title: '提示',
-      content: `发布活动"${name}"吗？请务必确认信息无误。`,
+      content: `发布活动"${that.data.name}"吗？请务必确认信息无误。`,
       success: function(res){
         if(res.cancel)
         {
@@ -392,44 +363,31 @@ Page({
             title: '图片上传中',
             mask: true
           })
-          var time = new Date();
-          time.setFullYear(Number(that.data.event_date.slice(0,4)));
-          time.setMonth(Number(that.data.event_date.slice(5,7)) - 1);
-          time.setDate(Number(that.data.event_date.slice(8,10)));
-          time.setHours(Number(that.data.event_time.slice(0,2)));
-          time.setMinutes(Number(that.data.event_time.slice(3,5)));
-          //uploadfile and complete
-          const filePath = that.data.files[0];
-          const cloudPath = `events/${name}_${Date.now()}/poster/${app.globalData.openid}_${Math.random()}_${Date.now()}.${filePath.match(/\.(\w+)$/)[1]}`;
-          console.log(that.data);
           wx.cloud.uploadFile({
-            cloudPath,
-            filePath,
+            cloudPath: versatile_helper.generate_cloudpath_for_event(that.data.name,app.globalData.user,that.data.files[0]),
+            filePath: that.data.files[0],
             success: function(res){
               wx.showLoading({
-                title: '活动发布中',
+                title: '相关数据上传中',
                 mask: true
               })
-              var files_cloud_url = res.fileID;
-              //increment
               var count = db.collection("events").count();
               count.then(function(result){
-                //upload to cloudbase
                 db.collection("events").add({
                   data:{
                     _id: result.total + 1 + "",
-                    detail: detail,
-                    device: device,
-                    difficulty: difficulty,
-                    distance: distance,
-                    device: device,
+                    detail: that.data.detail,
+                    device: that.data.event_device,
+                    difficulty: that.data.difficulty,
+                    distance: that.data.distance,
+                    is_available: true,
                     leader: app.globalData.user.realname,
                     leader_openid: app.globalData.user.openid,
-                    location_return: location_return,
-                    location_start: location_start,
-                    name: name,
-                    name_return: name_return,
-                    name_start: name_start,
+                    location_return: that.data.location_return,
+                    location_start: that.data.location_start,
+                    name: that.data.name,
+                    name_return: that.data.name_return,
+                    name_start: that.data.name_start,
                     participants:[{
                       avatar: app.globalData.user.avatar,
                       nickname: app.globalData.user.nickname,
@@ -438,46 +396,68 @@ Page({
                       time: Date.now()
                     }],
                     participants_count: 1,
-                    poster: files_cloud_url,
+                    poster: res.fileID,
                     snapshots: [],
                     snapshots_count: 0,
-                    time: time,
+                    time: time_helper.set_time_for_event(that.data.event_date,that.data.event_time),
                     view: 0
-                  }
-                })
-                app.globalData.user.my_event.push({
-                  _id: result.total + 1 + "",
-                  name: name,
-                  poster: files_cloud_url,
-                  date: that.data.event_date.replace(new RegExp("-","g"),"/"),
-                  distance: that.data.distance,
-                  is_signed: true
-                });
-                console.log(app.globalData.user.my_event);
-                wx.cloud.callFunction(
-                {
-                  name: "update_user_event",
-                  data: {
-                    openid: app.globalData.user.openid,
-                    my_event: app.globalData.user.my_event
                   },
                   success(res){
-                    wx.showToast({
-                      title: '发布成功',
-                      duration: 2000,
-                      mask: true,
+                    console.log("[cloud_database][events]: add successfully");
+                    wx.showLoading({
+                      title: '数据更新中',
+                      mask: true
+                    })
+                    app.globalData.user.my_event.push({
+                      _id: result.total + 1 + "",
+                      name: that.data.name,
+                      poster: res.fileID,
+                      date: that.data.event_date.replace(new RegExp("-","g"),"/"),
+                      distance: that.data.distance,
+                      is_signed: true
+                    });
+                    wx.cloud.callFunction({
+                      name: "update_user_event",
+                      data: {
+                        openid: app.globalData.user.openid,
+                        my_event: app.globalData.user.my_event
+                      },
                       success(res){
-                        function refresh(){
-                          wx.reLaunch({
-                            url: '../../index/index',
-                          })
-                        }
-                        setTimeout(refresh,2000);
+                        console.log("[cloudfunction][update_user_event]: updated successfully");
+                        wx.showToast({
+                          title: '发布成功',
+                          duration: 2000,
+                          mask: true,
+                          success(res){
+                            function refresh(){
+                              wx.reLaunch({
+                                url: '../../index/index',
+                              })
+                            }
+                            setTimeout(refresh,2000);
+                          }
+                        })
+                      },
+                      fail(res){
+                        console.log("[cloudfunction][update_user_event]: failed to update");
+                        notification_helper.show_toast_without_icon("获取数据失败，请刷新页面重试",2000);
                       }
                     })
+                  },
+                  fail(res){
+                    console.log("[cloud_database][events]: failed to add");
+                    notification_helper.show_toast_without_icon("上传失败，请刷新页面重试",2000);
                   }
+                })
+              })
+            },
+            fail(res){
+              console.log(res);
+              wx.hideLoading({
+                success(res){
+                  console.log("[upload_image]: cloud upload error")
+                  notification_helper.show_toast_without_icon("上传失败，请刷新页面重试",2000);
                 }
-                )
               })
             }
           })

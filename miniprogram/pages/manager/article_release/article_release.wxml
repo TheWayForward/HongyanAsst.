@@ -1,6 +1,5 @@
 <view class="page">
     <view class="page__bd">
-
         <view class="weui-cells__title">基本信息</view>
         <view class="weui-cells weui-cells_after-title">
             <!--article title-->
@@ -9,8 +8,7 @@
                     <view class="weui-label">标题</view>
                 </view>
                 <view class="weui-cell__bd">
-                    <input class="weui-input" bindinput="input_title" placeholder="输入文章标题" maxlength="50"/>
-                </view>                
+                    <input class="weui-input" bindinput="input_title" placeholder="输入文章标题" maxlength="50" /></view>
             </view>
             <!--article tag-->
             <view class="weui-cell weui-cell_active weui-cell_select weui-cell_select-after">
@@ -38,9 +36,12 @@
                 </view>
             </view>
             <view class="weui-cells weui-cells_after-title" hidden="{{!is_bind_event_hide}}">
-                <view wx:for="{{events}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active" style="background: {{item.background}};">
+                <view wx:for="{{events}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active"
+                    style="background: {{item.background}};">
                     <view class="weui-cell__hd">
-                        <image src="{{item.poster}}" class="rounded-10 shadow" style="margin-right: 16px;vertical-align: middle;width:30px; height: 30px;" mode="aspectFill" data-action="{{item.poster}}" bindtap="preview"></image>
+                        <image src="{{item.poster}}" class="rounded-10 shadow"
+                            style="margin-right: 16px;vertical-align: middle;width:30px; height: 30px;"
+                            mode="aspectFill" data-action="{{item.poster}}" bindtap="preview"></image>
                     </view>
                     <view class="weui-cell__bd" data-action="{{item}}" bindtap="select_event">{{item.name}}</view>
                     <view class="weui-cell__ft" data-action="{{item}}" bindtap="select_event">{{item.date}}</view>
@@ -50,36 +51,35 @@
         <!--article cover-->
         <view class="weui-cells__title">封面</view>
         <view class="page__bd rounded-20" style="overflow: hidden;">
-        <view class="weui-cells">
-            <view class="weui-cell">
-                <view class="weui-cell__bd">
-                    <view class="weui-uploader">
-                        <view class="weui-uploader__bd">
-                            <view class="weui-uploader__files">
-                                <block wx:for="{{files}}">
-                                    <view class="weui-uploader__file rounded-10 shadow" style="overflow:hidden;">
-                                        <image class="weui-uploader__img" src="{{item}}" mode="aspectFill"/>
-                                        <view class="upload_image_delete_cover" bindtap="delete_image">
-                                            <!--trash-->
-                                            <image class="upload_image_delete" mode="aspectFill" src="../../../images/trash.png"></image>
+            <view class="weui-cells">
+                <view class="weui-cell">
+                    <view class="weui-cell__bd">
+                        <view class="weui-uploader">
+                            <view class="weui-uploader__bd">
+                                <view class="weui-uploader__files">
+                                    <block wx:for="{{files}}">
+                                        <view class="weui-uploader__file rounded-10 shadow" style="overflow:hidden;">
+                                            <image class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
+                                            <view class="upload_image_delete_cover" bindtap="delete_image">
+                                                <!--trash-->
+                                                <image class="upload_image_delete" mode="aspectFill"
+                                                    src="../../../images/trash.png"></image>
+                                            </view>
                                         </view>
-                                    </view>
-                                </block>
-                            </view>
-                            <view class="weui-uploader__input-box rounded-10 shadow" hidden="{{is_upload_add_hide}}">
-                                <view class="weui-uploader__input" bindtap="choose_image"></view>
+                                    </block>
+                                </view>
+                                <view class="weui-uploader__input-box rounded-10 shadow"
+                                    hidden="{{is_upload_add_hide}}">
+                                    <view class="weui-uploader__input" bindtap="choose_image"></view>
+                                </view>
                             </view>
                         </view>
                     </view>
                 </view>
             </view>
         </view>
-        </view>
-
         <view class="weui-btn-area">
-            <button class="weui-btn shadow" type="primary" bindtap="submit" disabled="{{disabled}}">发布资讯</button>
-        </view>
-
+            <button class="weui-btn shadow" type="primary" bindtap="submit" disabled="{{disabled}}">发布资讯</button></view>
         <!--bottom line-->
         <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
     </view>

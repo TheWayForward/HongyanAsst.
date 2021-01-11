@@ -1,5 +1,7 @@
 var time_helper = require("../helpers/time_helper");
 
+//string
+
 function difficulty_to_stars(difficulty){
   switch(difficulty){
     case(1):
@@ -21,6 +23,12 @@ function difficulty_to_stars(difficulty){
       return "警告：未知难度！"
       break;
   }
+}
+
+//layout
+
+function get_length_for_block(length){
+  return length <= 20 ? 200 : 600 * Math.floor(length / 10) / Math.sqrt(length);
 }
 
 function generate_markers(snapshots,iconpath){
@@ -106,6 +114,7 @@ function attach_location_info_to_markers(location_info,device,markers,iconpath){
 
 function hilight_marker(markers,marker_id,iconpath_normal,iconpath_selected){
   for(var i = 0; i < markers.length; i++){
+    if(!markers[i].is_snapshot) continue;
     markers[i].iconPath = iconpath_normal;
     markers[i].callout.borderColor = "#1485EF";
     //change imagepoint to red
@@ -118,15 +127,27 @@ function hilight_marker(markers,marker_id,iconpath_normal,iconpath_selected){
   return markers;
 }
 
+//cloudpath
 function generate_cloudpath_for_snapshots(event,user,file){
   return `events/${event.poster.split("/")[4]}/snapshots/${user.nickname}_${user.openid}_${Math.random()}_${Date.now()}.${file.match(/\.(\w+)$/)[1]}`;
 }
 
+function generate_cloudpath_for_event(name,user,file){
+  return `events/${name}_${Date.now()}/poster/${user.nickname}_${user.openid}_${Math.random()}_${Date.now()}.${file.match(/\.(\w+)$/)[1]}`;
+}
+
+function generate_cloudpath_for_article(title,user,file){
+  return `articles/${title}_${Date.now()}/thumbnail/${user.openid}_${Math.random()}_${Date.now()}.${file.match(/\.(\w+)$/)[1]}`;
+}
+
 module.exports = {
   difficulty_to_stars: difficulty_to_stars,
+  get_length_for_block: get_length_for_block,
   generate_markers: generate_markers,
   attach_location_info_to_markers: attach_location_info_to_markers,
   delete_location_info_for_markers: delete_location_info_for_markers,
   hilight_marker: hilight_marker,
-  generate_cloudpath_for_snapshots: generate_cloudpath_for_snapshots
+  generate_cloudpath_for_snapshots: generate_cloudpath_for_snapshots,
+  generate_cloudpath_for_event: generate_cloudpath_for_event,
+  generate_cloudpath_for_article: generate_cloudpath_for_article
 }

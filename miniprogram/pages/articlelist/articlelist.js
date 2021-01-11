@@ -7,7 +7,7 @@ var notification_helper = require("../../utils/helpers/notification_helper");
 Page({
   data: {
     articles: [],
-    search_articles: [],
+    search_articles: [{thumbnail: "../../images/loading.gif"}],
     show_top: true,
     isHide: true,
     is_loading_hide: false,

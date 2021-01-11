@@ -25,7 +25,7 @@ App({
           wx.getUserInfo({
             success: res => {
               console.log(res.userInfo);
-              this.globalData.user_info = res.userInfo
+              this.globalData.user_info = res.userInfo;
             }
           })
         }
@@ -76,9 +76,6 @@ App({
         }
       });
     })
-
-    //init globalData
-    this.globalData = {};
   },
 
   globalData:{

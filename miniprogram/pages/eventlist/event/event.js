@@ -26,13 +26,14 @@ Page({
     //button
     is_locate_permissible: false,
     button_text:"加载中",
+    watcher: 0
   },
 
   onLoad: function () {
     wx.setNavigationBarTitle({
       title: app.globalData.event.name,
     })
-    if(!this.data.event)
+    if(!this.data.event.name)
     {
       wx.showLoading({
         title: '加载中',
@@ -99,13 +100,15 @@ Page({
           button_text: compare_helper.compare_time_for_event_locate(event.time,new Date()) ? (event.snapshots_count ? `动态追踪(${event.snapshots_count})` : "动态追踪(暂无)") : "活动尚未开始",
           isHide: false,
         })
+        wx.hideLoading({
+        })
       }
     })
   },
 
   onShow: function(){
     var that = this;
-    db.collection("events").where({
+    that.data.watcher = db.collection("events").where({
       _id: app.globalData.event._id
     }).watch({
       onChange(e){
@@ -136,6 +139,14 @@ Page({
       })
     }
     setTimeout(refresh,2000);
+  },
+
+  onHide: function(){
+    this.data.watcher.close();
+  },
+
+  onUnload: function(){
+    this.data.watcher.close();
   },
 
   //preview image
@@ -317,16 +328,12 @@ Page({
                 },
                 success(res){
                   console.log("[cloudfunction][update_user_event]: updated successfully");
+                  that.setData({
+                    is_sign_up_hide: false
+                  })
                   wx.hideLoading({
                     success(res){
-                      that.setData({
-                        is_sign_up_hide: false
-                      })
-                      wx.showToast({
-                        title: '已取消报名',
-                        icon: 'none',
-                        mask: true
-                      })
+                      notification_helper.show_toast_without_icon("已取消报名",2000);
                     }
                   })
                 },

@@ -9,9 +9,9 @@ Page({
   data: {
     isHide: true,
     events: [],
-    previous_event: [],
-    current_event: [],
-    coming_event: []
+    previous_event: [{poster: "../../images/loading.gif"}],
+    current_event: [{poster: "../../images/loading.gif"}],
+    coming_event: [{poster: "../../images/loading.gif"}],
   },
 
   onLoad: function () {
