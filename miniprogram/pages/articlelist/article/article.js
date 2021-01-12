@@ -251,10 +251,7 @@ Page({
     console.log(e);
     if(e.detail.errMsg == "getUserInfo:fail auth deny")
     {
-      wx.showToast({
-        title: '授权失败',
-        duration: 2000
-      })
+      notification_helper.show_toast_without_icon("授权失败",2000);
     }
     else
     {
@@ -270,11 +267,7 @@ Page({
     var that = this;
     if(!this.data.details)
     {
-      wx.showToast({
-        title: '评论不能为空',
-        icon: 'none',
-        duration: 2000
-      })
+      notification_helper.show_toast_without_icon("评论不能为空",2000);
       return;
     }
     else
@@ -282,6 +275,7 @@ Page({
       //show loading
       wx.showLoading({
         title: '评论提交中',
+        mask: true
       })
       //disable the button to prevent from double-submission
       this.setData({
@@ -332,6 +326,7 @@ Page({
               })
             },
             fail(res){
+              console.log("[cloudfunction][add_article_comment]: add successfully");
               notification_helper.show_toast_without_icon("获取数据失败，请下拉刷新页面",2000);
             }
           })

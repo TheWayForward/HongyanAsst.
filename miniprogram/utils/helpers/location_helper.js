@@ -62,6 +62,7 @@ function get_datapoints_from_onenet(device){
   return new Promise((resolve,reject) =>{
     wx.request({
       url: `https://api.heclouds.com/devices/${device.deviceid}/datapoints?datastream_id=Latitude,Logitude,Speed&limit=1`,
+      method: "GET",
       header: {
         'content-type': 'application/json',
         'api-key': device.apikey

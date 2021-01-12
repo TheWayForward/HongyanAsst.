@@ -1,11 +1,10 @@
-.avatar_name_container{
+.avatar_name_container {
   width: 100%;
   border-radius: 30rpx;
   margin-top: -20rpx;
   text-align: center;
   background-image: url(http://m.qpic.cn/psc?/V10ldMks1Z5QlW/bqQfVz5yrrGYSXMvKr.cqfWwSpHUrZXKXcOu9AfZ8Yv9PM9T5FboHy0vprjIbF6EDWsWixFNKjonrJ4hxx6vL2rP.yfBMdNxI4LiMnGGXeQ!/b&bo=6gHtAeoB7QEDCSw!&rf=viewer_4);
   background-attachment: fixed;
-  background-size: cover;
 }
 
 .avatar{

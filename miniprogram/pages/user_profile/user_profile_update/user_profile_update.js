@@ -1,66 +1,21 @@
-// pages/user_profile/user_profile_update/user_profile_update.js
+const app = getApp();
+const db = wx.cloud.database();
+var compare_helper = require("../../../utils/helpers/compare_helper");
+var notification_helper = require("../../../utils/helpers/notification_helper");
+var time_helper = require("../../../utils/helpers/time_helper");
+var versatile_helper = require("../../../utils/helpers/versatile_helper");
+
 Page({
 
-  /**
-   * Page initial data
-   */
   data: {
-
+    user: {}
   },
 
-  /**
-   * Lifecycle function--Called when page load
-   */
-  onLoad: function (options) {
-
-  },
-
-  /**
-   * Lifecycle function--Called when page is initially rendered
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * Lifecycle function--Called when page show
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * Lifecycle function--Called when page hide
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * Lifecycle function--Called when page unload
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * Page event handler function--Called when user drop down
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * Called when page reach bottom
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * Called when user click on the top right corner to share
-   */
-  onShareAppMessage: function () {
-
+  onLoad: function(){
+    var that = this;
+    that.setData({
+      user: app.globalData.user
+    })
   }
+
 })

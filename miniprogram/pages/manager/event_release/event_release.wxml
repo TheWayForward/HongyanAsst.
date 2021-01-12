@@ -127,7 +127,7 @@
                     <view class="weui-uploader">
                         <view class="weui-uploader__bd">
                             <view class="weui-uploader__files">
-                                <block wx:for="{{files}}">
+                                <block wx:for="{{files}}" wx:key="*this">
                                     <view class="weui-uploader__file rounded-10 shadow" style="overflow:hidden;">
                                         <image class="weui-uploader__img" src="{{item}}" mode="aspectFill"/>
                                         <view class="upload_image_delete_cover" bindtap="delete_image">

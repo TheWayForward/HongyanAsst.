@@ -34,13 +34,11 @@
 
 .article_thumbnail{
   width: 100%;
-  height: 340rpx
 }
 
 .article_thumbnail_loading{
   width: 100%;
   height: 340rpx;
-  
 }
 
 .overview{

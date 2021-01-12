@@ -2,7 +2,7 @@
 	<view class="page__bd" style="margin-bottom: 120rpx;">
 		<view style="border-radius: 20rpx;" hover-class="hv" hover-stay-time="30">
 			<swiper class="poster" indicator-dots="true" autoplay="true">
-				<swiper-item wx:for="{{event.swiper}}">
+				<swiper-item wx:for="{{event.swiper}}" wx:key="url">
 					<image class="poster_image" src="{{item}}" mode="aspectFill" data-action="{{item}}" bindtap="preview"></image>
 				</swiper-item>
 			</swiper>
@@ -60,7 +60,7 @@
 			</view>
 			<view class="weui-cells weui-cells_after-title" hidden="{{is_participants_hide}}">
 				<view class="weui-cell weui-cell_example" style="background: {{item.background}};font-weight:{{item.bold}};"
-					wx:for="{{participants}}" hover-class="hv" hover-stay-time="30">
+					wx:for="{{participants}}" wx:key="openid" hover-class="hv" hover-stay-time="30">
 					<view class="weui-cell__hd">
 						<image class="rounded-10 shadow" src="{{item.avatar}}"
 							style="margin-right: 16px;vertical-align: middle;width:50rpx; height: 50rpx;" mode="aspectFill"

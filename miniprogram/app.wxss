@@ -181,6 +181,10 @@ page {
   display: inline-block;
 }
 
+.bg-standard{
+  background-color: #F6F6F6;
+}
+
 .bg-white{
   background: white;
 }

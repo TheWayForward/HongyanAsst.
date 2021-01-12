@@ -1,1 +1,5 @@
-/* pages/user_profile/user_profile_update/user_profile_update.wxss */
+.avatar{
+  width: 150rpx;
+  height: 150rpx;
+}
+

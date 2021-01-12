@@ -12,7 +12,7 @@
 	<view class="page__bd rounded-20" style="overflow: hidden;">
 		<view class="weui-panel weui-panel_access">
 			<view class="weui-panel__bd">
-				<a class="weui-media-box weui-media-box_appmsg" wx:for="{{users}}">
+				<a class="weui-media-box weui-media-box_appmsg" wx:for="{{users}}" wx:key="openid">
 					<view class="weui-media-box__hd">
 						<image class="weui-media-box__thumb rounded-10 shadow" data-action="{{item.avatar}}" src="{{item.avatar}}" mode="aspectFill" bindtap="preview" alt></image>
 					</view>
@@ -37,7 +37,7 @@
 			</view>
 			<view class="weui-panel__ft">
 				<a class="weui-cell weui-cell_active weui-cell_access weui-cell_link">
-					<view class="weui-cell__bd" style="text-align: center; font-weight: bold;">共{{u.length}}位用户</view></a>
+					<view class="weui-cell__bd" style="text-align: center; font-weight: bold;">共{{users.length}}位用户</view></a>
 			</view>
 		</view>
 	</view>
@@ -80,7 +80,7 @@
 		<view class="page__bd" style="overflow:hidden; border-radius:50rpx;">
 			<view class="weui-panel weui-panel_access">
 				<view class="weui-panel__bd">
-					<a class="weui-media-box weui-media-box_appmsg" wx:for="{{progress}}" wx:if="{{item.contributor}}">
+					<a class="weui-media-box weui-media-box_appmsg" wx:for="{{progress}}" wx:if="{{item.contributor}}" wx:key="_id">
 						<view class="weui-media-box__hd">
 							<image class="weui-media-box__thumb rounded-10 shadow" src="{{item.avatar}}" mode="aspectFill" data-action="{{item.avatar}}" bindtap="preview" alt></image>
 						</view>

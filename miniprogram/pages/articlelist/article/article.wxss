@@ -87,3 +87,7 @@
   margin-top: -30rpx;
   word-wrap: break-word;
 }
+
+.s{
+  background-color: #F5F5F5;
+}

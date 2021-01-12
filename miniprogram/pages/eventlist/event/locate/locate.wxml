@@ -44,9 +44,9 @@
 				</a>
 			</view>
 			<scroll-view scroll-x="true" scroll-with-animation="true" style="width:100%;white-space:nowrap;" class="d-flex">
-				<view wx:for="{{markers}}" wx:if="{{item.is_snapshot}}" class="d-inline-block" hover-class="hv"
+				<view wx:for="{{markers}}" wx:if="{{item.is_snapshot}}" wx:key="url" class="d-inline-block" hover-class="hv"
 					hover-stay-time="30" data-action="{{item}}" bindtap="show_snapshot_from_list">
-					<image class="list_image shadow rounded-10" mode="aspectFill" src="{{item.url}}"></image>
+					<image class="list_image shadow rounded-10" mode="aspectFill" src="{{item.url}}" lazy-load="true"></image>
 				</view>
 				<!--offset-->
 				<view class="d-inline-block" style="width:30rpx;"></view>
@@ -65,7 +65,7 @@
 					<view class="weui-uploader">
 						<view class="weui-uploader__bd">
 							<view class="weui-uploader__files">
-								<block wx:for="{{files}}">
+								<block wx:for="{{files}}" wx:key="*this">
 									<view class="weui-uploader__file rounded-10 shadow" style="overflow:hidden;">
 										<image class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
 										<view class="upload_image_delete_cover" bindtap="delete_image">
