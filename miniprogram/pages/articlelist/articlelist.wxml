@@ -27,7 +27,7 @@
 					<image src="image/view.png" style="width:35rpx;height:20rpx;z-index:5;" bindtap="preview" data-action="{{item.thumbnail}}"></image>
 					<view class="my_white mr-20" style="line-height:20rpx;margin-left:10rpx">{{item.view}}</view>
 					<!--comments-->
-					<image src="image/submitcomment.png" style="width:30rpx;height:25rpx;z-index:5;" bindtap="preview" data-action="{{item.thumbnail}}"></image>
+					<image src="image/submitcomment.png" style="width:35rpx;height:20rpx;z-index:5;" bindtap="preview" data-action="{{item.thumbnail}}"></image>
 					<view class="my_white" style="line-height:20rpx;margin-left:10rpx">{{item.comment_count}}</view></view>
 				<!--bottom info-->
 				<view class="bottominfo" style="padding-left:15rpx;padding-right:15rpx;padding-top:15rpx" hover-class="hv" hover-stay-time="30" data-title="{{item.title}}" data-action="{{item}}" data-id="{{item._id}}" bindtap="goto_article">

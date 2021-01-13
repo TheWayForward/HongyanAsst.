@@ -483,9 +483,9 @@ page {
 }
 
 .comment_submission_align .comment_submission_button_image{
-  height: 40rpx; 
-  width: 40rpx;
-  margin-top: 10rpx;
+  height: 36rpx;
+  width: 60rpx;
+  margin-top: 14rpx;
 }
 
 .upload_image_delete_cover{

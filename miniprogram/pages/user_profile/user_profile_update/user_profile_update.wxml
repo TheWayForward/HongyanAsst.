@@ -1,31 +1,140 @@
 <view class="page">
 	<view class="weui-form bg-standard">
 		<view class="weui-form__text-area">
-      <view>
-        <image class="avatar rounded shadow-filter mb-20" src="{{user.avatar}}"></image>
-      </view>
+			<view hover-class="hv" hover-stay-time="30">
+				<image class="avatar rounded shadow-filter mb-20" mode="aspectFill" src="{{user.avatar}}" data-action="{{user.avatar}}"
+					bindtap="preview"></image>
+			</view>
 			<h2 class="weui-form__title">{{user.nickname}}({{user.realname}})</h2>
 			<view class="weui-form__desc">{{user.detail}}</view>
 		</view>
-		<view class="weui-form__control-area">
+		<view class="weui-form__control-area" style="margin-bottom:0;">
 			<view class="weui-cells__group weui-cells__group_form">
-				<view class="weui-cells__title">编辑信息</view>
-				<view class="weui-cells weui-cells_form">
+				<view class="weui-cells__title">个人信息</view>
+				<view class="weui-cells weui-cells_form" style="border-radius:20rpx 20rpx 0 0;">
+					<view class="weui-cell weui-cell_active">
+						<view class="weui-cell__hd"><label class="weui-label">姓名</label></view>
+						<view class="weui-cell__bd">
+							<input class="weui-input" disabled="true" placeholder-class="weui-input__placeholder"
+								value="{{user.realname}}" />
+						</view>
+					</view>
+					<view class="weui-cell weui-cell_active">
+						<view class="weui-cell__hd"><label class="weui-label">性别</label></view>
+						<view class="weui-cell__bd">
+							<input class="weui-input" disabled="true" placeholder-class="weui-input__placeholder"
+								value="{{user.gender}}" />
+						</view>
+					</view>
+					<!--campus-->
+					<view class="weui-cell weui-cell_active weui-cell_select weui-cell_select-before">
+						<view class="weui-cell__hd">
+							<picker bindchange="bind_campus_change" range="{{campuses}}">
+								<view class="weui-select" style="width: 3em">校区</view>
+							</picker>
+						</view>
+						<view class="weui-cell__bd">
+							<input class="weui-input" value="{{campus_index}}" disabled="true"></input>
+						</view>
+					</view>
+					<!--dept-->
+					<view class="weui-cell weui-cell_active weui-cell_select weui-cell_select-before">
+						<view class="weui-cell__hd">
+							<picker bindchange="bind_dept_change" range="{{depts}}">
+								<view class="weui-select" style="width: 3em">学院</view>
+							</picker>
+						</view>
+						<view class="weui-cell__bd">
+							<input class="weui-input" value="{{dept_index}}" disabled="true"></input>
+						</view>
+					</view>
 					<view class="weui-cell weui-cell_active">
 						<view class="weui-cell__hd"><label class="weui-label">昵称</label></view>
 						<view class="weui-cell__bd">
-							<input class="weui-input" placeholder="填写新的昵称" placeholder-class="weui-input__placeholder" />
+							<input class="weui-input" placeholder="填写新的昵称" placeholder-class="weui-input__placeholder"
+								value="{{user.nickname}}" bindinput="input_nickname" maxlength="20" />
+						</view>
+					</view>
+					<view class="weui-cell weui-cell_active">
+						<view class="weui-cell__hd"><label class="weui-label">QQ</label></view>
+						<view class="weui-cell__bd">
+							<input class="weui-input" placeholder="填写新的QQ号码" placeholder-class="weui-input__placeholder"
+								value="{{user.QQ}}" bindinput="input_QQ" maxlength="11" />
+						</view>
+					</view>
+					<view class="weui-cell weui-cell_active">
+						<view class="weui-cell__hd"><label class="weui-label">手机号</label></view>
+						<view class="weui-cell__bd">
+							<input class="weui-input" type="number" placeholder="请填写新的手机号" value=""
+								placeholder-class="weui-input__placeholder" value="{{user.tel}}" bindinput="input_tel" maxlength="11" />
+						</view>
+					</view>
+					<view class="weui-cell weui-cell_active weui-cell_vcode">
+						<view class="weui-cell__hd"><label class="weui-label">验证码</label></view>
+						<view class="weui-cell__bd">
+							<input class="weui-input" type="text" placeholder="输入验证码" placeholder-class="weui-input__placeholder"
+								bindinput="input_vcode" maxlength="6" />
+						</view>
+						<view class="weui-cell__ft">
+							<button class="weui-btn weui-btn_default weui-vcode-btn">获取验证码</button>
+						</view>
+					</view>
+				</view>
+			</view>
+			<view class="weui-cells__group weui-cells__group_form">
+				<view class="weui-cells__title mt-20">个人介绍</view>
+				<view class="weui-cells weui-cells_form">
+					<view class="weui-cell">
+						<view class="weui-cell__bd">
+							<textarea class="weui-textarea" placeholder="读万卷书，行万里路..." value="{{user.detail}}" rows="3"
+								maxlength="200" bindinput="input_detail"></textarea>
+							<view class="weui-textarea-counter"><text>{{text_counter}}</text></view>
+						</view>
+					</view>
+				</view>
+				<view class="weui-cells__title">头像</view>
+				<view class="page__bd" style="overflow:hidden;border-radius:0 0 20rpx 20rpx;">
+					<view class="weui-cells" style="margin-top:0;">
+						<view class="weui-cell weui-cell_active weui-cell_switch">
+							<view class="weui-cell__bd">更改头像</view>
+							<view class="weui-cell__ft">
+								<label class="weui-switch-cp">
+									<switch class="weui-switch-cp__input" value="false" bindchange="bind_uploader_change"/>
+									<view class="weui-switch-cp__box"></view>
+								</label>
+							</view>
+						</view>
+						<view class="weui-cell" hidden="{{is_uploader_hide}}">
+							<view class="weui-cell__bd">
+								<view class="weui-uploader">
+									<view class="weui-uploader__bd">
+										<view class="weui-uploader__files">
+											<block wx:for="{{files}}" wx:key="*this">
+												<view class="weui-uploader__file rounded-10 shadow" style="overflow:hidden;">
+													<image class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
+													<view class="upload_image_delete_cover" bindtap="delete_image">
+														<!--trash-->
+														<image class="upload_image_delete" mode="aspectFill" src="../../../images/trash.png">
+														</image>
+													</view>
+												</view>
+											</block>
+										</view>
+										<view class="weui-uploader__input-box rounded-10 shadow" hidden="{{is_upload_add_hide}}">
+											<view class="weui-uploader__input" bindtap="choose_image"></view>
+										</view>
+									</view>
+								</view>
+							</view>
 						</view>
 					</view>
 				</view>
 			</view>
 		</view>
-		<view class="weui-form__opr-area">
-      <button class="weui-btn weui-btn_primary">提交</button>
+		<view class="weui-form__opr-area mt-50" style="margin-bottom:0;">
+			<button class="weui-btn weui-btn_primary" disabled="{{!is_submission_available}}" bindtap="submit">提交</button>
 		</view>
-		<view class="weui-form__tips-area">
-			<view class="weui-form__tips">tip</view>
-		</view>
+		<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
 		<view class="weui-form__extra-area">
 		</view>
 	</view>

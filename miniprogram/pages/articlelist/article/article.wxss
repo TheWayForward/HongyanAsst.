@@ -1,5 +1,5 @@
 .page{
-  background: #eeeeee
+  background: #F6F6F6;
 }
 
 .title{
@@ -45,7 +45,8 @@
 .comment_container1{
   display: flex;
   flex-direction: column;
-  flex-flow: column;  
+  flex-flow: column;
+  width: 50%;
 }
 
 .comment_inner_container1{
@@ -55,9 +56,8 @@
   background-color: #FFFFFF;
   width: 360rpx;
   margin-left:10rpx;
-  margin-top: 10rpx;
+  margin-top: 20rpx;
   padding-bottom: 20rpx;
-  /*height: 300rpx;*/
 }
 
 .comment_inner_container1:active{

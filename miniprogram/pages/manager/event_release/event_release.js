@@ -220,7 +220,6 @@ Page({
     }
   },
 
-  //preview image
   preview: function(e){
     wx.previewImage({
       current: e.currentTarget.dataset.action,
@@ -228,7 +227,6 @@ Page({
     })
   },
 
-  //choose a poster
   choose_image: function(){
     var that = this;
     wx.chooseImage({
@@ -253,13 +251,11 @@ Page({
         that.setData({
           files: that.data.files.concat(res.tempFilePaths),
           is_upload_add_hide: true,
-          tip: "长按图片删除"
         });
       }
     })
   },
 
-  //delete the image to be uploaded
   delete_image: function(){
     var that = this;
     wx.showModal({
@@ -366,7 +362,7 @@ Page({
           wx.cloud.uploadFile({
             cloudPath: versatile_helper.generate_cloudpath_for_event(that.data.name,app.globalData.user,that.data.files[0]),
             filePath: that.data.files[0],
-            success: function(res){
+            success(res){
               wx.showLoading({
                 title: '相关数据上传中',
                 mask: true

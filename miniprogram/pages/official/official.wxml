@@ -1,24 +1,34 @@
 <view class="page" hidden="{{isHide}}">
 	<!--crews' badge-->
 	<view style="text-align:center;margin-top:75rpx" hover-class="hv" hover-stay-time="30">
-		<image class="shadow-filter" src="cloud://hongyancrew-pvmj1.686f-hongyancrew-pvmj1-1303885697/essentials/hongyancrew.png" mode="aspectFill" style="height:300rpx;width:300rpx" /></view>
-		<view class="shadow-filter version" style="text-align:center;font-size:70rpx;font-weight:bold;font-style:italic;text-decoration:underline;" hover-class="hv" hover-stay-time="30">Version: {{version}}</view>
+		<image class="shadow-filter"
+			src="cloud://hongyancrew-pvmj1.686f-hongyancrew-pvmj1-1303885697/essentials/hongyancrew.png" mode="aspectFill"
+			style="height:300rpx;width:300rpx" />
+	</view>
+	<view class="shadow-filter version"
+		style="text-align:center;font-size:70rpx;font-weight:bold;font-style:italic;text-decoration:underline;"
+		hover-class="hv" hover-stay-time="30">Version: {{version}}</view>
 	<!--division-->
 	<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
 	<!--user title-->
 	<view style="align-items:center" hover-class="hv" hover-stay-time="30">
-		<image class="shadow-filter" hidden="{{isHide}}" src="../official/image/user.png" style="width:540rpx; height:155rpx; margin-left:96rpx" /></view>
+		<image class="shadow-filter" hidden="{{isHide}}" src="../official/image/user.png"
+			style="width:540rpx; height:155rpx; margin-left:96rpx" />
+	</view>
 	<!--user-->
 	<view class="page__bd rounded-20" style="overflow: hidden;">
 		<view class="weui-panel weui-panel_access">
 			<view class="weui-panel__bd">
 				<a class="weui-media-box weui-media-box_appmsg" wx:for="{{users}}" wx:key="openid">
 					<view class="weui-media-box__hd">
-						<image class="weui-media-box__thumb rounded-10 shadow" data-action="{{item.avatar}}" src="{{item.avatar}}" mode="aspectFill" bindtap="preview" alt></image>
+						<image class="weui-media-box__thumb rounded-10 shadow" data-action="{{item.avatar}}" src="{{item.avatar}}"
+							mode="aspectFill" bindtap="preview" alt></image>
 					</view>
-					<view class="weui-media-box__bd" data-nickname="{{item.nickname}}" data-detail="{{item.detail}}" bindtap="open">
+					<view class="weui-media-box__bd" data-nickname="{{item.nickname}}" data-detail="{{item.detail}}"
+						bindtap="open">
 						<h4 class="weui-media-box__title">{{item.nickname}}</h4>
-						<view class="weui-media-box__desc">{{item.detail}}</view></view>
+						<view class="weui-media-box__desc">{{item.detail}}</view>
+					</view>
 				</a>
 				<view class="fadeIn" wx:if="{{dialog}}">
 					<view class="weui-mask" bindtap="close"></view>
@@ -32,12 +42,14 @@
 							<view class="weui-half-screen-dialog__hd__main">
 								<strong class="weui-half-screen-dialog__title">{{dialog_title}}</strong></view>
 						</view>
-						<view class="weui-half-screen-dialog__bd" style="padding-top:32px;height:50px;">{{dialog_detail}}</view></view>
+						<view class="weui-half-screen-dialog__bd" style="padding-top:32px;height:50px;">{{dialog_detail}}</view>
+					</view>
 				</view>
 			</view>
 			<view class="weui-panel__ft">
 				<a class="weui-cell weui-cell_active weui-cell_access weui-cell_link">
-					<view class="weui-cell__bd" style="text-align: center; font-weight: bold;">共{{users.length}}位用户</view></a>
+					<view class="weui-cell__bd" style="text-align: center; font-weight: bold;">共{{users.length}}位用户</view>
+				</a>
 			</view>
 		</view>
 	</view>
@@ -45,44 +57,54 @@
 	<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
 	<!--developers and contributors title-->
 	<view style="align-items:center" hover-class="hv" hover-stay-time="30">
-		<image class="shadow-filter" hidden="{{isHide}}" src="../official/image/contributor.png" style="width:540rpx; height:155rpx; margin-left:96rpx" /></view>
+		<image class="shadow-filter" hidden="{{isHide}}" src="../official/image/contributor.png"
+			style="width:540rpx; height:155rpx; margin-left:96rpx" />
+	</view>
 	<!--developers and contributors align-->
 	<view class="dc_align">
 		<!--left-->
 		<view class="developer_container">
-			<view class="developer_inner_container" wx:for="{{developers_2}}" wx:key="_id" style="background-color:{{item.color}}; height:{{item.len}}rpx" hover-class="hv" hover-stay-time="30">
+			<view class="developer_inner_container" wx:for="{{developers_2}}" wx:key="_id"
+				style="background-color:{{item.color}};" hover-class="hv" hover-stay-time="30">
 				<image src="{{item.avatar}}" class="avatar shadow" data-action="{{item.avatar}}" bindtap="preview"></image>
 				<view class="developer_name">{{item.name}}</view>
 				<view class="developer_group">{{item.group}}</view>
 				<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot" style="width:300rpx; margin-top:20rpx"></view>
-				<view class="developer_details">{{item.details}}</view></view>
+				<view class="developer_details">{{item.details}}</view>
+			</view>
 		</view>
 		<!--right-->
 		<view class="developer_container">
-			<view class="developer_inner_container" wx:for="{{developers_1}}" wx:key="_id" style="background-color:{{item.color}}; height:{{item.len}}rpx" hover-class="hv" hover-stay-time="30">
+			<view class="developer_inner_container" wx:for="{{developers_1}}" wx:key="_id"
+				style="background-color:{{item.color}};" hover-class="hv" hover-stay-time="30">
 				<image src="{{item.avatar}}" class="avatar" data-action="{{item.avatar}}" bindtap="preview"></image>
 				<view class="developer_name">{{item.name}}</view>
 				<view class="developer_group">{{item.group}}</view>
 				<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot" style="width:300rpx; margin-top:20rpx"></view>
-				<view class="developer_details">{{item.details}}</view></view>
+				<view class="developer_details">{{item.details}}</view>
+			</view>
 		</view>
 	</view>
 	<view class="footer" hidden="{{isHide}}">
 		<view class="weui-footer">
-			<view class="weui-footer__text" style="margin-top:60rpx">鸿通国脉 雁启未来 车行四海 协者无疆</view></view>
+			<view class="weui-footer__text" style="margin-top:60rpx">鸿通国脉 雁启未来 车行四海 协者无疆</view>
+		</view>
 	</view>
 	<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
 	<!--logs-->
 	<view style="align-items:center" hover-class="hv" hover-stay-time="30">
-		<image class="shadow-filter" src="../official/image/log.png" hidden="{{isHide}}" style="width:540rpx; height:135rpx; margin-left:96rpx"></image>
+		<image class="shadow-filter" src="../official/image/log.png" hidden="{{isHide}}"
+			style="width:540rpx; height:135rpx; margin-left:96rpx"></image>
 	</view>
 	<view class="page">
 		<view class="page__bd" style="overflow:hidden; border-radius:50rpx;">
 			<view class="weui-panel weui-panel_access">
 				<view class="weui-panel__bd">
-					<a class="weui-media-box weui-media-box_appmsg" wx:for="{{progress}}" wx:if="{{item.contributor}}" wx:key="_id">
+					<a class="weui-media-box weui-media-box_appmsg" wx:for="{{progress}}" wx:if="{{item.contributor}}"
+						wx:key="_id">
 						<view class="weui-media-box__hd">
-							<image class="weui-media-box__thumb rounded-10 shadow" src="{{item.avatar}}" mode="aspectFill" data-action="{{item.avatar}}" bindtap="preview" alt></image>
+							<image class="weui-media-box__thumb rounded-10 shadow" src="{{item.avatar}}" mode="aspectFill"
+								data-action="{{item.avatar}}" bindtap="preview" alt></image>
 						</view>
 						<view class="weui-media-box__bd">
 							<h4 class="weui-media-box__title">V{{item.version}}</h4>
@@ -90,7 +112,8 @@
 							<view class="weui-media-box__info">
 								<view class="weui-media-box__info__meta">{{item.contributor}}</view>
 								<view class="weui-media-box__info__meta">{{item.date}}</view>
-								<view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{item.year}}</view></view>
+								<view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{item.year}}</view>
+							</view>
 						</view>
 					</a>
 				</view>
@@ -98,5 +121,7 @@
 		</view>
 	</view>
 	<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
-	<image class="shadow-filter" src="https://www.bupt.edu.cn/__local/C/8E/F7/EE902059AE32E0E6325EFEE8F46_B2D41D06_CD58.png" style="height:160rpx; margin-left:80rpx; margin-bottom:50rpx" hidden="{{isHide}}"></image>
+	<image class="shadow-filter"
+		src="https://www.bupt.edu.cn/__local/C/8E/F7/EE902059AE32E0E6325EFEE8F46_B2D41D06_CD58.png"
+		style="height:160rpx; margin-left:80rpx; margin-bottom:50rpx" hidden="{{isHide}}"></image>
 </view>

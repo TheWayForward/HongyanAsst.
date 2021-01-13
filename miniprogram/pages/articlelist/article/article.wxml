@@ -40,10 +40,11 @@
 	</view>
 	<!--get user info for comment submission-->
 	<view class="user_info_grant_align" hidden="{{isHide}}">
-		<button open-type="getUserInfo" bindgetuserinfo="get_userinfo" class="weui-btn shadow mt-20 mb-20" style="background-color: #42A5F5;" hover-class="hv" hover-stay-time="30" hidden="{{!is_comment_submission_hide}}">授权用户信息</button></view>
+		<button open-type="getUserInfo" bindgetuserinfo="get_userinfo" class="weui-btn shadow mt-20 mb-20" style="background-color: #42A5F5;" hover-class="hv" hover-stay-time="30" hidden="{{!is_comment_submission_hide}}">授权用户信息</button>
+	</view>
 	<view class="comment_align" hidden="{{isHide}}">
 		<view class="comment_container1">
-			<view class="comment_inner_container1" wx:for="{{comment_array_2}}" wx:key="time" hover-class="hv" hover-stay-time="30"> 
+			<view class="comment_inner_container1" style="background-color:{{item.color}};" wx:for="{{comment_array_2}}" wx:key="time" hover-class="hv" hover-stay-time="30"> 
 				<image src="{{item.avatar}}" class="avatar" data-action="{{item.avatar}}" bindtap="preview"></image>
 				<view class="comment_name">{{item.nickname}}</view>
 				<view class="comment_time">{{item.time}}</view>
@@ -51,7 +52,7 @@
 				<view class="comment_details">{{item.detail}}</view></view>
 		</view>
 		<view class="comment_container1">
-			<view class="comment_inner_container1" wx:for="{{comment_array_1}}" wx:key="time"  hover-class="hv" hover-stay-time="30" >
+			<view class="comment_inner_container1" style="background-color:{{item.color}};" wx:for="{{comment_array_1}}" wx:key="time"  hover-class="hv" hover-stay-time="30" >
 				<image src="{{item.avatar}}" class="avatar" data-action="{{item.avatar}}" bindtap="preview"></image>
 				<view class="comment_name">{{item.nickname}}</view>
 				<view class="comment_time">{{item.time}}</view>
