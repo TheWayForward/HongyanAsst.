@@ -1,5 +1,5 @@
 .page{
-  background: #F5F5F5
+  background: #eeeeee
 }
 
 .title{
@@ -34,6 +34,10 @@
   width:90%;
 }
 
+#comment_submission_input{
+  background: #FFFFFF;
+}
+
 .comment_align{
   display: flex;
 }
@@ -48,11 +52,12 @@
   float: left;
   filter: drop-shadow(0rpx 15rpx 10rpx #d0d0d0);
   border-radius: 15rpx;
-  background-color: #CECFCE;
-  width: 345rpx;
-  margin-left:20rpx;
-  margin-top: 20rpx;
-  height: 300rpx;
+  background-color: #FFFFFF;
+  width: 360rpx;
+  margin-left:10rpx;
+  margin-top: 10rpx;
+  padding-bottom: 20rpx;
+  /*height: 300rpx;*/
 }
 
 .comment_inner_container1:active{
@@ -83,7 +88,6 @@
   font-size: 25rpx;
   margin-left: 25rpx;
   margin-right: 25rpx;
-  text-indent: 25rpx;
   margin-top: -30rpx;
   word-wrap: break-word;
 }
