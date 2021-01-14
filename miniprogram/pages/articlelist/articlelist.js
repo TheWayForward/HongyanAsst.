@@ -12,7 +12,9 @@ Page({
     isHide: true,
     is_loading_hide: false,
     total_result: "加载中...",
-    input_value: ""
+    input_value: "",
+    image1:true,
+    image2:false,
   },
 
   onLoad: function() {
@@ -128,6 +130,10 @@ Page({
   input: function(e){
     var that = this;
     var str = e.detail.value;
+    this.setData({
+      image2:true,
+      image1:false
+  })
     if(!str)
     {
       this.setData({
@@ -179,7 +185,9 @@ Page({
     this.setData({
       input_value: "",
       search_articles: that.data.articles,
-      total_result: `共${that.data.articles.length}篇资讯`
+      total_result: `共${that.data.articles.length}篇资讯`,
+      image1:true,
+      image2:false
     })
   },
 

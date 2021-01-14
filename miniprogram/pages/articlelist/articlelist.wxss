@@ -2,7 +2,7 @@
 @import "../official/official.wxss";
 
 .page {
-  background: #F4F4F4;
+  background: #f6f6f6;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -50,7 +50,8 @@
 .title{
   margin-top:10rpx;
   text-align: justify;
-  font-size: 30rpx;
+  font-size: 38rpx;
+  font-weight:bold;
 }
 
 .foot{
@@ -64,6 +65,8 @@
   margin-top: 10rpx;
   text-align: center;
   width: 20%;
+  border-radius: 20rpx;
+  background-color:#c0dfdf ;
 }
 
 .tag_text{
@@ -88,4 +91,10 @@
 
 .my_gray{
   color: gray;
+}
+
+.input{
+  display: flex;
+  justify-content: center;
+  margin-left: 20rpx;
 }
