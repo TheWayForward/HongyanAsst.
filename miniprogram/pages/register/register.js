@@ -154,14 +154,22 @@ Page({
         vcode: app.globalData.vcode
       },
       success(res) {
-        wx.hideLoading({
-        })
+        wx.hideLoading({})
+        if (res.result.result.data.Code == "isv.BUSINESS_LIMIT_CONTROL") {
+          notification_helper.show_toast_without_icon("今日验证码发送数量已达上限",2000);
+          that.setData({
+            is_vcode_available: false
+          })
+          return;
+        }
         console.log("[cloudfunction][send_vcode]: sent successfully");
         notification_helper.show_toast_without_icon("验证码已发送", 2000);
-        function clear_vcode(){
+
+        function clear_vcode() {
           console.log("vcode cleared");
           app.globalData.vcode = null;
         }
+
         function vcode_countdown() {
           that.setData({
             vcode_btn_tip: interval ? `重发(${interval}s)` : "发送验证码",
@@ -170,7 +178,7 @@ Page({
           interval-- ? setTimeout(vcode_countdown, 1000): 0;
         }
         vcode_countdown();
-        setTimeout(clear_vcode,300000);
+        setTimeout(clear_vcode, 300000);
       },
       fail(res) {
         console.log("[cloudfunction][send_vcode]: failed to send");

@@ -12,6 +12,7 @@ App({
     wechat_version_min: "",
     //clcying animation gif url
     cycling_animation: "",
+    bulletin: "",
     //device system info
     system_info: {},
     vcode: null,
@@ -106,7 +107,6 @@ App({
   },
 
   clear_vcode: function(){
-    console.log("[app][clear_vcode]: vcode cleared");
     this.globalData.vcode = null;
   }
 

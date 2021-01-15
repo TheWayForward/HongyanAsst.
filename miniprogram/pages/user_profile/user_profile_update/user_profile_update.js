@@ -181,6 +181,13 @@ Page({
       },
       success(res) {
         wx.hideLoading({})
+        if (res.result.result.data.Code == "isv.BUSINESS_LIMIT_CONTROL") {
+          notification_helper.show_toast_without_icon("今日验证码发送数量已达上限", 2000);
+          that.setData({
+            is_vcode_available: false
+          })
+          return;
+        }
         console.log("[cloudfunction][send_vcode]: sent successfully");
         notification_helper.show_toast_without_icon("验证码已发送", 2000);
 
