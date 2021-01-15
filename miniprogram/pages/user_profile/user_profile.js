@@ -7,7 +7,7 @@ Page({
    * Page initial data
    */
   data: {
-    user: {},
+    user: {avatar:"../../images/loading.gif"},
     isHide: false
   },
 

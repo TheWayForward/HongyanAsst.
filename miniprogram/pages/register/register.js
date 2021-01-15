@@ -1,17 +1,15 @@
 const app = getApp();
 const db = wx.cloud.database();
+const notification_helper = require("../../utils/helpers/notification_helper");
+var verification_helper = require("../../utils/helpers/verification_helper");
+
 
 Page({
 
-  /**
-   * Page initial data
-   */
   data: {
-    //catch info from app.js
     info_holder: {},
     avatar: "http://m.qpic.cn/psc?/V10ldMks1Z5QlW/bqQfVz5yrrGYSXMvKr.cqTPtnUN7zJo2Kz37cZDcRRVc2vsiXputSKNVw*8pyqRyadlrvjrlbmkEtqNUG8hmTkJqtNAHKJgK8D*TrAEQeuk!/b&bo=9AFpAfQBaQECCS0!&rf=viewer_4",
     wechat_nickname: "昵称加载中",
-    //user info verification and hidden
     is_get_userinfo_hide: false,
     genders: [
       "男",
@@ -43,32 +41,22 @@ Page({
     tel: "",
     email: "",
     detail: "",
-    text_counter:"0/200",
+    realname: "",
+    text_counter: "0/200",
     isChecked: false,
     is_register_button_hide: false
   },
 
-  /**
-   * Lifecycle function--Called when page load
-   */
   onLoad: function (options) {
     var that = this;
     wx.getUserInfo({
       complete: (res) => {
-        if(res.err_code == -12006)
-        {
-          wx.showToast({
-            title: '未获取到您的基本信息，请点击页面顶部按钮进行授权',
-            icon: 'none',
-            duration: 5000
-          })
-        }
-        else
-        {
-          var userinfo = res.userInfo;
+        if (res.err_code == -12006) {
+          notification_helper.show_toast_without_icon("未获取到您的基本信息，请点击页面顶部按钮进行授权", 5000);
+        } else {
           that.setData({
-            avatar: userinfo.avatarUrl,
-            wechat_nickname: userinfo.nickName,
+            avatar: res.userInfo.avatarUrl,
+            wechat_nickname: res.userInfo.nickName,
             is_get_userinfo_hide: true
           })
         }
@@ -76,56 +64,7 @@ Page({
     })
   },
 
-  /**
-   * Lifecycle function--Called when page is initially rendered
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * Lifecycle function--Called when page show
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * Lifecycle function--Called when page hide
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * Lifecycle function--Called when page unload
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * Page event handler function--Called when user drop down
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * Called when page reach bottom
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * Called when user click on the top right corner to share
-   */
-  onShareAppMessage: function () {
-
-  },
-
-  preview: function(e){
+  preview: function (e) {
     wx.previewImage({
       current: e.currentTarget.dataset.action,
       urls: [e.currentTarget.dataset.action]
@@ -133,103 +72,81 @@ Page({
   },
 
   //get userinfo
-  get_userinfo: function(e){
-    console.log(e);
-    if(e.detail.errMsg == "getUserInfo:fail auth deny")
-    {
-      wx.showToast({
-        title: '授权失败',
-        icon: 'none',
-        duration: 2000
-      })
-    }
-    else
-    {
-      var userinfo = JSON.parse(e.detail.rawData);
-      app.globalData.userInfo = userinfo;
-      console.log(userinfo);
+  get_userinfo: function (e) {
+    if (e.detail.errMsg == "getUserInfo:fail auth deny") {
+      notification_helper.show_toast_without_icon("授权失败", 2000);
+    } else {
+      app.globalData.user_info = JSON.parse(e.detail.rawData);
       this.setData({
-        avatar: userinfo.avatarUrl,
-        wechat_nickname: userinfo.nickName,
+        avatar: app.globalData.user_info.avatarUrl,
+        wechat_nickname: app.globalData.user_info.nickName,
         is_get_userinfo_hide: true
       })
     }
   },
 
   //input
-  input_realname: function(e){
+  input_realname: function (e) {
     this.setData({
-      realname : e.detail.value
+      realname: e.detail.value
     });
   },
 
-  input_QQ: function(e){
+  input_QQ: function (e) {
     this.setData({
-      QQ : e.detail.value
+      QQ: e.detail.value
     });
   },
 
-  input_tel: function(e){
+  input_tel: function (e) {
     this.setData({
-      tel : e.detail.value
+      tel: e.detail.value
     });
   },
 
-  input_email: function(e){
+  input_email: function (e) {
     this.setData({
-      email : e.detail.value
+      email: e.detail.value
     });
   },
 
-  input_detail: function(e){
-    var count = e.detail.value;
-    var c = count.length + "/" + 200;
+  input_detail: function (e) {
     this.setData({
-      detail : e.detail.value,
-      text_counter: c
+      detail: e.detail.value,
+      text_counter: `${e.detail.value.length}/200`
     });
   },
 
   //picker
-  bind_genderChange: function(e){
+  bind_genderChange: function (e) {
     this.setData({
       genderIndex: this.data.genders[e.detail.value]
     })
   },
 
-  bind_campusChange: function(e){
+  bind_campusChange: function (e) {
     this.setData({
       campusIndex: this.data.campuses[e.detail.value]
     })
   },
 
-  bind_deptChange: function(e){
+  bind_deptChange: function (e) {
     this.setData({
       deptIndex: this.data.depts[e.detail.value]
     })
   },
 
   //agreement check
-  check_contract: function(e){
-    var c = Number(e.detail.value);
-    if(c == 1)
-    {
-      this.setData({
-        isChecked: true
-      })
-    }
-    else
-    {
-      this.setData({
-        isChecked: false
-      })
-    }
+  check_contract: function (e) {
+    this.setData({
+      isChecked: Number(e.detail.value) == 1 ? true : false
+    })
   },
 
-  submit: function(){
+  submit: function () {
     var that = this;
     //assignment
-    var realname = this.data.realname;
+    var realname = that.data.realname;
     var nickname = this.data.wechat_nickname;
     var gender = this.data.genderIndex;
     var campus = this.data.campusIndex;
@@ -240,147 +157,62 @@ Page({
     var detail = this.data.detail;
     var isChecked = this.data.isChecked;
 
-    if(nickname == "昵称加载中")
-    {
-      wx.showToast({
-        title: '未获取到您的基本信息，请点击页面顶部按钮进行授权后进行注册',
-        icon: 'none',
-        duration: 3000
-      })
+    if (that.data.wechat_nickname == "昵称加载中") {
+      notification_helper.show_toast_without_icon("未获取到您的基本信息，请点击页面顶部按钮进行授权后进行注册", 2000);
       return;
     }
-
-    //realname: must be Chinese
-    if(!realname)
-    {
-      wx.showToast({
-        icon: 'none',
-        title: '请输入您的真实姓名'
-      })
+    if (!that.data.realname) {
+      notification_helper.show_toast_without_icon("未填写姓名", 2000);
       return;
-    }
-    else
-    {
-      //regexp of realname
-      var realname_reg = /^[\u4E00-\u9FA5A-Za-z]+$/;
-      if(!realname_reg.test(realname))
-      {
-        wx.showToast({
-          icon: 'none',
-          title: '姓名格式有误'
-        })
+    } else {
+      if (!verification_helper.nickname_verification(that.data.realname)) {
+        notification_helper.show_toast_without_icon("姓名格式有误", 2000);
         return;
       }
     }
-
-    //gender
-    if(gender == "请选择性别")  
-    {
-      wx.showToast({
-        icon: 'none',
-        title: '您还未选择性别'
-      })
+    if (that.data.genderIndex == "请选择性别") {
+      notification_helper.show_toast_without_icon("未选择性别", 2000);
       return;
     }
-
-    //campus
-    if(campus == "请选择校区")  
-    {
-      wx.showToast({
-        icon: 'none',
-        title: '您还未选择校区'
-      })
+    if (that.data.campusIndex == "请选择校区") {
+      notification_helper.show_toast_without_icon("未选择校区", 2000);
       return;
     }
-
-    //dept
-    if(dept == "请选择学院")  
-    {
-      wx.showToast({
-        icon: 'none',
-        title: '您还未选择学院'
-      })
+    if (that.data.deptIndex == "请选择学院") {
+      notification_helper.show_toast_without_icon("未选择学院", 2000);
       return;
     }
-
-    //QQ
-    if(!QQ)
-    {
-      wx.showToast({
-        icon: 'none',
-        title: '您还未输入QQ号码'
-      })
+    if (!that.data.QQ) {
+      notification_helper.show_toast_without_icon("未填写QQ号码", 2000);
       return;
-    }
-    else
-    {
-      var QQ_reg = /[1-9][0-9]{4,}/;
-      if(!QQ_reg.test(QQ))
-      {
-        wx.showToast({
-          icon: 'none',
-          title: 'QQ号码格式错误'
-        })
+    } else {
+      if (!verification_helper.QQ_verification(that.data.QQ)) {
+        notification_helper.show_toast_without_icon("QQ号码格式错误", 2000);
         return;
       }
     }
-
-    //tel
-    if(!tel)  
-    {
-      wx.showToast({
-        icon: 'none',
-        title: '您还未输入电话'
-      })
+    if (!that.data.tel) {
+      notification_helper.show_toast_without_icon("未填写手机号", 2000);
       return;
-    }
-    else
-    {
-      //regexp of tel
-      var tel_reg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1})|(17[0-9]{1}))+\d{8})$/;
-      if(!tel_reg.test(tel))
-      {
-        wx.showToast({
-          icon: 'none',
-          title: '电话号码格式有误'
-        })
+    } else {
+      if (!verification_helper.tel_verification(that.data, tel)) {
+        notification_helper.show_toast_without_icon("手机号格式有误", 2000);
         return;
       }
     }
-
-    //email
-    if(!email)
-    {
-      wx.showToast({
-        icon: 'none',
-        title: '您还未输入邮箱'
-      })
+    if (!that.data.email) {
+      notification_helper.show_toast_without_icon("未填写邮箱", 2000);
       return;
-    }
-    else
-    {
-      //regexp of email
-      var email_reg = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
-      if(!email_reg.test(email))
-      {
-        wx.showToast({
-          icon: 'none',
-          title: '邮箱格式有误'
-        })
+    } else {
+      if (!verification_helper.email_verification(that.data.email)) {
+        notification_helper.show_toast_without_icon("邮箱格式有误", 2000);
         return;
       }
     }
-    
-    //agreement check
-    if(!isChecked)
-    {
-      wx.showToast({
-        icon: 'none',
-        title: '请勾选相关服务条款',
-      })
+    if (!isChecked) {
+      notification_helper.show_toast_without_icon("请勾选相关服务条款", 2000);
       return;
     }
-
     //initializing a new user object
     var _id = 0;
     _id = _id.toString();
@@ -397,30 +229,25 @@ Page({
     user.email = email;
     user.detail = detail;
     user._id = _id;
-    user.my_bicycle = [
-      {
-        bicycle_name: "美团共享单车",
-        bicycle_price: 200,
-        bicycle_thumbnail: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1603649383367&di=1d75874f4e747f6d91f995be6662addd&imgtype=0&src=http%3A%2F%2Fdingyue.ws.126.net%2F2020%2F0304%2F3bcd8bf5j00q6nqwc001kd000s600ivp.jpg",
-        bicycle_type: "共享单车",
-        status: 0
-      }
-    ];
+    user.my_bicycle = [{
+      bicycle_name: "美团共享单车",
+      bicycle_price: 200,
+      bicycle_thumbnail: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1603649383367&di=1d75874f4e747f6d91f995be6662addd&imgtype=0&src=http%3A%2F%2Fdingyue.ws.126.net%2F2020%2F0304%2F3bcd8bf5j00q6nqwc001kd000s600ivp.jpg",
+      bicycle_type: "共享单车",
+      status: 0
+    }];
     user.my_event = [];
     user.login = true;
     user.total_distance = 0;
-    if(!this.data.detail)
-    {
+    if (!this.data.detail) {
       user.detail = "这个人很懒，" + (user.gender == "男" ? "他" : (user.gender == "保密") ? "TA" : "她") + "什么也没留下。";
-    }
-    else
-    {
+    } else {
       user.detail = this.data.detail;
     }
     user.openid = app.globalData.openid;
     //_id increment
     var count = db.collection("user").count();
-    count.then(function(result){
+    count.then(function (result) {
       console.log(result.total);
       count = ++result.total;
       user._id = count.toString();
@@ -430,30 +257,25 @@ Page({
       }).field({
         _id: true
       }).get({
-        success: function(res){
-          if(res.data[0])
-          {
+        success: function (res) {
+          if (res.data[0]) {
             wx.showToast({
               icon: "none",
               title: '不可重复注册'
             })
             return;
-          }
-          else
-          {
+          } else {
             that.setData({
               is_register_button_hide: true
             })
             wx.showLoading({
               title: '注册中',
             })
-            function padstart(time){
-              if(time.length == 1)
-              {
+
+            function padstart(time) {
+              if (time.length == 1) {
                 return ("0" + time);
-              }
-              else
-              {
+              } else {
                 return time;
               }
             }
@@ -461,11 +283,12 @@ Page({
             user.birthday = d.getTime();
             app.globalData.user = user;
             db.collection("user").add({
-              data:{
+              data: {
                 _id: user._id,
                 QQ: user.QQ,
                 avatar: that.data.avatar,
                 birthday: user.birthday,
+                last_modified: new Date(),
                 campus: user.campus,
                 credit: 100,
                 dept: user.dept,
@@ -489,18 +312,18 @@ Page({
             wx.showToast({
               title: '注册成功',
               duration: 3000,
-              success: function(){
-                function refresh(){
+              success: function () {
+                function refresh() {
                   wx.reLaunch({
                     url: '../index/index',
                   })
                 }
-                setTimeout(refresh,3000);
+                setTimeout(refresh, 3000);
               }
             })
           }
         }
       })
     })
-  } 
+  }
 })

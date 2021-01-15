@@ -5,7 +5,7 @@
       <!--avatar and username-->
     <view class="avatar_name_container pt-50 pb-25">
       <view class="avatar_container">
-        <image src="{{user.avatar}}" class="rounded avatar shadow-filter" data-action="{{user.avatar}}" bindtap="preview"/>
+        <image src="{{user.avatar}}" class="rounded avatar shadow-filter" mode="aspectFill" data-action="{{user.avatar}}" bindtap="preview"/>
       </view>
       <view class="name bold" style="letter-spacing:1rpx">{{user.nickname}}</view>
       <!--update info-->

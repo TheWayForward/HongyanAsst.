@@ -2,21 +2,21 @@ var time_helper = require("../helpers/time_helper");
 
 //string
 
-function difficulty_to_stars(difficulty){
-  switch(difficulty){
-    case(1):
+function difficulty_to_stars(difficulty) {
+  switch (difficulty) {
+    case (1):
       return "★☆☆☆☆";
       break;
-    case(2):
+    case (2):
       return "★★☆☆☆";
       break;
-    case(3):
+    case (3):
       return "★★★☆☆";
       break;
-    case(4):
+    case (4):
       return "★★★★☆";
       break;
-    case(5):
+    case (5):
       return "★★★★★";
       break;
     default:
@@ -27,13 +27,22 @@ function difficulty_to_stars(difficulty){
 
 //layout
 
-function get_length_for_block(length){
+function generate_color_for_block() {
+  var color = "#",
+    colors = ["A", "B", "C", "D", "E", "F"];
+  for (var i = 0; i < 6; i++) {
+    color += colors[Math.floor(Math.random() * 6)];
+  }
+  return color;
+}
+
+function get_length_for_block(length) {
   return length <= 20 ? 200 : 600 * Math.floor(length / 10) / Math.sqrt(length);
 }
 
-function generate_markers(snapshots,iconpath){
+function generate_markers(snapshots, iconpath) {
   var markers = [{}];
-  for(var i = 0; i < snapshots.length; i++){
+  for (var i = 0; i < snapshots.length; i++) {
     markers.push({
       id: i + 1,
       location: snapshots[i].location,
@@ -61,14 +70,13 @@ function generate_markers(snapshots,iconpath){
         borderWidth: "1px",
         borderColor: "#1485EF",
         display: "ALWAYS",
-        fontSize: "10", 
+        fontSize: "10",
       }
     });
   }
-  for(var i = 1; i < markers.length; i++){
-    for(var j = 1; j < markers.length; j++){
-      if(markers[j].location == markers[i].location)
-      {
+  for (var i = 1; i < markers.length; i++) {
+    for (var j = 1; j < markers.length; j++) {
+      if (markers[j].location == markers[i].location) {
         markers[j].longitude += i * 0.0002;
         markers[j].latitude += i * 0.0002;
       }
@@ -77,8 +85,8 @@ function generate_markers(snapshots,iconpath){
   return markers;
 }
 
-function delete_location_info_for_markers(markers){
-  for(var i = 0; i < markers.length - 1; i++){
+function delete_location_info_for_markers(markers) {
+  for (var i = 0; i < markers.length - 1; i++) {
     markers[i + 1].id--;
     markers[i] = markers[i + 1];
   }
@@ -86,7 +94,7 @@ function delete_location_info_for_markers(markers){
   return markers;
 }
 
-function attach_location_info_to_markers(location_info,device,markers,iconpath){
+function attach_location_info_to_markers(location_info, device, markers, iconpath) {
   markers[0] = {
     id: 0,
     latitude: location_info.latitude,
@@ -94,7 +102,8 @@ function attach_location_info_to_markers(location_info,device,markers,iconpath){
     width: 20,
     height: 20,
     anchor: {
-      x: 0.5, y: 0.5
+      x: 0.5,
+      y: 0.5
     },
     iconPath: iconpath,
     callout: {
@@ -112,14 +121,13 @@ function attach_location_info_to_markers(location_info,device,markers,iconpath){
   return markers;
 }
 
-function hilight_marker(markers,marker_id,iconpath_normal,iconpath_selected){
-  for(var i = 0; i < markers.length; i++){
-    if(!markers[i].is_snapshot) continue;
+function hilight_marker(markers, marker_id, iconpath_normal, iconpath_selected) {
+  for (var i = 0; i < markers.length; i++) {
+    if (!markers[i].is_snapshot) continue;
     markers[i].iconPath = iconpath_normal;
     markers[i].callout.borderColor = "#1485EF";
     //change imagepoint to red
-    if(i == marker_id)
-    {
+    if (i == marker_id) {
       markers[i].iconPath = iconpath_selected;
       markers[i].callout.borderColor = "#EF2914";
     }
@@ -128,25 +136,32 @@ function hilight_marker(markers,marker_id,iconpath_normal,iconpath_selected){
 }
 
 //cloudpath
-function generate_cloudpath_for_snapshots(event,user,file){
+
+function generate_cloudpath_for_user(user, file) {
+  return `user/${user.openid}/${user.nickname}_${user.openid}_${Math.random()}_${Date.now()}.${file.match(/\.(\w+)$/)[1]}`;
+}
+
+function generate_cloudpath_for_snapshots(event, user, file) {
   return `events/${event.poster.split("/")[4]}/snapshots/${user.nickname}_${user.openid}_${Math.random()}_${Date.now()}.${file.match(/\.(\w+)$/)[1]}`;
 }
 
-function generate_cloudpath_for_event(name,user,file){
+function generate_cloudpath_for_event(name, user, file) {
   return `events/${name}_${Date.now()}/poster/${user.nickname}_${user.openid}_${Math.random()}_${Date.now()}.${file.match(/\.(\w+)$/)[1]}`;
 }
 
-function generate_cloudpath_for_article(title,user,file){
+function generate_cloudpath_for_article(title, user, file) {
   return `articles/${title}_${Date.now()}/thumbnail/${user.openid}_${Math.random()}_${Date.now()}.${file.match(/\.(\w+)$/)[1]}`;
 }
 
 module.exports = {
   difficulty_to_stars: difficulty_to_stars,
+  generate_color_for_block: generate_color_for_block,
   get_length_for_block: get_length_for_block,
   generate_markers: generate_markers,
   attach_location_info_to_markers: attach_location_info_to_markers,
   delete_location_info_for_markers: delete_location_info_for_markers,
   hilight_marker: hilight_marker,
+  generate_cloudpath_for_user: generate_cloudpath_for_user,
   generate_cloudpath_for_snapshots: generate_cloudpath_for_snapshots,
   generate_cloudpath_for_event: generate_cloudpath_for_event,
   generate_cloudpath_for_article: generate_cloudpath_for_article

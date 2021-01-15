@@ -1,8 +1,9 @@
 const app = getApp();
 const db = wx.cloud.database();
-const notification_helper = require('../../../utils/helpers/notification_helper');
-var time_helper = require('../../../utils/helpers/time_helper');
-const versatile_helper = require('../../../utils/helpers/versatile_helper');
+var notification_helper = require("../../../utils/helpers/notification_helper");
+var time_helper = require("../../../utils/helpers/time_helper");
+var versatile_helper = require("../../../utils/helpers/versatile_helper");
+var compare_helper = require("../../../utils/helpers/compare_helper");
 
 Page({
 
@@ -64,42 +65,44 @@ Page({
           title: res.data[0].title,
         })
         //comment division
-        var comment = res.data[0].comment.reverse();
-        var comment_temp_1 = [];
-        var comment_temp_2 = [];
+        var comment = res.data[0].comment;
+        var comment_temp_1 = [],comment_temp_2 = [];
         //dividing comments into 2 groups
         for(var i = 0; i < comment.length; i++){
+          comment[i].precise_time = Date.parse(comment[i].time);
           if(i % 2)
             comment_temp_1.push(comment[i]);
           else
             comment_temp_2.push(comment[i]);
         }
+        comment_temp_1.sort(compare_helper.compare("precise_time"));
+        comment_temp_2.sort(compare_helper.compare("precise_time"));
         //get event bound
-        db.collection("events").where({
-          _id: res.data[0].event__id
-        }).field({
-          poster: true,
-          time: true,
-          name: true,
-          participants_count: true
-        }).get({
-          success: function(res){
-            res.data[0].date = time_helper.format_time(res.data[0].time).date;
-            that.setData({
-              event_show: res.data[0]
-            })
-          }
-        })
-        wx.hideLoading({
-          success: (res) => {},
-        })
+        if(res.data[0].event__id)
+        {
+          db.collection("events").where({
+            _id: res.data[0].event__id
+          }).field({
+            poster: true,
+            time: true,
+            name: true,
+            participants_count: true
+          }).get({
+            success: function(res){
+              res.data[0].date = time_helper.format_time(res.data[0].time).date;
+              that.setData({
+                event_show: res.data[0]
+              })
+            }
+          })
+        }
         that.setData({
           _id: res.data[0]._id,
           title: res.data[0].title,
           author: res.data[0].author,
           comment: res.data[0].comment,
-          comment_array_1: comment_temp_1,
-          comment_array_2: comment_temp_2,
+          comment_array_1: comment_temp_1.reverse(),
+          comment_array_2: comment_temp_2.reverse(),
           comment_count: comment[0] ? `共${comment.length}条评论` : "暂无评论",
           time: time_helper.format_time(res.data[0].date).date_time,
           hnode: [{
@@ -110,6 +113,8 @@ Page({
           view: res.data[0].view,
           isHide: false,
         })
+        wx.hideLoading({
+        })
         wx.getUserInfo({
           success(res){
             that.setData({
@@ -118,11 +123,7 @@ Page({
             })
           },
           fail(res){
-            wx.showToast({
-              title: '未授权用户信息',
-              icon: 'none',
-              duration: 2000,
-            })
+            notification_helper.show_toast_without_icon("未授权用户信息",2000);
             that.setData({
               comment_count: `${that.data.comment_count}，授权用户信息方可评论`
             })
@@ -211,42 +212,6 @@ Page({
     })
   },
 
-  goto_event: function(e){
-    if(!app.globalData.user)
-    {
-      wx.showModal({
-        title: "提示",
-        content: "请在注册后参加活动。",
-        cancelText: "取消",
-        confirmText: "立即注册",
-        success(res){
-          if(res.confirm)
-          {
-            wx.reLaunch({
-              url: '../../register/register',
-            })
-          }
-        }
-      })
-      return;
-    }
-    var event_tapped = e.currentTarget.dataset.action;
-    db.collection("events").where({
-      _id: event_tapped._id
-    }).get({
-      success: function(res){
-        app.globalData.event = res.data[0];
-        app.globalData.event.date = time_helper.format_time(res.data[0].time).date;
-        app.globalData.event.date_time = time_helper.format_time(res.data[0].time).date_time;
-        app.globalData.event.precise_time = time_helper.format_time(res.data[0].time).precise_time;
-        app.globalData.event.day = time_helper.format_time(res.data[0].time).weekday;
-        wx.navigateTo({
-          url: '../../eventlist/event/event',
-        })
-      }
-    })
-  },
-
   get_userinfo: function(e){
     console.log(e);
     if(e.detail.errMsg == "getUserInfo:fail auth deny")
@@ -288,7 +253,7 @@ Page({
         detail: that.data.details,
         openid: app.globalData.openid,
         time: time_helper.format_time(new Date()).date_time,
-        len: versatile_helper.get_length_for_block(that.data.details.length)
+        color: versatile_helper.generate_color_for_block(),
       };
       wx.cloud.callFunction({
         name:'s_check_text',
@@ -341,5 +306,64 @@ Page({
         }
       })
      } 
-  }
+  },
+
+  goto_event: function(e){
+    if(!app.globalData.user)
+    {
+      wx.showModal({
+        title: "提示",
+        content: "请在注册后参加活动。",
+        cancelText: "取消",
+        confirmText: "立即注册",
+        success(res){
+          if(res.confirm)
+          {
+            wx.reLaunch({
+              url: '../../register/register',
+            })
+          }
+        }
+      })
+      return;
+    }
+    wx.showLoading({
+      title: '加载中',
+      mask: true
+    })
+    db.collection("events").where({
+      _id: e.currentTarget.dataset.action._id
+    }).get({
+      success: function(res){
+        app.globalData.event = res.data[0];
+        app.globalData.event.date = time_helper.format_time(res.data[0].time).date;
+        app.globalData.event.date_time = time_helper.format_time(res.data[0].time).time.slice(0,5);
+        app.globalData.event.precise_time = time_helper.format_time(res.data[0].time).precise_time;
+        app.globalData.event.day = time_helper.format_time(res.data[0].time).day_to_ch();
+        wx.cloud.callFunction({
+          name: "add_event_view",
+          data: {
+            taskId: app.globalData.event._id,
+            view: ++app.globalData.event.view
+          },
+          success(res){
+            console.log("[cloudfunction][add_event_view]: add successfully");
+            wx.navigateTo({
+              url: '../../eventlist/event/event',
+            })
+            wx.hideLoading({
+            })
+          },
+          fail(res){
+            console.log("[cloudfunction][add_event_view]: add successfully");
+            wx.hideLoading({
+              success(res){
+                notification_helper.show_toast_without_icon("获取数据失败，请刷新页面重试",2000);
+              }
+            })
+          }
+        })
+      }
+    })
+  },
 })

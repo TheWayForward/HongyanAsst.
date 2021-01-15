@@ -9,7 +9,8 @@ App({
     var that = this;
     //loading animation
     wx.showLoading({
-      title: '加载中',
+      title: "加载中",
+      mask: true
     })
 
     //init cloud environment
