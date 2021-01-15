@@ -386,7 +386,7 @@ page {
 
 .search_align{
   background: #F6F6F6;
-  padding:20rpx 20rpx 20rpx 20rpx;
+  padding: 30rpx;
  }
 
 .input{
@@ -394,15 +394,23 @@ page {
   border-radius: 60rpx;
   height: 70rpx;
   width: 100%;
-  padding:0rpx 20rpx 0rpx 20rpx;
-  margin-right: 20rpx;
+  padding:0rpx 40rpx 0rpx 120rpx;
   display: flex;
+}
+
+.input:hover{
+  text-align: left;
+  border-radius: 60rpx;
+  padding:0rpx 40rpx 0rpx 20rpx;
+  display: flex;
+  transition: 0.3s ease;
 }
 
 .input .box{
   height: 70rpx;
   line-height: 70rpx;
   width: 100%;
+  margin-left: 35rpx;
 }
 
 .input_clear{

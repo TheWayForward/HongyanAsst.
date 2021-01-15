@@ -5,11 +5,9 @@
 <!--search bar-->
 <view style="position:fixed;width:100%;z-index:10;">
 	<view class="search_align rounded-10 d-flex">
-	
-		<view class="input">
-			<image src="../../images/search.png" mode="aspectFill" style="height:60rpx;width:70rpx;margin-left:10rpx;margin-right:20rpx; margin-top:5rpx; flex-direction: column;" hidden="{{image1}}"></image>
-			<image src="../../images/search.png" mode="aspectFill" style="height:60rpx;width:90rpx;margin-left:100rpx;margin-right:20rpx; margin-top:5rpx; flex-direction: column;" hidden="{{image2}}"></image>
-			<input placeholder="按题目或标签搜索资讯" id="search_input" class="box" value="{{input_value}}" bindinput="input" placeholder-class="center"></input>
+		<view class="input" style="align-items:center;">
+			<image src="../../images/search.png" mode="aspectFill" style="height:56rpx;width:72rpx;"></image>
+			<input placeholder="按题目或标签搜索资讯" id="search_input" class="box" value="{{input_value}}" bindinput="input"></input>
 			<image src="../../images/cross.png" class="input_clear" mode="aspectFill" bindtap="input_clear"></image>
 		</view>
 	</view>
@@ -40,7 +38,7 @@
 						<view class="tag_block shadow rounded-5" style="">
 							<view class="tag_text" style="">{{item.tag}}</view></view>
 						<!--author-->
-						<view class="author my_gray" style="line-height:60rpx;margin-left:20rpx;color:black;font-size:26rpx;">{{item.author}}</view>
+						<view class="author" style="line-height:60rpx;margin-left:20rpx;font-size:26rpx;">{{item.author}}</view>
 						<!--time posted-->
 						<view class="my_gray" style="line-height:60rpx;margin-left:20rpx;font-size:26rpx;">{{item.time}}</view></view>
 				</view>

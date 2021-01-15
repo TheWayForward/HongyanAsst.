@@ -105,7 +105,7 @@ Page({
     }
     else
     {
-      if(!app.globalData.user)
+      if(!app.globalData.user.openid)
       {
         wx.navigateTo({
           url: '../register/register',

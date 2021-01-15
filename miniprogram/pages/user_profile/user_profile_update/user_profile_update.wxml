@@ -2,8 +2,8 @@
 	<view class="weui-form bg-standard">
 		<view class="weui-form__text-area">
 			<view hover-class="hv" hover-stay-time="30">
-				<image class="avatar rounded shadow-filter mb-20" mode="aspectFill" src="{{user.avatar}}" data-action="{{user.avatar}}"
-					bindtap="preview"></image>
+				<image class="avatar rounded shadow-filter mb-20" mode="aspectFill" src="{{user.avatar}}"
+					data-action="{{user.avatar}}" bindtap="preview"></image>
 			</view>
 			<h2 class="weui-form__title">{{user.nickname}}({{user.realname}})</h2>
 			<view class="weui-form__desc">{{user.detail}}</view>
@@ -62,21 +62,56 @@
 								value="{{user.QQ}}" bindinput="input_QQ" maxlength="11" />
 						</view>
 					</view>
-					<view class="weui-cell weui-cell_active">
-						<view class="weui-cell__hd"><label class="weui-label">手机号</label></view>
-						<view class="weui-cell__bd">
-							<input class="weui-input" type="number" placeholder="请填写新的手机号" value=""
-								placeholder-class="weui-input__placeholder" value="{{user.tel}}" bindinput="input_tel" maxlength="11" />
+					<view class="weui-cell weui-cell_active weui-cell_switch">
+						<view class="weui-cell__bd">更换手机</view>
+						<view class="weui-cell__ft">
+							<label class="weui-switch-cp">
+								<switch class="weui-switch-cp__input" checked="{{!is_tel_hide}}" bindchange="bind_tel_change" />
+								<view class="weui-switch-cp__box"></view>
+							</label>
 						</view>
 					</view>
-					<view class="weui-cell weui-cell_active weui-cell_vcode">
-						<view class="weui-cell__hd"><label class="weui-label">验证码</label></view>
-						<view class="weui-cell__bd">
-							<input class="weui-input" type="text" placeholder="输入验证码" placeholder-class="weui-input__placeholder"
-								bindinput="input_vcode" maxlength="6" />
+					<view hidden="{{is_tel_hide}}">
+						<view class="weui-cell weui-cell_active">
+							<view class="weui-cell__hd"><label class="weui-label">原手机号</label></view>
+							<view class="weui-cell__bd">
+								<input class="weui-input" type="number" value="{{user.tel}}"
+									disabled="true"/>
+							</view>
 						</view>
+						<view class="weui-cell weui-cell_active">
+							<view class="weui-cell__hd"><label class="weui-label">新手机号</label></view>
+							<view class="weui-cell__bd">
+								<input class="weui-input" type="number" placeholder="请填写新手机号" value=""
+									placeholder-class="weui-input__placeholder" bindinput="input_tel" maxlength="11" />
+							</view>
+						</view>
+						<view class="weui-cell weui-cell_active weui-cell_vcode">
+							<view class="weui-cell__hd"><label class="weui-label">验证码</label></view>
+							<view class="weui-cell__bd">
+								<input class="weui-input" type="text" placeholder="发送至新手机" placeholder-class="weui-input__placeholder"
+									bindinput="input_vcode" maxlength="6" disabled="{{!is_vcode_input_available}}" />
+							</view>
+							<view class="weui-cell__ft">
+								<button class="weui-btn weui-btn_default weui-vcode-btn" disabled="{{!is_vcode_available}}"
+									bindtap="send_vcode">{{vcode_btn_tip}}</button>
+							</view>
+						</view>
+					</view>
+					<view class="weui-cell weui-cell_active weui-cell_switch">
+						<view class="weui-cell__bd">添加/更换邮箱</view>
 						<view class="weui-cell__ft">
-							<button class="weui-btn weui-btn_default weui-vcode-btn">获取验证码</button>
+							<label class="weui-switch-cp">
+								<switch class="weui-switch-cp__input" checked="{{!is_email_hide}}" bindchange="bind_email_change" />
+								<view class="weui-switch-cp__box"></view>
+							</label>
+						</view>
+					</view>
+					<view class="weui-cell weui-cell_active" hidden="{{is_email_hide}}">
+						<view class="weui-cell__hd"><label class="weui-label">邮箱</label></view>
+						<view class="weui-cell__bd">
+							<input class="weui-input" placeholder="填写邮箱" placeholder-class="weui-input__placeholder"
+								value="{{user.email}}" bindinput="input_email" />
 						</view>
 					</view>
 				</view>
@@ -99,7 +134,7 @@
 							<view class="weui-cell__bd">更改头像</view>
 							<view class="weui-cell__ft">
 								<label class="weui-switch-cp">
-									<switch class="weui-switch-cp__input" value="false" bindchange="bind_uploader_change"/>
+									<switch class="weui-switch-cp__input" value="false" bindchange="bind_uploader_change" />
 									<view class="weui-switch-cp__box"></view>
 								</label>
 							</view>

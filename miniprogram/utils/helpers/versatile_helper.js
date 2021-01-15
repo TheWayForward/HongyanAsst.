@@ -1,4 +1,5 @@
 var time_helper = require("../helpers/time_helper");
+var compare_helper = require("../../utils/helpers/compare_helper");
 
 //string
 
@@ -26,6 +27,21 @@ function difficulty_to_stars(difficulty) {
 }
 
 //layout
+
+function format_user(user) {
+  user.birthday_string = time_helper.format_time(new Date(user.birthday)).date;
+  user.my_event.sort(compare_helper.compare("precise_time"));
+  user.my_event.reverse();
+  return user;
+}
+
+function format_event(event){
+  event.date = time_helper.format_time(event.time).date;
+  event.date_time = time_helper.format_time(event.time).time.slice(0,5);
+  event.precise_time = time_helper.format_time(event.time).precise_time;
+  event.day = time_helper.format_time(event.time).day_to_ch();
+  return event;
+}
 
 function generate_color_for_block() {
   var color = "#",
@@ -155,6 +171,8 @@ function generate_cloudpath_for_article(title, user, file) {
 
 module.exports = {
   difficulty_to_stars: difficulty_to_stars,
+  format_user: format_user,
+  format_event: format_event,
   generate_color_for_block: generate_color_for_block,
   get_length_for_block: get_length_for_block,
   generate_markers: generate_markers,

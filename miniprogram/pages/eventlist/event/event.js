@@ -95,7 +95,7 @@ Page({
           date: `${event.date}(${event.day})`,
           participants: event.participants,
           leader_openid: res.data[0].leader_openid,
-          can_sign: compare_helper.compare_time_for_event_sign(event.time, new Date()) ? (res.data[0].leader_openid == app.globalData.user.openid ? false : true) : false,
+          can_sign: app.globalData.user.openid ? (compare_helper.compare_time_for_event_sign(event.time, new Date()) ? (res.data[0].leader_openid == app.globalData.user.openid ? false : true) : false) : false,
           is_locate_permissible: compare_helper.compare_time_for_event_locate(event.time,new Date()) ? true : false,
           button_text: compare_helper.compare_time_for_event_locate(event.time,new Date()) ? (event.snapshots_count ? `动态追踪(${event.snapshots_count})` : "动态追踪(暂无)") : "活动尚未开始",
           isHide: false,
@@ -328,12 +328,12 @@ Page({
                 },
                 success(res){
                   console.log("[cloudfunction][update_user_event]: updated successfully");
-                  that.setData({
-                    is_sign_up_hide: false
-                  })
                   wx.hideLoading({
                     success(res){
                       notification_helper.show_toast_without_icon("已取消报名",2000);
+                      that.setData({
+                        is_sign_up_hide: false
+                      })
                     }
                   })
                 },
