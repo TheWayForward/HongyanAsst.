@@ -8,11 +8,22 @@
   justify-content: flex-start;
 }
 
-.articles{
-  flex-direction: column; 
+
+.articles_align{
+  display: flex;
+  flex-direction: row;
+  align-items:flex-start;
+}
+
+.articles_container{
+  display: flex;
+  flex-direction: column;
+  flex-flow: column;
+  width: 50%;
 }
 
 .article_block{
+  float: left;
   width: 92%;
   margin: 15rpx;
   padding-bottom: 10rpx;
@@ -29,7 +40,7 @@
 }
 
 .thumbnail_container{
-  width: 100%;
+  width:100%;
 }
 
 .article_thumbnail{
@@ -60,7 +71,7 @@
 }
 
 .tag_block{
-  height: 40rpx;
+  height: 80rpx;
   border: 1px solid #38706F;
   margin-top: 10rpx;
   text-align: center;

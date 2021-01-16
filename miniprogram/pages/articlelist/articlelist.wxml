@@ -16,33 +16,85 @@
 </view>
 <view>
 	<!--article segment-->
-	<view class="container articles" style="padding-top:20rpx;margin-top:100rpx;" hidden="{{isHide}}">
+	<view class="container articles_align" style="padding-top:20rpx;margin-top:100rpx;" hidden="{{isHide}}">
 		<!--article block-->
-		<view class="article_block shadow-bold" wx:for="{{search_articles}}" wx:key="_id">
-			<view>
-				<!--upper thumbnail-->
-				<view class="thumbnail_container" style="text-align:center;">
-					<image src="{{item.thumbnail}}" mode="aspectFill" class="article_thumbnail" bindtap="preview" data-action="{{item.thumbnail}}" lazy-load="true" /></view>
-				<!--overview-->
-				<view class="overview">
-					<!--views-->
-					<image src="image/view.png" style="width:35rpx;height:20rpx;z-index:5;" bindtap="preview" data-action="{{item.thumbnail}}"></image>
-					<view class="my_white mr-20" style="line-height:20rpx;margin-left:10rpx">{{item.view}}</view>
-					<!--comments-->
-					<image src="image/submitcomment.png" style="width:35rpx;height:20rpx;z-index:5;" bindtap="preview" data-action="{{item.thumbnail}}"></image>
-					<view class="my_white" style="line-height:20rpx;margin-left:10rpx">{{item.comment_count}}</view></view>
-				<!--bottom info-->
-				<view class="bottominfo" style="padding-left:15rpx;padding-right:15rpx;padding-top:15rpx" hover-class="hv" hover-stay-time="30" data-title="{{item.title}}" data-action="{{item}}" data-id="{{item._id}}" bindtap="goto_article">
-					<!--title-->
-					<view class="title" style="">{{item.title}}</view>
-					<view class="foot">
-						<!--tag-->
-						<view class="tag_block shadow rounded-5" style="">
-							<view class="tag_text" style="">{{item.tag}}</view></view>
-						<!--author-->
-						<view class="author my_gray" style="line-height:60rpx;margin-left:20rpx;color:black;font-size:26rpx;">{{item.author}}</view>
-						<!--time posted-->
-						<view class="my_gray" style="line-height:60rpx;margin-left:20rpx;font-size:26rpx;">{{item.time}}</view></view>
+		<view class="articles_container">
+			<view class="article_block shadow-bold" wx:for="{{search_articles1}}" wx:key="_id">
+				<view>
+					<!--upper thumbnail-->
+					<view class="thumbnail_container" style="text-align:center;">
+						<image src="{{item.thumbnail}}" mode="widthFix" class="article_thumbnail" bindtap="preview"
+							data-action="{{item.thumbnail}}" lazy-load="true" />
+					</view>
+					<!--overview-->
+					<view class="overview">
+						<!--views-->
+						<image src="image/view.png" style="width:35rpx;height:20rpx;z-index:5;" bindtap="preview"
+							data-action="{{item.thumbnail}}"></image>
+						<view class="my_white mr-20" style="line-height:20rpx;margin-left:10rpx">{{item.view}}</view>
+						<!--comments-->
+						<image src="image/submitcomment.png" style="width:35rpx;height:20rpx;z-index:5;" bindtap="preview"
+							data-action="{{item.thumbnail}}"></image>
+						<view class="my_white" style="line-height:20rpx;margin-left:10rpx">{{item.comment_count}}</view>
+					</view>
+					<!--bottom info-->
+					<view class="bottominfo" style="padding-left:15rpx;padding-right:15rpx;padding-top:15rpx" hover-class="hv"
+						hover-stay-time="30" data-title="{{item.title}}" data-action="{{item}}" data-id="{{item._id}}"
+						bindtap="goto_article">
+						<!--title-->
+						<view class="title" style="">{{item.title}}</view>
+						<view class="foot">
+							<!--tag-->
+							<view class="tag_block shadow rounded-5" style="">
+								<view class="tag_text" style="">{{item.tag}}</view>
+							</view>
+							<!--author-->
+							<view class="author my_gray" style="line-height:60rpx;margin-left:20rpx;color:black;font-size:26rpx;">
+								{{item.author}}</view>
+							<!--time posted-->
+							<view class="my_gray" style="line-height:60rpx;margin-left:20rpx;font-size:26rpx;">{{item.time}}</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		<view class="articles_container">
+			<view class="article_block shadow-bold" wx:for="{{search_articles2}}" wx:key="_id">
+				<view>
+					<!--upper thumbnail-->
+					<view class="thumbnail_container" style="text-align:center;">
+						<image src="{{item.thumbnail}}" mode="widthFix" class="article_thumbnail" bindtap="preview"
+							data-action="{{item.thumbnail}}" lazy-load="true" />
+					</view>
+					<!--overview-->
+					<view class="overview">
+						<!--views-->
+						<image src="image/view.png" style="width:35rpx;height:20rpx;z-index:5;" bindtap="preview"
+							data-action="{{item.thumbnail}}"></image>
+						<view class="my_white mr-20" style="line-height:20rpx;margin-left:10rpx">{{item.view}}</view>
+						<!--comments-->
+						<image src="image/submitcomment.png" style="width:35rpx;height:20rpx;z-index:5;" bindtap="preview"
+							data-action="{{item.thumbnail}}"></image>
+						<view class="my_white" style="line-height:20rpx;margin-left:10rpx">{{item.comment_count}}</view>
+					</view>
+					<!--bottom info-->
+					<view class="bottominfo" style="padding-left:15rpx;padding-right:15rpx;padding-top:15rpx" hover-class="hv"
+						hover-stay-time="30" data-title="{{item.title}}" data-action="{{item}}" data-id="{{item._id}}"
+						bindtap="goto_article">
+						<!--title-->
+						<view class="title" style="">{{item.title}}</view>
+						<view class="foot">
+							<!--tag-->
+							<view class="tag_block shadow rounded-5" style="">
+								<view class="tag_text" style="">{{item.tag}}</view>
+							</view>
+							<!--author-->
+							<view class="author my_gray" style="line-height:60rpx;margin-left:20rpx;color:black;font-size:26rpx;">
+								{{item.author}}</view>
+							<!--time posted-->
+							<view class="my_gray" style="line-height:60rpx;margin-left:20rpx;font-size:26rpx;">{{item.time}}</view>
+						</view>
+					</view>
 				</view>
 			</view>
 		</view>

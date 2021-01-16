@@ -7,19 +7,26 @@ var notification_helper = require("../../utils/helpers/notification_helper");
 Page({
   data: {
     articles: [],
-    search_articles: [{thumbnail: "../../images/loading.gif"}],
+    search_articles: [{
+      thumbnail: "../../images/loading.gif"
+    }],
+    search_articles1: [{
+      thumbnail: "../../images/loading.gif"
+    }],
+    search_articles2: [{
+      thumbnail: "../../images/loading.gif"
+    }],
     show_top: true,
     isHide: true,
     is_loading_hide: false,
     total_result: "加载中...",
     input_value: "",
-    image1:true,
-    image2:false,
+    image1: true,
+    image2: false,
   },
 
-  onLoad: function() {
-    if(!this.data.articles[0])
-    {
+  onLoad: function () {
+    if (!this.data.articles[0]) {
       wx.showLoading({
         title: '资讯加载中',
       })
@@ -28,62 +35,68 @@ Page({
     //maximum batch 5, we create a batch getter
     var batchTimes;
     var count = db.collection("articles").count();
-    count.then(function(result){
+    count.then(function (result) {
       count = result.total;
-      batchTimes = Math.ceil(count/20);
-      var arrayContainer = [], x = 0;
-      for(var i = 0; i < batchTimes; i++){
+      batchTimes = Math.ceil(count / 20);
+      var arrayContainer = [],arrayContainer1 = [],arrayContainer2 = [],
+        x = 0;
+      for (var i = 0; i < batchTimes; i++) {
         db.collection("articles").skip(i * 20).field({
           _id: true,
           author: true,
           is_available: true,
           thumbnail: true,
-          title:true,
+          title: true,
           tag: true,
           date: true,
           view: true,
           comment_count: true
         }).get({
-          success:function(res){
-            for(var j = 0; j < res.data.length; j++){
+          success: function (res) {
+            for (var j = 0; j < res.data.length; j++) {
               arrayContainer.push(res.data[j]);
             }
             x++;
-            if(x == batchTimes)
-            {
-              for(var i = 0; i < arrayContainer.length; i++){
+            if (x == batchTimes) {
+              for (var i = 0; i < arrayContainer.length; i++) {
                 arrayContainer[i].time = time_helper.format_time(arrayContainer[i].date).date_time;
               }
               arrayContainer.sort(compare_helper.compare("date")).reverse();
+              for(var i = 0; i < arrayContainer.length; i++){
+                if(i % 2)
+                  arrayContainer1.push(arrayContainer[i]);
+                else
+                  arrayContainer2.push(arrayContainer[i]);
+              }
               that.setData({
                 articles: arrayContainer,
                 search_articles: arrayContainer,
+                search_articles1: arrayContainer1,
+                search_articles2: arrayContainer2,
                 isHide: false,
                 total_result: `共${arrayContainer.length}篇资讯`,
-                is_loading_hide: true
-              })
-              wx.hideLoading({
-                success: (res) => {},
+                is_loading_hide: true,
               })
             }
           }
         })
       }
-    });
+    })
   },
 
-  onShow: function(){
-  },
 
-  onPageScroll: function(e){
-    if(e.scrollTop > 500)
-    {
+
+
+
+
+  onShow: function () {},
+
+  onPageScroll: function (e) {
+    if (e.scrollTop > 500) {
       this.setData({
         show_top: false
       })
-    }
-    else
-    {
+    } else {
       //to top icon shown
       this.setData({
         show_top: true
@@ -91,14 +104,14 @@ Page({
     }
   },
 
-  onPullDownRefresh: function(){
+  onPullDownRefresh: function () {
     var that = this;
     wx.showLoading({
       title: '资讯刷新中',
-      success: function(){
-      }
+      success: function () {}
     })
-    function refresh(){
+
+    function refresh() {
       that.onLoad();
       wx.hideLoading({
         complete: (res) => {
@@ -111,7 +124,7 @@ Page({
         },
       })
     }
-    setTimeout(refresh,2000);
+    setTimeout(refresh, 2000);
   },
 
   preview: function (e) {
@@ -120,29 +133,26 @@ Page({
       urls: [e.currentTarget.dataset.action]
     })
   },
-  
-  go_top: function(){
+
+  go_top: function () {
     wx.pageScrollTo({
       scrollTop: 0,
     })
   },
 
-  input: function(e){
+  input: function (e) {
     var that = this;
     var str = e.detail.value;
     this.setData({
-      image2:true,
-      image1:false
-  })
-    if(!str)
-    {
+      image2: true,
+      image1: false
+    })
+    if (!str) {
       this.setData({
         search_articles: that.data.articles,
         total_result: `共${that.data.articles.length}篇资讯`
       })
-    }
-    else
-    {
+    } else {
       this.setData({
         search_articles: 0
       })
@@ -150,13 +160,11 @@ Page({
       var search_list = [];
       var invalid_count = 0;
       list = this.data.articles;
-      for(var i = 0; i < list.length;i++){
-        if(list[i].title.indexOf(str) >= 0 || list[i].tag.indexOf(str) >= 0)
-        {
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].title.indexOf(str) >= 0 || list[i].tag.indexOf(str) >= 0) {
           search_list.push(list[i]);
         }
-        if(list[i].title.indexOf(str) == -1 && list[i].tag.indexOf(str) == -1)
-        {
+        if (list[i].title.indexOf(str) == -1 && list[i].tag.indexOf(str) == -1) {
           invalid_count++;
         }
       }
@@ -164,14 +172,11 @@ Page({
         search_articles: search_list,
         input_value: e.detail.value
       })
-      if(invalid_count == list.length)
-      {
+      if (invalid_count == list.length) {
         this.setData({
           total_result: "未找到相关资讯"
         })
-      }
-      else
-      {
+      } else {
         this.setData({
           total_result: `共${search_list.length}篇资讯`
         })
@@ -179,26 +184,25 @@ Page({
     }
   },
 
-  input_clear: function(){
+  input_clear: function () {
     var that = this;
-    if(!this.data.input_value) return;
+    if (!this.data.input_value) return;
     this.setData({
       input_value: "",
       search_articles: that.data.articles,
       total_result: `共${that.data.articles.length}篇资讯`,
-      image1:true,
-      image2:false
+      image1: true,
+      image2: false
     })
   },
 
-  goto_article: function(e){
+  goto_article: function (e) {
     wx.showLoading({
       title: '加载中',
       mask: true
     })
     var article = e.currentTarget.dataset.action;
-    if(!article.is_available)
-    {
+    if (!article.is_available) {
       wx.hideLoading({
         success: (res) => {
           wx.showToast({
@@ -214,14 +218,14 @@ Page({
     db.collection("articles").where({
       _id: article._id
     }).get({
-      success: function(res){
+      success: function (res) {
         wx.cloud.callFunction({
-          name:'add_article_view',
-          data:{
+          name: 'add_article_view',
+          data: {
             taskId: app.globalData.article._id,
             view: res.data[0].view + 1
           },
-          success(res){
+          success(res) {
             console.log("[cloudfunction][add_article_view]: add successfully");
             wx.hideLoading({
               success: (res) => {
@@ -231,16 +235,16 @@ Page({
               },
             })
           },
-          fail(res){
+          fail(res) {
             console.log("[cloudfunction][add_article_view]: failed to add");
             wx.hideLoading({
               success: (res) => {
-                notification_helper.show_toast_without_icon("获取数据失败，请下拉刷新页面后访问资讯",2000)
+                notification_helper.show_toast_without_icon("获取数据失败，请下拉刷新页面后访问资讯", 2000)
               },
             })
           }
         })
       }
-    }) 
+    })
   },
 })
