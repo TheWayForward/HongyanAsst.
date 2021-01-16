@@ -1,0 +1,36 @@
+<!--to top button-->
+<view hover-class="hv" hover-stay-time="30">
+	<image src='../../images/top.png' class='go_top' hidden='{{show_top}}' bindtap='go_top' />
+</view>
+<view class="page">
+  <view class="album_align" wx:for="{{events_and_snapshots_shown}}" wx:key="_id">
+    <!--title-->
+    <view class="album_title shadow-filter" style="z-index:5;">
+      <view hover-class="hv" hover-stay-time="30">
+        <image class="album_title_poster rounded-20 shadow-filter" mode="aspectFill" src="{{item.poster}}"
+          data-action="{{item.poster}}" bindtap="preview" lazy-load="true"></image>
+      </view>
+      <view class="album_title_right">
+        <view class="d-flex">
+          <h2 class="weui-form__title album_title_text">{{item.name}}</h2>
+        </view>
+        <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot w-100" style="margin:10rpx 0 10rpx 0;"></view>
+        <view class="weui-form__desc album_title_detail">{{item.detail}}</view>
+      </view>
+    </view>
+    <view class="snapshots_align" style="z-index:6;">
+      <view class="snapshot_box" wx:for="{{item.snapshots}}" wx:key="url">
+        <view class="snapshot_inner_box shadow">
+          <image class="snapshot" mode="aspectFill" src="{{item.url}}" bindtap="preview_group" data-action="{{item.url}}" data-group="{{item}}" lazy-load="true"></image>
+        </view>
+      </view>
+    </view>
+    <view class="weui-footer">
+      <view class="weui-footer__text" style="margin-top:10rpx;">{{item.tip}}</view>
+      <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot" style="margin-top:20rpx;"></view>
+    </view>
+  </view>
+  <button class="weui-btn weui-btn_primary" bindtap="show_more" hidden="{{is_show_more_hide}}">显示更多</button>
+</view>
+<!--bottom selector-->
+<view id="end" style="margin-top:30rpx;"></view>

@@ -208,7 +208,8 @@ Page({
 
   go_top: function(){
     wx.pageScrollTo({
-      scrollTop: 0
+      scrollTop: 0,
+      duration: 500
     })
   },
 

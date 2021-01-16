@@ -10,10 +10,10 @@ Page({
     search_articles: [{
       thumbnail: "../../images/loading.gif"
     }],
-    search_articles1: [{
+    search_articles_1: [{
       thumbnail: "../../images/loading.gif"
     }],
-    search_articles2: [{
+    search_articles_2: [{
       thumbnail: "../../images/loading.gif"
     }],
     show_top: true,
@@ -21,8 +21,6 @@ Page({
     is_loading_hide: false,
     total_result: "加载中...",
     input_value: "",
-    image1: true,
-    image2: false,
   },
 
   onLoad: function () {
@@ -38,7 +36,9 @@ Page({
     count.then(function (result) {
       count = result.total;
       batchTimes = Math.ceil(count / 20);
-      var arrayContainer = [],arrayContainer1 = [],arrayContainer2 = [],
+      var arrayContainer = [],
+        arrayContainer1 = [],
+        arrayContainer2 = [],
         x = 0;
       for (var i = 0; i < batchTimes; i++) {
         db.collection("articles").skip(i * 20).field({
@@ -62,32 +62,25 @@ Page({
                 arrayContainer[i].time = time_helper.format_time(arrayContainer[i].date).date_time;
               }
               arrayContainer.sort(compare_helper.compare("date")).reverse();
-              for(var i = 0; i < arrayContainer.length; i++){
-                if(i % 2)
-                  arrayContainer1.push(arrayContainer[i]);
-                else
-                  arrayContainer2.push(arrayContainer[i]);
+              for (var i = 0; i < arrayContainer.length; i++) {
+                i % 2 ? arrayContainer1.push(arrayContainer[i]) : arrayContainer2.push(arrayContainer[i]);
               }
               that.setData({
                 articles: arrayContainer,
                 search_articles: arrayContainer,
-                search_articles1: arrayContainer1,
-                search_articles2: arrayContainer2,
+                search_articles_1: arrayContainer1,
+                search_articles_2: arrayContainer2,
                 isHide: false,
                 total_result: `共${arrayContainer.length}篇资讯`,
                 is_loading_hide: true,
               })
+              wx.hideLoading({})
             }
           }
         })
       }
     })
   },
-
-
-
-
-
 
   onShow: function () {},
 
@@ -114,13 +107,11 @@ Page({
     function refresh() {
       that.onLoad();
       wx.hideLoading({
-        complete: (res) => {
+        complete(res) {
           wx.showToast({
             title: '刷新成功',
           })
-          wx.stopPullDownRefresh({
-            complete: (res) => {},
-          })
+          wx.stopPullDownRefresh({})
         },
       })
     }
@@ -142,46 +133,36 @@ Page({
 
   input: function (e) {
     var that = this;
-    var str = e.detail.value;
-    this.setData({
-      image2: true,
-      image1: false
-    })
-    if (!str) {
-
-      this.setData({
+    e.detail.value = e.detail.value.replace(/\s+/g,"");
+    if (!e.detail.value) {
+      that.data.search_articles_1 = [];
+      that.data.search_articles_2 = [];
+      for (var i = 0; i < that.data.articles.length; i++) {
+        i % 2 ? that.data.search_articles_1.push(that.data.articles[i]) : that.data.search_articles_2.push(that.data.articles[i]);
+      }
+      that.setData({
         search_articles: that.data.articles,
+        search_articles_1: that.data.search_articles_1,
+        search_articles_2: that.data.search_articles_2,
         total_result: `共${that.data.articles.length}篇资讯`
       })
     } else {
-      this.setData({
-        search_articles: 0
-      })
-      var list = [];
-      var search_list = [];
-      var invalid_count = 0;
-      list = this.data.articles;
-      for (var i = 0; i < list.length; i++) {
-        if (list[i].title.indexOf(str) >= 0 || list[i].tag.indexOf(str) >= 0) {
-          search_list.push(list[i]);
+      var search_list_1 = [],search_list_2 = [],invalid_count = 0,count = 0;
+      for (var i = 0; i < that.data.articles.length; i++) {
+        if (that.data.articles[i].title.indexOf(e.detail.value) >= 0 || that.data.articles[i].tag.indexOf(e.detail.value) >= 0) {
+          //found
+          ++count % 2 ? search_list_2.push(that.data.articles[i]) : search_list_1.push(that.data.articles[i]);
         }
-        if (list[i].title.indexOf(str) == -1 && list[i].tag.indexOf(str) == -1) {
+        if (that.data.articles[i].title.indexOf(e.detail.value) == -1 && that.data.articles[i].tag.indexOf(e.detail.value) == -1) {
           invalid_count++;
         }
       }
       this.setData({
-        search_articles: search_list,
-        input_value: e.detail.value
+        search_articles_1: search_list_1,
+        search_articles_2: search_list_2,
+        input_value: e.detail.value,
+        total_result: invalid_count == that.data.articles.length ? "未找到相关资讯" : `共${that.data.articles.length - invalid_count}篇资讯`
       })
-      if (invalid_count == list.length) {
-        this.setData({
-          total_result: "未找到相关资讯"
-        })
-      } else {
-        this.setData({
-          total_result: `共${search_list.length}篇资讯`
-        })
-      }
     }
   },
 

@@ -121,7 +121,7 @@ Page({
 
   goto_gallery: function () {
     wx.navigateTo({
-      url: '../../pages/album/album',
+      url: '../../pages/gallery/gallery',
     })
   },
 

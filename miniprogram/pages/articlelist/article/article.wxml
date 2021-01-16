@@ -1,7 +1,7 @@
 <view class="page">
 	<!--to top button-->
 	<view hover-class="hv" hover-stay-time="30">
-		<image src='../image/top.png' class='go_top' hidden='{{show_top}}' bindtap='go_top' /></view>
+		<image src='../../../images/top.png' class='go_top' hidden='{{show_top}}' bindtap='go_top' /></view>
 	<view class="title" style="color:#333333">{{title}}</view>
 	<view class="subalign">
 		<view class="subtitle" style="color:#576B95">{{author}}</view>
