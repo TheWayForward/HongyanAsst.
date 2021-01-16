@@ -3,6 +3,7 @@ const app = getApp();
 var compare_helper = require("../../utils/helpers/compare_helper");
 var time_helper = require("../../utils/helpers/time_helper");
 var notification_helper = require("../../utils/helpers/notification_helper");
+const versatile_helper = require("../../utils/helpers/versatile_helper");
 
 Page({
 
@@ -56,10 +57,7 @@ Page({
               var current_event = [];
               var coming_event = [];
               for(var i = 0; i < arrayContainer.length; i++){
-                arrayContainer[i].date = time_helper.format_time(arrayContainer[i].time).date;
-                arrayContainer[i].date_time = time_helper.format_time(arrayContainer[i].time).time.slice(0,5);
-                arrayContainer[i].precise_time = time_helper.format_time(arrayContainer[i].time).precise_time;
-                arrayContainer[i].day = time_helper.format_time(arrayContainer[i].time).day_to_ch();
+                versatile_helper.format_event(arrayContainer[i]);
                 switch(compare_helper.compare_time_for_event(arrayContainer[i].time,new Date())){
                   case("previous_event"):
                     previous_event.push(arrayContainer[i]);

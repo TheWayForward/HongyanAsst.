@@ -5,6 +5,8 @@
     "pages/articlelist/articlelist",
     "pages/articlelist/article/article",
 
+    "pages/album/album",
+
     "pages/eventlist/eventlist",
     "pages/eventlist/event/event",
     "pages/eventlist/event/locate/locate",
@@ -19,15 +21,15 @@
     "pages/register/register",
     "pages/user_profile/user_profile",
     "pages/user_profile/user_profile_update/user_profile_update",
-    "pages/user_show/user_show",
 
     "pages/feedback/feedback",
 
     "pages/im/im",
     "pages/im/room/room",
 
-    "pages/official/official"
+    "pages/official/official",
 
+    "pages/terms/terms"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",

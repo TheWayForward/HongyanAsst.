@@ -14,6 +14,23 @@
 
   <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
 
+  <view class="scrollalign shadow-filter">
+    <image class="scroll_logo" src="{{logo}}" mode="aspectFill" style="height:70rpx"></image>
+    <scroll-view>
+      <view class="scrolltxt">
+        <view class="box">
+          <view class="text" style="transform: translateX(-{{distance}}px)">
+            <text class="boxtext">{{bulletin_text}}</text>
+            <text style="margin-right:{{margin}}px"></text>
+            <text style="margin-right:{{margin}}px">{{bulletin_text}}</text>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
+
   <view class="btn_align">
     <view bindtap="goto_articlelist" class="btn_normal">资讯评论</view>
     <view bindtap="goto_gallery" class="btn_normal">车协相册</view>

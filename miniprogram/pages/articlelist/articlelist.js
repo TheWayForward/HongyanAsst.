@@ -148,6 +148,7 @@ Page({
       image1: false
     })
     if (!str) {
+
       this.setData({
         search_articles: that.data.articles,
         total_result: `共${that.data.articles.length}篇资讯`
