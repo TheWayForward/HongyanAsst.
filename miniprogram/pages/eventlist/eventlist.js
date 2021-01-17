@@ -13,12 +13,16 @@ Page({
     previous_event: [{
       poster: "../../images/loading.gif"
     }],
+    previous_event_shown: [{
+      poster: "../../images/loading.gif"
+    }],
     current_event: [{
       poster: "../../images/loading.gif"
     }],
     coming_event: [{
       poster: "../../images/loading.gif"
     }],
+    is_show_more_hide: false
   },
 
   onLoad: function () {
@@ -50,7 +54,7 @@ Page({
           leader: true,
           view: true
         }).get({
-          success (res) {
+          success(res) {
             for (var j = 0; j < res.data.length; j++) {
               arrayContainer.push(res.data[j]);
             }
@@ -58,14 +62,16 @@ Page({
             if (x == batchTimes) {
               arrayContainer.sort(compare_helper.compare("time"));
               //previous, current and coming, in accordance with time comparison
-              var previous_event = [];
-              var current_event = [];
-              var coming_event = [];
+              var previous_event = [],
+                previous_event_show = [],
+                current_event = [],
+                coming_event = [];
               for (var i = 0; i < arrayContainer.length; i++) {
                 versatile_helper.format_event(arrayContainer[i]);
                 switch (compare_helper.compare_time_for_event(arrayContainer[i].time, new Date())) {
                   case ("previous_event"):
                     previous_event.push(arrayContainer[i]);
+                    if (i < 4) previous_event_show.push(arrayContainer[i]);
                     break;
                   case ("current_event"):
                     current_event.push(arrayContainer[i]);
@@ -75,9 +81,11 @@ Page({
                     break;
                 }
               }
+
               that.setData({
                 events: arrayContainer,
                 previous_event: previous_event.reverse(),
+                previous_event_shown: previous_event_show.reverse(),
                 current_event: current_event.reverse(),
                 coming_event: coming_event.reverse(),
                 isHide: false
@@ -122,6 +130,25 @@ Page({
       current: e.target.dataset.action,
       urls: [e.target.dataset.action]
     })
+  },
+
+  show_more: function () {
+    var that = this;
+    if (that.data.previous_event_shown.length == that.data.previous_event.length) {
+      that.setData({
+        is_show_more_hide: true
+      })
+    } else {
+      that.data.previous_event_shown.push(that.data.previous_event[that.data.previous_event_shown.length]);
+      that.setData({
+        previous_event_shown: that.data.previous_event_shown,
+        is_show_more_hide: that.data.previous_event_shown.length == that.data.previous_event.length ? true : false
+      })
+      wx.pageScrollTo({
+        selector: '#end',
+        duration: 200
+      })
+    }
   },
 
   //send data to event page

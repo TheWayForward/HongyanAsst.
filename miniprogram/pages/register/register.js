@@ -276,6 +276,7 @@ Page({
             detail: `这个人很懒，${that.data.gender_index == "男" ? "他" : (that.data.gender_index == "保密") ? "TA" : "她"}什么也没留下。`,
             my_bicycle: [],
             my_event: [],
+            my_snapshots: [],
             total_distance: 0,
             openid: app.globalData.openid
           };
@@ -316,7 +317,7 @@ Page({
                       email: user.email,
                       gender: user.gender,
                       is_manager: false,
-                      my_bicycle: user.my_bicycle,
+                      my_bicycle: [],
                       my_event: [],
                       my_snapshots: [],
                       nickname: user.nickname,

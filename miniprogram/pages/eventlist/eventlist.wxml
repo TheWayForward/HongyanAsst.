@@ -57,8 +57,8 @@
 
 		<!--previous-->
 		<view class="weui-panel weui-panel_access">
-			<view class="weui-panel__hd" wx:if="{{previous_event[0]._id}}">往期活动</view>
-			<view class="weui-panel__bd" style="border-bottom: 1px solid #F5F5F5;" wx:for="{{previous_event}}" wx:key="_id">
+			<view class="weui-panel__hd" wx:if="{{previous_event_shown[0]._id}}">往期活动</view>
+			<view class="weui-panel__bd" style="border-bottom: 1px solid #F5F5F5;" wx:for="{{previous_event_shown}}" wx:key="_id">
 				<view class="weui-media-box weui-media-box_appmsg">
 					<view class="weui-cell__hd rounded-10 shadow" style="position: relative; margin-right: 10px;">
 						<image class="rounded-10 shadow" src="{{item.poster}}" mode="aspectFill"
@@ -85,4 +85,6 @@
 	</view>
 	<!--line-->
 	<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
+	<button class="weui-btn weui-btn_primary" bindtap="show_more" hidden="{{is_show_more_hide}}">显示更多</button>
 </view>
+<view id="end" style="margin-top:30rpx;"></view>

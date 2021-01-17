@@ -2,6 +2,7 @@ const app = getApp();
 const db = wx.cloud.database();
 var compare_helper = require("../../utils/helpers/compare_helper");
 var notification_helper = require("../../utils/helpers/notification_helper");
+var location_helper = require("../../utils/helpers/location_helper");
 
 Page({
   data: {
@@ -24,6 +25,8 @@ Page({
   },
 
   onLoad: function () {
+
+
     var that = this;
     //get device system info, such as batterylevel, screen, system version, etc.
     wx.getSystemInfo({

@@ -94,7 +94,7 @@
 			<view class="weui-cell__bd" style="margin-left:20rpx;">
 				<image src="{{choose_location_image}}" class="d-inline-block upload_image_choose_loaction"
 					bindtap="choose_location"></image>
-				<input class="input shadow upload_image_loaction" placeholder="打开定位，点击左侧图标，选取图片位置" value="{{snapshot.name}}"
+				<input class="shadow upload_image_loaction" placeholder="打开定位，点击左侧图标，选取图片位置" value="{{snapshot.name}}"
 					disabled="true"></input>
 			</view>
 			<view class="weui-cell">

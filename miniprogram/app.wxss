@@ -318,6 +318,10 @@ page {
 }
 
 /*personal attributes*/
+.bg_white{
+  background-color: #FFFFFF;
+}
+
 .btn_align{
   display: flex;
   width: 100%;

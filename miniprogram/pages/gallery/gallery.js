@@ -8,7 +8,6 @@ var versatile_helper = require("../../utils/helpers/versatile_helper");
 
 Page({
   data: {
-    test_snapshot: "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fs8.sinaimg.cn%2Fbmiddle%2F6130fc45hac3f14e250d7%26690&refer=http%3A%2F%2Fs8.sinaimg.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1613381811&t=396f9d93d4dcfc1a288a7a29926ea0c2",
     events_and_snapshots: [],
     events_and_snapshots_shown: [],
     is_show_more_hide: true,
@@ -47,7 +46,7 @@ Page({
               arrayContainer.sort(compare_helper.compare("time")).reverse();
               var events_and_snapshots = [];
               for (var i = 0; i < arrayContainer.length; i++) {
-                for(var j = 0; j < arrayContainer[i].snapshots_count; j++){
+                for (var j = 0; j < arrayContainer[i].snapshots_count; j++) {
                   arrayContainer[i].snapshots[j]._id = arrayContainer[i]._id;
                 }
                 events_and_snapshots.push({
@@ -61,10 +60,9 @@ Page({
               }
               that.setData({
                 events_and_snapshots: events_and_snapshots,
-                events_and_snapshots_shown: [events_and_snapshots[0],events_and_snapshots[1]],
+                events_and_snapshots_shown: [events_and_snapshots[0], events_and_snapshots[1]],
                 is_show_more_hide: false
               })
-              console.log(events_and_snapshots);
               wx.hideLoading({})
             }
           }
@@ -73,15 +71,12 @@ Page({
     })
   },
 
-  onPageScroll: function(e){
-    if(e.scrollTop > 500)
-    {
+  onPageScroll: function (e) {
+    if (e.scrollTop > 500) {
       this.setData({
         show_top: false
       })
-    }
-    else
-    {
+    } else {
       //to top icon shown
       this.setData({
         show_top: true
@@ -89,7 +84,7 @@ Page({
     }
   },
 
-  go_top: function(){
+  go_top: function () {
     wx.pageScrollTo({
       scrollTop: 0,
       duration: 500
@@ -105,15 +100,15 @@ Page({
 
   preview_group: function (e) {
     var that = this;
-    var current = [], current_urls = [];
-    for(var i = 0; i < that.data.events_and_snapshots.length; i++){
-      if(that.data.events_and_snapshots[i]._id == e.currentTarget.dataset.group._id)
-      {
+    var current = [],
+      current_urls = [];
+    for (var i = 0; i < that.data.events_and_snapshots.length; i++) {
+      if (that.data.events_and_snapshots[i]._id == e.currentTarget.dataset.group._id) {
         current = that.data.events_and_snapshots[i].snapshots;
         break;
       }
     }
-    for(var i = 0; i < current.length; i++){
+    for (var i = 0; i < current.length; i++) {
       current_urls.push(current[i].url);
     }
     wx.previewImage({
@@ -122,25 +117,21 @@ Page({
     })
   },
 
-  show_more: function(){
+  show_more: function () {
     var that = this;
-    if(that.data.events_and_snapshots_shown.length == that.data.events_and_snapshots.length)
-    {
-      notification_helper.show_toast_without_icon("没有更多了",2000);
+    if (that.data.events_and_snapshots_shown.length == that.data.events_and_snapshots.length) {
       that.setData({
         is_show_more_hide: true
       })
-    }
-    else
-    {
+    } else {
       that.data.events_and_snapshots_shown.push(that.data.events_and_snapshots[that.data.events_and_snapshots_shown.length]);
       that.setData({
         events_and_snapshots_shown: that.data.events_and_snapshots_shown,
         is_show_more_hide: that.data.events_and_snapshots_shown.length == that.data.events_and_snapshots.length ? true : false
       })
       wx.pageScrollTo({
-        selector:'#end',
-        duration: 100
+        selector: '#end',
+        duration: 200
       })
     }
   }

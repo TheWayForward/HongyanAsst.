@@ -5,9 +5,9 @@
 </view>
 <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
 <view class="btn_align">
-  <view bindtap="goto_event_release" class="btn_normal">活动发布</view>
-  <view bindtap="goto_article_release" class="btn_normal">资讯发布</view>
-  <view bindtap="goto_progress_release" class="btn_normal">日志发布</view>
+  <view bindtap="goto_event_release" class="btn_normal">活动</view>
+  <view bindtap="goto_article_release" class="btn_normal">资讯</view>
+  <view bindtap="goto_progress_release" class="btn_normal">日志</view>
   <view bindtap="goto_device_manage" class="btn_normal">添加设备</view>
 </view>
 <view class="btn_align">

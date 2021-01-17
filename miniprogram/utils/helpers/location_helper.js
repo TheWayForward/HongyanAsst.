@@ -61,7 +61,7 @@ function wgs_to_jcg(lat,log){
 function get_datapoints_from_onenet(device){
   return new Promise((resolve,reject) =>{
     wx.request({
-      url: `https://api.heclouds.com/devices/${device.deviceid}/datapoints?datastream_id=Latitude,Logitude,Speed&limit=1`,
+      url: `https://api.heclouds.com/devices/${device.deviceid}/datapoints?datastream_id=La,Lo,S,A,F&limit=1`,
       method: "GET",
       header: {
         'content-type': 'application/json',
@@ -69,10 +69,12 @@ function get_datapoints_from_onenet(device){
       },
       success(res){
         resolve({
-            speed: Number(res.data.data.datastreams[0].datapoints[0].value),
-            longitude: Number(res.data.data.datastreams[1].datapoints[0].value),
-            latitude: Number(res.data.data.datastreams[2].datapoints[0].value),
-            timestamp: new Date(Date.parse(res.data.data.datastreams[0].datapoints[0].at.replace(/-/g, "/")))
+          accuracy: Number(res.data.data.datastreams[0].datapoints[0].value),
+          longitude: Number(res.data.data.datastreams[1].datapoints[0].value),
+          speed: Number(res.data.data.datastreams[2].datapoints[0].value),
+          latitude: Number(res.data.data.datastreams[3].datapoints[0].value),
+          is_down: Boolean(Number(res.data.data.datastreams[4].datapoints[0].value)),
+          timestamp: new Date(Date.parse(res.data.data.datastreams[0].datapoints[0].at.replace(/-/g, "/")))
         })
       },
       fail(res){
@@ -87,5 +89,5 @@ module.exports = {
   latitude_to_canvas: latitude_to_canvas,
   longitude_to_canvas: longitude_to_canvas,
   wgs_to_jcg: wgs_to_jcg,
-  get_datapoints_from_onenet: get_datapoints_from_onenet
+  get_datapoints_from_onenet: get_datapoints_from_onenet,
 }

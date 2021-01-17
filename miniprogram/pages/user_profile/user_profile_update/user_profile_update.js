@@ -175,7 +175,6 @@ Page({
     wx.cloud.callFunction({
       name: "send_vcode",
       data: {
-        //hold
         my_phonenumber: that.data.tel,
         vcode: app.globalData.vcode
       },

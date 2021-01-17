@@ -6,7 +6,9 @@
 }
 
 .dynamic_data_group{
-
+  position: absolute;
+  left: 0;
+  bottom: 40rpx;
 }
 
 .dynamic_data{
@@ -51,10 +53,13 @@
 
 .upload_image_loaction{
   display: inline-block;
+  width: 77%;
   line-height: 70rpx;
-  width: 78%;
-  background: #EDEDED;
   margin-left: 25rpx;
+  background: #EDEDED;
+  border-radius: 60rpx;
+  height: 70rpx;
+  padding:0rpx 20rpx 0rpx 20rpx;
 }
 
 .upload_image_choose_loaction{
