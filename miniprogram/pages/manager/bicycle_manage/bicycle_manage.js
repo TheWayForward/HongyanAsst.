@@ -1,5 +1,7 @@
 const app = getApp();
 const db = wx.cloud.database();
+var request_helper = require("../../../utils/helpers/request_helper");
+var compare_helper = require("../../../utils/helpers/compare_helper");
 
 Page({
 
@@ -19,6 +21,12 @@ Page({
       title: '获取车辆中',
     })
     var that = this;
+    var id = "1";
+    request_helper.select_bicycle_by_id(id).then((result) => {
+      console.log(result.result.data.split("\n"));
+      wx.hideLoading({})
+    })
+    /*
     var batchTimes;
     var count = db.collection("bicycles").count();
     count.then(function(result){
@@ -41,14 +49,7 @@ Page({
             x++;
             if(x == batchTimes)
             {
-              function compare(p){
-                return function(m,n){
-                  var a = m[p];
-                  var b = n[p];
-                  return a-b;
-                }
-              }
-              arrayContainer.sort(compare("_id"));
+              arrayContainer.sort(compare_helper.compare("_id"));
               that.setData({
                 bicycles: arrayContainer,
                 search_bicycles: arrayContainer
@@ -61,6 +62,7 @@ Page({
         })
       }
     })
+    */
   },
 
   /**

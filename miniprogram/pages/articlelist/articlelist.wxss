@@ -71,13 +71,16 @@
 }
 
 .tag_block{
-  height: 80rpx;
+  height: 40rpx;
+  padding: 0;
   border: 1px solid #38706F;
   margin-top: 10rpx;
   text-align: center;
   width: 20%;
-  border-radius: 20rpx;
+  border-radius: 10rpx;
   background-color:#c0dfdf ;
+  justify-content: center;
+  align-items: center;
 }
 
 .tag_text{

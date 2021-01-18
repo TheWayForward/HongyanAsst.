@@ -56,7 +56,8 @@ Page({
       is_uploader_hide: app.globalData.user.openid ? (compare_helper.compare_time_for_event_locate_uploader(event.time, new Date()) ? false : true) : true,
       tip_footer: compare_helper.compare_time_for_event_locate_uploader(event.time, new Date()) ? (app.globalData.user.openid ? "请在活动开始前一小时至活动开始后一日内上传图片" : "请注册后上传图片") : "非活动时间，不能上传图片",
       all_snapshots_tip: event.snapshots[0] ? `查看活动"${event.name}"全部图片(${event.snapshots_count})` : `暂无图片`,
-      is_image_list_hide: event.snapshots[0] ? false : true
+      is_image_list_hide: event.snapshots[0] ? false : true,
+      height: wx.getSystemInfoSync().windowHeight * 0.5
     })
     wx.hideLoading({})
   },

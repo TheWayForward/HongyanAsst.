@@ -71,7 +71,7 @@ Page({
                 switch (compare_helper.compare_time_for_event(arrayContainer[i].time, new Date())) {
                   case ("previous_event"):
                     previous_event.push(arrayContainer[i]);
-                    if (i < 4) previous_event_show.push(arrayContainer[i]);
+                    if (i < 3) previous_event_show.push(arrayContainer[i]);
                     break;
                   case ("current_event"):
                     current_event.push(arrayContainer[i]);

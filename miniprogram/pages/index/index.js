@@ -26,7 +26,6 @@ Page({
 
   onLoad: function () {
 
-
     var that = this;
     //get device system info, such as batterylevel, screen, system version, etc.
     wx.getSystemInfo({

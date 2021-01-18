@@ -59,7 +59,7 @@ Page({
             x++;
             if (x == batchTimes) {
               for (var i = 0; i < arrayContainer.length; i++) {
-                arrayContainer[i].time = time_helper.format_time(arrayContainer[i].date).date_time;
+                arrayContainer[i].time = time_helper.format_time(arrayContainer[i].date).date;
               }
               arrayContainer.sort(compare_helper.compare("date")).reverse();
               for (var i = 0; i < arrayContainer.length; i++) {
