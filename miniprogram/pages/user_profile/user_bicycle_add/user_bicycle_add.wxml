@@ -1,0 +1,52 @@
+<view class="page">
+  <view class="weui-form bg-standard" style="padding-top:0;">
+    <view class="weui-form__control-area" style="margin-top:0;">
+      <view class="weui-cells__group weui-cells__group_form">
+        <view class="weui-cells__title">车辆信息</view>
+        <view class="weui-cells weui-cells_form" style="border-radius:20rpx 20rpx 0 0;">
+          <view class="weui-cell weui-cell_active weui-cell_select weui-cell_select-before">
+            <view class="weui-cell__hd">
+              <picker range="{{brands}}" bindchange="bind_brand_change">
+                <view class="weui-select" style="width: 3em">品牌</view>
+              </picker>
+            </view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" value="{{brand_index}}" disabled="true"></input>
+            </view>
+          </view>
+          <view class="weui-cell weui-cell_active">
+            <view class="weui-cell__hd"><label class="weui-label">型号</label></view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" disabled="true" placeholder-class="weui-input__placeholder"
+                value="{{user.gender}}" />
+            </view>
+          </view>
+          <view class="weui-cell weui-cell_active">
+            <view class="weui-cell__hd"><label class="weui-label">类型</label></view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" disabled="true" placeholder-class="weui-input__placeholder"
+                value="{{user.gender}}" />
+            </view>
+          </view>
+          <view class="weui-cell weui-cell_active">
+            <view class="weui-cell__hd"><label class="weui-label">出厂日期</label></view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" disabled="true" placeholder-class="weui-input__placeholder"
+                value="{{user.campus}}" />
+            </view>
+          </view>
+          <view class="weui-cell weui-cell_active">
+            <view class="weui-cell__hd"><label class="weui-label">里程(km)</label></view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" disabled="true" placeholder-class="weui-input__placeholder"
+                value="{{user.dept}}" />
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
+    <view class="weui-form__extra-area">
+    </view>
+  </view>
+</view>

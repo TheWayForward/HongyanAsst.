@@ -1,0 +1,53 @@
+<!--to top button-->
+<view hover-class="hv" hover-stay-time="30">
+  <image src="../../../images/top.png" class="go_top" hidden="{{show_top}}" bindtap="go_top" />
+</view>
+<view class="page">
+  <view class="weui-form bg-standard" style="padding-top:0;">
+    <view wx:for="{{my_bicycle}}" wx:key="_id" class="weui-cells__group weui-cells__group_form">
+      <view class="weui-cells weui-cells_form bg-standard shadow rounded-20 overflow-hidden">
+        <view class="weui-panel weui-panel_access">
+          <view class="weui-panel__bd">
+            <view class="weui-media-box weui-media-box_appmsg">
+              <view class="weui-media-box__hd">
+                <image class="weui-media-box__thumb rounded-10 shadow" mode="aspectFill" src="{{item.poster}}"
+                  data-action="{{item.poster}}" bindtap="preview" alt></image>
+              </view>
+              <view class="weui-media-box__bd">
+                <h4 class="weui-media-box__title">{{item.name}}</h4>
+                <view class="weui-media-box__desc">{{item.detail}}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="weui-form-preview">
+          <view class="weui-form-preview__bd" hidden="{{item.is_info_hide}}">
+            <view class="weui-form-preview__item">
+              <label class="weui-form-preview__label">品牌</label>
+              <text class="weui-form-preview__value">{{item.brand}}</text>
+            </view>
+            <view class="weui-form-preview__item">
+              <label class="weui-form-preview__label">出厂年份</label>
+              <text class="weui-form-preview__value">{{item.manufacture_time}}</text>
+            </view>
+            <view class="weui-form-preview__item">
+              <label class="weui-form-preview__label">骑行里程</label>
+              <text class="weui-form-preview__value">{{item.distance}} km</text>
+            </view>
+            <view class="weui-form-preview__item">
+              <label class="weui-form-preview__label">简介</label>
+              <text class="weui-form-preview__value" style="text-align:right;" user-select="true">{{item.detail}}</text>
+            </view>
+          </view>
+          <view class="weui-cell" hidden="{{item.is_info_hide}}">
+            <button class="weui-btn weui-btn_primary shadow" disabled="{{item.is_locked}}" data-action="{{item}}" bindtap="goto_user_bicycle_update" >{{item.is_locked ? "车辆已被锁定" : "编辑信息"}}</button>
+          </view>
+          <view class="weui-form-preview__ft">
+            <a class="weui-form-preview__btn weui-form-preview__btn_primary" data-action="{{item}}" hidden="{{!item.is_info_hide}}" bindtap="show_info">{{item.tip}}</a>
+          </view>
+          <view id="{{item._id}}"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -2,30 +2,22 @@ const app = getApp();
 const db = wx.cloud.database();
 var request_helper = require("../../../utils/helpers/request_helper");
 var compare_helper = require("../../../utils/helpers/compare_helper");
+var notification_helper = require("../../../utils/helpers/notification_helper");
 
 Page({
 
-  /**
-   * Page initial data
-   */
   data: {
-    bicycles: [],
-    search_bicycles: []
+    is_add_bicycle_hide: true,
+    add_bicycle_name: "",
+    add_bicycle_id: "",
+    add_bicycle_brand: "",
+    add_bicycle_type: "",
+    add_bicycle_price: "",
+    add_bicycle_manufacture_time: ""
   },
 
-  /**
-   * Lifecycle function--Called when page load
-   */
   onLoad: function (options) {
-    wx.showLoading({
-      title: '获取车辆中',
-    })
-    var that = this;
-    var id = "1";
-    request_helper.select_bicycle_by_id(id).then((result) => {
-      console.log(result.result.data.split("\n"));
-      wx.hideLoading({})
-    })
+
     /*
     var batchTimes;
     var count = db.collection("bicycles").count();
@@ -65,52 +57,88 @@ Page({
     */
   },
 
-  /**
-   * Lifecycle function--Called when page is initially rendered
-   */
-  onReady: function () {
-
+  show_add_bicycle: function (e) {
+    this.setData({
+      is_add_bicycle_hide: !e.detail.value
+    })
   },
 
-  /**
-   * Lifecycle function--Called when page show
-   */
-  onShow: function () {
-
+  input_add_bicycle_name: function (e) {
+    this.setData({
+      add_bicycle_name: e.detail.value
+    })
   },
 
-  /**
-   * Lifecycle function--Called when page hide
-   */
-  onHide: function () {
-
+  input_add_bicycle_id: function (e) {
+    this.setData({
+      add_bicycle_id: e.detail.value
+    })
   },
 
-  /**
-   * Lifecycle function--Called when page unload
-   */
-  onUnload: function () {
-
+  input_add_bicycle_brand: function (e) {
+    this.setData({
+      add_bicycle_brand: e.detail.value
+    })
   },
 
-  /**
-   * Page event handler function--Called when user drop down
-   */
-  onPullDownRefresh: function () {
-
+  input_add_bicycle_type: function (e) {
+    this.setData({
+      add_bicycle_type: e.detail.value
+    })
   },
 
-  /**
-   * Called when page reach bottom
-   */
-  onReachBottom: function () {
-
+  input_add_bicycle_price: function (e) {
+    this.setData({
+      add_bicycle_price: e.detail.value
+    })
   },
 
-  /**
-   * Called when user click on the top right corner to share
-   */
-  onShareAppMessage: function () {
+  input_add_bicycle_manufacture_time: function (e) {
+    this.setData({
+      add_bicycle_manufacture_time: e.detail.value
+    })
+  },
 
+  submit_add_bicycle: function () {
+    var that = this;
+    if (!that.data.add_bicycle_name) {
+      notification_helper.show_toast_without_icon("未填写自行车名称", 2000);
+      return;
+    }
+    if (!that.data.add_bicycle_id) {
+      notification_helper.show_toast_without_icon("未填写自行车编号", 2000);
+      return;
+    }
+    if (!that.data.add_bicycle_brand) {
+      notification_helper.show_toast_without_icon("未填写自行车品牌",2000);
+      return;
+    }
+    if (!that.data.add_bicycle_type) {
+      notification_helper.show_toast_without_icon("未填写自行车类型",2000);
+      return;
+    }
+    if (!that.data.add_bicycle_price) {
+      notification_helper.show_toast_without_icon("未填写自行车价格",2000);
+      return;
+    }
+    if(!that.data.add_bicycle_manufacture_time) {
+      notification_helper.show_toast_without_icon("未填写自行车出厂时间",2000);
+      return;
+    }
+    var bicycle = {
+      bicycle_name: that.data.add_bicycle_name,
+      bicycle_id: that.data.add_bicycle_id,
+      seller_name: app.globalData.user.realname,
+      seller_id: app.globalData.user.openid,
+      status: 0,
+      brand: that.data.add_bicycle_brand,
+      type: that.data.add_bicycle_type,
+      price: that.data.add_bicycle_price,
+      manufacture_time: that.data.add_bicycle_manufacture_time
+    }
+    console.log(bicycle);
+    request_helper.add_bicycle(bicycle).then((res) => {
+      console.log(res);
+    })
   }
 })

@@ -11,7 +11,7 @@
   <view bindtap="goto_device_manage" class="btn_normal">添加设备</view>
 </view>
 <view class="btn_align">
-  <view bindtap="goto_bicycle_manage" class="btn_normal">车辆管理</view>
+  <view bindtap="goto_bicycle_manage" class="btn_normal">车辆测试</view>
   <view bindtap="goto_" class="btn_normal"></view>
   <view bindtap="goto_" class="btn_normal"></view>
   <view bindtap="goto_" class="btn_normal"></view>

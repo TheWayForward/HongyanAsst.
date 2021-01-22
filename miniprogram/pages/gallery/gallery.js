@@ -39,6 +39,7 @@ Page({
         }).get({
           success(res) {
             for (var j = 0; j < res.data.length; j++) {
+              res.data[j].precise_time = new Date(res.data[j].time).getTime();
               arrayContainer.push(res.data[j]);
             }
             x++;
@@ -51,10 +52,12 @@ Page({
                 }
                 events_and_snapshots.push({
                   _id: arrayContainer[i]._id,
+                  color: versatile_helper.generate_color_for_block(),
                   name: arrayContainer[i].name,
                   detail: arrayContainer[i].detail,
                   poster: arrayContainer[i].poster,
                   snapshots: arrayContainer[i].snapshots,
+                  precise_time: arrayContainer[i].precise_time,
                   tip: arrayContainer[i].snapshots_count ? `共${arrayContainer[i].snapshots_count}张图片` : "暂无图片"
                 });
               }
@@ -131,9 +134,47 @@ Page({
       })
       wx.pageScrollTo({
         selector: '#end',
-        duration: 200
+        duration: 500
       })
     }
+  },
+
+  //send data to event page
+  goto_event: function (e) {
+    wx.showLoading({
+      title: '活动加载中',
+      mask: true
+    })
+    //get event from tap
+    var event = e.currentTarget.dataset.action;
+    //event date recovery
+    event.time = new Date(event.precise_time);
+    app.globalData.event = event;
+    wx.cloud.callFunction({
+      name: 'add_event_view',
+      data: {
+        taskId: app.globalData.event._id,
+        view: ++event.view
+      },
+      success(res) {
+        console.log("[cloudfunction][add_event_view]: add successfully");
+        wx.hideLoading({
+          success: (res) => {
+            wx.navigateTo({
+              url: '../../pages/eventlist/event/event',
+            })
+          },
+        })
+      },
+      fail(res) {
+        console.log("[cloudfunction][add_event_view]: failed to add");
+        wx.hideLoading({
+          success: (res) => {
+            notification_helper.show_toast_without_icon("获取数据失败，请下拉刷新页面后访问活动", 2000);
+          },
+        })
+      }
+    })
   }
 
 })

@@ -12,7 +12,7 @@ Page({
     user: {
       avatar: "../../images/loading.gif"
     },
-    isHide: false,
+    show_top: true,
     watcher: 0
   },
 
@@ -27,20 +27,41 @@ Page({
     that.data.watcher = db.collection("user").where({
       openid: app.globalData.user.openid
     }).watch({
-      onChange(e){
+      onChange(e) {
+        app.globalData.user = e.docChanges[0].doc;
         that.setData({
           user: versatile_helper.format_user(e.docChanges[0].doc)
         })
       },
-      onError(e){}
+      onError(e) {}
     })
   },
 
-  onShow: function () {
-    
+  onPageScroll: function (e) {
+    if (e.scrollTop > 500) {
+      this.setData({
+        show_top: false
+      })
+    } else {
+      //to top icon shown
+      this.setData({
+        show_top: true
+      })
+    }
   },
 
-  onUnload: function(){
+  go_top: function () {
+    wx.pageScrollTo({
+      scrollTop: 0,
+      duration: 500
+    })
+  },
+
+  onHide: function () {
+    this.data.watcher.close();
+  },
+
+  onUnload: function () {
     this.data.watcher.close();
   },
 
@@ -56,6 +77,19 @@ Page({
     wx.navigateTo({
       url: '../user_profile/user_profile_update/user_profile_update',
     })
+  },
+
+  goto_user_bicycle_manage: function () {
+    var that = this;
+    if (!that.data.user.my_bicycle.length) {
+      wx.navigateTo({
+        url: '../../pages/user_profile/user_bicycle_add/user_bicycle_add',
+      })
+    } else {
+      wx.navigateTo({
+        url: '../../pages/user_profile/user_bicycle_manage/user_bicycle_manage',
+      })
+    }
   },
 
   //go to event page after getting the corresponded event

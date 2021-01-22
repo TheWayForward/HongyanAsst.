@@ -1,4 +1,8 @@
-<!--main list, coming and previous-->
+<!--to top button-->
+<view hover-class="hv" hover-stay-time="30">
+  <image src="../../images/top.png" class="go_top" hidden="{{show_top}}" bindtap="go_top" />
+</view>
+<!--main list-->
 <view class="page" hidden="{{isHide}}">
 	<view class="page__bd" style="overflow:hidden; border-radius:50rpx; border: 1px solid #F5F5F5;">
 		<!--coming-->

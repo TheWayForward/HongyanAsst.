@@ -35,9 +35,9 @@ function format_user(user) {
   return user;
 }
 
-function format_event(event){
+function format_event(event) {
   event.date = time_helper.format_time(event.time).date;
-  event.date_time = time_helper.format_time(event.time).time.slice(0,5);
+  event.date_time = time_helper.format_time(event.time).time.slice(0, 5);
   event.precise_time = time_helper.format_time(event.time).precise_time;
   event.day = time_helper.format_time(event.time).day_to_ch();
   return event;
@@ -157,6 +157,10 @@ function generate_cloudpath_for_user(user, file) {
   return `user/${user.openid}/${user.nickname}_${user.openid}_${Math.random()}_${Date.now()}.${file.match(/\.(\w+)$/)[1]}`;
 }
 
+function generate_cloudpath_for_bicycle(bicycle, file) {
+  return `bicycles/${bicycle._id}/${bicycle.name}_${bicycle.brand}_${Math.random()}_${Date.now()}.${file.match(/\.(\w+)$/)[1]}`;
+}
+
 function generate_cloudpath_for_snapshots(event, user, file) {
   return `events/${event.poster.split("/")[4]}/snapshots/${user.nickname}_${user.openid}_${Math.random()}_${Date.now()}.${file.match(/\.(\w+)$/)[1]}`;
 }
@@ -180,6 +184,7 @@ module.exports = {
   delete_location_info_for_markers: delete_location_info_for_markers,
   hilight_marker: hilight_marker,
   generate_cloudpath_for_user: generate_cloudpath_for_user,
+  generate_cloudpath_for_bicycle: generate_cloudpath_for_bicycle,
   generate_cloudpath_for_snapshots: generate_cloudpath_for_snapshots,
   generate_cloudpath_for_event: generate_cloudpath_for_event,
   generate_cloudpath_for_article: generate_cloudpath_for_article

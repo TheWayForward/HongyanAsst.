@@ -21,6 +21,9 @@
     "pages/register/register",
     "pages/user_profile/user_profile",
     "pages/user_profile/user_profile_update/user_profile_update",
+    "pages/user_profile/user_bicycle_manage/user_bicycle_manage",
+    "pages/user_profile/user_bicycle_add/user_bicycle_add",
+    "pages/user_profile/user_bicycle_manage/user_bicycle_update/user_bicycle_update",
 
     "pages/feedback/feedback",
 

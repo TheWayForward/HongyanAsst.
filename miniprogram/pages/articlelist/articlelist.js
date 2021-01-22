@@ -82,8 +82,6 @@ Page({
     })
   },
 
-  onShow: function () {},
-
   onPageScroll: function (e) {
     if (e.scrollTop > 500) {
       this.setData({
@@ -128,6 +126,7 @@ Page({
   go_top: function () {
     wx.pageScrollTo({
       scrollTop: 0,
+      duration: 500
     })
   },
 

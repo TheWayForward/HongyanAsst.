@@ -24,6 +24,8 @@ App({
     last_page_holder: "",
     //current event info
     event: {},
+    //my bicycle info holder
+    my_bicycle: {}
   },
 
   onLaunch: function () {

@@ -13,6 +13,13 @@
 				<view class="weui-cells__title">个人信息</view>
 				<view class="weui-cells weui-cells_form" style="border-radius:20rpx 20rpx 0 0;">
 					<view class="weui-cell weui-cell_active">
+						<view class="weui-cell__hd"><label class="weui-label">注册时间</label></view>
+						<view class="weui-cell__bd">
+							<input class="weui-input" disabled="true" placeholder-class="weui-input__placeholder"
+								value="{{user.birthday_string}}" />
+						</view>
+					</view>
+					<view class="weui-cell weui-cell_active">
 						<view class="weui-cell__hd"><label class="weui-label">姓名</label></view>
 						<view class="weui-cell__bd">
 							<input class="weui-input" disabled="true" placeholder-class="weui-input__placeholder"
@@ -167,7 +174,7 @@
 			</view>
 		</view>
 		<view class="weui-form__opr-area mt-50" style="margin-bottom:0;">
-			<button class="weui-btn weui-btn_primary" disabled="{{!is_submission_available}}" bindtap="submit">提交</button>
+			<button class="weui-btn weui-btn_primary shadow" disabled="{{!is_submission_available}}" bindtap="submit">提交</button>
 		</view>
 		<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
 		<view class="weui-form__extra-area">

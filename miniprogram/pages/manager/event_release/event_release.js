@@ -367,6 +367,7 @@ Page({
                 title: '相关数据上传中',
                 mask: true
               })
+              var file = res.fileID;
               var count = db.collection("events").count();
               count.then(function(result){
                 db.collection("events").add({
@@ -407,9 +408,10 @@ Page({
                     app.globalData.user.my_event.push({
                       _id: result.total + 1 + "",
                       name: that.data.name,
-                      poster: res.fileID,
+                      poster: file,
                       date: that.data.event_date.replace(new RegExp("-","g"),"/"),
                       distance: that.data.distance,
+                      detail: that.data.detail,
                       is_signed: true
                     });
                     wx.cloud.callFunction({

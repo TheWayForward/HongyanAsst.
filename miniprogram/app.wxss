@@ -313,6 +313,10 @@ page {
   filter: drop-shadow(0rpx 15rpx 10rpx #999999);
 }
 
+.blur{
+  box-shadow: 0 0 20rpx 20rpx #F6F6F6 inset;
+}
+
 .hv{
   opacity: 0.7;
 }
@@ -320,6 +324,10 @@ page {
 /*personal attributes*/
 .bg_white{
   background-color: #FFFFFF;
+}
+
+.text_red{
+  color: #FA5159;
 }
 
 .btn_align{

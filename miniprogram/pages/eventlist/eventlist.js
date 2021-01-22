@@ -22,7 +22,8 @@ Page({
     coming_event: [{
       poster: "../../images/loading.gif"
     }],
-    is_show_more_hide: false
+    is_show_more_hide: false,
+    show_top: true
   },
 
   onLoad: function () {
@@ -71,7 +72,7 @@ Page({
                 switch (compare_helper.compare_time_for_event(arrayContainer[i].time, new Date())) {
                   case ("previous_event"):
                     previous_event.push(arrayContainer[i]);
-                    if (i < 3) previous_event_show.push(arrayContainer[i]);
+                    if (i > arrayContainer.length - 5) previous_event_show.push(arrayContainer[i]);
                     break;
                   case ("current_event"):
                     current_event.push(arrayContainer[i]);
@@ -123,6 +124,26 @@ Page({
       })
     }
     setTimeout(refresh, 2000);
+  },
+
+  onPageScroll: function (e) {
+    if (e.scrollTop > 500) {
+      this.setData({
+        show_top: false
+      })
+    } else {
+      //to top icon shown
+      this.setData({
+        show_top: true
+      })
+    }
+  },
+
+  go_top: function () {
+    wx.pageScrollTo({
+      scrollTop: 0,
+      duration: 500
+    })
   },
 
   preview: function (e) {
