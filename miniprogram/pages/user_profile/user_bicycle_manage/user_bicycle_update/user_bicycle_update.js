@@ -10,22 +10,29 @@ Page({
   data: {
     bicycle: {},
     detail: "",
+    password: "",
     files: [],
     text_counter: "",
     is_uploader_hide: true,
     is_upload_add_hide: false,
-    is_delete_hide: true
+    is_delete_hide: true,
+    is_submission_available: false
   },
 
   onLoad: function (options) {
-    console.log(app.globalData.my_bicycle)
+    wx.showLoading({
+      title: "加载中",
+      mask: true
+    })
     var that = this;
     app.globalData.my_bicycle.date = time_helper.format_time(new Date(app.globalData.my_bicycle.precise_time)).date;
     that.setData({
       bicycle: app.globalData.my_bicycle,
       text_counter: `${app.globalData.my_bicycle.detail.length}/200`,
-      detail: app.globalData.my_bicycle.detail
+      detail: app.globalData.my_bicycle.detail,
+      is_submission_available: true
     })
+    wx.hideLoading({})
   },
 
   preview: function (e) {
@@ -39,6 +46,12 @@ Page({
     this.setData({
       detail: e.detail.value,
       text_counter: `${e.detail.value.length}/200`
+    })
+  },
+
+  input_password: function(e) {
+    this.setData({
+      password: e.detail.value
     })
   },
 
@@ -68,7 +81,7 @@ Page({
         if (res.tempFiles[0].size > maxsize) {
           var original_size = (res.tempFiles[0].size / 1000000).toFixed(2);
           wx.showToast({
-            title: '图片过大(' + original_size + 'MB' + ')，请取消勾选"原图"或另行上传较小的图片',
+            title: '图片过大(' + original_size + 'MB' + ')，请另行上传较小的图片',
             icon: 'none'
           })
           return;
@@ -199,6 +212,9 @@ Page({
       success(res) {
         if (res.cancel) return;
         else {
+          that.setData({
+            is_submission_available: false
+          })
           //with a new poster
           if (that.data.files[0]) {
             wx.showLoading({
@@ -227,6 +243,7 @@ Page({
                       if (that.data.bicycle._id == app.globalData.user.my_bicycle[i]._id) {
                         app.globalData.user.my_bicycle[i].poster = file;
                         app.globalData.user.my_bicycle[i].detail = that.data.detail;
+
                         wx.cloud.callFunction({
                           name: "update_user_bicycle",
                           data: {

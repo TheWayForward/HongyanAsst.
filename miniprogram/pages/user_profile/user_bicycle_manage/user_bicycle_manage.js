@@ -121,5 +121,11 @@ Page({
     wx.navigateTo({
       url: '../user_bicycle_manage/user_bicycle_update/user_bicycle_update',
     })
+  },
+
+  goto_bicycle_add: function (e) {
+    wx.navigateTo({
+      url: '../user_bicycle_add/user_bicycle_add',
+    })
   }
 })

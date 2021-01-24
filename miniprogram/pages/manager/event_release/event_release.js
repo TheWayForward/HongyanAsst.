@@ -56,7 +56,7 @@ Page({
     })
     var that = this;
     var batchTimes;
-    var count = db.collection("events").count();
+    var count = db.collection("devices").count();
     count.then(function(result){
       count = result.total;
       batchTimes = Math.ceil(count / 20);

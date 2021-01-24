@@ -113,15 +113,21 @@
                 </label>
               </view>
             </view>
+            <view class="weui-cell weui-cell_active" hidden="{{is_delete_hide}}">
+              <view class="weui-cell__hd"><label class="weui-label">输入密钥</label></view>
+              <view class="weui-cell__bd">
+                <input class="weui-input" placeholder-class="weui-input__placeholder" bindinput="input_password" type="password" maxlength="20"/>
+              </view>
+            </view>
             <view class="weui-cell" hidden="{{is_delete_hide}}">
-              <button class="weui-btn weui-btn_warn" bindtap="delete">删除车辆</button>
+              <button class="weui-btn weui-btn_warn shadow" disabled="{{password == bicycle.password ? false : true}}" bindtap="delete" >删除车辆</button>
             </view>
           </view>
         </view>
       </view>
     </view>
     <view class="weui-form__opr-area mt-50" style="margin-bottom:0;">
-      <button class="weui-btn weui-btn_primary shadow" hidden="{{!is_delete_hide}}" bindtap="submit">提交</button>
+      <button class="weui-btn weui-btn_primary shadow" hidden="{{!is_delete_hide}}" disabled="{{is_submission_available}}" bindtap="submit">提交</button>
     </view>
     <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
     <view class="weui-form__extra-area">

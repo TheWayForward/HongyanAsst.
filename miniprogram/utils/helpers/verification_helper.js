@@ -18,15 +18,19 @@ function email_verification(email) {
   return /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/.test(email);
 }
 
-function vcode_verification(vcode){
+function vcode_verification(vcode) {
   return /[0-9]{6}/.test(vcode) ? true : false;
 }
 
-function generate_vcode(){
+function bicycle_password_verification(bicycle_password) {
+  return bicycle_password.length >= 6 && bicycle_password.length <= 20 ? true : false;
+}
+
+function generate_vcode() {
   return ('000000' + Math.floor(Math.random() * 999999)).slice(-6);
 }
 
-function clear_vcode(app){
+function clear_vcode(app) {
   app.clear_vcode();
 }
 
@@ -37,6 +41,7 @@ module.exports = {
   tel_verification: tel_verification,
   email_verification: email_verification,
   vcode_verification: vcode_verification,
+  bicycle_password_verification: bicycle_password_verification,
   generate_vcode: generate_vcode,
   clear_vcode: clear_vcode
 }
