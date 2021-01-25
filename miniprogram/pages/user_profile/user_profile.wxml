@@ -54,7 +54,7 @@
       </view>
       <!--bicycle management-->
       <view class="weui-cells__group weui-cells__group_form">
-        <view class="weui-cells__title mt-20">我的车辆({{user.my_bicycle.length}}/3)</view>
+        <view class="weui-cells__title mt-20">我的车辆</view>
         <view class="weui-cells weui-cells_form">
           <view class="weui-panel weui-panel_access">
             <view class="weui-panel__bd">

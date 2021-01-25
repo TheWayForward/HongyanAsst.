@@ -281,6 +281,10 @@ page {
   margin-bottom: 20rpx;
 }
 
+.w-25{
+  width: 25%;
+}
+
 .w-100{
   width: 100%;
 }
@@ -324,6 +328,18 @@ page {
 /*personal attributes*/
 .bg_white{
   background-color: #FFFFFF;
+}
+
+.bg_red{
+  background-color: #FA5159;
+}
+
+.bg_blue{
+  background-color: #188FC8;
+}
+
+.bg_green{
+  background-color: #07C160;
 }
 
 .text_red{

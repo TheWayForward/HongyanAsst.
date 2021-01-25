@@ -159,6 +159,16 @@ Page({
     }
   },
 
+  goto_garage: function () {
+    if (!app.globalData.user) {
+      notification_helper.show_toast_without_icon("暂未获取到用户信息", 2000);
+    } else {
+      wx.navigateTo({
+        url: '../garage/garage',
+      })
+    }
+  },
+
   goto_manager: function () {
     if (!app.globalData.user) {
       notification_helper.show_toast_without_icon("暂未获取到用户信息", 2000);

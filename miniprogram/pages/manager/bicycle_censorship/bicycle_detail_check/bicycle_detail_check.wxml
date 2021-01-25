@@ -1,0 +1,184 @@
+<!--to top button-->
+<view hover-class="hv" hover-stay-time="30">
+  <image src="../../../../images/top.png" class="go_top" hidden="{{show_top}}" bindtap="go_top" />
+</view>
+<view class="page" hidden="{{is_hide}}">
+  <view class="weui-form bg-standard" style="padding-top:0;">
+    <view class="weui-form__text-area overflow-hidden bicycle_poster blur">
+      <view class="weui-article" style="padding:0;">
+        <view class="weui-article__section">
+          <view class="weui-article__section">
+            <view class="weui-article__p" hover-class="hv" hover-stay-time="30">
+              <image class="weui-article__img rounded-20 mt-50 shadow-filter" src="{{bicycle.poster}}" mode="aspectFill"
+                data-action="{{bicycle.poster}}" bindtap="preview" style="height:180px" />
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="weui-form__control-area" style="margin-bottom:0;margin-top:0;">
+      <view class="weui-cells__group weui-cells__group_form">
+        <view class="weui-cells__title">车辆信息</view>
+        <view class="weui-cells weui-cells_form" style="border-radius:20rpx 20rpx 0 0;">
+          <view class="weui-cell weui-cell_active">
+            <view class="weui-cell__hd"><label class="weui-label">添加时间</label></view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" disabled="true" placeholder-class="weui-input__placeholder"
+                value="{{bicycle.date_time}}" />
+            </view>
+          </view>
+          <view class="weui-cell weui-cell_active">
+            <view class="weui-cell__hd"><label class="weui-label">品牌</label></view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" disabled="true" placeholder-class="weui-input__placeholder"
+                value="{{bicycle.brand}}" />
+            </view>
+          </view>
+          <view class="weui-cell weui-cell_active">
+            <view class="weui-cell__hd"><label class="weui-label">型号</label></view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" disabled="true" placeholder-class="weui-input__placeholder"
+                value="{{bicycle.name}}" />
+            </view>
+          </view>
+          <view class="weui-cell weui-cell_active">
+            <view class="weui-cell__hd"><label class="weui-label">类型</label></view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" disabled="true" placeholder-class="weui-input__placeholder"
+                value="{{bicycle.type}}" />
+            </view>
+          </view>
+          <view class="weui-cell weui-cell_active">
+            <view class="weui-cell__hd"><label class="weui-label">里程</label></view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" disabled="true" placeholder-class="weui-input__placeholder"
+                value="{{bicycle.distance_string}} km" />
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="weui-cells__group weui-cells__group_form" wx:if="{{bicycle.device.deviceid}}">
+        <view class="weui-cells__title mt-20">定位设备</view>
+        <view class="weui-cells weui-cells_form">
+          <view class="weui-cell weui-cell_active">
+            <view class="weui-cell__hd"><label class="weui-label">设备名称</label></view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" disabled="true" placeholder-class="weui-input__placeholder"
+                value="{{bicycle.device.name}}" />
+            </view>
+          </view>
+          <view class="weui-cell weui-cell_active">
+            <view class="weui-cell__hd"><label class="weui-label">PaaS编号</label></view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" disabled="true" placeholder-class="weui-input__placeholder"
+                value="{{bicycle.device.deviceid}}" />
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="weui-cells__group weui-cells__group_form">
+        <view class="weui-cells__title mt-20">车辆简介</view>
+        <view class="weui-cells weui-cells_form">
+          <view class="weui-cell">
+            <view class="weui-cell__bd">
+              <textarea class="weui-textarea" placeholder="读万卷书，行万里路..." value="{{bicycle.detail}}" disabled="true"
+                rows="3" maxlength="200" bindinput="input_detail"></textarea>
+              <view class="weui-textarea-counter"><text>{{text_counter}}</text></view>
+            </view>
+          </view>
+        </view>
+        <view class="weui-cells__title">车辆属性</view>
+        <view class="page__bd">
+          <view class="weui-cells" style="margin-top:0;">
+            <view class="weui-cell weui-cell_active">
+              <view class="weui-cell__bd">
+                <text class="weui-badge bg_red" style="margin-left: 5px;" wx:if="{{bicycle.is_rentable}}">可被租赁</text>
+                <text class="weui-badge bg_blue" style="margin-left: 5px;" wx:if="{{bicycle.is_sellable}}">可被转售</text>
+              </view>
+              <view class="weui-cell__ft"></view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="weui-cells__group weui-cells__group_form">
+        <view class="weui-cells__title">用户信息</view>
+        <view class="page__bd" style="overflow:hidden;border-radius:0 0 20rpx 20rpx;">
+          <view class="weui-cells" style="margin-top:0;">
+            <view class="weui-panel weui-panel_access">
+              <view class="weui-panel__bd">
+                <a class="weui-media-box weui-media-box_appmsg">
+                  <view class="weui-media-box__hd">
+                    <image class="weui-media-box__thumb shadow-bold rounded-10" mode="aspectFill" src="{{user.avatar}}"
+                      data-action="{{user.avatar}}" bindtap="preview" lazy-load="true" alt></image>
+                  </view>
+                  <view class="weui-media-box__bd">
+                    <h4 class="weui-media-box__title">{{user.nickname}}{{user.is_manager ? "(管理员)" : ""}}</h4>
+                    <view class="weui-media-box__desc">{{user.detail}}</view>
+                  </view>
+                </a>
+              </view>
+            </view>
+            <view class="weui-cell weui-cell_active">
+              <view class="weui-cell__hd"><label class="weui-label">真实姓名</label></view>
+              <view class="weui-cell__bd">
+                <input class="weui-input" disabled="true" placeholder-class="weui-input__placeholder"
+                  value="{{user.realname}}" />
+              </view>
+            </view>
+            <view class="weui-cell weui-cell_active">
+              <view class="weui-cell__hd"><label class="weui-label">学院</label></view>
+              <view class="weui-cell__bd">
+                <input class="weui-input" disabled="true" placeholder-class="weui-input__placeholder"
+                  value="{{user.dept}}" />
+              </view>
+            </view>
+            <view class="weui-cell weui-cell_active">
+              <view class="weui-cell__hd"><label class="weui-label">校区</label></view>
+              <view class="weui-cell__bd">
+                <input class="weui-input" disabled="true" placeholder-class="weui-input__placeholder"
+                  value="{{user.campus}}" />
+              </view>
+            </view>
+            <view class="weui-cell weui-cell_active">
+              <view class="weui-cell__hd"><label class="weui-label">手机</label></view>
+              <view class="weui-cell__bd">
+                <input class="weui-input" disabled="true" placeholder-class="weui-input__placeholder"
+                  value="{{user.tel}}" />
+              </view>
+            </view>
+            <view class="weui-cell weui-cell_active">
+              <view class="weui-cell__hd"><label class="weui-label">QQ</label></view>
+              <view class="weui-cell__bd">
+                <input class="weui-input" disabled="true" placeholder-class="weui-input__placeholder"
+                  value="{{user.QQ}}" />
+              </view>
+            </view>
+            <view class="weui-cell weui-cell_active">
+              <view class="weui-cell__hd"><label class="weui-label">注册时间</label></view>
+              <view class="weui-cell__bd">
+                <input class="weui-input" disabled="true" placeholder-class="weui-input__placeholder"
+                  value="{{user.date}}" />
+              </view>
+            </view>
+            <view class="weui-cell weui-cell_active">
+              <view class="weui-cell__hd"><label class="weui-label">骑行里程</label></view>
+              <view class="weui-cell__bd">
+                <input class="weui-input" disabled="true" placeholder-class="weui-input__placeholder"
+                  value="{{user.distance}} km" />
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="button-sp-area cell mt-50">
+      <view class="button-sp-area" style="text-align:center;">
+        <a class="weui-btn weui-btn_mini weui-btn_primary shadow" style="margin:20rpx" bindtap="approve">通过审核</a>
+        <a class="weui-btn weui-btn_mini weui-btn_warn shadow" style="margin:20rpx" bindtap="reject">暂不通过</a>
+      </view>
+    </view>
+    <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
+    <view class="weui-form__extra-area">
+    </view>
+  </view>
+</view>

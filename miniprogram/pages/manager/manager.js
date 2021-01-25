@@ -65,5 +65,11 @@ Page({
     wx.navigateTo({
       url: '../manager/bicycle_censorship/bicycle_censorship',
     })
+  },
+
+  goto_bicycle_monitor: function () {
+    wx.navigateTo({
+      url: '../manager/bicycle_monitor/bicycle_monitor',
+    })
   }
 })

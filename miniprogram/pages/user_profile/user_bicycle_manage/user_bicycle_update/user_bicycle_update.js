@@ -243,7 +243,6 @@ Page({
                       if (that.data.bicycle._id == app.globalData.user.my_bicycle[i]._id) {
                         app.globalData.user.my_bicycle[i].poster = file;
                         app.globalData.user.my_bicycle[i].detail = that.data.detail;
-
                         wx.cloud.callFunction({
                           name: "update_user_bicycle",
                           data: {

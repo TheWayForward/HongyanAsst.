@@ -37,7 +37,10 @@
     <view bindtap="goto_user_profile" class="btn_normal">我的车协</view>
     <view bindtap="goto_eventlist" class="btn_normal">骑行活动</view>
   </view>
-
+  <view class="btn_align">
+    <view bindtap="goto_garage" class="btn_long">我要用车</view>
+  </view>
+    
   <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
 
   <view class="btn_align">

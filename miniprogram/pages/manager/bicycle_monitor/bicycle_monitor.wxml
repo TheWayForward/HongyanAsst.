@@ -1,2 +1,166 @@
-<!--pages/manager/bicycle_monitor/bicycle_monitor.wxml-->
-<text>pages/manager/bicycle_monitor/bicycle_monitor.wxml</text>
+<!--to top button-->
+<view hover-class="hv" hover-stay-time="30">
+  <image src="../../../images/top.png" class="go_top" hidden="{{show_top}}" bindtap="go_top" />
+</view>
+<view class="page" hidden="{{is_hide}}">
+  <view class="weui-form bg-standard" style="padding-top:0;">
+    <view class="weui-cells__group weui-cells__group_form">
+      <view class="weui-cells__title">公开车辆</view>
+      <view class="weui-cells weui-cells_form bg-standard shadow rounded-20 overflow-hidden">
+        <view class="weui-form-preview">
+          <view class="weui-cell weui-cell_active">
+            <view class="weui-cell__bd">
+              <text style="vertical-align: middle;">可被租赁</text>
+              <text class="weui-badge" style="margin-left: 5px;"
+                wx:if="{{bicycles_rentable[0]}}">{{bicycles_rentable.length}}</text>
+            </view>
+          </view>
+          <view class="weui-panel weui-panel_access" hidden="{{is_bicycles_rentable_hide}}">
+            <view class="weui-panel__bd">
+              <a wx:for="{{bicycles_rentable}}" wx:key="_id" class="weui-media-box weui-media-box_appmsg">
+                <view class="weui-media-box__hd">
+                  <image class="weui-media-box__thumb shadow-bold rounded-10" mode="aspectFill" src="{{item.poster}}"
+                    data-action="{{item.poster}}" bindtap="preview" lazy-load="true" alt></image>
+                </view>
+                <view class="weui-media-box__bd" data-action="{{item}}" bindtap="goto_bicycle_detail_check">
+                  <h4 class="weui-media-box__title">{{item.name}}</h4>
+                  <view class="weui-media-box__desc">{{item.date_time}}</view>
+                </view>
+              </a>
+            </view>
+          </view>
+          <view class="weui-cell" wx:if="{{bicycles_rentable[0]}}">
+            <view class="w-100">
+              <button class="weui-btn weui-btn_primary shadow" style="margin:0 auto;"
+                bindtap="show_bicycles_rentable">{{is_bicycles_rentable_hide ? "展开" : "收起"}}</button>
+              <view class="weui-footer" hidden="{{!is_bicycles_rentable_hide}}">
+                <view class="weui-footer__text" style="margin:0 auto;margin-top:25rpx;text-align:center;">
+                  最近更新于{{bicycles_rentable[0].date_time}}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!--sellable-->
+    <view class="weui-cells__group weui-cells__group_form">
+      <view class="weui-cells weui-cells_form bg-standard shadow rounded-20 overflow-hidden">
+        <view class="weui-form-preview">
+          <view class="weui-cell weui-cell_active">
+            <view class="weui-cell__bd">
+              <text style="vertical-align: middle;">可被转售</text>
+              <text class="weui-badge" style="margin-left: 5px;"
+                wx:if="{{bicycles_sellable[0]}}">{{bicycles_sellable.length}}</text>
+            </view>
+          </view>
+          <view class="weui-panel weui-panel_access" hidden="{{is_bicycles_sellable_hide}}">
+            <view class="weui-panel__bd">
+              <a wx:for="{{bicycles_sellable}}" wx:key="_id" class="weui-media-box weui-media-box_appmsg">
+                <view class="weui-media-box__hd">
+                  <image class="weui-media-box__thumb shadow-bold rounded-10" mode="aspectFill" src="{{item.poster}}"
+                    data-action="{{item.poster}}" bindtap="preview" lazy-load="true" alt></image>
+                </view>
+                <view class="weui-media-box__bd" data-action="{{item}}" bindtap="goto_bicycle_detail_check">
+                  <h4 class="weui-media-box__title">{{item.name}}</h4>
+                  <view class="weui-media-box__desc">{{item.date_time}}</view>
+                </view>
+              </a>
+            </view>
+          </view>
+          <view class="weui-cell" wx:if="{{bicycles_sellable[0]}}">
+            <view class="w-100">
+              <button class="weui-btn weui-btn_primary shadow" style="margin:0 auto;"
+                bindtap="show_bicycles_sellable">{{is_bicycles_sellable_hide ? "展开" : "收起"}}</button>
+              <view class="weui-footer" hidden="{{!is_bicycles_sellable_hide}}">
+                <view class="weui-footer__text" style="margin:0 auto;margin-top:25rpx;text-align:center;">
+                  最近更新于{{bicycles_sellable[0].date_time}}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!--sellable & rentable-->
+    <view class="weui-cells__group weui-cells__group_form">
+      <view class="weui-cells weui-cells_form bg-standard shadow rounded-20 overflow-hidden">
+        <view class="weui-form-preview">
+          <view class="weui-cell weui-cell_active">
+            <view class="weui-cell__bd">
+              <text style="vertical-align: middle;">可被租赁、转售</text>
+              <text class="weui-badge" style="margin-left: 5px;"
+                wx:if="{{bicycles_sellable_and_rentable[0]}}">{{bicycles_sellable_and_rentable.length}}</text>
+            </view>
+          </view>
+          <view class="weui-panel weui-panel_access" hidden="{{is_bicycles_sellable_and_rentable_hide}}">
+            <view class="weui-panel__bd">
+              <a wx:for="{{bicycles_sellable_and_rentable}}" wx:key="_id" class="weui-media-box weui-media-box_appmsg">
+                <view class="weui-media-box__hd">
+                  <image class="weui-media-box__thumb shadow-bold rounded-10" mode="aspectFill" src="{{item.poster}}"
+                    data-action="{{item.poster}}" bindtap="preview" lazy-load="true" alt></image>
+                </view>
+                <view class="weui-media-box__bd" data-action="{{item}}" bindtap="goto_bicycle_detail_check">
+                  <h4 class="weui-media-box__title">{{item.name}}</h4>
+                  <view class="weui-media-box__desc">{{item.date_time}}</view>
+                </view>
+              </a>
+            </view>
+          </view>
+          <view class="weui-cell" wx:if="{{bicycles_sellable_and_rentable[0]}}">
+            <view class="w-100">
+              <button class="weui-btn weui-btn_primary shadow" style="margin:0 auto;" disabled="{{item.is_locked}}"
+                data-action="{{item}}"
+                bindtap="show_bicycles_sellable_and_rentable">{{is_bicycles_sellable_and_rentable_hide ? "展开" : "收起"}}</button>
+              <view class="weui-footer" hidden="{{!is_bicycles_sellable_and_rentable_hide}}">
+                <view class="weui-footer__text" style="margin:0 auto;margin-top:25rpx;text-align:center;">
+                  最近更新于{{bicycles_sellable_and_rentable[0].date_time}}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="weui-cells__group weui-cells__group_form">
+      <view class="weui-cells__title">私有车辆</view>
+      <view class="weui-cells weui-cells_form bg-standard shadow rounded-20 overflow-hidden">
+        <view class="weui-form-preview">
+          <view class="weui-cell weui-cell_active">
+            <view class="weui-cell__bd">
+              <text style="vertical-align: middle;">用户自用</text>
+              <text class="weui-badge" style="margin-left: 5px;"
+                wx:if="{{bicycles_normal[0]}}">{{bicycles_normal.length}}</text>
+            </view>
+          </view>
+          <view class="weui-panel weui-panel_access" hidden="{{is_bicycles_normal_hide}}">
+            <view class="weui-panel__bd">
+              <a wx:for="{{bicycles_normal}}" wx:key="_id" class="weui-media-box weui-media-box_appmsg">
+                <view class="weui-media-box__hd">
+                  <image class="weui-media-box__thumb shadow-bold rounded-10" mode="aspectFill" src="{{item.poster}}"
+                    data-action="{{item.poster}}" bindtap="preview" lazy-load="true" alt></image>
+                </view>
+                <view class="weui-media-box__bd" data-action="{{item}}" bindtap="goto_bicycle_detail_check">
+                  <h4 class="weui-media-box__title">{{item.name}}</h4>
+                  <view class="weui-media-box__desc">{{item.date_time}}</view>
+                </view>
+              </a>
+            </view>
+          </view>
+          <view class="weui-cell" wx:if="{{bicycles_normal[0]}}">
+            <view class="w-100">
+              <button class="weui-btn weui-btn_primary shadow" style="margin:0 auto;"
+                bindtap="show_bicycles_normal">{{is_bicycles_normal_hide ? "展开" : "收起"}}</button>
+              <view class="weui-footer" hidden="{{!is_bicycles_normal_hide}}">
+                <view class="weui-footer__text" style="margin:0 auto;margin-top:25rpx;text-align:center;">
+                  最近更新于{{bicycles_normal[0].date_time}}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
+  </view>
+</view>

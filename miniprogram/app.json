@@ -17,7 +17,9 @@
     "pages/manager/progress_release/progress_release",
     "pages/manager/device_manage/device_manage",
     "pages/manager/bicycle_censorship/bicycle_censorship",
+    "pages/manager/bicycle_censorship/bicycle_detail_check/bicycle_detail_check",
     "pages/manager/bicycle_monitor/bicycle_monitor",
+    "pages/manager/bicycle_monitor/bicycle_detail_check/bicycle_detail_check",
 
     "pages/register/register",
     "pages/user_profile/user_profile",
@@ -25,6 +27,8 @@
     "pages/user_profile/user_bicycle_manage/user_bicycle_manage",
     "pages/user_profile/user_bicycle_add/user_bicycle_add",
     "pages/user_profile/user_bicycle_manage/user_bicycle_update/user_bicycle_update",
+
+    "pages/garage/garage",
 
     "pages/feedback/feedback",
 
