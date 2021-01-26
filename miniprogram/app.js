@@ -25,7 +25,8 @@ App({
     //current event info
     event: {},
     //my bicycle info holder
-    my_bicycle: {}
+    my_bicycle: {},
+    my_transaction: {}
   },
 
   onLaunch: function () {

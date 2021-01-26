@@ -1,3 +1,6 @@
+var oneday = 86400000;
+var onehour = 0.041;
+
 const format_time = (date) => {
   //basic
   const year = date.getFullYear();
@@ -6,27 +9,28 @@ const format_time = (date) => {
   const hour = date.getHours();
   const minute = date.getMinutes();
   const second = date.getSeconds();
-  function day_to_ch(){
-    switch(date.getDay()){
-      case(0):
+
+  function day_to_ch() {
+    switch (date.getDay()) {
+      case (0):
         return "星期日";
         break;
-      case(1):
+      case (1):
         return "星期一";
         break;
-      case(2):
+      case (2):
         return "星期二";
         break;
-      case(3):
+      case (3):
         return "星期三";
         break;
-      case(4):
+      case (4):
         return "星期四";
         break;
-      case(5):
+      case (5):
         return "星期五";
         break;
-      case(6):
+      case (6):
         return "星期六";
         break;
       default:
@@ -53,14 +57,39 @@ const format_time = (date) => {
   }
 }
 
-function set_time_for_event(event_date,event_time){
+function set_time_for_event(event_date, event_time) {
   var time = new Date();
-  time.setFullYear(Number(event_date.slice(0,4)));
-  time.setMonth(Number(event_date.slice(5,7)) - 1);
-  time.setDate(Number(event_date.slice(8,10)));
-  time.setHours(Number(event_time.slice(0,2)));
-  time.setMinutes(Number(event_time.slice(3,5)));
+  time.setFullYear(Number(event_date.slice(0, 4)));
+  time.setMonth(Number(event_date.slice(5, 7)) - 1);
+  time.setDate(Number(event_date.slice(8, 10)));
+  time.setHours(Number(event_time.slice(0, 2)));
+  time.setMinutes(Number(event_time.slice(3, 5)));
   return time;
+}
+
+function get_time_for_picker(days) {
+  var d = new Date(Date.now() + oneday * days);
+  return `${d.getFullYear()}-${format_number(d.getMonth() + 1)}-${format_number(d.getDate())}`;
+}
+
+function get_time_tomorrow_for_picker(date_string) {
+  var date_array = date_string.split("-");
+  var d = new Date();
+  d.setFullYear(Number(date_array[0]));
+  d.setMonth(Number(date_array[1]) - 1);
+  d.setDate(date_array[2]);
+  d = d.getTime() + oneday
+  d = new Date(d);
+  return `${d.getFullYear()}-${format_number(d.getMonth() + 1)}-${format_number(d.getDate())}`;
+}
+
+function set_date_from_string(date_string) {
+  var date_array = date_string.split("-");
+  var d = new Date();
+  d.setFullYear(Number(date_array[0]));
+  d.setMonth(Number(date_array[1]) - 1);
+  d.setDate(date_array[2]);
+  return d;
 }
 
 const format_number = (n) => {
@@ -70,5 +99,8 @@ const format_number = (n) => {
 
 module.exports = {
   format_time: format_time,
-  set_time_for_event: set_time_for_event
+  set_time_for_event: set_time_for_event,
+  get_time_for_picker: get_time_for_picker,
+  get_time_tomorrow_for_picker: get_time_tomorrow_for_picker,
+  set_date_from_string: set_date_from_string
 }

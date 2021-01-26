@@ -29,6 +29,11 @@
     "pages/user_profile/user_bicycle_manage/user_bicycle_update/user_bicycle_update",
 
     "pages/garage/garage",
+    "pages/garage/bicycle_for_rent_list/bicycle_for_rent_list",
+    "pages/garage/bicycle_for_rent_list/bicycle_for_rent_detail/bicycle_for_rent_detail",
+    "pages/garage/bicycle_for_rent_list/bicycle_for_rent_detail/bicycle_rental_confirm/bicycle_rental_confirm",
+    "pages/garage/bicycle_for_sell_list/bicycle_for_sell_list",
+    "pages/garage/bicycle_for_sell_list/bicycle_for_sell_detail/bicycle_for_sell_detail",
 
     "pages/feedback/feedback",
 

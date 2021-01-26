@@ -28,7 +28,7 @@
   margin: 15rpx;
   padding-bottom: 10rpx;
   background: #FFFFFF;
-  border-radius: 20rpx;
+  border-radius: 10rpx;
   overflow: hidden;
   box-shadow: 0rpx 3rpx 4rpx 2rpx gainsboro;
 }

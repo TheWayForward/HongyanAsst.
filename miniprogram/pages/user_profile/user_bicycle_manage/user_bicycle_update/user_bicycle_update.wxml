@@ -127,7 +127,7 @@
       </view>
     </view>
     <view class="weui-form__opr-area mt-50" style="margin-bottom:0;">
-      <button class="weui-btn weui-btn_primary shadow" hidden="{{!is_delete_hide}}" disabled="{{is_submission_available}}" bindtap="submit">提交</button>
+      <button class="weui-btn weui-btn_primary shadow" hidden="{{!is_delete_hide}}" disabled="{{!is_submission_available}}" bindtap="submit">提交</button>
     </view>
     <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
     <view class="weui-form__extra-area">

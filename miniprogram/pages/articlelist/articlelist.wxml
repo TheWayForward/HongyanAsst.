@@ -21,7 +21,7 @@
 				<view>
 					<!--upper thumbnail-->
 					<view class="thumbnail_container" style="text-align:center;">
-						<image src="{{item.thumbnail}}" mode="widthFix" class="article_thumbnail" bindtap="preview"
+						<image src="{{item.thumbnail}}" mode="widthFix" class="article_thumbnail shadow" bindtap="preview"
 							data-action="{{item.thumbnail}}" lazy-load="true" />
 					</view>
 					<!--overview-->
@@ -62,7 +62,7 @@
 				<view>
 					<!--upper thumbnail-->
 					<view class="thumbnail_container" style="text-align:center;">
-						<image src="{{item.thumbnail}}" mode="widthFix" class="article_thumbnail" bindtap="preview"
+						<image src="{{item.thumbnail}}" mode="widthFix" class="article_thumbnail shadow" bindtap="preview"
 							data-action="{{item.thumbnail}}" lazy-load="true" />
 					</view>
 					<!--overview-->

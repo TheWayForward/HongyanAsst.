@@ -285,6 +285,10 @@ page {
   width: 25%;
 }
 
+.w-50{
+  width: 50%;
+}
+
 .w-100{
   width: 100%;
 }
@@ -342,8 +346,20 @@ page {
   background-color: #07C160;
 }
 
+.bg_black{
+  background-color: black;
+}
+
+.text_black{
+  color: black;
+}
+
 .text_red{
   color: #FA5159;
+}
+
+.border_black{
+  border: 1px solid black;
 }
 
 .btn_align{

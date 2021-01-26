@@ -1,2 +1,10 @@
-<!--pages/garage/garage.wxml-->
-<text>pages/garage/garage.wxml</text>
+<view style="text-align:center;">
+  <view>Welcome to the Garage.</view>
+  <view>来车库转一圈儿。</view>
+  <view class="shadow-filter" style="padding:50rpx;">"北邮鸿雁车协助手"微信小程序仅作待租待售车辆信息推广之用，无其他商业用途。投资有风险，玩车需谨慎，为确保您的体验，请务必与租方或卖家取得联系并对车辆状况进行确认后再提车。</view>
+</view>
+<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
+<view class="btn_align">
+  <view class="btn_long" bindtap="goto_bicycle_for_rent_list">租赁车辆</view>
+  <view class="btn_long" bindtap="goto_bicycle_for_sell_list">购入车辆</view>
+</view>

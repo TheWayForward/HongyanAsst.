@@ -46,7 +46,7 @@
                 bindtap="goto_user_bicycle_update">{{item.is_locked ? "车辆已被锁定" : "编辑信息"}}</button>
               <view class="weui-footer" hidden="{{item.is_locked ? false : true}}">
                 <view class="weui-footer__text" style="margin:0 auto;margin-top:25rpx;text-align:center;">
-                  车辆被审核(添加车辆时设置"可被租用"或"可被转售")，被租用，或信息出现异动时，将被锁定，锁定期间用户将不可编辑车辆信息。若车辆长期处于异常锁定状态，请联系管理员。</view>
+                  车辆被审核(添加车辆时设置"可被租赁"或"可被转售")，被租赁，或信息出现异动时，将被锁定，锁定期间用户将不可编辑车辆信息。若车辆长期处于异常锁定状态，请联系管理员。</view>
               </view>
             </view>
           </view>

@@ -18,7 +18,6 @@ Page({
     }],
     show_top: true,
     isHide: true,
-    is_loading_hide: false,
     total_result: "加载中...",
     input_value: "",
   },
@@ -30,7 +29,6 @@ Page({
       })
     }
     var that = this;
-    //maximum batch 5, we create a batch getter
     var batchTimes;
     var count = db.collection("articles").count();
     count.then(function (result) {
@@ -72,7 +70,6 @@ Page({
                 search_articles_2: arrayContainer2,
                 isHide: false,
                 total_result: `共${arrayContainer.length}篇资讯`,
-                is_loading_hide: true,
               })
               wx.hideLoading({})
             }

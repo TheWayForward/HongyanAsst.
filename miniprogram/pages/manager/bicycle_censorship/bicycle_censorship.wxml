@@ -122,7 +122,6 @@
         </view>
       </view>
     </view>
-
     <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
   </view>
 </view>
