@@ -346,6 +346,10 @@ page {
   background-color: #07C160;
 }
 
+.bg_orange{
+  background-color: #FF5535;
+}
+
 .bg_black{
   background-color: black;
 }

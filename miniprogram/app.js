@@ -17,6 +17,8 @@ App({
     vcode: null,
     //current user info
     user: {},
+    my_transactions: [],
+    my_bicycles: [],
     user_info: {},
     openid: "",
     article: {},
@@ -26,7 +28,8 @@ App({
     event: {},
     //my bicycle info holder
     my_bicycle: {},
-    my_transaction: {}
+    my_transaction: {},
+    my_bicycle_and_transaction: {}
   },
 
   onLaunch: function () {

@@ -21,6 +21,7 @@
           </view>
           <text class="weui-badge bg_green shadow"
             style="margin-left:5px;margin-bottom:10rpx;">上架时间：{{bicycle.date_time}}</text>
+          <text wx:if="{{bicycle.renter.renter_id}}" class="weui-badge bg_orange shadow" style="margin-left:5px;margin-bottom:10rpx;">已租</text>
         </view>
         <view class="bicycle_info_tag_top_right" hover-class="hv" hover-stay-time="30">
           <image class="share" src="../../../../images/share.png"></image>
@@ -29,7 +30,8 @@
       </view>
       <view class="bicycle_info_bottom" style="align-items:center;">
         <view class="user_align d-flex">
-          <image class="avatar rounded shadow" mode="aspectFill" src="{{user.avatar}}" data-action="{{user.avatar}}" bindtap="preview"></image>
+          <image class="avatar rounded shadow" mode="aspectFill" src="{{user.avatar}}" data-action="{{user.avatar}}"
+            bindtap="preview"></image>
           <text style="color:#6A5E5C;margin-left:20rpx;">{{user.nickname}}{{"(" + user.realname + ")"}}</text>
         </view>
       </view>
@@ -114,7 +116,7 @@
     </view>
   </view>
 
-  <view class="bicycle_info" style="position:relative;" wx:if="{{!is_mine}}">
+  <view class="bicycle_info" style="position:relative;" hidden="{{is_rental_options_hide}}">
     <view class="bicycle_info_tag shadow" style="z-index:10;position:relative;margin-top:20rpx;margin-bottom:20rpx;">
       <view class="bicycle_info_tag_top" style="height:75rpx;">
         <view class="w-100" style="text-align:center;">

@@ -49,10 +49,10 @@ const format_time = (date) => {
     weekday: date.getDay(),
     day_to_ch: day_to_ch,
     //formated date, time, and date_time
-    date: [year, month, day].map(format_number).join('/'),
+    date: [year, month, day].map(format_number).join('-'),
     time: [hour, minute, second].map(format_number).join(':'),
     //full string with padstart
-    date_time: [year, month, day].map(format_number).join('/') + ' ' + [hour, minute, second].map(format_number).join(':'),
+    date_time: [year, month, day].map(format_number).join('-') + ' ' + [hour, minute, second].map(format_number).join(':'),
     precise_time: date.getTime(),
   }
 }
@@ -84,12 +84,7 @@ function get_time_tomorrow_for_picker(date_string) {
 }
 
 function set_date_from_string(date_string) {
-  var date_array = date_string.split("-");
-  var d = new Date();
-  d.setFullYear(Number(date_array[0]));
-  d.setMonth(Number(date_array[1]) - 1);
-  d.setDate(date_array[2]);
-  return d;
+  return new Date(date_string);
 }
 
 const format_number = (n) => {

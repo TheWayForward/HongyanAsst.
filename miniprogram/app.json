@@ -34,6 +34,8 @@
     "pages/garage/bicycle_for_rent_list/bicycle_for_rent_detail/bicycle_rental_confirm/bicycle_rental_confirm",
     "pages/garage/bicycle_for_sell_list/bicycle_for_sell_list",
     "pages/garage/bicycle_for_sell_list/bicycle_for_sell_detail/bicycle_for_sell_detail",
+    "pages/garage/my_transactions/my_transactions",
+    "pages/garage/my_transactions/transaction_detail/transaction_detail",
 
     "pages/feedback/feedback",
 

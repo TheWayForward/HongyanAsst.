@@ -1,0 +1,217 @@
+<!--to top button-->
+<view hover-class="hv" hover-stay-time="30">
+  <image src="../../../images/top.png" class="go_top" hidden="{{show_top}}" bindtap="go_top" />
+</view>
+<view class="page" hidden="{{is_hide}}">
+  <view class="weui-form bg-standard" style="padding-top:0;">
+    <!--rentable-->
+    <view class="weui-cells__group weui-cells__group_form">
+      <view class="weui-cells__title">我的交易</view>
+      <view class="weui-cells weui-cells_form bg-standard shadow rounded-20 overflow-hidden">
+        <view class="weui-form-preview">
+          <view class="weui-cell weui-cell_active">
+            <view class="weui-cell__bd">
+              <text style="vertical-align: middle;">我的租单</text>
+              <text wx:if="{{rentals_created[0].bicycle}}" class="weui-badge"
+                style="margin-left: 5px;">{{rentals_created.length}}</text>
+            </view>
+          </view>
+          <view class="weui-form-preview" wx:if="{{rentals_created[0].bicycle}}" wx:for="{{rentals_created}}">
+            <view class="weui-panel weui-panel_access">
+              <view class="weui-panel__bd">
+                <a class="weui-media-box weui-media-box_appmsg">
+                  <view class="weui-media-box__hd">
+                    <image class="weui-media-box__thumb shadow-bold rounded-10" mode="aspectFill"
+                      src="{{item.bicycle.poster}}" data-action="{{item.bicycle.poster}}" bindtap="preview"
+                      lazy-load="true" alt></image>
+                  </view>
+                  <view class="weui-media-box__bd" data-action="{{item}}" bindtap="goto_transaction_detail">
+                    <h4 class="weui-media-box__title">{{item.bicycle.name}}</h4>
+                    <view class="weui-media-box__desc">{{item.bicycle.detail}}</view>
+                  </view>
+                </a>
+              </view>
+            </view>
+            <view class="weui-form-preview">
+              <view class="weui-form-preview__bd">
+                <view class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">交易时间</label>
+                  <text class="weui-form-preview__value" style="text-align:right;"
+                    user-select="true">{{item.transaction.date_time}}</text>
+                </view>
+                <view class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">订单编号</label>
+                  <text class="weui-form-preview__value" style="text-align:right;"
+                    user-select="true">{{item.transaction.serial_number}}</text>
+                </view>
+                <view class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">租期</label>
+                  <text
+                    class="weui-form-preview__value">{{item.transaction.rental_date_start_string}}至{{item.transaction.rental_date_end_string}}，共{{item.transaction.rental_duration}}天</text>
+                </view>
+                <view class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">租方</label>
+                  <text class="weui-form-preview__value" style="text-align:right;"
+                    user-select="true">{{item.transaction.owner.realname}}</text>
+                </view>
+                <view class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">状态</label>
+                  <text class="weui-form-preview__value" style="text-align:right;"
+                    user-select="true">{{item.transaction.status}}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="weui-cells weui-cells_form bg-standard shadow rounded-20 overflow-hidden">
+        <view class="weui-form-preview">
+          <view class="weui-cell weui-cell_active">
+            <view class="weui-cell__bd">
+              <text style="vertical-align: middle;">我的购单</text>
+              <text class="weui-badge" style="margin-left: 5px;"
+                wx:if="{{sales_created[0].bicycle}}">{{sales_created.length}}</text>
+            </view>
+          </view>
+          <view class="weui-form-preview" wx:if="{{sales_created[0].bicycle}}" wx:for="{{sales_created}}">
+            <view class="weui-panel weui-panel_access">
+              <view class="weui-panel__bd">
+                <a class="weui-media-box weui-media-box_appmsg">
+                  <view class="weui-media-box__hd">
+                    <image class="weui-media-box__thumb shadow-bold rounded-10" mode="aspectFill"
+                      src="{{item.bicycle.poster}}" data-action="{{item.bicycle.poster}}" bindtap="preview"
+                      lazy-load="true" alt></image>
+                  </view>
+                  <view class="weui-media-box__bd">
+                    <h4 class="weui-media-box__title">{{item.bicycle.name}}</h4>
+                    <view class="weui-media-box__desc">{{item.bicycle.detail}}</view>
+                  </view>
+                </a>
+              </view>
+            </view>
+            <view class="weui-form-preview">
+              <view class="weui-form-preview__bd">
+                <view class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">订单编号</label>
+                  <text class="weui-form-preview__value" style="text-align:right;"
+                    user-select="true">{{item.transaction.serial_number}}</text>
+                </view>
+                <view class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">卖家</label>
+                  <text class="weui-form-preview__value" style="text-align:right;"
+                    user-select="true">{{item.transaction.seller.realname}}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="weui-cells__group weui-cells__group_form">
+      <view class="weui-cells__title">与我相关的交易</view>
+      <view class="weui-cells weui-cells_form bg-standard shadow rounded-20 overflow-hidden">
+        <view class="weui-form-preview">
+          <view class="weui-cell weui-cell_active">
+            <view class="weui-cell__bd">
+              <text style="vertical-align: middle;">与我相关的租单</text>
+              <text wx:if="{{rentals_involved[0].bicycle}}" class="weui-badge"
+                style="margin-left: 5px;">{{rentals_involved.length}}</text>
+            </view>
+          </view>
+          <view class="weui-form-preview" wx:if="{{rentals_involved[0].bicycle}}" wx:for="{{rentals_involved}}">
+            <view class="weui-panel weui-panel_access">
+              <view class="weui-panel__bd">
+                <a class="weui-media-box weui-media-box_appmsg">
+                  <view class="weui-media-box__hd">
+                    <image class="weui-media-box__thumb shadow-bold rounded-10" mode="aspectFill"
+                      src="{{item.bicycle.poster}}" data-action="{{item.bicycle.poster}}" bindtap="preview"
+                      lazy-load="true" alt></image>
+                  </view>
+                  <view class="weui-media-box__bd" data-action="{{item}}" bindtap="goto_transaction_detail">
+                    <h4 class="weui-media-box__title">{{item.bicycle.name}}</h4>
+                    <view class="weui-media-box__desc">{{item.bicycle.detail}}</view>
+                  </view>
+                </a>
+              </view>
+            </view>
+            <view class="weui-form-preview">
+              <view class="weui-form-preview__bd">
+                <view class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">交易时间</label>
+                  <text class="weui-form-preview__value" style="text-align:right;"
+                    user-select="true">{{item.transaction.date_time}}</text>
+                </view>
+                <view class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">订单编号</label>
+                  <text class="weui-form-preview__value" style="text-align:right;"
+                    user-select="true">{{item.transaction.serial_number}}</text>
+                </view>
+                <view class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">租期</label>
+                  <text
+                    class="weui-form-preview__value">{{item.transaction.rental_date_start_string}}至{{item.transaction.rental_date_end_string}}，共{{item.transaction.rental_duration}}天</text>
+                </view>
+                <view class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">借方</label>
+                  <text class="weui-form-preview__value" style="text-align:right;"
+                    user-select="true">{{item.transaction.renter.realname}}</text>
+                </view>
+                <view class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">状态</label>
+                  <text class="weui-form-preview__value" style="text-align:right;"
+                    user-select="true">{{item.transaction.status}}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="weui-cells weui-cells_form bg-standard shadow rounded-20 overflow-hidden">
+        <view class="weui-form-preview">
+          <view class="weui-cell weui-cell_active">
+            <view class="weui-cell__bd">
+              <text style="vertical-align: middle;">与我相关的购单</text>
+              <text class="weui-badge" style="margin-left: 5px;"
+                wx:if="{{sales_involved[0].bicycle}}">{{sales_involved.length}}</text>
+            </view>
+          </view>
+          <view class="weui-form-preview" wx:if="{{sales_involved[0].bicycle}}" wx:for="{{sales_involved}}">
+            <view class="weui-panel weui-panel_access">
+              <view class="weui-panel__bd">
+                <a class="weui-media-box weui-media-box_appmsg">
+                  <view class="weui-media-box__hd">
+                    <image class="weui-media-box__thumb shadow-bold rounded-10" mode="aspectFill"
+                      src="{{item.bicycle.poster}}" data-action="{{item.bicycle.poster}}" bindtap="preview"
+                      lazy-load="true" alt></image>
+                  </view>
+                  <view class="weui-media-box__bd">
+                    <h4 class="weui-media-box__title">{{item.bicycle.name}}</h4>
+                    <view class="weui-media-box__desc">{{item.bicycle.detail}}</view>
+                  </view>
+                </a>
+              </view>
+            </view>
+            <view class="weui-form-preview">
+              <view class="weui-form-preview__bd">
+                <view class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">订单编号</label>
+                  <text class="weui-form-preview__value" style="text-align:right;"
+                    user-select="true">{{item.transaction.serial_number}}</text>
+                </view>
+                <view class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">卖家</label>
+                  <text class="weui-form-preview__value" style="text-align:right;"
+                    user-select="true">{{item.transaction.seller.realname}}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
+  </view>
+</view>

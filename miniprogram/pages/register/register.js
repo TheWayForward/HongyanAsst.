@@ -270,6 +270,7 @@ Page({
             my_bicycle: [],
             my_event: [],
             my_snapshots: [],
+            my_transactions: [],
             total_distance: 0,
             openid: app.globalData.openid
           };

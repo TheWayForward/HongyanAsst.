@@ -27,6 +27,7 @@ Page({
     bicycle_image_border_radius: 20,
     is_mine: false,
     is_hide: true,
+    is_rental_options_hide: true,
     show_top: true
   },
 
@@ -47,6 +48,7 @@ Page({
           credit: true,
           detail: true,
           dept: true,
+          my_transactions: true,
           email: true,
           is_manager: true,
           nickname: true,
@@ -56,6 +58,7 @@ Page({
           total_distance: true,
         }).get({
           success(res) {
+
             result.data.date_time = time_helper.format_time(result.data.time_created).date_time;
             result.data.distance_string = result.data.distance.toFixed(2);
             res.data.birthday_string = time_helper.format_time(res.data.birthday).date;
@@ -64,6 +67,7 @@ Page({
               bicycle: result.data,
               user: res.data,
               is_mine: res.data.openid == app.globalData.user.openid ? true : false,
+              is_rental_options_hide: (res.data.openid == app.globalData.user.openid || result.data.renter.renter_id) ? true : false,
               is_hide: false
             })
             wx.hideLoading({})
@@ -100,10 +104,10 @@ Page({
   bind_rental_date_start_change: function (e) {
     var that = this;
     if (that.data.rental_date_end != "请选择日期" && time_helper.set_date_from_string(that.data.rental_date_end) - time_helper.set_date_from_string(e.detail.value) < 86400000) {
-      notification_helper.show_toast_without_icon("起始日期不可晚于归还日期",2000);
+      notification_helper.show_toast_without_icon("起始日期不可晚于归还日期", 2000);
       return;
     }
-    if (that.data.rental_date_end == "请选择日期"){
+    if (that.data.rental_date_end == "请选择日期") {
       wx.pageScrollTo({
         selector: "#date_end",
         duration: 500
@@ -119,7 +123,7 @@ Page({
   bind_rental_date_end_change: function (e) {
     var that = this;
     if (time_helper.set_date_from_string(e.detail.value) - time_helper.set_date_from_string(that.data.rental_date_start) < 86400000) {
-      notification_helper.show_toast_without_icon("归还日期不可早于起始日期",2000);
+      notification_helper.show_toast_without_icon("归还日期不可早于起始日期", 2000);
       return;
     }
     that.setData({
@@ -138,6 +142,7 @@ Page({
       type: "rental",
       rental_date_start: that.data.rental_date_start,
       rental_date_end: that.data.rental_date_end,
+      rental_duration: that.data.rental_duration,
       owner: {
         _id: that.data.user._id,
         openid: that.data.user.openid,
@@ -147,6 +152,7 @@ Page({
       },
       owner_openid: that.data.user.openid,
       owner__id: that.data.user._id,
+      owner_transactions: that.data.user.my_transactions,
       renter: {
         _id: app.globalData.user._id,
         openid: app.globalData.user.openid,

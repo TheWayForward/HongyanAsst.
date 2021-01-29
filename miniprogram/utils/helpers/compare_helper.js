@@ -64,6 +64,10 @@ function compare_location_info(location_info, location_info_past) {
   if (delta_latitude <= 0.00001 && delta_longitude <= 0.00001) return true;
 }
 
+function compare_time_for_rental(rental_time_start,rental_time_end) {
+
+}
+
 module.exports = {
   compare: compare,
   compare_version: compare_version,

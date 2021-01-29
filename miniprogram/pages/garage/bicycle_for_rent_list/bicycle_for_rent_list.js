@@ -48,7 +48,8 @@ Page({
           poster: true,
           time_created: true,
           type: true,
-          owner: true
+          owner: true,
+          renter: true
         }).get({
           success: function (res) {
             for (var j = 0; j < res.data.length; j++) {
@@ -69,7 +70,6 @@ Page({
                 search_bicycles_for_rent_2: arrayContainer2,
                 is_hide: false,
               })
-              console.log(that.data);
               wx.hideLoading({})
             }
           }

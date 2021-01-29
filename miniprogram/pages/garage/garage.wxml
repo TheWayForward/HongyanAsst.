@@ -8,3 +8,6 @@
   <view class="btn_long" bindtap="goto_bicycle_for_rent_list">租赁车辆</view>
   <view class="btn_long" bindtap="goto_bicycle_for_sell_list">购入车辆</view>
 </view>
+<view class="btn_align">
+  <view class="btn_long" bindtap="goto_my_transactions">我的交易</view>
+</view>

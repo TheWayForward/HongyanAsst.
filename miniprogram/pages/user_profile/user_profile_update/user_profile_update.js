@@ -99,7 +99,7 @@ Page({
   delete_image: function () {
     var that = this;
     wx.showModal({
-      title: '取消上传',
+      title: '提示',
       content: '不再上传这张照片？',
       cancelColor: 'gray',
       cancelText: '取消',
@@ -181,6 +181,7 @@ Page({
       },
       success(res) {
         wx.hideLoading({})
+        console.log(res);
         console.log("[cloudfunction][send_vcode]: sent successfully");
         notification_helper.show_toast_without_icon("验证码已发送", 2000);
 

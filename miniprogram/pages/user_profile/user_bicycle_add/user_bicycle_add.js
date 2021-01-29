@@ -449,7 +449,7 @@ Page({
                     },
                     poster: file,
                     password: that.data.password,
-                    renter: [],
+                    renter: {},
                     status: 0,
                     time_created: new Date(),
                     type: that.data.type

@@ -13,6 +13,7 @@
             <text class="weui-badge bg_blue shadow" style="margin-left: 5px;">{{item.type}}</text>
           </view>
           <text class="weui-badge bg_green shadow" style="margin-left: 5px;">上架时间：{{item.date}}</text>
+          <text wx:if="{{item.renter.renter_id}}" class="weui-badge bg_orange shadow" style="margin-left: 5px;">已租</text>
         </view>
       </view>
     </view>
@@ -31,6 +32,7 @@
             <text class="weui-badge bg_blue shadow" style="margin-left: 5px;">{{item.type}}</text>
           </view>
           <text class="weui-badge bg_green shadow" style="margin-left: 5px;">上架时间：{{item.date}}</text>
+          <text wx:if="{{item.renter.renter_id}}" class="weui-badge bg_orange shadow" style="margin-left: 5px;">已租</text>
         </view>
       </view>
     </view>

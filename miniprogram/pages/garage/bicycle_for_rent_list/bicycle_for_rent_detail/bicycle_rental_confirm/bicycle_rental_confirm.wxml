@@ -1,2 +1,73 @@
-<!--pages/garage/bicycle_for_rent_list/bicycle_for_rent_detail/bicycle_rental_confirm/bicycle_rental_confirm.wxml-->
-<text>pages/garage/bicycle_for_rent_list/bicycle_for_rent_detail/bicycle_rental_confirm/bicycle_rental_confirm.wxml</text>
+<view class="page" hidden="{{is_hide}}">
+  <view class="weui-form bg-standard" style="padding-top:0;">
+    <!--rentable-->
+    <view class="weui-cells__group weui-cells__group_form">
+      <view class="weui-cells__title">订单信息确认</view>
+      <view class="weui-cells weui-cells_form bg-standard shadow rounded-20 overflow-hidden">
+        <view class="weui-form-preview">
+          <view class="weui-panel weui-panel_access">
+            <view class="weui-panel__bd">
+              <a class="weui-media-box weui-media-box_appmsg">
+                <view class="weui-media-box__hd">
+                  <image class="weui-media-box__thumb shadow-bold rounded-10" mode="aspectFill"
+                    src="{{transaction.bicycle.poster}}" data-action="{{transaction.bicycle.poster}}" bindtap="preview"
+                    lazy-load="true" alt></image>
+                </view>
+                <view class="weui-media-box__bd">
+                  <h4 class="weui-media-box__title">{{transaction.bicycle.name}}</h4>
+                  <view class="weui-media-box__desc">{{transaction.bicycle.detail}}</view>
+                </view>
+              </a>
+            </view>
+          </view>
+          <view class="weui-form-preview">
+            <view class="weui-form-preview__bd" hidden="{{item.is_info_hide}}">
+              <view class="weui-form-preview__item">
+                <label class="weui-form-preview__label">订单类型</label>
+                <text class="weui-form-preview__value">租赁</text>
+              </view>
+              <view class="weui-form-preview__item">
+                <label class="weui-form-preview__label">订单编号</label>
+                <text class="weui-form-preview__value" style="text-align:right;"
+                  user-select="true">{{serial_number}}</text>
+              </view>
+              <view class="weui-form-preview__item">
+                <label class="weui-form-preview__label">租期</label>
+                <text
+                  class="weui-form-preview__value">{{transaction.rental_date_start}}至{{transaction.rental_date_end}}，共{{transaction.rental_duration}}天</text>
+              </view>
+              <view class="weui-form-preview__item">
+                <label class="weui-form-preview__label">租方</label>
+                <text class="weui-form-preview__value" style="text-align:right;"
+                  user-select="true">{{transaction.owner.realname}}</text>
+              </view>
+              <view class="weui-form-preview__item">
+                <label class="weui-form-preview__label">借方</label>
+                <text class="weui-form-preview__value" style="text-align:right;"
+                  user-select="true">{{transaction.renter.realname}}</text>
+              </view>
+            </view>
+          </view>
+          <view class="weui-cell weui-cell_active">
+            <view class="weui-cell__hd"><label class="weui-label">车辆密钥</label></view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" type="password" placeholder="填写车辆密钥" placeholder-class="weui-input__placeholder"
+                bindinput="input_password" maxlength="20" />
+            </view>
+          </view>
+          <view class="weui-cell">
+            <view class="w-100">
+              <button class="weui-btn weui-btn_primary shadow" style="margin:0 auto;" bindtap="show_bicycles_rentable"
+                disabled="{{!is_submission_available}}" bindtap="submit">下单</button>
+              <view class="weui-footer">
+                <view class="weui-footer__text" style="margin:0 auto;margin-top:25rpx;text-align:center;">
+                  "北邮鸿雁车协助手"微信小程序仅作待租待售车辆信息推广之用，无其他商业用途。投资有风险，玩车需谨慎，为确保您的体验，请务必与租方或卖家取得联系并对车辆状况进行确认后再提车。</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
+  </view>
+</view>
