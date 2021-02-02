@@ -39,7 +39,7 @@
   </view>
 
   <view class="bicycle_info" style="position:relative;">
-    <view class="bicycle_info_tag shadow" style="z-index:10;position:relative;margin-top:160rpx;">
+    <view class="bicycle_info_tag shadow" style="z-index:10;position:relative;margin-top:120px;">
       <view class="bicycle_info_tag_top" style="height:75rpx;">
         <view class="w-100" style="text-align:center;">
           <view class="bicycle_detail_title">车辆简介</view>

@@ -1,2 +1,136 @@
-<!--pages/garage/bicycle_for_sell_list/bicycle_for_sell_detail/bicycle_for_sell_detail.wxml-->
-<text>pages/garage/bicycle_for_sell_list/bicycle_for_sell_detail/bicycle_for_sell_detail.wxml</text>
+<!--to top button-->
+<view hover-class="hv" hover-stay-time="30">
+  <image src="../../../../images/top.png" class="go_top" hidden="{{show_top}}" bindtap="go_top" />
+</view>
+<view class="page" hidden="{{is_hide}}">
+  <view class="bicycle_image_align">
+    <image class="bicycle_image shadow-filter"
+      style="border-radius: 0 0 {{bicycle_image_border_radius}}rpx {{bicycle_image_border_radius}}rpx;z-index:5;opacity:{{bicycle_image_opacity}};transform:scale({{bicycle_image_scale}});"
+      mode="aspectFill" src="{{bicycle.poster}}" data-action="{{bicycle.poster}}" bindtap="preview"></image>
+  </view>
+  <view class="bicycle_info">
+    <view class="bicycle_info_tag shadow" style="z-index:10;margin-top:-100rpx;">
+      <view class="bicycle_info_tag_top">
+        <view class="bicycle_info_tag_top_left">
+          <view class="bicycle_name" style="margin-left:5px;">{{bicycle.brand}} {{bicycle.name}}</view>
+          <view class="d-flex mt-10">
+            <text class="weui-badge bg_red shadow" style="margin-left:5px;">里程：{{bicycle.distance_string}} km</text>
+            <text class="weui-badge bg_blue shadow" style="margin-left:5px;">{{bicycle.type}}</text>
+            <text class="weui-badge bg_black shadow" style="margin-left:5px;"
+              wx:if="{{bicycle.device.deviceid}}">可定位</text>
+          </view>
+          <text class="weui-badge bg_green shadow"
+            style="margin-left:5px;margin-bottom:10rpx;">上架时间：{{bicycle.date_time}}</text>
+          <text wx:if="{{bicycle.renter.renter_id}}" class="weui-badge bg_orange shadow" style="margin-left:5px;margin-bottom:10rpx;">已租</text>
+        </view>
+        <view class="bicycle_info_tag_top_right" hover-class="hv" hover-stay-time="30">
+          <image class="share" src="../../../../images/share.png"></image>
+          <view style='font-size:20rpx;text-align:center;color:#6A5E5C;'>分享</view>
+        </view>
+      </view>
+      <view class="bicycle_info_bottom" style="align-items:center;">
+        <view class="user_align d-flex">
+          <image class="avatar rounded shadow" mode="aspectFill" src="{{user.avatar}}" data-action="{{user.avatar}}"
+            bindtap="preview"></image>
+          <text style="color:#6A5E5C;margin-left:20rpx;">{{user.nickname}}{{"(" + user.realname + ")"}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="bicycle_info" style="position:relative;">
+    <view class="bicycle_info_tag shadow" style="z-index:10;position:relative;margin-top:120px;">
+      <view class="bicycle_info_tag_top" style="height:75rpx;">
+        <view class="w-100" style="text-align:center;">
+          <view class="bicycle_detail_title">车辆简介</view>
+        </view>
+      </view>
+      <view class="bicycle_info_bottom" style="align-items:center;">
+        <view class="user_align d-flex">
+          <text style="color:#6A5E5C;text-indent:50rpx;text-align:justify;">{{bicycle.detail}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="bicycle_info" style="position:relative;">
+    <view class="bicycle_info_tag shadow" style="z-index:10;position:relative;margin-top:20rpx;">
+      <view class="bicycle_info_tag_top" style="height:75rpx;">
+        <view class="w-100" style="text-align:center;">
+          <view class="bicycle_detail_title">车主信息</view>
+        </view>
+      </view>
+      <view class="bicycle_info_bottom" style="align-items:center;color:#000;">
+        <view class="weui-cells weui-cells_form w-100">
+          <view class="weui-cell weui-cell_active">
+            <view class="weui-cell__hd"><label class="weui-label">姓名</label></view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" disabled="true" placeholder-class="weui-input__placeholder"
+                value="{{user.realname}}" />
+            </view>
+          </view>
+          <view class="weui-cell weui-cell_active">
+            <view class="weui-cell__hd"><label class="weui-label">校区</label></view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" disabled="true" placeholder-class="weui-input__placeholder"
+                value="{{user.campus}}" />
+            </view>
+          </view>
+          <view class="weui-cell weui-cell_active">
+            <view class="weui-cell__hd"><label class="weui-label">学院</label></view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" disabled="true" placeholder-class="weui-input__placeholder"
+                value="{{user.dept}}" />
+            </view>
+          </view>
+          <view class="weui-cell weui-cell_active">
+            <view class="weui-cell__hd"><label class="weui-label">QQ</label></view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" disabled="true" placeholder-class="weui-input__placeholder"
+                value="{{user.QQ}}" />
+            </view>
+          </view>
+          <view class="weui-cell weui-cell_active">
+            <view class="weui-cell__hd"><label class="weui-label">手机</label></view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" disabled="true" placeholder-class="weui-input__placeholder"
+                value="{{user.tel}}" />
+            </view>
+          </view>
+          <view class="weui-cell weui-cell_active">
+            <view class="weui-cell__hd"><label class="weui-label">骑行里程</label></view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" disabled="true" placeholder-class="weui-input__placeholder"
+                value="{{user.distance}} km" />
+            </view>
+          </view>
+          <view class="weui-cell weui-cell_active">
+            <view class="weui-cell__hd"><label class="weui-label">注册日期</label></view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" disabled="true" placeholder-class="weui-input__placeholder"
+                value="{{user.birthday_string}}" />
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="bicycle_info" style="position:relative;" hidden="{{is_sale_options_hide}}">
+    <view class="bicycle_info_tag shadow" style="z-index:10;position:relative;margin-top:20rpx;margin-bottom:20rpx;">
+      <view class="bicycle_info_tag_top" style="height:75rpx;">
+        <view class="w-100" style="text-align:center;">
+          <view class="bicycle_detail_title">购车选项</view>
+        </view>
+      </view>
+      <view class="bicycle_info_bottom" style="align-items:center;color:#000;">
+        <view class="weui-cells weui-cells_form w-100">
+          <view class="weui-cell">
+            <button class="weui-btn weui-btn_primary shadow" id="sumbit" bindtap="submit">提交订单</button>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot" id="end"></view>
+</view>

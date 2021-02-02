@@ -60,7 +60,8 @@ Page({
         name: true,
         owner: true,
         renter: true,
-        time_created: true
+        time_created: true,
+        type: true
       }).get({
         success(res) {
           that.data.bicycles.push(res.data);
@@ -78,34 +79,38 @@ Page({
       })
     } else {
       check();
+      console.log(that.data)
     }
 
     function check() {
       if (that.data.transactions.length == app.globalData.user.my_transactions.length && that.data.bicycles.length == app.globalData.user.my_transactions.length) {
         for (var i = 0; i < that.data.transactions.length; i++) {
+          that.data.transactions[i].date_time = time_helper.format_time(new Date(that.data.transactions[i].time_created)).date_time;
+          if (!that.data.transactions[i].is_valid) {
+            if (that.data.transactions[i].is_expired) {
+              that.data.transactions[i].status = "已失效";
+            } else {
+              that.data.transactions[i].status = "待确认";
+            }
+          } else {
+            if (that.data.transactions[i].is_expired) {
+              that.data.transactions[i].status = "已过期";
+            } else {
+              that.data.transactions[i].status = "已成交";
+            }
+          }
           if (that.data.transactions[i].type == "rental") {
-            that.data.transactions[i].date_time = time_helper.format_time(new Date(that.data.transactions[i].time_created)).date_time;
             that.data.transactions[i].rental_date_start_string = time_helper.format_time(that.data.transactions[i].rental_date_start).date;
             that.data.transactions[i].rental_date_end_string = time_helper.format_time(that.data.transactions[i].rental_date_end).date;
-            if (!that.data.transactions[i].is_valid) {
-              if (that.data.transactions[i].is_expired) {
-                that.data.transactions[i].status = "已失效";
-              } else {
-                that.data.transactions[i].status = "待确认";
-              }
-            } else {
-              if (that.data.transactions[i].is_expired) {
-                that.data.transactions[i].status = "已过期";
-              } else {
-                that.data.transactions[i].status = "已确认";
-              }
-            }
-            that.data.transactions_and_bicycles.push({
-              bicycle: {},
-              transaction: that.data.transactions[i],
-              time_created: null
-            });
+          } else {
+            //sale
+            that.data.transactions[i].date_time = time_helper.format_time(new Date(that.data.transactions[i].time_created)).date_time;
           }
+          that.data.transactions_and_bicycles.push({
+            bicycle: {},
+            transaction: that.data.transactions[i],
+            time_created: null
+          });
         }
         for (var i = 0; i < that.data.transactions_and_bicycles.length; i++) {
           for (var j = 0; j < that.data.bicycles.length; j++) {
@@ -125,6 +130,9 @@ Page({
             if (that.data.transactions_and_bicycles[i].transaction.type == "rental") {
               that.data.transactions_and_bicycles[i].transaction.type_detail = "rental_involved";
               that.data.rentals_involved.push(that.data.transactions_and_bicycles[i]);
+            } else {
+              that.data.transactions_and_bicycles[i].transaction.type_detail = "sale_involved";
+              that.data.sales_involved.push(that.data.transactions_and_bicycles[i]);
             }
             //sale
           } else {
@@ -132,6 +140,9 @@ Page({
             if (that.data.transactions_and_bicycles[i].transaction.type == "rental") {
               that.data.transactions_and_bicycles[i].transaction.type_detail = "rental_created";
               that.data.rentals_created.push(that.data.transactions_and_bicycles[i]);
+            } else {
+              that.data.transactions_and_bicycles[i].transaction.type_detail = "sale_created";
+              that.data.sales_created.push(that.data.transactions_and_bicycles[i]);
             }
             //sale
           }
@@ -179,6 +190,7 @@ Page({
 
   onPullDownRefresh: function (e) {
     this.onLoad();
+    wx.stopPullDownRefresh({})
   },
 
   goto_transaction_detail: function (e) {

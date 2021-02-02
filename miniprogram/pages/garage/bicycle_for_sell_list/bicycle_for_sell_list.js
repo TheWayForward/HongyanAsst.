@@ -1,66 +1,124 @@
-// pages/garage/bicycle_for_sell_list/bicycle_for_sell_list.js
+const app = getApp();
+const db = wx.cloud.database();
+var compare_helper = require("../../../utils/helpers/compare_helper");
+var time_helper = require("../../../utils/helpers/time_helper");
+var verification_helper = require("../../../utils/helpers/verification_helper");
+var versatile_helper = require("../../../utils/helpers/versatile_helper");
+var notification_helper = require("../../../utils/helpers/notification_helper");
+
 Page({
 
-  /**
-   * Page initial data
-   */
   data: {
-
+    bicycles_for_sell: [],
+    search_bicycles_for_sell_1: [],
+    search_bicycles_for_sell_2: [],
+    is_hide: true,
+    watcher: 0
   },
 
-  /**
-   * Lifecycle function--Called when page load
-   */
   onLoad: function (options) {
-
+    wx.showLoading({
+      title: "加载中",
+      mask: true
+    })
+    var that = this;
+    var batchTimes;
+    //bicycles for rent
+    var count = db.collection("bicycles").where({
+      is_available: true,
+      is_locked: false,
+      is_sellable: true,
+    }).count();
+    count.then(function (result) {
+      count = result.total;
+      if (!count) {
+        wx.hideLoading({})
+      }
+      batchTimes = Math.ceil(count / 20);
+      var arrayContainer = [],
+        arrayContainer1 = [],
+        arrayContainer2 = [],
+        x = 0;
+      for (var i = 0; i < batchTimes; i++) {
+        db.collection("bicycles").skip(i * 20).where({
+          is_available: true,
+          is_locked: false,
+          is_sellable: true,
+        }).field({
+          _id: true,
+          brand: true,
+          name: true,
+          poster: true,
+          time_created: true,
+          type: true,
+          owner: true,
+          renter: true
+        }).get({
+          success: function (res) {
+            for (var j = 0; j < res.data.length; j++) {
+              arrayContainer.push(res.data[j]);
+            }
+            x++;
+            if (x == batchTimes) {
+              for (var i = 0; i < arrayContainer.length; i++) {
+                arrayContainer[i].date = time_helper.format_time(arrayContainer[i].time_created).date;
+              }
+              arrayContainer.sort(compare_helper.compare("time_created")).reverse();
+              for (var i = 0; i < arrayContainer.length; i++) {
+                i % 2 ? arrayContainer1.push(arrayContainer[i]) : arrayContainer2.push(arrayContainer[i]);
+              }
+              that.setData({
+                bicycles_for_sell: arrayContainer,
+                search_bicycles_for_sell_1: arrayContainer1,
+                search_bicycles_for_sell_2: arrayContainer2,
+                is_hide: false,
+              })
+              wx.hideLoading({})
+            }
+          }
+        })
+      }
+    })
   },
 
-  /**
-   * Lifecycle function--Called when page is initially rendered
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * Lifecycle function--Called when page show
-   */
   onShow: function () {
+    var that = this;
+    that.setData({
+      watcher: db.collection("bicycles").where({
+        is_available: true,
+        is_locked: false,
+        is_sellable: true,
+      }).watch({
+        onChange(e) {
+          that.onLoad();
+        },
+        onError(e) {
 
+        }
+      })
+    })
   },
 
-  /**
-   * Lifecycle function--Called when page hide
-   */
-  onHide: function () {
-
+  onHide: function (e) {
+    this.data.watcher.close();
   },
 
-  /**
-   * Lifecycle function--Called when page unload
-   */
-  onUnload: function () {
-
+  onUnload: function (e) {
+    this.data.watcher.close();
   },
 
-  /**
-   * Page event handler function--Called when user drop down
-   */
-  onPullDownRefresh: function () {
-
+  preview: function (e) {
+    wx.previewImage({
+      current: e.currentTarget.dataset.action,
+      urls: [e.currentTarget.dataset.action]
+    })
   },
 
-  /**
-   * Called when page reach bottom
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * Called when user click on the top right corner to share
-   */
-  onShareAppMessage: function () {
-
+  goto_bicycle_for_sell_detail: function (e) {
+    app.globalData.my_bicycle = e.currentTarget.dataset.action;
+    wx.navigateTo({
+      url: '../bicycle_for_sell_list/bicycle_for_sell_detail/bicycle_for_sell_detail',
+    })
   }
+
 })

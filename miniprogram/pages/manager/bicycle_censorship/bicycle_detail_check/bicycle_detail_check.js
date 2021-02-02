@@ -83,7 +83,6 @@ Page({
     })
   },
 
-
   reject: function () {
     wx.navigateBack({
       delta: 0,
@@ -94,7 +93,7 @@ Page({
     var that = this;
     wx.showModal({
       title: "提示",
-      content: `确认通过用户${that.data.user.nickname}的车辆"${that.data.bicycle.name}"的审核？请务必确保车辆信息详实准确。"`,
+      content: `确认通过用户${that.data.user.nickname}的车辆"${that.data.bicycle.name}"的审核？请务必确保车辆信息详实准确。`,
       confirmText: "确定",
       cancelText: "取消",
       success(res) {
@@ -115,10 +114,6 @@ Page({
             },
             success(res) {
               console.log("[cloudfunction][update_bicycle_state]: updated successfully");
-              wx.showLoading({
-                title: "数据更新中",
-                mask: true
-              })
               for (var i = 0; i < that.data.user.my_bicycle.length; i++) {
                 if (that.data.bicycle._id == that.data.user.my_bicycle[i]._id) {
                   that.data.user.my_bicycle[i].is_locked = false;

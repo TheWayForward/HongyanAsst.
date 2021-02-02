@@ -151,7 +151,7 @@ Page({
         avatar: that.data.user.avatar
       },
       owner_openid: that.data.user.openid,
-      owner__id: that.data.user._id,
+      owner_id: that.data.user._id,
       owner_transactions: that.data.user.my_transactions,
       renter: {
         _id: app.globalData.user._id,
@@ -161,7 +161,7 @@ Page({
         avatar: app.globalData.user.avatar
       },
       renter_openid: app.globalData.user.openid,
-      renter__id: app.globalData.user._id,
+      renter_id: app.globalData.user._id,
       bicycle: that.data.bicycle
     }
     wx.navigateTo({

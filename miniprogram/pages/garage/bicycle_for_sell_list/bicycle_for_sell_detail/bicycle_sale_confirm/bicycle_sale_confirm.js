@@ -11,7 +11,7 @@ Page({
 
   data: {
     transaction: {},
-    serial_number: transaction_helper.generate_serial_number_for_rental(),
+    serial_number: transaction_helper.generate_serial_number_for_sale(),
     password: "",
     is_submission_available: false
   },
@@ -67,23 +67,20 @@ Page({
               data: {
                 _id: count,
                 openid: app.globalData.user.openid,
-                type: "rental",
+                type: "sale",
                 serial_number: that.data.serial_number,
-                rental_date_start: time_helper.set_date_from_string(that.data.transaction.rental_date_start),
-                rental_date_end: time_helper.set_date_from_string(that.data.transaction.rental_date_end),
-                rental_duration: that.data.transaction.rental_duration,
-                owner: that.data.transaction.owner,
-                owner_openid: that.data.transaction.owner_openid,
-                owner_id: that.data.transaction.owner_id,
-                renter: that.data.transaction.renter,
-                renter_openid: that.data.transaction.renter_openid,
-                renter_id: that.data.transaction.renter_id,
+                seller: that.data.transaction.seller,
+                seller_openid: that.data.transaction.seller_openid,
+                seller_id: that.data.transaction.seller_id,
+                buyer: that.data.transaction.buyer,
+                buyer_openid: that.data.transaction.buyer_openid,
+                buyer_id: that.data.transaction.buyer_id,
                 bicycle_id: that.data.transaction.bicycle._id,
                 is_valid: false,
                 is_expired: false,
                 time_created: time_created
               },
-              success(res) {
+              success(res){
                 console.log("[database][transactions]: add successfully");
                 wx.showLoading({
                   title: "数据更新中",
@@ -92,21 +89,18 @@ Page({
                 var transaction_new = {
                   transaction_id: count,
                   serial_number: that.data.serial_number,
-                  type: "rental",
-                  renter_openid: that.data.transaction.renter_openid,
-                  renter_id: that.data.transaction.renter_id,
-                  owner_openid: that.data.transaction.owner_openid,
-                  owner_id: that.data.transaction.owner_id,
+                  type: "sale",
+                  buyer_openid: that.data.transaction.buyer_openid,
+                  buyer_id: that.data.transaction.buyer_id,
+                  seller_openid: that.data.transaction.seller_openid,
+                  seller_id: that.data.transaction.seller_id,
                   bicycle_id: that.data.transaction.bicycle._id,
                   time_created: time_created,
-                  rental_date_start: time_helper.set_date_from_string(that.data.transaction.rental_date_start).getTime(),
-                  rental_date_end: time_helper.set_date_from_string(that.data.transaction.rental_date_end).getTime(),
-                  rental_duration: that.data.transaction.rental_duration,
                   is_valid: false,
                   is_expired: false
                 }
                 app.globalData.user.my_transactions.push(transaction_new);
-                that.data.transaction.owner_transactions.push(transaction_new);
+                that.data.transaction.seller_transactions.push(transaction_new);
                 wx.cloud.callFunction({
                   name: "update_user_transactions",
                   data: {
@@ -118,8 +112,8 @@ Page({
                     wx.cloud.callFunction({
                       name: "update_user_transactions",
                       data: {
-                        _id: that.data.transaction.owner_id,
-                        my_transactions: that.data.transaction.owner_transactions
+                        _id: that.data.transaction.seller_id,
+                        my_transactions: that.data.transaction.seller_transactions
                       },
                       success(res) {
                         console.log("[cloudfunction][update_user_transactions]: updated owner successfully");
@@ -130,11 +124,11 @@ Page({
                             renter: {
                               transaction_id: count,
                               transaction_serial_number: that.data.serial_number,
-                              renter_openid: that.data.transaction.renter_openid,
-                              renter_id: that.data.transaction.renter_id,
-                              rental_date_start: time_helper.set_date_from_string(that.data.transaction.rental_date_start).getTime(),
-                              rental_date_end: time_helper.set_date_from_string(that.data.transaction.rental_date_end).getTime(),
-                              rental_duration: that.data.transaction.rental_duration
+                              renter_openid: that.data.transaction.buyer_openid,
+                              renter_id: that.data.transaction.buyer_id,
+                              rental_date_start: 0,
+                              rental_date_end: 0,
+                              rental_duration: 0                 
                             }
                           },
                           success(res) {
@@ -157,8 +151,8 @@ Page({
                             })
                           },
                           fail(res) {
-                            console.log(res)
-                            console.log("[cloudfunction][update_bicycle_renter]: failed to update renter");
+                            console.log(res);
+                            console.log("[cloudfunction][update_bicycle_renter]: failed to update");
                             notification_helper.show_toast_without_icon("获取数据失败，请刷新页面重试", 2000);
                           }
                         })
@@ -177,7 +171,8 @@ Page({
                   }
                 })
               },
-              fail(res) {
+              fail(res){
+                console.log(res);
                 console.log("[database][transactions]: failed to add");
                 notification_helper.show_toast_without_icon("获取数据失败，请刷新页面重试", 2000);
               }

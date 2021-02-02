@@ -31,6 +31,9 @@ Page({
     }).count();
     count.then(function (result) {
       count = result.total;
+      if (!count) {
+        wx.hideLoading({})
+      }
       batchTimes = Math.ceil(count / 20);
       var arrayContainer = [],
         arrayContainer1 = [],

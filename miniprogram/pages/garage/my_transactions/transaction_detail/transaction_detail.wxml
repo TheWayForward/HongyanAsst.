@@ -159,7 +159,7 @@
             <view class="weui-form-preview__bd">
               <view class="weui-form-preview__item">
                 <label class="weui-form-preview__label">订单类型</label>
-                <text class="weui-form-preview__value">租赁</text>
+                <text class="weui-form-preview__value">购买</text>
               </view>
               <view class="weui-form-preview__item">
                 <label class="weui-form-preview__label">交易时间</label>
@@ -172,31 +172,21 @@
                   user-select="true">{{transaction.serial_number}}</text>
               </view>
               <view class="weui-form-preview__item">
-                <label class="weui-form-preview__label">租期</label>
-                <text
-                  class="weui-form-preview__value">{{transaction.rental_date_start_string}}至{{transaction.rental_date_end_string}}，共{{transaction.rental_duration}}天</text>
-              </view>
-              <view class="weui-form-preview__item">
                 <label class="weui-form-preview__label">状态</label>
                 <text class="weui-form-preview__value">{{transaction.status}}</text>
               </view>
               <view class="weui-form-preview__item">
-                <label class="weui-form-preview__label">租方</label>
-                <text class="weui-form-preview__value" style="text-align:right;"
-                  user-select="true">{{user_create.realname}}</text>
-              </view>
-              <view class="weui-form-preview__item">
-                <label class="weui-form-preview__label">借方</label>
+                <label class="weui-form-preview__label">卖家</label>
                 <text class="weui-form-preview__value" style="text-align:right;"
                   user-select="true">{{user_involve.realname}}</text>
               </view>
               <view class="weui-form-preview__item">
-                <label class="weui-form-preview__label">借方手机</label>
-                <text class="weui-form-preview__value" style="text-align:right;" user-select="true">{{user_create.tel}}</text>
+                <label class="weui-form-preview__label">卖家手机</label>
+                <text class="weui-form-preview__value" style="text-align:right;" user-select="true">{{user_involve.tel}}</text>
               </view>
               <view class="weui-form-preview__item">
-                <label class="weui-form-preview__label">借方QQ</label>
-                <text class="weui-form-preview__value" style="text-align:right;" user-select="true">{{user_create.QQ}}</text>
+                <label class="weui-form-preview__label">卖家QQ</label>
+                <text class="weui-form-preview__value" style="text-align:right;" user-select="true">{{user_involve.QQ}}</text>
               </view>
             </view>
           </view>
@@ -224,7 +214,7 @@
             <view class="weui-form-preview__bd">
               <view class="weui-form-preview__item">
                 <label class="weui-form-preview__label">订单类型</label>
-                <text class="weui-form-preview__value">租赁</text>
+                <text class="weui-form-preview__value">购买</text>
               </view>
               <view class="weui-form-preview__item">
                 <label class="weui-form-preview__label">交易时间</label>
@@ -237,31 +227,21 @@
                   user-select="true">{{transaction.serial_number}}</text>
               </view>
               <view class="weui-form-preview__item">
-                <label class="weui-form-preview__label">租期</label>
-                <text
-                  class="weui-form-preview__value">{{transaction.rental_date_start_string}}至{{transaction.rental_date_end_string}}，共{{transaction.rental_duration}}天</text>
-              </view>
-              <view class="weui-form-preview__item">
                 <label class="weui-form-preview__label">状态</label>
                 <text class="weui-form-preview__value">{{transaction.status}}</text>
               </view>
               <view class="weui-form-preview__item">
-                <label class="weui-form-preview__label">租方</label>
+                <label class="weui-form-preview__label">买家</label>
                 <text class="weui-form-preview__value" style="text-align:right;"
-                  user-select="true">{{transaction.owner.realname}}</text>
+                  user-select="true">{{user_create.realname}}</text>
               </view>
               <view class="weui-form-preview__item">
-                <label class="weui-form-preview__label">借方</label>
-                <text class="weui-form-preview__value" style="text-align:right;"
-                  user-select="true">{{transaction.renter.realname}}</text>
+                <label class="weui-form-preview__label">买家手机</label>
+                <text class="weui-form-preview__value" style="text-align:right;" user-select="true">{{user_create.tel}}</text>
               </view>
               <view class="weui-form-preview__item">
-                <label class="weui-form-preview__label">借方手机</label>
-                <text class="weui-form-preview__value" style="text-align:right;" user-select="true">{{user.tel}}</text>
-              </view>
-              <view class="weui-form-preview__item">
-                <label class="weui-form-preview__label">借方QQ</label>
-                <text class="weui-form-preview__value" style="text-align:right;" user-select="true">{{user.QQ}}</text>
+                <label class="weui-form-preview__label">买家QQ</label>
+                <text class="weui-form-preview__value" style="text-align:right;" user-select="true">{{user_create.QQ}}</text>
               </view>
             </view>
           </view>

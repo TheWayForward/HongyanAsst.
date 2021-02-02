@@ -37,6 +37,14 @@ Page({
     }).count();
     count.then(function (result) {
       count = result.total;
+      if (!count) {
+        wx.hideLoading({
+          success (res) {
+            notification_helper.show_toast_without_icon("暂无上架车辆",2000);
+            return;
+          }
+        })
+      }
       batchTimes = Math.ceil(count / 20);
       var arrayContainer = [],
         x = 0;
@@ -105,8 +113,7 @@ Page({
         onChange(e) {
           that.onLoad();
         },
-        onError(e) {
-        }
+        onError(e) {}
       })
     })
   },

@@ -83,7 +83,7 @@
                       src="{{item.bicycle.poster}}" data-action="{{item.bicycle.poster}}" bindtap="preview"
                       lazy-load="true" alt></image>
                   </view>
-                  <view class="weui-media-box__bd">
+                  <view class="weui-media-box__bd" data-action="{{item}}" bindtap="goto_transaction_detail">
                     <h4 class="weui-media-box__title">{{item.bicycle.name}}</h4>
                     <view class="weui-media-box__desc">{{item.bicycle.detail}}</view>
                   </view>
@@ -93,6 +93,11 @@
             <view class="weui-form-preview">
               <view class="weui-form-preview__bd">
                 <view class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">交易时间</label>
+                  <text class="weui-form-preview__value" style="text-align:right;"
+                    user-select="true">{{item.transaction.date_time}}</text>
+                </view>
+                <view class="weui-form-preview__item">
                   <label class="weui-form-preview__label">订单编号</label>
                   <text class="weui-form-preview__value" style="text-align:right;"
                     user-select="true">{{item.transaction.serial_number}}</text>
@@ -101,6 +106,11 @@
                   <label class="weui-form-preview__label">卖家</label>
                   <text class="weui-form-preview__value" style="text-align:right;"
                     user-select="true">{{item.transaction.seller.realname}}</text>
+                </view>
+                <view class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">状态</label>
+                  <text class="weui-form-preview__value" style="text-align:right;"
+                    user-select="true">{{item.transaction.status}}</text>
                 </view>
               </view>
             </view>
@@ -187,7 +197,7 @@
                       src="{{item.bicycle.poster}}" data-action="{{item.bicycle.poster}}" bindtap="preview"
                       lazy-load="true" alt></image>
                   </view>
-                  <view class="weui-media-box__bd">
+                  <view class="weui-media-box__bd" data-action="{{item}}" bindtap="goto_transaction_detail">
                     <h4 class="weui-media-box__title">{{item.bicycle.name}}</h4>
                     <view class="weui-media-box__desc">{{item.bicycle.detail}}</view>
                   </view>
@@ -197,14 +207,24 @@
             <view class="weui-form-preview">
               <view class="weui-form-preview__bd">
                 <view class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">交易时间</label>
+                  <text class="weui-form-preview__value" style="text-align:right;"
+                    user-select="true">{{item.transaction.date_time}}</text>
+                </view>
+                <view class="weui-form-preview__item">
                   <label class="weui-form-preview__label">订单编号</label>
                   <text class="weui-form-preview__value" style="text-align:right;"
                     user-select="true">{{item.transaction.serial_number}}</text>
                 </view>
                 <view class="weui-form-preview__item">
-                  <label class="weui-form-preview__label">卖家</label>
+                  <label class="weui-form-preview__label">买家</label>
                   <text class="weui-form-preview__value" style="text-align:right;"
-                    user-select="true">{{item.transaction.seller.realname}}</text>
+                    user-select="true">{{item.transaction.buyer.realname}}</text>
+                </view>
+                <view class="weui-form-preview__item">
+                  <label class="weui-form-preview__label">状态</label>
+                  <text class="weui-form-preview__value" style="text-align:right;"
+                    user-select="true">{{item.transaction.status}}</text>
                 </view>
               </view>
             </view>

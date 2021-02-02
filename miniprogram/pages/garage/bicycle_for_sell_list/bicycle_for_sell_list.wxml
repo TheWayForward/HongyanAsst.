@@ -1,2 +1,38 @@
-<!--pages/garage/bicycle_for_sell_list/bicycle_for_sell_list.wxml-->
-<text>pages/garage/bicycle_for_sell_list/bicycle_for_sell_list.wxml</text>
+<view class="page d-flex w-100" hidden="{{is_hide}}">
+  <view class="w-50">
+    <view wx:for="{{search_bicycles_for_sell_2}}" wx:key="_id" class="bicycle_block">
+      <view class="bicycle_inner_block shadow overflow-hidden" hover-class="hv" hover-stay-time="30" wx:if="{{!item.renter.renter_id}}">
+        <view class="bicycle_image_container w-100 overflow-hidden">
+          <image class="bicycle_image w-100 shadow" mode="widthFix" src="{{item.poster}}" data-action="{{item.poster}}"
+            bindtap="preview"></image>
+        </view>
+        <view class="bicycle_info_align" data-action="{{item}}" bindtap="goto_bicycle_for_sell_detail">
+          <view class="title">{{item.name}}</view>
+          <view class="w-100 d-flex mt-10">
+            <text class="weui-badge bg_red shadow" style="margin-left: 5px;">{{item.brand}}</text>
+            <text class="weui-badge bg_blue shadow" style="margin-left: 5px;">{{item.type}}</text>
+          </view>
+          <text class="weui-badge bg_green shadow" style="margin-left: 5px;">上架时间：{{item.date}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="w-50">
+    <view wx:for="{{search_bicycles_for_sell_1}}" wx:key="_id" class="bicycle_block">
+      <view class="bicycle_inner_block shadow overflow-hidden" hover-class="hv" hover-stay-time="30" wx:if="{{!item.renter.renter_id}}">
+        <view class="bicycle_image_container w-100 overflow-hidden">
+          <image class="bicycle_image w-100 shadow" mode="widthFix" src="{{item.poster}}" data-action="{{item.poster}}"
+            bindtap="preview"></image>
+        </view>
+        <view class="bicycle_info_align" data-action="{{item}}" bindtap="goto_bicycle_for_sell_detail">
+          <view class="title">{{item.name}}</view>
+          <view class="w-100 d-flex mt-10">
+            <text class="weui-badge bg_red shadow" style="margin-left: 5px;">{{item.brand}}</text>
+            <text class="weui-badge bg_blue shadow" style="margin-left: 5px;">{{item.type}}</text>
+          </view>
+          <text class="weui-badge bg_green shadow" style="margin-left: 5px;">上架时间：{{item.date}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

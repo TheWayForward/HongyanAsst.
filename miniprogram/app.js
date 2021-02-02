@@ -34,6 +34,8 @@ App({
 
   onLaunch: function () {
 
+
+
     var that = this;
     //loading animation
     wx.showLoading({
@@ -111,7 +113,7 @@ App({
     })
   },
 
-  clear_vcode: function(){
+  clear_vcode: function () {
     this.globalData.vcode = null;
   }
 
