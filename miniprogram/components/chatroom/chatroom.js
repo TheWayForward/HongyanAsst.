@@ -1,7 +1,8 @@
+const app = getApp()
 const FATAL_REBUILD_TOLERANCE = 10
 const SETDATA_SCROLL_TO_BOTTOM = {
   scrollTop: 100000,
-  scrollWithAnimation: true,
+  scrollWithAnimation: true
 }
 
 Component({
@@ -20,21 +21,24 @@ Component({
   },
 
   data: {
+    name: "chatroom",
     chats: [],
     textInputValue: '',
-    openId: '',
+    openId: [],
     scrollTop: 0,
     scrollToMessage: '',
     hasKeyboard: false,
   },
 
   methods: {
+
+
     onGetUserInfo(e) {
       this.properties.onGetUserInfo(e)
     },
 
-    getOpenID() { 
-      return this.properties.getOpenID() 
+    getOpenID() {
+      return this.properties.getOpenID()
     },
 
     mergeCommonCriteria(criteria) {
@@ -48,15 +52,18 @@ Component({
       this.try(async () => {
         await this.initOpenID()
 
-        const { envId, collection } = this.properties
+        const {
+          envId,
+          collection
+        } = this.properties
         const db = this.db = wx.cloud.database({
           env: envId,
         })
         const _ = db.command
 
-        const { data: initList } = await db.collection(collection).where(this.mergeCommonCriteria()).orderBy('sendTimeTS', 'desc').get()
-
-        console.log('init query chats', initList)
+        const {
+          data: initList
+        } = await db.collection(collection).where(this.mergeCommonCriteria()).orderBy('sendTimeTS', 'desc').get()
 
         this.setData({
           chats: initList.reverse(),
@@ -71,21 +78,20 @@ Component({
 
     async initOpenID() {
       return this.try(async () => {
-        const openId = await this.getOpenID()
-
+        const openId = this.getOpenID()  
         this.setData({
-          openId,
+          openId: app.globalData.openid
         })
       }, '初始化 openId 失败')
     },
 
     async initWatch(criteria) {
       this.try(() => {
-        const { collection } = this.properties
+        const {
+          collection
+        } = this.properties
         const db = this.db
         const _ = db.command
-
-        console.warn(`开始监听`, criteria)
         this.messageListener = db.collection(collection).where(this.mergeCommonCriteria(criteria)).watch({
           onChange: this.onRealtimeMessageSnapshot.bind(this),
           onError: e => {
@@ -105,9 +111,14 @@ Component({
       }, '初始化监听失败')
     },
 
-    onRealtimeMessageSnapshot(snapshot) {
-      console.warn(`收到消息`, snapshot)
+    preview: function(e) {
+      wx.previewImage({
+        urls: [e.currentTarget.dataset.action],
+        current: e.currentTarget.dataset.action
+      })
+    },
 
+    onRealtimeMessageSnapshot(snapshot) {
       if (snapshot.type === 'init') {
         this.setData({
           chats: [
@@ -151,62 +162,92 @@ Component({
     },
 
     async onConfirmSendText(e) {
-      this.try(async () => {
-        if (!e.detail.value) {
-          return
+      var that = this;
+      var isAllowed = 1;
+      wx.cloud.init();
+      wx.cloud.callFunction({
+        name: 's_check_text',
+        data: {
+          text: e.detail.value
         }
+      }).then((res) => {
+        if (res.result.code == "200") {
+          console.log("okay");
+          that.try(async () => {
+            if (!e.detail.value) {
+              return
+            }
 
-        const { collection } = this.properties
-        const db = this.db
-        const _ = db.command
+            const {
+              collection
+            } = that.properties
+            const db = this.db
+            const _ = db.command
 
-        const doc = {
-          _id: `${Math.random()}_${Date.now()}`,
-          groupId: this.data.groupId,
-          avatar: this.data.userInfo.avatarUrl,
-          nickName: this.data.userInfo.nickName,
-          msgType: 'text',
-          textContent: e.detail.value,
-          sendTime: new Date(),
-          sendTimeTS: Date.now(), // fallback
+            const doc = {
+              _id: `${Math.random()}_${Date.now()}`,
+              groupId: that.data.groupId,
+              avatar: that.data.userInfo.avatarUrl,
+              nickName: that.data.userInfo.nickName,
+              msgType: 'text',
+              textContent: e.detail.value,
+              sendTime: new Date(),
+              sendTimeTS: Date.now(), // fallback
+            }
+
+            that.setData({
+              textInputValue: '',
+              chats: [
+                ...that.data.chats,
+                {
+                  ...doc,
+                  _openid: that.data.openId,
+                  writeStatus: 'pending',
+                },
+              ],
+            })
+            that.scrollToBottom(true)
+
+            await db.collection(collection).add({
+              data: doc,
+            })
+
+            that.setData({
+              chats: that.data.chats.map(chat => {
+                if (chat._id === doc._id) {
+                  return {
+                    ...chat,
+                    writeStatus: 'written',
+                  }
+                } else return chat
+              }),
+            })
+          }, '发送文字失败')
+        } else {
+          //failed
+          isAllowed = 0;
+          wx.showToast({
+            title: '内容包含敏感字',
+            icon: 'none',
+            duration: 3000
+          })
         }
+      })
 
-        this.setData({
-          textInputValue: '',
-          chats: [
-            ...this.data.chats,
-            {
-              ...doc,
-              _openid: this.data.openId,
-              writeStatus: 'pending',
-            },
-          ],
-        })
-        this.scrollToBottom(true)
 
-        await db.collection(collection).add({
-          data: doc,
-        })
-
-        this.setData({
-          chats: this.data.chats.map(chat => {
-            if (chat._id === doc._id) {
-              return {
-                ...chat,
-                writeStatus: 'written',
-              }
-            } else return chat
-          }),
-        })
-      }, '发送文字失败')
     },
 
     async onChooseImage(e) {
+      var isAllowed = 0;
       wx.chooseImage({
         count: 1,
+        sizeType: ['compressed'],
         sourceType: ['album', 'camera'],
         success: async res => {
-          const { envId, collection } = this.properties
+          const {
+            envId,
+            collection
+          } = this.properties
           const doc = {
             _id: `${Math.random()}_${Date.now()}`,
             groupId: this.data.groupId,
@@ -217,54 +258,59 @@ Component({
             sendTimeTS: Date.now(), // fallback
           }
 
-          this.setData({
-            chats: [
-              ...this.data.chats,
-              {
-                ...doc,
-                _openid: this.data.openId,
-                tempFilePath: res.tempFilePaths[0],
-                writeStatus: 0,
-              },
-            ]
-          })
-          this.scrollToBottom(true)
-
-          const uploadTask = wx.cloud.uploadFile({
-            cloudPath: `${this.data.openId}/${Math.random()}_${Date.now()}.${res.tempFilePaths[0].match(/\.(\w+)$/)[1]}`,
-            filePath: res.tempFilePaths[0],
-            config: {
-              env: envId,
-            },
-            success: res => {
-              this.try(async () => {
-                await this.db.collection(collection).add({
-                  data: {
-                    ...doc,
-                    imgFileID: res.fileID,
-                  },
-                })
-              }, '发送图片失败')
-            },
-            fail: e => {
-              this.showError('发送图片失败', e)
-            },
-          })
-
-          uploadTask.onProgressUpdate(({ progress }) => {
+          if (!isAllowed) {
             this.setData({
-              chats: this.data.chats.map(chat => {
-                if (chat._id === doc._id) {
-                  return {
-                    ...chat,
-                    writeStatus: progress,
-                  }
-                } else return chat
+              chats: [
+                ...this.data.chats,
+                {
+                  ...doc,
+                  _openid: this.data.openId,
+                  tempFilePath: res.tempFilePaths[0],
+                  writeStatus: 0,
+                },
+              ]
+            })
+            this.scrollToBottom(true)
+
+            const uploadTask = wx.cloud.uploadFile({
+              cloudPath: `chatroom/${this.data.openId}/${Math.random()}_${Date.now()}.${res.tempFilePaths[0].match(/\.(\w+)$/)[1]}`,
+              filePath: res.tempFilePaths[0],
+              config: {
+                env: envId,
+              },
+              success: res => {
+                this.try(async () => {
+                  await this.db.collection(collection).add({
+                    data: {
+                      ...doc,
+                      imgFileID: res.fileID,
+                    },
+                  })
+                }, '发送图片失败')
+              },
+              fail: e => {
+                this.showError('发送图片失败', e)
+              },
+            })
+
+            uploadTask.onProgressUpdate(({
+              progress
+            }) => {
+              this.setData({
+                chats: this.data.chats.map(chat => {
+                  if (chat._id === doc._id) {
+                    return {
+                      ...chat,
+                      writeStatus: progress,
+                    }
+                  } else return chat
+                })
               })
             })
-          })
+          }
         },
       })
+
     },
 
     onMessageImageTap(e) {
@@ -283,7 +329,6 @@ Component({
       this.createSelectorQuery().select('.body').boundingClientRect(bodyRect => {
         this.createSelectorQuery().select(`.body`).scrollOffset(scroll => {
           if (scroll.scrollTop + bodyRect.height * 3 > scroll.scrollHeight) {
-            console.log('should scroll to bottom')
             this.setData(SETDATA_SCROLL_TO_BOTTOM)
           }
         }).exec()
@@ -292,9 +337,13 @@ Component({
 
     async onScrollToUpper() {
       if (this.db && this.data.chats.length) {
-        const { collection } = this.properties
+        const {
+          collection
+        } = this.properties
         const _ = this.db.command
-        const { data } = await this.db.collection(collection).where(this.mergeCommonCriteria({
+        const {
+          data
+        } = await this.db.collection(collection).where(this.mergeCommonCriteria({
           sendTimeTS: _.lt(this.data.chats[0].sendTimeTS),
         })).orderBy('sendTimeTS', 'desc').get()
         this.data.chats.unshift(...data.reverse())
@@ -306,7 +355,7 @@ Component({
       }
     },
 
-    async try(fn, title) {
+    async try (fn, title) {
       try {
         await fn()
       } catch (e) {
@@ -333,4 +382,5 @@ Component({
     this.initRoom()
     this.fatalRebuildCount = 0
   },
+
 })

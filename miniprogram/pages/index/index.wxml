@@ -39,14 +39,10 @@
   </view>
   <view class="btn_align">
     <view bindtap="goto_garage" class="btn_long">鸿雁车库</view>
+    <view bindtap="goto_manager" class="btn_long">管理员</view>
   </view>
     
   <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
-
-  <view class="btn_align">
-    <view bindtap="goto_manager" class="btn_long">管理员</view>
-    <view bindtap="goto_event_test" class="btn_long">活动测试</view>
-  </view>
 
   <view class="btn_align">
     <view bindtap="goto_feedback" class="btn_long">问题反馈</view>

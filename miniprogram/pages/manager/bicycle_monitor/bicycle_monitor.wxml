@@ -5,7 +5,7 @@
 <view class="page" hidden="{{is_hide}}">
   <view class="weui-form bg-standard" style="padding-top:0;">
     <view class="weui-cells__group weui-cells__group_form">
-      <view class="weui-cells__title">公开车辆</view>
+      <view class="weui-cells__title">上架车辆</view>
       <view class="weui-cells weui-cells_form bg-standard shadow rounded-20 overflow-hidden">
         <view class="weui-form-preview">
           <view class="weui-cell weui-cell_active">

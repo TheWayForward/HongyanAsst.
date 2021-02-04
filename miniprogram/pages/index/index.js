@@ -182,30 +182,6 @@ Page({
       }
     }
   },
-
-  goto_event_test: function () {
-    if (!app.globalData.user) {
-      notification_helper.show_toast_without_icon("暂未获取到用户信息", 2000);
-      return;
-    }
-    wx.showLoading({
-      title: 'title',
-      mask: true
-    })
-    db.collection("events").where({
-      name: "蟒山骑行"
-    }).get({
-      success: function (res) {
-        app.globalData.event = res.data[0];
-        //test valid forever
-        app.globalData.event.precise_time = Date.now();
-        wx.reLaunch({
-          url: '../eventlist/event/locate/locate',
-        })
-      }
-    })
-  },
-
   goto_feedback: function () {
     wx.navigateTo({
       url: '../feedback/feedback',

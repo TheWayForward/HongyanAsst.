@@ -1,8 +1,18 @@
+page {
+  background: #E6E6E6;
+}
+
+.title {
+  font-weight: bold;
+  margin-bottom: 0rpx
+}
+
 .chatroom {
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
+  background-image: url(http://r.photo.store.qq.com/psc?/V10ldMks1Z5QlW/TmEUgtj9EK6.7V8ajmQrEMaiIODNSzTBG85BVigfVhZ2oS3Z4dEuqLfZzHqCUOKvO4X.JHD*PlmM2xZApeydaujUwdFZ3U2D4i6glVcukwg!/r)
 }
 
 .chatroom .header {
@@ -10,11 +20,7 @@
   display: flex;
   flex-direction: row;
   border-bottom: 1px solid #ddd;
-  padding: 20rpx 0 30rpx;
   font-size: 30rpx;
-  /* background: rgb(34, 187, 47);
-  color: rgba(255, 255, 255, 1) */
-  /* font-family: 'Microsoft YaHei' */
 }
 
 .chatroom .header .left {
@@ -22,7 +28,7 @@
 }
 
 .chatroom .header .middle {
-  flex: 2;
+  flex: 1;
   text-align: center;
 }
 
@@ -31,11 +37,13 @@
 }
 
 .chatroom .body {
+  height: 100%;
   flex: 2;
   display: flex;
   flex-direction: column;
-  background: rgb(237,237,237);
-  padding-bottom: 16rpx;
+  background: rgb(237, 237, 237);
+  background-image: url(http://m.qpic.cn/psc?/V10ldMks1Z5QlW/TmEUgtj9EK6.7V8ajmQrEIGDbf3saZcmEVijoUR7hdR6pV0d01FfD.cH*W7UcySHzWclTkjq44z78E.WR.yxKx8ag1p2d6FBtcq.1yOHeXA!/b&bo=AANWBQADVgUDFzI!&rf=viewer_4);
+  padding-bottom: 3rpx;
 }
 
 .body .message {
@@ -54,7 +62,7 @@
   top: 5rpx;
   width: 60rpx;
   height: 60rpx;
-  border-radius: 5rpx;
+  border-radius: 10rpx;
   margin: 15rpx;
 }
 
@@ -76,12 +84,14 @@
 
 .body .message .text-content {
   border: 1px solid transparent;
-  border-radius: 3px;
+  border-radius: 5px;
   background-color: #fff;
-  margin: 2px 0 0 0;
-  padding: 4px 10px;
-  font-size: 30rpx;
+  margin: 2rpx 0 0 0;
+  padding: 10rpx 20rpx;
+  font-size: 35rpx;
   display: inline-block;
+  box-shadow: 1px 1px 2px 1px gainsboro;
+  text-align: justify;
 }
 
 .body .message.message__self .text-content {
@@ -95,7 +105,7 @@
   max-width: 80%;
 }
 
-.body .message.message__self .text-wrapper .loading{
+.body .message.message__self .text-wrapper .loading {
   font-size: 16rpx;
   margin-right: 18rpx;
 }
@@ -107,8 +117,11 @@
 }
 
 .body .message .image-content {
-  max-width: 240rpx;
-  max-height: 240rpx;
+  width: 300rpx;
+  max-height: 600rpx;
+  border-radius: 10rpx;
+  box-shadow: 1px 1px 2px 1px gainsboro;
+
 }
 
 .body .message.message__self .image-wrapper .loading {
@@ -120,10 +133,9 @@
   flex-basis: fit-content;
   display: flex;
   flex-direction: row;
-  border-top: 1px solid #ddd;
   font-size: 10rpx;
-  padding: 20rpx 30rpx;
-  background: rgb(246,246,246);
+  padding: 30rpx;
+  background: rgb(230, 230, 230);
 }
 
 .chatroom .footer .message-sender {
@@ -136,10 +148,10 @@
   flex: 1;
   font-size: 16px;
   border: 1px solid transparent;
-  border-radius: 5px;
-  padding: 3px 6px;
+  border-radius: 8rpx;
+  padding: 3rpx 6rpx;
   margin: 0 10px 0 5px;
-  background: #fff;
+  background: rgb(247, 247, 247);
 }
 
 .message-sender .btn-send-image {
@@ -153,9 +165,24 @@ button {
 }
 
 button.userinfo {
-  background: darkturquoise;
-  color: aliceblue;
+  color: rgb(131, 131, 131);
   padding: 0 100rpx;
-  border: 1px solid #ddd;
-  border-radius: 20px;
+  background: linear-gradient(to right, rgba(106, 188, 235, 0.973), rgba(5, 226, 255, 0.801));
+  border-radius: 50rpx;
+  border: 5px solid rgb(245, 245, 245);
+  filter: drop-shadow(-5rpx 0rpx 10rpx #a8a8a8);
+
+}
+
+.txt1 {
+  font-weight: bold;
+  color: whitesmoke;
+  justify-content: center;
+  display: flex;
+  text-align: center;
+  margin-top: 10rpx;
+}
+
+.hv {
+  opacity: 0.7
 }

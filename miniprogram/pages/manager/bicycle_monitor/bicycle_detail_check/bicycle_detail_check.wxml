@@ -92,8 +92,8 @@
           <view class="weui-cells" style="margin-top:0;">
             <view class="weui-cell weui-cell_active">
               <view class="weui-cell__bd">
-                <text class="weui-badge bg_red" style="margin-left: 5px;" wx:if="{{bicycle.is_rentable}}">可被租赁</text>
-                <text class="weui-badge bg_blue" style="margin-left: 5px;" wx:if="{{bicycle.is_sellable}}">可被转售</text>
+                <text class="weui-badge bg_red shadow" style="margin-left: 5px;" wx:if="{{bicycle.is_rentable}}">可被租赁</text>
+                <text class="weui-badge bg_blue shadow" style="margin-left: 5px;" wx:if="{{bicycle.is_sellable}}">可被转售</text>
                 <text class="weui-badge bg_green" style="margin-left: 5px;" wx:if="{{!bicycle.is_sellable && !bicycle.is_rentable}}">用户自用</text>
               </view>
               <view class="weui-cell__ft"></view>

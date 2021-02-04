@@ -4,14 +4,15 @@
 </view>
 <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
 <view class="btn_align">
-  <view bindtap="goto_event_release" class="btn_normal">活动</view>
-  <view bindtap="goto_article_release" class="btn_normal">资讯</view>
-  <view bindtap="goto_progress_release" class="btn_normal">日志</view>
-  <view bindtap="goto_device_manage" class="btn_normal">添加设备</view>
+  <view bindtap="goto_event_release" class="btn_normal">活动发布</view>
+  <view bindtap="goto_article_release" class="btn_normal">资讯发布</view>
+  <view bindtap="goto_progress_release" class="btn_normal">日志发布</view>
+  <view bindtap="goto_device_manage" class="btn_normal">设备管理</view>
 </view>
 <view class="btn_align">
+  <view bindtap="goto_index_info_manage" class="btn_normal">首页信息</view>
   <view bindtap="goto_bicycle_censorship" class="btn_normal">车辆审核</view>
   <view bindtap="goto_bicycle_monitor" class="btn_normal">车辆监管</view>
   <view bindtap="goto_" class="btn_normal"></view>
-  <view bindtap="goto_" class="btn_normal"></view>
+  
 </view>

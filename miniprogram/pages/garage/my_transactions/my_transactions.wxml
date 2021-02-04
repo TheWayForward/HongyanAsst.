@@ -16,7 +16,8 @@
                 style="margin-left: 5px;">{{rentals_created.length}}</text>
             </view>
           </view>
-          <view class="weui-form-preview" wx:if="{{rentals_created[0].bicycle}}" wx:for="{{rentals_created}}">
+          <view class="weui-form-preview" wx:if="{{rentals_created[0].bicycle}}" wx:for="{{rentals_created}}"
+            wx:key="id">
             <view class="weui-panel weui-panel_access">
               <view class="weui-panel__bd">
                 <a class="weui-media-box weui-media-box_appmsg">
@@ -56,8 +57,8 @@
                 </view>
                 <view class="weui-form-preview__item">
                   <label class="weui-form-preview__label">状态</label>
-                  <text class="weui-form-preview__value" style="text-align:right;"
-                    user-select="true">{{item.transaction.status}}</text>
+                  <text class="weui-badge shadow"
+                    style="background:{{item.background}};">{{item.transaction.status}}</text>
                 </view>
               </view>
             </view>
@@ -74,7 +75,7 @@
                 wx:if="{{sales_created[0].bicycle}}">{{sales_created.length}}</text>
             </view>
           </view>
-          <view class="weui-form-preview" wx:if="{{sales_created[0].bicycle}}" wx:for="{{sales_created}}">
+          <view class="weui-form-preview" wx:if="{{sales_created[0].bicycle}}" wx:for="{{sales_created}}" wx:key="id">
             <view class="weui-panel weui-panel_access">
               <view class="weui-panel__bd">
                 <a class="weui-media-box weui-media-box_appmsg">
@@ -109,8 +110,8 @@
                 </view>
                 <view class="weui-form-preview__item">
                   <label class="weui-form-preview__label">状态</label>
-                  <text class="weui-form-preview__value" style="text-align:right;"
-                    user-select="true">{{item.transaction.status}}</text>
+                  <text class="weui-badge shadow"
+                    style="background:{{item.background}};">{{item.transaction.status}}</text>
                 </view>
               </view>
             </view>
@@ -130,7 +131,8 @@
                 style="margin-left: 5px;">{{rentals_involved.length}}</text>
             </view>
           </view>
-          <view class="weui-form-preview" wx:if="{{rentals_involved[0].bicycle}}" wx:for="{{rentals_involved}}">
+          <view class="weui-form-preview" wx:if="{{rentals_involved[0].bicycle}}" wx:for="{{rentals_involved}}"
+            wx:key="id">
             <view class="weui-panel weui-panel_access">
               <view class="weui-panel__bd">
                 <a class="weui-media-box weui-media-box_appmsg">
@@ -170,8 +172,8 @@
                 </view>
                 <view class="weui-form-preview__item">
                   <label class="weui-form-preview__label">状态</label>
-                  <text class="weui-form-preview__value" style="text-align:right;"
-                    user-select="true">{{item.transaction.status}}</text>
+                  <text class="weui-badge shadow"
+                    style="background:{{item.background}};">{{item.transaction.status}}</text>
                 </view>
               </view>
             </view>
@@ -188,7 +190,7 @@
                 wx:if="{{sales_involved[0].bicycle}}">{{sales_involved.length}}</text>
             </view>
           </view>
-          <view class="weui-form-preview" wx:if="{{sales_involved[0].bicycle}}" wx:for="{{sales_involved}}">
+          <view class="weui-form-preview" wx:if="{{sales_involved[0].bicycle}}" wx:for="{{sales_involved}}" wx:key="id">
             <view class="weui-panel weui-panel_access">
               <view class="weui-panel__bd">
                 <a class="weui-media-box weui-media-box_appmsg">
@@ -223,8 +225,8 @@
                 </view>
                 <view class="weui-form-preview__item">
                   <label class="weui-form-preview__label">状态</label>
-                  <text class="weui-form-preview__value" style="text-align:right;"
-                    user-select="true">{{item.transaction.status}}</text>
+                  <text class="weui-badge shadow"
+                    style="background:{{item.background}};">{{item.transaction.status}}</text>
                 </view>
               </view>
             </view>

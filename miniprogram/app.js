@@ -1,6 +1,7 @@
 wx.cloud.init();
 const db = wx.cloud.database();
 var compare_helper = require("utils/helpers/compare_helper");
+const notification_helper = require("./utils/helpers/notification_helper");
 
 App({
 
@@ -87,6 +88,7 @@ App({
               openid: res.data[0].openid
             }).watch({
               onChange(e) {
+                console.log("[app][user]: data updated");
                 that.globalData.user = e.docChanges[0].doc;
               },
               onError(e) {}

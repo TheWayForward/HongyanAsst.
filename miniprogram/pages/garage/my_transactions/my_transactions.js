@@ -18,6 +18,12 @@ Page({
     rentals_involved: [],
     sales_created: [],
     sales_involved: [],
+    show_transactions: {
+      rentals_created: false,
+      sales_created: false,
+      rentals_involved: false,
+      sales_involved: false
+    },
     watcher: 0,
     show_top: true
   },
@@ -71,47 +77,29 @@ Page({
         }
       })
     }
-    if (!app.globalData.user.my_transactions[0]) {
-      wx.hideLoading({
-        success(res) {
-          notification_helper.show_toast_without_icon("您尚未进行过交易", 2000);
-        }
-      })
-    } else {
-      check();
-      console.log(that.data)
-    }
+    check();
+
 
     function check() {
+      if (!app.globalData.user.my_transactions.length) {
+        wx.hideLoading({
+          success(res){
+            notification_helper.show_toast_without_icon("您尚未进行过交易",2000);
+            return;
+          }
+        })
+      }
       if (that.data.transactions.length == app.globalData.user.my_transactions.length && that.data.bicycles.length == app.globalData.user.my_transactions.length) {
+        //all transaction data ready
         for (var i = 0; i < that.data.transactions.length; i++) {
-          that.data.transactions[i].date_time = time_helper.format_time(new Date(that.data.transactions[i].time_created)).date_time;
-          if (!that.data.transactions[i].is_valid) {
-            if (that.data.transactions[i].is_expired) {
-              that.data.transactions[i].status = "已失效";
-            } else {
-              that.data.transactions[i].status = "待确认";
-            }
-          } else {
-            if (that.data.transactions[i].is_expired) {
-              that.data.transactions[i].status = "已过期";
-            } else {
-              that.data.transactions[i].status = "已成交";
-            }
-          }
-          if (that.data.transactions[i].type == "rental") {
-            that.data.transactions[i].rental_date_start_string = time_helper.format_time(that.data.transactions[i].rental_date_start).date;
-            that.data.transactions[i].rental_date_end_string = time_helper.format_time(that.data.transactions[i].rental_date_end).date;
-          } else {
-            //sale
-            that.data.transactions[i].date_time = time_helper.format_time(new Date(that.data.transactions[i].time_created)).date_time;
-          }
           that.data.transactions_and_bicycles.push({
+            id: i,
             bicycle: {},
             transaction: that.data.transactions[i],
             time_created: null
           });
         }
+        //join tables
         for (var i = 0; i < that.data.transactions_and_bicycles.length; i++) {
           for (var j = 0; j < that.data.bicycles.length; j++) {
             if (that.data.transactions_and_bicycles[i].transaction.bicycle_id == that.data.bicycles[j]._id) {
@@ -124,54 +112,69 @@ Page({
         that.setData({
           transactions_and_bicycles: that.data.transactions_and_bicycles
         })
+        //classify transactions, involved or created, sale or rental, expired or valid
         for (var i = 0; i < that.data.transactions_and_bicycles.length; i++) {
-          if (that.data.transactions_and_bicycles[i].bicycle.owner.openid == app.globalData.user.openid) {
-            that.data.transactions_involved.push(that.data.transactions_and_bicycles[i]);
-            if (that.data.transactions_and_bicycles[i].transaction.type == "rental") {
-              that.data.transactions_and_bicycles[i].transaction.type_detail = "rental_involved";
-              that.data.rentals_involved.push(that.data.transactions_and_bicycles[i]);
+          that.data.transactions_and_bicycles[i].transaction.date_time = time_helper.format_time(new Date(that.data.transactions_and_bicycles[i].transaction.time_created)).date_time;
+          if (!that.data.transactions_and_bicycles[i].transaction.is_valid) {
+            if (that.data.transactions_and_bicycles[i].transaction.is_expired) {
+              that.data.transactions_and_bicycles[i].background = "#FA5159";
+              that.data.transactions_and_bicycles[i].transaction.status = "已失效";
             } else {
-              that.data.transactions_and_bicycles[i].transaction.type_detail = "sale_involved";
-              that.data.sales_involved.push(that.data.transactions_and_bicycles[i]);
+              that.data.transactions_and_bicycles[i].background = "#188FC8";
+              that.data.transactions_and_bicycles[i].transaction.status = "待确认";
             }
-            //sale
           } else {
-            that.data.transactions_created.push(that.data.transactions_and_bicycles[i]);
-            if (that.data.transactions_and_bicycles[i].transaction.type == "rental") {
-              that.data.transactions_and_bicycles[i].transaction.type_detail = "rental_created";
-              that.data.rentals_created.push(that.data.transactions_and_bicycles[i]);
+            if (that.data.transactions_and_bicycles[i].transaction.is_expired) {
+              that.data.transactions_and_bicycles[i].background = "#FF5535";
+              that.data.transactions_and_bicycles[i].transaction.status = "已过期";
             } else {
-              that.data.transactions_and_bicycles[i].transaction.type_detail = "sale_created";
-              that.data.sales_created.push(that.data.transactions_and_bicycles[i]);
+              that.data.transactions_and_bicycles[i].background = "#07C160";
+              that.data.transactions_and_bicycles[i].transaction.status = "已成交";
             }
-            //sale
+          }
+          switch (that.data.transactions_and_bicycles[i].transaction.type) {
+            case ("rental"):
+              that.data.transactions_and_bicycles[i].transaction.rental_date_start_string = time_helper.format_time(that.data.transactions_and_bicycles[i].transaction.rental_date_start).date;
+              that.data.transactions_and_bicycles[i].transaction.rental_date_end_string = time_helper.format_time(that.data.transactions_and_bicycles[i].transaction.rental_date_end).date;
+              if (that.data.transactions_and_bicycles[i].transaction.owner_id == app.globalData.user._id) {
+                that.data.transactions_and_bicycles[i].transaction.type_detail = "rental_involved";
+                that.data.rentals_involved.push(that.data.transactions_and_bicycles[i]);
+              } else {
+                that.data.transactions_and_bicycles[i].transaction.type_detail = "rental_created";
+                that.data.rentals_created.push(that.data.transactions_and_bicycles[i]);
+              }
+              break;
+            case ("sale"):
+              that.data.transactions_and_bicycles[i].transaction.date_time = time_helper.format_time(new Date(that.data.transactions_and_bicycles[i].transaction.time_created)).date_time;
+              if (that.data.transactions_and_bicycles[i].transaction.seller_id == app.globalData.user._id) {
+                that.data.transactions_and_bicycles[i].transaction.type_detail = "sale_involved";
+                that.data.sales_involved.push(that.data.transactions_and_bicycles[i]);
+              } else {
+                that.data.transactions_and_bicycles[i].transaction.type_detail = "sale_created";
+                that.data.sales_created.push(that.data.transactions_and_bicycles[i]);
+              }
+              break;
           }
         }
-        that.data.transactions_involved.sort(compare_helper.compare("time_created"));
-        that.data.transactions_created.sort(compare_helper.compare("time_created"));
         that.data.rentals_created.sort(compare_helper.compare("time_created"));
         that.data.rentals_involved.sort(compare_helper.compare("time_created"));
         that.data.sales_created.sort(compare_helper.compare("time_created"));
         that.data.sales_involved.sort(compare_helper.compare("time_created"));
         that.setData({
-          transactions_involved: that.data.transactions_involved.reverse(),
-          transactions_created: that.data.transactions_created.reverse(),
           rentals_created: that.data.rentals_created.reverse(),
           rentals_involved: that.data.rentals_involved.reverse(),
           sales_created: that.data.sales_created.reverse(),
           sales_involved: that.data.sales_involved.reverse()
         })
-        console.log(that.data);
         wx.hideLoading({})
       } else {
         setTimeout(check, 500);
       }
     }
-
   },
 
   onShow: function (e) {
-
+    var that = this;
   },
 
   onPageScroll: function (e) {
