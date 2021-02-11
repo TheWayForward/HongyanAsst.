@@ -115,6 +115,23 @@ Page({
   },
 
   goto_bicycle_for_rent_detail: function (e) {
+    if (!app.globalData.user._id) {
+      wx.showModal({
+        title: "提示",
+        content: "注册后即可查看车辆详情，立即注册？",
+        confirmText: "确定",
+        cancelText: "取消",
+        success(res) {
+          if (res.cancel) return;
+          else {
+            wx.navigateTo({
+              url: '../../register/register',
+            })
+          }
+        }
+      })
+      return;
+    }
     app.globalData.my_bicycle = e.currentTarget.dataset.action;
     wx.navigateTo({
       url: '../bicycle_for_rent_list/bicycle_for_rent_detail/bicycle_for_rent_detail',

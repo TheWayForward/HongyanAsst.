@@ -1,1 +1,3 @@
-/* pages/eventlist/eventlist.wxss */
+.weui-cells__group_form .weui-cell__hd {
+  padding: 0;
+}

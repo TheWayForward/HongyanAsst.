@@ -202,7 +202,6 @@ Page({
         return;
       }
     }
-
     if (!that.data.files.length) {
       notification_helper.show_toast_without_icon("资讯封面未上传", 2000);
       return;

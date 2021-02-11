@@ -5,17 +5,17 @@
   flex-direction: column;
   align-items: center;
   box-sizing: border-box;
-} 
+}
 
 button {
   background: initial;
 }
 
-button:focus{
+button:focus {
   outline: 0;
 }
 
-button::after{
+button::after {
   border: none;
 }
 
@@ -27,7 +27,9 @@ page {
   justify-content: flex-start;
 }
 
-.userinfo, .uploader, .tunnel {
+.userinfo,
+.uploader,
+.tunnel {
   margin-top: 40rpx;
   height: 140rpx;
   width: 100%;
@@ -65,7 +67,8 @@ page {
   border: none;
 }
 
-.uploader, .tunnel {
+.uploader,
+.tunnel {
   height: auto;
   padding: 0 0 0 40rpx;
   flex-direction: column;
@@ -73,7 +76,8 @@ page {
   box-sizing: border-box;
 }
 
-.uploader-text, .tunnel-text {
+.uploader-text,
+.tunnel-text {
   width: 100%;
   line-height: 52px;
   font-size: 34rpx;
@@ -157,216 +161,231 @@ page {
 }
 
 /*bootstrap*/
-.margin-0{
+.margin-0 {
   margin: 0;
 }
 
-.padding-0{
+.padding-0 {
   padding: 0;
 }
 
-.center{
+.center {
   margin: 0 auto;
 }
 
-.overflow-hidden{
+.overflow-hidden {
   overflow: hidden;
 }
 
-.d-flex{
+.d-flex {
   display: flex;
 }
 
-.d-inline-block{
+.d-inline-block {
   display: inline-block;
 }
 
-.bg-standard{
+.bg-standard {
   background-color: #F6F6F6;
 }
 
-.bg-white{
+.bg-white {
   background: white;
 }
 
-.border{
+.border {
   border: 1px solid gray;
 }
 
-.bold{
+.bold {
   font-weight: bold;
 }
 
-.d-flex{
+.d-flex {
   display: flex;
 }
 
-.p-20{
+.p-20 {
   padding: 20rpx;
 }
 
-.pl-10{
+.pl-10 {
   padding-left: 10rpx;
 }
 
-.pl-20{
+.pl-20 {
   padding-left: 20rpx;
 }
 
-.pr-20{
+.pr-20 {
   padding-right: 20rpx;
 }
 
-.pb-25{
+.pb-25 {
   padding-bottom: 25rpx;
 }
 
-.pb-50{
+.pb-50 {
   padding-bottom: 50rpx;
 }
 
-.pb-100{
+.pb-100 {
   padding-bottom: 100rpx;
 }
 
-.pt-25{
+.pt-25 {
   padding-top: 25rpx;
 }
 
-.pt-50{
+.pt-50 {
   padding-top: 50rpx;
 }
 
-.pt-100{
+.pt-100 {
   padding-top: 100rpx
 }
 
-.ml-25{
+.ml-25 {
   margin-left: 25rpx;
 }
 
-.ml-50{
+.ml-50 {
   margin-left: 50rpx;
 }
 
-.mr-20{
+.mr-20 {
   margin-right: 20rpx;
 }
 
-.mr-50{
+.mr-50 {
   margin-right: 50rpx;
 }
 
-.mt-5{
+.mt-5 {
   margin-top: 5rpx;
 }
 
-.mt-10{
+.mt-10 {
   margin-top: 10rpx;
 }
 
-.mt-20{
+.mt-20 {
   margin-top: 20rpx;
 }
 
-.mt-50{
+.mt-50 {
   margin-top: 50rpx;
 }
 
-.mt-100{
+.mt-100 {
   margin-top: 100rpx;
 }
 
-.mb-20{
+.mb-20 {
   margin-bottom: 20rpx;
 }
 
-.w-25{
+.w-25 {
   width: 25%;
 }
 
-.w-50{
+.w-50 {
   width: 50%;
 }
 
-.w-100{
+.w-100 {
   width: 100%;
 }
 
-.rounded-5{
+.rounded-5 {
   border-radius: 5rpx;
 }
 
-.rounded-10{
+.rounded-10 {
   border-radius: 10rpx;
 }
 
-.rounded-20{
+.rounded-20 {
   border-radius: 20rpx;
 }
 
-.rounded{
+.rounded {
   border-radius: 50%;
 }
 
-.shadow{
+.shadow {
   box-shadow: 0rpx 3rpx 1rpx 1rpx gainsboro;
 }
 
-.shadow-bold{
+.shadow-bold {
   box-shadow: 0rpx 3rpx 3rpx 3rpx gainsboro;
 }
 
-.shadow-filter{
+.shadow-filter {
   filter: drop-shadow(0rpx 15rpx 10rpx #999999);
 }
 
-.blur{
+.blur {
   box-shadow: 0 0 20rpx 20rpx #F6F6F6 inset;
 }
 
-.hv{
+.hv {
   opacity: 0.7;
 }
 
 /*personal attributes*/
-.bg_white{
+.flex-wrp {
+  display: flex;
+}
+
+.flex-tab {
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  align-items: stretch;
+}
+
+.flex-item {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.bg_white {
   background-color: #FFFFFF;
 }
 
-.bg_red{
+.bg_red {
   background-color: #FA5159;
 }
 
-.bg_blue{
+.bg_blue {
   background-color: #188FC8;
 }
 
-.bg_green{
+.bg_green {
   background-color: #07C160;
 }
 
-.bg_orange{
+.bg_orange {
   background-color: #FF5535;
 }
 
-.bg_black{
+.bg_black {
   background-color: black;
 }
 
-.text_black{
+.text_black {
   color: black;
 }
 
-.text_red{
+.text_red {
   color: #FA5159;
 }
 
-.border_black{
+.border_black {
   border: 1px solid black;
 }
 
-.btn_align{
+.btn_align {
   display: flex;
   width: 100%;
   flex-direction: row;
@@ -374,94 +393,94 @@ page {
   align-items: center;
 }
 
-.btn_normal{
-  height: 170rpx;
-  width: 170rpx;
-  line-height: 170rpx;
-  background: gainsboro;
-  border: 1rpx solid gray;
+.btn_normal {
+  margin: 0 auto;
+  height: 230rpx;
+  width: 180rpx;
+  line-height: 230rpx;
+  background-size: cover;
+  background-position: 50% 50%;
   border-radius: 10rpx;
-  margin: 10rpx;
   text-align: center;
   align-items: center;
-  box-shadow: 0rpx 3rpx 1rpx 1rpx gainsboro;
+  box-shadow: 0rpx 3rpx 10rpx 4rpx gainsboro;
   opacity: 1.0;
 }
 
-.btn_normal:active{
+.btn_normal:active {
   opacity: 0.7;
   transform: scale(0.95);
   transition: 0.1s ease;
 }
 
-.btn_long{
-  height: 120rpx;
-  width: 730rpx;
-  line-height: 120rpx;
-  background: gainsboro;
-  border: 1rpx solid gray;
+.btn_long {
+  height: 180rpx;
+  width: 367rpx;
+  line-height: 180rpx;
+  background-size: cover;
+  background-position: 50% 50%;
   border-radius: 10rpx;
-  margin: 10rpx;
+  margin: 0 auto;
   text-align: center;
   align-items: center;
-  box-shadow: 0rpx 3rpx 1rpx 1rpx gainsboro;
+  box-shadow: 0rpx 3rpx 10rpx 4rpx gainsboro;
   opacity: 1.0;
 }
 
-.btn_long:active{
+.btn_long:active {
   opacity: 0.7;
   transform: scale(0.95);
   transition: 0.1s ease;
 }
 
-.bottom_fixed{
-  position:fixed; 
-  bottom: 30rpx; 
-  text-align: center; 
-  left: 0; 
-  right: 0; 
-  margin:0 auto;
+.bottom_fixed {
+  position: fixed;
+  bottom: 30rpx;
+  text-align: center;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
 }
 
-.loading_animation_align{
+.loading_animation_align {
   text-align: center;
 }
 
-.loading_animation{
+.loading_animation {
   height: 400rpx;
   width: 400rpx;
 }
 
-.search_align{
+.search_align {
   background: #F6F6F6;
   padding: 30rpx;
- }
+}
 
-.input{
+.input {
   background: gainsboro;
   border-radius: 60rpx;
   height: 70rpx;
   width: 100%;
-  padding:0rpx 40rpx 0rpx 120rpx;
+  padding: 0rpx 40rpx 0rpx 120rpx;
   display: flex;
 }
 
-.input:hover{
+.input:hover {
   text-align: left;
   border-radius: 60rpx;
-  padding:0rpx 40rpx 0rpx 20rpx;
+  padding: 0rpx 40rpx 0rpx 20rpx;
   display: flex;
   transition: 0.3s ease;
 }
 
-.input .box{
+.input .box {
   height: 70rpx;
   line-height: 70rpx;
   width: 100%;
   margin-left: 35rpx;
 }
 
-.input_clear{
+.input_clear {
   height: 40rpx;
   width: 40rpx;
   line-height: 70rpx;
@@ -470,16 +489,16 @@ page {
   align-self: center;
 }
 
-.input_clear:active{
+.input_clear:active {
   opacity: 0.7;
   scale: 0.95;
 }
 
-.smaller{
+.smaller {
   scale: 0.3;
 }
 
-.go_top{
+.go_top {
   position: fixed;
   bottom: 20px;
   right: 15px;
@@ -488,63 +507,63 @@ page {
   z-index: 15;
 }
 
-.go_top:active{
+.go_top:active {
   opacity: 0.7;
   transform: scale(0.5);
   transition: 10.0s ease;
 }
 
-.comment_submission_align{
+.comment_submission_align {
   margin-left: 38rpx;
   display: flex;
   margin-bottom: 50rpx;
 }
 
-.comment_submission_align .comment_submission_avatar{
-  height:60rpx; 
-  width:60rpx; 
-  border-radius:10rpx;
+.comment_submission_align .comment_submission_avatar {
+  height: 60rpx;
+  width: 60rpx;
+  border-radius: 10rpx;
 }
 
-.comment_submission_align .comment_submission_input{
-  background: #E9E9E9; 
-  width: 490rpx; 
-  margin-left: 15rpx; 
-  height: 60rpx; 
-  border-radius: 10rpx; 
-  font-size: 25rpx; 
-  padding-left: 20rpx; 
+.comment_submission_align .comment_submission_input {
+  background: #E9E9E9;
+  width: 490rpx;
+  margin-left: 15rpx;
+  height: 60rpx;
+  border-radius: 10rpx;
+  font-size: 25rpx;
+  padding-left: 20rpx;
   padding-right: 20rpx
 }
 
-.comment_submission_align .comment_submission_box{
-  height: 60rpx; 
-  width: 70rpx; 
-  margin-left: 15rpx; 
+.comment_submission_align .comment_submission_box {
+  height: 60rpx;
+  width: 70rpx;
+  margin-left: 15rpx;
   border-radius: 10rpx;
   overflow: hidden;
   padding: 0;
 }
 
-.comment_submission_align .comment_submission_box:active{
+.comment_submission_align .comment_submission_box:active {
   scale: 0.95;
   transition: 0.1s ease;
 }
 
-.comment_submission_align .comment_submission_button{
+.comment_submission_align .comment_submission_button {
   background: #188FC8;
   width: 100%;
   height: 100%;
   padding: 0;
 }
 
-.comment_submission_align .comment_submission_button_image{
+.comment_submission_align .comment_submission_button_image {
   height: 36rpx;
   width: 60rpx;
   margin-top: 14rpx;
 }
 
-.upload_image_delete_cover{
+.upload_image_delete_cover {
   background: gainsboro;
   margin-top: -60rpx;
   height: 60rpx;
@@ -553,7 +572,7 @@ page {
   opacity: 0.9;
 }
 
-.upload_image_delete{
+.upload_image_delete {
   height: 50rpx;
   width: 50rpx;
   margin-top: 5rpx;

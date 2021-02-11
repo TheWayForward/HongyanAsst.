@@ -95,7 +95,7 @@
           </view>
           <!--show if no event was participated-->
           <view wx:if="{{!user.my_event[0]}}" class="weui-cell">
-            <button class="weui-btn weui-btn_primary shadow" bindtap="goto_event">参加活动</button>
+            <button class="weui-btn weui-btn_primary shadow" bindtap="goto_eventlist">参加活动</button>
           </view>
         </view>
       </view>

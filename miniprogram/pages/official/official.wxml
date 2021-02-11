@@ -108,7 +108,7 @@
 						</view>
 						<view class="weui-media-box__bd">
 							<h4 class="weui-media-box__title">V{{item.version}}</h4>
-							<view class="weui-media-box__desc">{{item.details}}</view>
+							<view class="weui-media-box__desc text_black">{{item.details}}</view>
 							<view class="weui-media-box__info">
 								<view class="weui-media-box__info__meta">{{item.contributor}}</view>
 								<view class="weui-media-box__info__meta">{{item.date}}</view>

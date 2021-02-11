@@ -1,18 +1,13 @@
 <view class="page">
 
-  <!--update requirement-->
-  <view style="text-align:center;" hidden="{{!update_required}}">
-    <view>当前微信版本：{{wechat_version}}</view>
-    <view>建议您升级微信至{{wechat_version_min}}或更高版本以体验完整功能！</view>
+  <view class="rounded-20" hover-class="hv" hover-stay-time="30" hidden="{{is_swiper_hide}}">
+    <swiper class="poster" style="margin-bottom:-20rpx;" autoplay="true">
+      <swiper-item wx:for="{{posters}}" wx:key="_id">
+        <image class="poster_image" src="{{item.thumbnail}}" mode="aspectFill" data-action="{{item.thumbnail}}"
+          bindtap="preview"></image>
+      </swiper-item>
+    </swiper>
   </view>
-
-  <view style="text-align:center;" hidden="{{update_required}}">
-    <view>{{en}}</view>
-    <view>{{ch}}</view>
-    <view>{{wechat_version_min}}</view>
-  </view>
-
-  <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
 
   <view class="scrollalign shadow-filter">
     <image class="scroll_logo" src="{{logo}}" mode="aspectFill" style="height:70rpx"></image>
@@ -32,29 +27,28 @@
   <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
 
   <view class="btn_align">
-    <view bindtap="goto_articlelist" class="btn_normal">资讯评论</view>
-    <view bindtap="goto_gallery" class="btn_normal">车协相册</view>
-    <view bindtap="goto_user_profile" class="btn_normal">我的车协</view>
-    <view bindtap="goto_eventlist" class="btn_normal">骑行活动</view>
+    <view bindtap="goto_articlelist" class="btn_normal" style="background-image:url({{articlelist_image}});"></view>
+    <view bindtap="goto_gallery" class="btn_normal" style="background-image:url({{gallery_image}});"></view>
+    <view bindtap="goto_user_profile" class="btn_normal" style="background-image:url({{user_profile_image}});"></view>
+    <view bindtap="goto_eventlist" class="btn_normal" style="background-image:url({{eventlist_image}});"></view>
   </view>
-  <view class="btn_align">
-    <view bindtap="goto_garage" class="btn_long">鸿雁车库</view>
-    <view bindtap="goto_manager" class="btn_long">管理员</view>
+
+  <view class="btn_align mt-20">
+    <view bindtap="goto_garage" class="btn_long" style="background-image:url({{garage_image}});"></view>
+    <view bindtap="goto_manager" class="btn_long" style="background-image:url({{manager_image}});"></view>
   </view>
-    
   <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
 
-  <view class="btn_align">
-    <view bindtap="goto_feedback" class="btn_long">问题反馈</view>
-  </view>
 
   <!--footer-->
-  <view class="footer bottom_fixed mt-20">
+  <view class="footer mt-20 mb-20">
     <view class="weui-footer">
       <view class="weui-footer__links">
-        <navigator url="../../pages/official/official" class="weui-footer__link">关于我们</navigator>
+        <navigator url="../terms/terms" class="weui-footer__link">服务条款</navigator>|<navigator url="../feedback/feedback"
+          class="weui-footer__link">问题反馈</navigator>|<navigator url="../../pages/official/official"
+          class="weui-footer__link">关于我们</navigator>
       </view>
-      <view class="weui-footer__text">Copyright © 北京邮电大学 鸿雁车协</view>
+      <view class="weui-footer__text">Copyright © 北京邮电大学 鸿雁车协 2020-2021</view>
     </view>
   </view>
 </view>

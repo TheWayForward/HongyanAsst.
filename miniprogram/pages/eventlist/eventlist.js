@@ -29,7 +29,7 @@ Page({
   onLoad: function () {
     if (!this.data.events[0]) {
       wx.showLoading({
-        title: '活动加载中',
+        title: '加载中',
       })
     }
     var that = this;

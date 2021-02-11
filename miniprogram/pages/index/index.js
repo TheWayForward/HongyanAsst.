@@ -8,7 +8,7 @@ Page({
   data: {
     ch: "加载中...",
     showTop: true,
-    isHide: true,
+    is_swiper_hide: true,
     //version check
     wechat_version: "",
     wechat_version_min: "",
@@ -21,12 +21,22 @@ Page({
     distance: 0,
     margin: 0,
     size: 25,
-    interval: 15, 
+    interval: 15,
+    articlelist_image: "http://m.qpic.cn/psc?/V10ldMks1MA0AI/TmEUgtj9EK6.7V8ajmQrEJvXprqcuo*pIac1dAOEX7FQH9Cm1JXZkVUqFxNqd05wZfitfBaVUK08CUXERg4OIEc02JK2UvRazzPsQ8069WA!/b&bo=qAETAqgBEwIDFzI!&rf=viewer_4",
+    gallery_image: "http://m.qpic.cn/psc?/V10ldMks1MA0AI/TmEUgtj9EK6.7V8ajmQrEDgDPdOUXnG8OodrhCcDwsf48bIXIiU5k.pDpoK2lgqN3UIjQov3eprrinV4cbnos*f1Pw4Z77KKoEkGFcRribM!/b&bo=qAETAqgBEwIDFzI!&rf=viewer_4",
+    user_profile_image: "http://m.qpic.cn/psc?/V10ldMks1MA0AI/TmEUgtj9EK6.7V8ajmQrEHXDnf7RlnIdldYaERrJjjDVran4cCPZotNjCNPHTUTxI9v4LKBkQvzEEx183FcWRQVgT3FR9ZV2ez8aTDAaPAs!/b&bo=qAETAqgBEwIDFzI!&rf=viewer_4",
+    eventlist_image: "http://m.qpic.cn/psc?/V10ldMks1MA0AI/TmEUgtj9EK6.7V8ajmQrEAFKvymIwVi0Kb*UO*IaZW8GQ1JYnPWj7W4d3pqThXRA8jt3YHcuT.qALG99FFlgRjW9ZPZ9zAvbyMqaO0zFZIg!/b&bo=pwETAqcBEwIDJwI!&rf=viewer_4",
+    garage_image: "http://m.qpic.cn/psc?/V10ldMks1MA0AI/TmEUgtj9EK6.7V8ajmQrEJ.UOMUhYVS*nCJ*skQ9wt8LcPlBqDAV*k7cXx*Z1v.CH9Qwdv.ZcMfr1KVIW1QmC97vg5AEER70vKRN1IZy36U!/b&bo=wwJcAcMCXAEDFzI!&rf=viewer_4",
+    manager_image: "http://m.qpic.cn/psc?/V10ldMks1MA0AI/TmEUgtj9EK6.7V8ajmQrEDuN1X0nn1sY54WLvk6F60m**MY.8O4W8i*gWU1r1n9MEmNqadYONF4nlFZ2OVZrCg1roZcIpfeHn6izFn*bYXU!/b&bo=2gJcAQAAAAADF7c!&rf=viewer_4",
+    posters: [],
+    poster_urls: [],
+    user: {}
   },
 
   onLoad: function () {
 
     var that = this;
+
     //get device system info, such as batterylevel, screen, system version, etc.
     wx.getSystemInfo({
       success(res) {
@@ -46,9 +56,24 @@ Page({
           length: app.globalData.bulletin.length * that.data.size,
           window_width: wx.getSystemInfoSync().windowWidth,
           logo: "cloud://hongyancrew-pvmj1.686f-hongyancrew-pvmj1-1303885697/essentials/hongyancrew.png",
-          bulletin_text: app.globalData.bulletin 
+          bulletin_text: app.globalData.bulletin
         });
         that.scroll_text();
+      }
+    })
+
+    db.collection("articles").field({
+      thumbnail: true
+    }).get({
+      success(res) {
+        for (var i = 0; i < res.data.length; i++) {
+          that.data.poster_urls.push(res.data[i].thumbnail)
+        }
+        that.setData({
+          posters: res.data, 
+          poster_urls: that.data.poster_urls,
+          is_swiper_hide: false
+        })
       }
     })
   },
@@ -92,11 +117,25 @@ Page({
     })
   },
 
+  onHide: function () {
+    this.setData({
+      distance: 0
+    })
+  },
+
+  preview: function (e) {
+    var that = this;
+    wx.previewImage({
+      current: e.currentTarget.dataset.action,
+      urls: that.data.poster_urls
+    })
+  },
+
   scroll_text: function () {
     var that = this;
     if (that.data.length > that.data.window_width) {
       var interval = setInterval(function () {
-        if (that.data.distance < (that.data.length + that.data.margin)) {
+        if (that.data.distance < (that.data.length / 2 + that.data.margin)) {
           that.setData({
             distance: that.data.distance + that.data.pace
           })

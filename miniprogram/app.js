@@ -46,8 +46,7 @@ App({
 
     //init cloud environment
     wx.cloud.init({
-      env: 'hongyancrew-pvmj1',
-      traceUser: true
+      env: 'hongyancrew-pvmj1'
     })
 
     //cannot be done when user info is unauthorized
@@ -57,7 +56,7 @@ App({
           wx.getUserInfo({
             success: res => {
               console.log(res.userInfo);
-              this.globalData.user_info = res.userInfo;
+              that.globalData.user_info = res.userInfo;
             }
           })
         }

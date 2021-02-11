@@ -16,7 +16,7 @@
   align-items: center;
   background: linear-gradient(to right, rgba(224, 224, 224, 0.89) , rgba(245, 245, 245, 0));
   filter: drop-shadow(-5rpx 0rpx 10rpx #e9e9e9);
-  width: 80%;
+  width: 93%;
   border: 2px solid #DCDCDC;
 }
 
@@ -58,6 +58,18 @@ max-width: 50rpx;
   border-radius: 35rpx;
   height:32rpx;
   display:block;
+}
+
+.poster{
+  height: 520rpx;
+}
+
+.poster_image{
+  filter: drop-shadow(0rpx 15rpx 10rpx #999999);
+  margin: 22rpx;
+  width: 94%;
+  height: 430rpx;
+  border-radius:40rpx; 
 }
 
 .search_align{

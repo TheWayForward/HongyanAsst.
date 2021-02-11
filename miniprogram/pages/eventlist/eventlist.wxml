@@ -1,13 +1,16 @@
 <!--to top button-->
 <view hover-class="hv" hover-stay-time="30">
-  <image src="../../images/top.png" class="go_top" hidden="{{show_top}}" bindtap="go_top" />
+	<image src="../../images/top.png" class="go_top" hidden="{{show_top}}" bindtap="go_top" />
 </view>
 <!--main list-->
 <view class="page" hidden="{{isHide}}">
-	<view class="page__bd" style="overflow:hidden; border-radius:50rpx; border: 1px solid #F5F5F5;">
+	<view class="page__bd rounded-20">
+		<view class="weui-form bg-standard" style="padding-top:0;">
+    <!--rentable-->
+    <view class="weui-cells__group weui-cells__group_form">
 		<!--coming-->
-		<view class="weui-panel weui-panel_access">
-			<view class="weui-panel__hd" wx:if="{{coming_event[0]._id}}">即将进行的活动</view>
+		<view class="weui-cells__title bg-standard" wx:if="{{coming_event[0]._id}}">即将进行的活动</view>
+		<view class="weui-panel weui-panel_access shadow rounded-20" wx:if="{{coming_event[0]._id}}">
 			<view class="weui-panel__bd" style="border-bottom: 1px solid #F5F5F5;" wx:for="{{coming_event}}" wx:key="_id">
 				<view class="weui-media-box weui-media-box_appmsg">
 					<view class="weui-cell__hd rounded-10 shadow" style="position: relative; margin-right: 10px;">
@@ -33,9 +36,9 @@
 		</view>
 
 		<!--current-->
-		<view class="weui-panel weui-panel_access">
-			<view class="weui-panel__hd" wx:if="{{current_event[0]._id}}">当前活动</view>
-			<view class="weui-panel__bd" style="border-bottom: 1px solid #F5F5F5;" wx:for="{{current_event}}" wx:key="_id">
+		<view class="weui-cells__title bg-standard" wx:if="{{current_event[0]._id}}">当前活动</view>
+		<view class="weui-panel weui-panel_access shadow rounded-20" wx:if="{{current_event[0]._id}}">
+			<view class="weui-panel__bd" wx:for="{{current_event}}" wx:key="_id">
 				<view class="weui-media-box weui-media-box_appmsg">
 					<view class="weui-cell__hd rounded-10 shadow" style="position: relative; margin-right: 10px;">
 						<image class="rounded-10 shadow" src="{{item.poster}}" mode="aspectFill"
@@ -60,9 +63,10 @@
 		</view>
 
 		<!--previous-->
-		<view class="weui-panel weui-panel_access">
-			<view class="weui-panel__hd" wx:if="{{previous_event_shown[0]._id}}">往期活动</view>
-			<view class="weui-panel__bd" style="border-bottom: 1px solid #F5F5F5;" wx:for="{{previous_event_shown}}" wx:key="_id">
+		<view class="weui-cells__title bg-standard" wx:if="{{previous_event[0]._id}}">往期活动</view>
+		<view class="weui-panel weui-panel_access shadow rounded-20">
+			<view class="weui-panel__bd" wx:for="{{previous_event_shown}}"
+				wx:key="_id">
 				<view class="weui-media-box weui-media-box_appmsg">
 					<view class="weui-cell__hd rounded-10 shadow" style="position: relative; margin-right: 10px;">
 						<image class="rounded-10 shadow" src="{{item.poster}}" mode="aspectFill"
@@ -85,6 +89,8 @@
 					</view>
 				</view>
 			</view>
+		</view>
+		</view>
 		</view>
 	</view>
 	<!--line-->

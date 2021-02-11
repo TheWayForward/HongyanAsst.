@@ -105,5 +105,11 @@ Page({
         })
       }
     })
+  },
+
+  goto_eventlist: function () {
+    wx.navigateTo({
+      url: '../eventlist/eventlist',
+    })
   }
 })

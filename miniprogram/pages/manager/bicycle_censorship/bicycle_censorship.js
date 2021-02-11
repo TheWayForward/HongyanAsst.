@@ -46,7 +46,11 @@ Page({
           bicycles_sellable_and_rentable: [],
           is_hide: false
         })
-        wx.hideLoading({})
+        wx.hideLoading({
+          success(res){
+            notification_helper.show_toast_without_icon("暂无待审核车辆",2000);
+          }
+        })
         return;
       }
       for (var i = 0; i < batchTimes; i++) {
