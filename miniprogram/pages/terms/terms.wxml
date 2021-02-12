@@ -1,2 +1,5 @@
-<!--pages/terms/terms.wxml-->
-<text>pages/terms/terms.wxml</text>
+<view class="cview" hidden="{{is_hide}}">
+  <view wx:for="{{hnode}}" wx:key="_id" class="html">
+    <parser html="{{item.node}}"></parser>
+  </view>
+</view>

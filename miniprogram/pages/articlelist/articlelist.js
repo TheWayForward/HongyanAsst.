@@ -23,6 +23,9 @@ Page({
   },
 
   onLoad: function () {
+    wx.setNavigationBarTitle({
+      title: '资讯新闻',
+    })
     if (!this.data.articles[0]) {
       wx.showLoading({
         title: '资讯加载中',

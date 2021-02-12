@@ -20,7 +20,7 @@
         <view class="weui-form__control-area" style="margin-bottom:0;">
             <view class="weui-cells__group weui-cells__group_form">
                 <view class="weui-cells__title">个人信息</view>
-                <view class="weui-cells weui-cells_form" style="border-radius:20rpx;">
+                <view class="weui-cells weui-cells_form shadow" style="border-radius:20rpx;">
                     <view class="weui-cell weui-cell_active">
                         <view class="weui-cell__hd"><label class="weui-label">真实姓名</label></view>
                         <view class="weui-cell__bd">
@@ -98,7 +98,7 @@
         <view class="weui-form__extra-area">
             <view class="weui-footer">
                 <view class="weui-footer__links">
-                    <navigator url="../../pages/terms/terms" class="weui-footer__link">服务条款</navigator>
+                    <navigator url="../../pages/terms/terms" class="weui-footer__link">使用条款</navigator>
                 </view>
                 <view class="weui-footer__text">Copyright © 北京邮电大学 鸿雁车协</view>
             </view>

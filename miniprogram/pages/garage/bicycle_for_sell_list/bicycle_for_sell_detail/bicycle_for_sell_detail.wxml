@@ -23,7 +23,7 @@
             style="margin-left:5px;margin-bottom:10rpx;">上架时间：{{bicycle.date_time}}</text>
           <text wx:if="{{bicycle.renter.renter_id}}" class="weui-badge bg_orange shadow" style="margin-left:5px;margin-bottom:10rpx;">已租</text>
         </view>
-        <view class="bicycle_info_tag_top_right" hover-class="hv" hover-stay-time="30">
+        <view class="bicycle_info_tag_top_right" hover-class="hv" hover-stay-time="30" bindtap="share">
           <image class="share" src="../../../../images/share.png"></image>
           <view style='font-size:20rpx;text-align:center;color:#6A5E5C;'>分享</view>
         </view>

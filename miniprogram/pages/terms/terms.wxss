@@ -1,1 +1,10 @@
-/* pages/terms/terms.wxss */
+.cview{
+  align-items: center;
+  justify-content: center;
+}
+
+.html{
+  align-items: center;
+  margin-left: 35rpx;
+  width:90%;
+}

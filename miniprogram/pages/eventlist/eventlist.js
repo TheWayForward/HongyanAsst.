@@ -27,6 +27,9 @@ Page({
   },
 
   onLoad: function () {
+    wx.setNavigationBarTitle({
+      title: '骑行活动',
+    })
     if (!this.data.events[0]) {
       wx.showLoading({
         title: '加载中',

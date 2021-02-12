@@ -19,6 +19,9 @@ Page({
   },
 
   onLoad: function () {
+    wx.setNavigationBarTitle({
+      title: '问题反馈',
+    })
     var that = this;
     this.setData({
       height: wx.getSystemInfoSync().screenHeight * 0.9
@@ -80,6 +83,15 @@ Page({
     return {
       title: "北邮鸿雁车协助手-问题反馈",
       path: '../../pages/feedback/feedback',
+
+    }
+  },
+
+  onShareTimeline(res) {
+    return {
+      title: `北邮鸿雁车协-问题反馈`,
+      path: '../../pages/feedback/feedback',
+      imageUrl: 'http://m.qpic.cn/psc?/V10ldMks1MA0AI/TmEUgtj9EK6.7V8ajmQrEM33fgSgkSqlV8rj43ChW*6aSuucHBR0gAUuojw3dksjcfwJBqSH4fDRpmZocAUGLjspMCKzVxSriPIaVR66mUs!/b&bo=WAFYAVgBWAEBFzA!&rf=viewer_4'
     }
   },
 })

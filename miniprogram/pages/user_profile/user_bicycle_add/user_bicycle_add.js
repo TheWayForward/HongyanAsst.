@@ -83,6 +83,9 @@ Page({
   },
 
   onLoad: function (options) {
+    wx.setNavigationBarTitle({
+      title: '添加车辆',
+    })
     wx.showLoading({
       title: '加载中',
       mask: true

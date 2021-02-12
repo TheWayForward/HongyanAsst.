@@ -17,6 +17,9 @@ Page({
   },
 
   onLoad: function (options) {
+    wx.setNavigationBarTitle({
+      title: '购单确认',
+    })
     var that = this;
     that.setData({
       transaction: app.globalData.my_transaction

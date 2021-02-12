@@ -18,6 +18,9 @@ Page({
   },
 
   onLoad: function (options) {
+    wx.setNavigationBarTitle({
+      title: '设备管理',
+    })
     wx.showLoading({
       title: '加载中',
     })

@@ -29,6 +29,9 @@ Page({
   },
 
   onLoad: function (options) {
+    wx.setNavigationBarTitle({
+      title: '我的交易',
+    })
     wx.showLoading({
       title: "加载中",
       mask: true

@@ -44,7 +44,7 @@
   <view class="footer mt-20 mb-20">
     <view class="weui-footer">
       <view class="weui-footer__links">
-        <navigator url="../terms/terms" class="weui-footer__link">服务条款</navigator>|<navigator url="../feedback/feedback"
+        <navigator url="../terms/terms" class="weui-footer__link">使用条款</navigator>|<navigator url="../feedback/feedback"
           class="weui-footer__link">问题反馈</navigator>|<navigator url="../../pages/official/official"
           class="weui-footer__link">关于我们</navigator>
       </view>

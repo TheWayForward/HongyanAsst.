@@ -24,6 +24,9 @@ Page({
     that.setData({
       user: versatile_helper.format_user(app.globalData.user),
     })
+    wx.setNavigationBarTitle({
+      title: `${that.data.user.nickname}`,
+    })
     that.data.watcher = db.collection("user").where({
       openid: app.globalData.user.openid
     }).watch({

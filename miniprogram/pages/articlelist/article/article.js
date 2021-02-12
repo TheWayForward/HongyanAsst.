@@ -29,6 +29,7 @@ Page({
     nickname: "",
     input_value: "",
     details: "",
+    thumbnail: app.globalData.article.thumbnail,
     time: "",
     hnode: [],
     watcher: 0,
@@ -193,6 +194,24 @@ Page({
     this.data.watcher.close();
   },
 
+  onShareTimeline(res) {
+    var that = this;
+    return {
+      title: `${that.data.title}(from 北邮鸿雁车协助手)`,
+      path: '../article/article',
+      imageUrl: that.data.thumbnail
+    }
+  },
+
+  onShareAppMessage: function (ops) {
+    var that = this;
+    return {
+      title: `${that.data.title}(from 北邮鸿雁车协助手)`,
+      path: '../article/article',
+      imageUrl: that.data.thumbnail
+    }
+  },
+
   preview: function(e){
     wx.previewImage({
       current: e.currentTarget.dataset.action,
@@ -299,11 +318,7 @@ Page({
         }
         else
         {
-          wx.showToast({
-            title: '评论包含敏感字',
-            icon: 'none',
-            duration: 3000
-          })
+          notification_helper.show_toast_without_icon("评论包含敏感字",2000);
         }
       })
      } 

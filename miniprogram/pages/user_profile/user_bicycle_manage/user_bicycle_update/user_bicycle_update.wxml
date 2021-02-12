@@ -12,7 +12,7 @@
         </view>
       </view>
     </view>
-    <view class="weui-form__control-area" style="margin-bottom:0;margin-top:0;">
+    <view class="weui-form__control-area shadow rounded-20 overflow-hidden" style="margin-bottom:0;margin-top:0;">
       <view class="weui-cells__group weui-cells__group_form">
         <view class="weui-cells__title">车辆信息</view>
         <view class="weui-cells weui-cells_form" style="border-radius:20rpx 20rpx 0 0;">

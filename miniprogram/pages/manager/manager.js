@@ -14,7 +14,11 @@ Page({
 
   },
 
-  onLoad: function (options) {},
+  onLoad: function (options) {
+    wx.setNavigationBarTitle({
+      title: '管理员',
+    })
+  },
 
 
   goto_event_release: function () {

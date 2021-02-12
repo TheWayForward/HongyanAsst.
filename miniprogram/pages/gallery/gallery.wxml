@@ -34,6 +34,7 @@
     </view>
   </view>
   <button class="weui-btn weui-btn_primary shadow mt-50" bindtap="show_more" hidden="{{is_show_more_hide}}">显示更多</button>
+  <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
 </view>
 <!--bottom selector-->
 <view id="end" style="margin-top:30rpx;"></view>

@@ -1,2 +1,21 @@
-<!--pages/manager/index_info_manage/index_info_manage.wxml-->
-<text>pages/manager/index_info_manage/index_info_manage.wxml</text>
+<view class="page">
+  <view class="weui-form bg-standard" style="padding-top:0;">
+    <view class="weui-form__control-area" style="margin:0;">
+      <view class="weui-cells__group weui-cells__group_form">
+        <view class="weui-cells__title">公告栏</view>
+        <view class="weui-cells weui-cells_form rounded-20 shadow">
+          <view class="weui-cell ">
+            <view class="weui-cell__bd">
+              <textarea class="weui-textarea" placeholder="填写首页公告栏文本" value="{{bulletin}}" rows="3" bindinput="input_bulletin"></textarea>
+              <view class="weui-textarea-counter"><image src="../../../images/cross.png" class="input_clear" mode="aspectFill" bindtap="input_clear"></image></view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="weui-btn-area">
+      <button class="weui-btn weui-btn_primary shadow" disabled="{{!is_submission_available}}" bindtap="submit">确定</button>
+    </view>
+    <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
+  </view>
+</view>

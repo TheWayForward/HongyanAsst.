@@ -26,6 +26,9 @@ Page({
    * Lifecycle function--Called when page load
    */
   onLoad: function (options) {
+    wx.setNavigationBarTitle({
+      title: '日志发布',
+    })
     wx.showLoading({
       title: '加载中',
       mask: true

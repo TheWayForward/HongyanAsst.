@@ -17,11 +17,13 @@ Page({
   },
 
   onLoad: function (options) {
+    wx.setNavigationBarTitle({
+      title: '租单确认',
+    })
     var that = this;
     that.setData({
       transaction: app.globalData.my_transaction
     })
-    console.log(app.globalData.my_transaction)
   },
 
   preview: function (e) {

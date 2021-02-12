@@ -25,6 +25,9 @@ Page({
   },
 
   onLoad: function (options) {
+    wx.setNavigationBarTitle({
+      title: app.globalData.my_bicycle.name,
+    })
     wx.showLoading({
       title: "加载中",
       mask: true
@@ -79,6 +82,23 @@ Page({
     })
   },
 
+  onShareTimeline(res) {
+    var that = this;
+    return {
+      title: `鸿雁车库：${that.data.bicycle.name}售卖中！`,
+      path: '../bicycle_for_sell_detail/bicycle_for_sell_detail',
+      imageUrl: that.data.bicycle.poster
+    }
+  },
+
+  onShareAppMessage: function (ops) {
+    var that = this;
+    return {
+      title: `鸿雁车库：${that.data.bicycle.name}售卖中！`,
+      path: '../bicycle_for_sell_detail/bicycle_for_sell_detail',
+    }
+  },
+
   go_top: function () {
     wx.pageScrollTo({
       scrollTop: 0,
@@ -93,8 +113,16 @@ Page({
     })
   },
 
+  share: function () {
+    notification_helper.show_toast_without_icon('点击右上角"..."进行分享',2000);
+  },
+
   submit: function (e) {
     var that = this;
+    if (!app.globalData.user._id) {
+      notification_helper.show_toast_without_icon("请注册后进行交易",2000);
+      return;
+    }
     app.globalData.my_transaction = {
       type: "sale",
       seller: {

@@ -46,6 +46,9 @@ Page({
   },
 
   onLoad: function () {
+    wx.setNavigationBarTitle({
+      title: '用户信息编辑',
+    })
     var that = this;
     that.setData({
       user: app.globalData.user,

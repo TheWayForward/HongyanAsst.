@@ -51,6 +51,9 @@ Page({
   },
 
   onLoad: function () {
+    wx.setNavigationBarTitle({
+      title: '活动发布',
+    })
     wx.showLoading({
       title: '加载中'
     })
@@ -231,7 +234,7 @@ Page({
     var that = this;
     wx.chooseImage({
       //choose compressd image to get faster upload and save data
-      sizeType: ['original', 'compressed'],
+      sizeType: ['compressed'],
       count: 1,
       //take a snapshot or choose a photo
       sourceType: ['album', 'camera'],
@@ -406,7 +409,7 @@ Page({
                       mask: true
                     })
                     app.globalData.user.my_event.push({
-                      _id: result.total + 1 + "",
+                      _id: "" + ++result.total,
                       name: that.data.name,
                       poster: file,
                       date: that.data.event_date.replace(new RegExp("-","g"),"/"),

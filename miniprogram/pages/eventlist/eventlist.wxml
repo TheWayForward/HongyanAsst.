@@ -95,6 +95,6 @@
 	</view>
 	<!--line-->
 	<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
-	<button class="weui-btn weui-btn_primary" bindtap="show_more" hidden="{{is_show_more_hide}}">显示更多</button>
+	<button class="weui-btn weui-btn_primary shadow" bindtap="show_more" hidden="{{is_show_more_hide}}">显示更多</button>
 </view>
 <view id="end" style="margin-top:30rpx;"></view>

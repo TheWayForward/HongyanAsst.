@@ -41,9 +41,6 @@
 
     "pages/feedback/feedback",
 
-    "pages/im/im",
-    "pages/im/room/room",
-
     "pages/official/official",
 
     "pages/terms/terms"

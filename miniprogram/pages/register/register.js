@@ -49,6 +49,9 @@ Page({
   },
 
   onLoad: function (options) {
+    wx.setNavigationBarTitle({
+      title: '用户注册',
+    })
     var that = this;
     wx.getUserInfo({
       complete: (res) => {

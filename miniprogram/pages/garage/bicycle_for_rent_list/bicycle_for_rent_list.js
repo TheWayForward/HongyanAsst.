@@ -17,6 +17,9 @@ Page({
   },
 
   onLoad: function (options) {
+    wx.setNavigationBarTitle({
+      title: '租赁车辆',
+    })
     wx.showLoading({
       title: "加载中",
       mask: true

@@ -6,8 +6,6 @@ cloud.init();
 exports.main = async (event, context) => {
 
   var client = new Core({
-    accessKeyId: "",
-    accessKeySecret: "",
     endpoint: 'https://dysmsapi.aliyuncs.com',
     apiVersion: '2017-05-25'
   });

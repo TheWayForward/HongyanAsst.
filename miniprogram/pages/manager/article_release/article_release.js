@@ -34,6 +34,9 @@ Page({
   },
 
   onLoad: function (options) {
+    wx.setNavigationBarTitle({
+      title: '资讯发布',
+    })
     wx.showLoading({
       title: '加载中',
     })

@@ -102,7 +102,6 @@ Page({
     wx.showLoading({
       title: '刷新中',
     })
-    that.onLoad();
     that.onShow();
     wx.stopPullDownRefresh({
       success: (res) => {
@@ -121,6 +120,24 @@ Page({
     this.setData({
       distance: 0
     })
+  },
+
+  onShareTimeline(res) {
+    var that = this;
+    return {
+      title: `北邮鸿雁车协`,
+      path: '../index/index',
+      imageUrl: that.data.poster_urls[Math.floor(that.data.poster_urls.length * Math.random())]
+    }
+  },
+
+  onShareAppMessage: function (ops) {
+    var that = this;
+    return {
+      title: `北邮鸿雁车协`,
+      path: '../index/index',
+      imageUrl: that.data.poster_urls[Math.floor(that.data.poster_urls.length * Math.random())]
+    }
   },
 
   preview: function (e) {

@@ -24,6 +24,9 @@ Page({
   },
 
   onLoad: function () {
+    wx.setNavigationBarTitle({
+      title: '关于我们',
+    })
     wx.showLoading({
       title: '加载中',
       mask: true

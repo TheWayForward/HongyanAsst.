@@ -11,6 +11,9 @@ Page({
   },
 
   onLoad: function () {
+    wx.setNavigationBarTitle({
+      title: '车辆管理',
+    })
     wx.showLoading({
       title: "加载中",
       mask: "true"

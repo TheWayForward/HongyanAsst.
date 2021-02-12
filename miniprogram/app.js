@@ -99,7 +99,7 @@ App({
             wx.hideLoading({
               success: (res) => {
                 wx.showToast({
-                  title: '您尚未注册，将以游客模式登录',
+                  title: '您尚未注册，请点击"我的车协"进行注册',
                   icon: 'none',
                   duration: 3000
                 })

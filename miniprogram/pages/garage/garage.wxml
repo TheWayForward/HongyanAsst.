@@ -5,9 +5,9 @@
 </view>
 <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
 <view class="btn_align">
-  <view class="btn_long" bindtap="goto_bicycle_for_rent_list">租赁车辆</view>
-  <view class="btn_long" bindtap="goto_bicycle_for_sell_list">购入车辆</view>
+  <view class="btn_long" bindtap="goto_bicycle_for_rent_list" style="background-image:url({{bicycle_for_rent_image}});"></view>
+  <view class="btn_long" bindtap="goto_bicycle_for_sell_list" style="background-image:url({{bicycle_for_sell_image}});"></view>
 </view>
-<view class="btn_align">
-  <view class="btn_long" bindtap="goto_my_transactions">我的交易</view>
+<view class="btn_align mt-20">
+  <view class="btn_long" bindtap="goto_my_transactions" style="background-image:url({{my_transactions_image}});"></view>
 </view>

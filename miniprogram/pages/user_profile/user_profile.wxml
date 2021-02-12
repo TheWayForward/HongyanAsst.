@@ -1,6 +1,6 @@
 <!--to top button-->
 <view hover-class="hv" hover-stay-time="30">
-	<image src="../../images/top.png" class="go_top" hidden="{{show_top}}" bindtap="go_top" />
+  <image src="../../images/top.png" class="go_top" hidden="{{show_top}}" bindtap="go_top" />
 </view>
 <view class="page">
   <view class="weui-form bg-standard">
@@ -12,7 +12,7 @@
       <h2 class="weui-form__title">{{user.nickname}}</h2>
       <view class="weui-form__desc">{{user.detail}}</view>
     </view>
-    <view class="weui-form__control-area" style="margin-bottom:0;">
+    <view class="weui-form__control-area shadow rounded-20 overflow-hidden" style="margin-bottom:0;">
       <view class="weui-cells__group weui-cells__group_form">
         <view class="weui-cells__title">个人信息</view>
         <view class="weui-cells weui-cells_form" style="border-radius:20rpx 20rpx 0 0;">
@@ -60,8 +60,8 @@
             <view class="weui-panel__bd">
               <a wx:for="{{user.my_bicycle}}" wx:key="_id" class="weui-media-box weui-media-box_appmsg">
                 <view class="weui-media-box__hd">
-                  <image class="weui-media-box__thumb shadow-bold rounded-10" mode="aspectFill" src="{{item.poster}}" data-action="{{item.poster}}"
-                    bindtap="preview" lazy-load="true" alt></image>
+                  <image class="weui-media-box__thumb shadow-bold rounded-10" mode="aspectFill" src="{{item.poster}}"
+                    data-action="{{item.poster}}" bindtap="preview" lazy-load="true" alt></image>
                 </view>
                 <view class="weui-media-box__bd" data-action="{{item}}">
                   <h4 class="weui-media-box__title">{{item.name}}</h4>
@@ -71,7 +71,8 @@
             </view>
           </view>
           <view class="weui-cell">
-            <button class="weui-btn weui-btn_primary shadow" bindtap="goto_user_bicycle_manage">{{user.my_bicycle.length ? "管理车辆" : "添加车辆"}}</button>
+            <button class="weui-btn weui-btn_primary shadow"
+              bindtap="goto_user_bicycle_manage">{{user.my_bicycle.length ? "管理车辆" : "添加车辆"}}</button>
           </view>
         </view>
       </view>
@@ -83,8 +84,8 @@
             <view class="weui-panel__bd">
               <a wx:for="{{user.my_event}}" wx:key="_id" class="weui-media-box weui-media-box_appmsg">
                 <view class="weui-media-box__hd">
-                  <image class="weui-media-box__thumb rounded-10" mode="aspectFill" src="{{item.poster}}" data-action="{{item.poster}}"
-                    bindtap="preview" lazy-load="true" alt></image>
+                  <image class="weui-media-box__thumb rounded-10" mode="aspectFill" src="{{item.poster}}"
+                    data-action="{{item.poster}}" bindtap="preview" lazy-load="true" alt></image>
                 </view>
                 <view class="weui-media-box__bd" data-action="{{item}}" bindtap="goto_event">
                   <h4 class="weui-media-box__title">{{item.name}}</h4>
@@ -100,7 +101,7 @@
         </view>
       </view>
       <!--snapshots-->
-      <view class="weui-cells__group weui-cells__group_form">
+      <view class="weui-cells__group weui-cells__group_form" wx:if="{{user.mysnapshots.length}}">
         <view class="weui-cells__title mt-20">我上传的照片({{user.my_snapshots.length}})</view>
         <view class="weui-cells weui-cells_form" style="border-radius:0 0 20rpx 20rpx;">
           <view class="album_align">
