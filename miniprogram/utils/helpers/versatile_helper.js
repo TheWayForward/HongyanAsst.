@@ -29,6 +29,7 @@ function difficulty_to_stars(difficulty) {
 //layout
 
 function format_user(user) {
+  user.total_distance_string = user.total_distance.toFixed(2);
   user.birthday_string = time_helper.format_time(new Date(user.birthday)).date;
   user.my_event.sort(compare_helper.compare("precise_time"));
   user.my_event.reverse();

@@ -64,6 +64,12 @@ function compare_location_info(location_info, location_info_past) {
   if (delta_latitude <= 0.00001 && delta_longitude <= 0.00001) return true;
 }
 
+function compare_sign_up_location_info(location_info, location_return) {
+  var delta_latitude = Math.abs(location_info.latitude - location_return.latitude);
+  var delta_longitude = Math.abs(location_info.longitude - location_return.longitude);
+  if (delta_latitude <= 0.01 && delta_longitude <= 0.01) return true;
+}
+
 function compare_time_for_rental(rental_time_start,rental_time_end) {
 
 }
@@ -77,5 +83,6 @@ module.exports = {
   compare_time_for_event_locate: compare_time_for_event_locate,
   compare_time_for_event_locate_timer: compare_time_for_event_locate_timer,
   compare_location_info: compare_location_info,
+  compare_sign_up_location_info: compare_sign_up_location_info,
   compare_time_for_event_locate_uploader: compare_time_for_event_locate_uploader
 }

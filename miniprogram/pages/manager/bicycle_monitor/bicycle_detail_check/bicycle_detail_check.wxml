@@ -19,8 +19,8 @@
     <view class="weui-form__control-area" style="margin-bottom:0;margin-top:0;">
       <view class="weui-cells__group weui-cells__group_form">
         <view class="weui-cells__title">车辆信息</view>
-        <view class="weui-cells weui-cells_form" style="border-radius:20rpx 20rpx 0 0;">
-          <view class="weui-cell weui-cell_active">
+        <view class="weui-cells weui-cells_form rounded-20 shadow overflow-hidden">
+          <view class="weui-cell weui-cell_active ">
             <view class="weui-cell__hd"><label class="weui-label">添加时间</label></view>
             <view class="weui-cell__bd">
               <input class="weui-input" disabled="true" placeholder-class="weui-input__placeholder"
@@ -59,7 +59,7 @@
       </view>
       <view class="weui-cells__group weui-cells__group_form" wx:if="{{bicycle.device.deviceid}}">
         <view class="weui-cells__title mt-20">定位设备</view>
-        <view class="weui-cells weui-cells_form">
+        <view class="weui-cells weui-cells_form rounded-20 shadow overflow-hidden">
           <view class="weui-cell weui-cell_active">
             <view class="weui-cell__hd"><label class="weui-label">设备名称</label></view>
             <view class="weui-cell__bd">
@@ -78,7 +78,7 @@
       </view>
       <view class="weui-cells__group weui-cells__group_form">
         <view class="weui-cells__title mt-20">车辆简介</view>
-        <view class="weui-cells weui-cells_form">
+        <view class="weui-cells weui-cells_form rounded-20 shadow overflow-hidden">
           <view class="weui-cell">
             <view class="weui-cell__bd">
               <textarea class="weui-textarea" placeholder="读万卷书，行万里路..." value="{{bicycle.detail}}" disabled="true"
@@ -88,7 +88,7 @@
           </view>
         </view>
         <view class="weui-cells__title">车辆属性</view>
-        <view class="page__bd">
+        <view class="page__bd rounded-20 shadow overflow-hidden">
           <view class="weui-cells" style="margin-top:0;">
             <view class="weui-cell weui-cell_active">
               <view class="weui-cell__bd">
@@ -103,7 +103,7 @@
       </view>
       <view class="weui-cells__group weui-cells__group_form">
         <view class="weui-cells__title">用户信息</view>
-        <view class="page__bd" style="overflow:hidden;border-radius:0 0 20rpx 20rpx;">
+        <view class="page__bd rounded-20 shadow overflow-hidden">
           <view class="weui-cells" style="margin-top:0;">
             <view class="weui-panel weui-panel_access">
               <view class="weui-panel__bd">

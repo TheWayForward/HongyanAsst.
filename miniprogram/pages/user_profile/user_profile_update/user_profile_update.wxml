@@ -8,10 +8,10 @@
 			<h2 class="weui-form__title">{{user.nickname}}({{user.realname}})</h2>
 			<view class="weui-form__desc">{{user.detail}}</view>
 		</view>
-		<view class="weui-form__control-area shadow rounded-20 overflow-hidden" style="margin-bottom:0;">
+		<view class="weui-form__control-area" style="margin-bottom:0;">
 			<view class="weui-cells__group weui-cells__group_form">
 				<view class="weui-cells__title">个人信息</view>
-				<view class="weui-cells weui-cells_form" style="border-radius:20rpx 20rpx 0 0;">
+				<view class="weui-cells weui-cells_form rounded-20 shadow overflow-hidden">
 					<view class="weui-cell weui-cell_active">
 						<view class="weui-cell__hd"><label class="weui-label">注册时间</label></view>
 						<view class="weui-cell__bd">
@@ -125,7 +125,7 @@
 			</view>
 			<view class="weui-cells__group weui-cells__group_form">
 				<view class="weui-cells__title mt-20">个人介绍</view>
-				<view class="weui-cells weui-cells_form">
+				<view class="weui-cells weui-cells_form rounded-20 shadow overflow-hidden">
 					<view class="weui-cell">
 						<view class="weui-cell__bd">
 							<textarea class="weui-textarea" placeholder="读万卷书，行万里路..." value="{{user.detail}}" rows="3"
@@ -135,7 +135,7 @@
 					</view>
 				</view>
 				<view class="weui-cells__title">头像</view>
-				<view class="page__bd" style="overflow:hidden;border-radius:0 0 20rpx 20rpx;">
+				<view class="page__bd rounded-20 shadow overflow-hidden">
 					<view class="weui-cells" style="margin-top:0;">
 						<view class="weui-cell weui-cell_active weui-cell_switch">
 							<view class="weui-cell__bd">更改头像</view>

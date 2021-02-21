@@ -29,15 +29,22 @@ Page({
     is_down: false,
     markers: [],
     current_marker: {},
+    current_location: {},
     event_id: null,
     //from user
     tip_footer: "加载中",
     files: [],
     snapshot: {},
     choose_location_image: "../../../../images/point.png",
+    sign_up_location_image: "../../../../images/point.png",
     detail: "",
     input_value: "",
     all_snapshots_tip: "查看该活动全部图片",
+    sign_up_tip: "打开定位，点击左侧图标进行定位",
+    sign_up_state: "加载中",
+    is_sign_up_hide: true,
+    is_sign_up_available: false,
+    is_signer_hide: false
   },
 
   onLoad: function () {
@@ -51,9 +58,21 @@ Page({
     }
     var that = this;
     var event = app.globalData.event;
+    for (var i = 0; i < app.globalData.user.my_event.length; i++) {
+      if (event._id == app.globalData.user.my_event[i]._id) {
+        that.setData({
+          is_sign_up_hide: false,
+          sign_up_state: app.globalData.user.my_event[i].is_signed ? "已签到" : "签到",
+          is_sign_up_available: app.globalData.user.my_event[i].is_signed ? false : true,
+          is_signer_hide: app.globalData.user.my_event[i].is_signed ? true : false
+        })
+        break;
+      }
+    }
     that.setData({
       event: event,
       is_uploader_hide: app.globalData.user.openid ? (compare_helper.compare_time_for_event_locate_uploader(event.time, new Date()) ? false : true) : true,
+      is_sign_up_hide: app.globalData.user.openid ? (compare_helper.compare_time_for_event_locate_uploader(event.time, new Date()) ? false : true) : true,
       tip_footer: compare_helper.compare_time_for_event_locate_uploader(event.time, new Date()) ? (app.globalData.user.openid ? "请在活动开始前一小时至活动开始后一日内上传图片" : "请注册后上传图片") : "非活动时间，不能上传图片",
       all_snapshots_tip: event.snapshots[0] ? `查看活动"${event.name}"全部图片(${event.snapshots_count})` : `暂无图片`,
       is_image_list_hide: event.snapshots[0] ? false : true,
@@ -304,6 +323,61 @@ Page({
     })
   },
 
+  get_location: function () {
+    var that = this;
+    wx.getLocation({
+      type: 'wgs84',
+      success(res) {
+        var location = location_helper.wgs_to_jcg(res.latitude, res.longitude);
+        wx.request({
+          url: "https://apis.map.qq.com/ws/geocoder/v1/?location=",
+          type: "GET",
+          data: {
+            location: location.latitude + "," + location.longitude,
+            key: "NXQBZ-ZXUCW-BG7RT-RVP4K-7TUOO-WKFPP",
+            output: "json"
+          },
+          success: function (res) {
+            that.setData({
+              current_location: {
+                latitude: location.latitude,
+                longitude: location.longitude
+              },
+              sign_up_tip: res.data.result.formatted_addresses.recommend,
+              sign_up_location_image: "../../../../images/point_selected.png"
+            })
+          }
+        })
+      },
+      fail(res) {
+        if (res.errMsg == "getLocation:fail auth deny") {
+          wx.showModal({
+            title: "提示",
+            content: "未授权小程序使用您的位置信息，现在授权？",
+            cancelText: "取消",
+            confirmText: "确定",
+            success(res) {
+              if (res.cancel) {
+                notification_helper.show_toast_without_icon("授权失败", 2000);
+              } else {
+                wx.openSetting({
+                  withSubscriptions: true,
+                  success(res) {
+                    if (!res.authSetting["scope.userLocation"]) {
+                      notification_helper.show_toast_without_icon("授权失败", 2000);
+                    }
+                  }
+                })
+              }
+            }
+          })
+        } else if (res.errMsg == "getLocation:fail:ERROR_NOCELL&WIFI_LOCATIONSWITCHOFF") {
+          notification_helper.show_toast_without_icon("请打开定位开关", 2000)
+        }
+      }
+    })
+  },
+
   choose_location: function () {
     var that = this;
     wx.getLocation({
@@ -473,5 +547,77 @@ Page({
         }
       }
     })
+  },
+
+  sign_up: function () {
+    var that = this;
+    if (!that.data.current_location.longitude) {
+      notification_helper.show_toast_without_icon("未选中位置", 2000);
+      return;
+    }
+    if (compare_helper.compare_sign_up_location_info(that.data.current_location, {
+        latitude: that.data.event.location_return.latitude,
+        longitude: that.data.event.location_return.longitude
+      })) {
+      wx.showModal({
+        title: "提示",
+        content: "确定进行签到？",
+        confirmText: "确定",
+        cancelText: "取消",
+        success(res) {
+          if (res.cancel) return;
+          else {
+            wx.showLoading({
+              title: '数据更新中',
+              mask: true
+            })
+            for (var i = 0; i < app.globalData.user.my_event.length; i++) {
+              if (that.data.event._id == app.globalData.user.my_event[i]._id) {
+                app.globalData.user.my_event[i].is_signed = true;
+                app.globalData.user.total_distance += that.data.event.distance;
+                break;
+              }
+            }
+            wx.cloud.callFunction({
+              name: "event_sign_up",
+              data: {
+                _id: app.globalData.user._id,
+                my_event: app.globalData.user.my_event,
+                total_distance: app.globalData.user.total_distance
+              },
+              success(res) {
+                console.log("[cloudfunction][event_sign_up]: updated successfully");
+                wx.hideLoading({
+                  success(res) {
+                    wx.showToast({
+                      title: '签到成功',
+                      mask: true
+                    })
+                    wx.pageScrollTo({
+                      scrollTop: 0
+                    })
+                    that.setData({
+                      is_sign_up_hide: true
+                    })
+                    that.onLoad();
+                  }
+                })
+              },
+              fail(res) {
+                console.log("[cloudfunction][event_sign_up]: failed to update");
+                console.log(res);
+                notification_helper.show_toast_without_icon("获取数据失败，请刷新页面重试", 2000);
+              }
+            })
+          }
+        }
+      })
+    } else {
+      notification_helper.show_toast_without_icon("请在位于途经地标半径1km内签到", 2000);
+      that.setData({
+        sign_up_location_image: "../../../../images/point.png",
+        sign_up_tip: "打开定位，点击左侧图标进行定位"
+      })
+    }
   }
 })

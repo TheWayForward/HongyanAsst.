@@ -31,8 +31,7 @@ Page({
     })
     if (app.globalData.my_bicycle_and_transaction.transaction.type_detail == "rental_created" || app.globalData.my_bicycle_and_transaction.transaction.type_detail == "sale_created") {
       //not my bicycle
-      console.log(app.globalData.my_bicycle_and_transaction)
-      db.collection("user").doc(app.globalData.my_bicycle_and_transaction.transaction.seller_id).field({
+      db.collection("user").doc(app.globalData.my_bicycle_and_transaction.transaction.seller_id || app.globalData.my_bicycle_and_transaction.transaction.owner_id).field({
         _id: true,
         QQ: true,
         avatar: true,
@@ -90,11 +89,17 @@ Page({
         }
       })
     }
-    console.log(that.data);
   },
 
   onUnload: function () {
     app.globalData.my_bicycle_and_transaction = {};
+  },
+
+  preview: function (e) {
+    wx.previewImage({
+      urls: [e.currentTarget.dataset.action],
+      current: e.currentTarget.dataset.action
+    })
   },
 
   approve_rental_involved: function () {

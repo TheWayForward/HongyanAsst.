@@ -161,14 +161,14 @@ Page({
                         })
                       },
                       fail(res) {
-                        console.log(res)
+                        console.log(res);
                         console.log("[cloudfunction][update_user_transactions]: failed to update owner");
                         notification_helper.show_toast_without_icon("获取数据失败，请刷新页面重试", 2000);
                       }
                     })
                   },
                   fail(res) {
-                    console.log(res)
+                    console.log(res);
                     console.log("[cloudfunction][update_user_transactions]: failed to update renter");
                     notification_helper.show_toast_without_icon("获取数据失败，请刷新页面重试", 2000);
                   }

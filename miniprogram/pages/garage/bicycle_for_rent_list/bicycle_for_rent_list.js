@@ -35,7 +35,11 @@ Page({
     count.then(function (result) {
       count = result.total;
       if (!count) {
-        wx.hideLoading({})
+        wx.hideLoading({
+          success(res){
+            notification_helper.show_toast_without_icon("暂无待租车辆",1000000);    
+          }
+        })
       }
       batchTimes = Math.ceil(count / 20);
       var arrayContainer = [],

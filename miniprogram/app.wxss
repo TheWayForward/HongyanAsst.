@@ -454,6 +454,7 @@ page {
 .search_align {
   background: #F6F6F6;
   padding: 30rpx;
+  border-radius: 0 0 20rpx 20rpx;
 }
 
 .input {

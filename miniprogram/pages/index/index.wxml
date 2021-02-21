@@ -41,7 +41,7 @@
 
 
   <!--footer-->
-  <view class="footer mt-20 mb-20">
+  <view class="footer mt-20 mb-20 bottom_fixed">
     <view class="weui-footer">
       <view class="weui-footer__links">
         <navigator url="../terms/terms" class="weui-footer__link">使用条款</navigator>|<navigator url="../feedback/feedback"

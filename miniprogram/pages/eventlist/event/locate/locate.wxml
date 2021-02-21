@@ -2,7 +2,7 @@
 	<view class="map shadow rounded-20">
 		<!--40.157306,116.288791, when onenet is down-->
 		<map style="width: 100%; height: {{height}}px;" id="myMap" latitude="{{latitude}}" longitude="{{longitude}}"
-			markers="{{markers}}" show-compass="true" bindmarkertap="show_snapshot_from_map" bindregionchange="get_map_info"
+			markers="{{markers}}" bindmarkertap="show_snapshot_from_map" bindregionchange="get_map_info"
 			scale="{{map_scale}}" min-scale="8" show-location>
 			<view class="dynamic_data_group" hidden="{{is_dynamic_data_hide}}">
 				<view class="dynamic_data shadow" hover-class="hv">
@@ -23,7 +23,7 @@
 		</map>
 	</view>
 	<view class="page__bd" hidden="{{is_image_list_hide}}">
-		<view class="weui-panel weui-panel_access">
+		<view class="weui-panel weui-panel_access rounded-20 shadow overflow-hidden">
 			<!--previewer title-->
 			<view class="weui-panel__hd">图片查看</view>
 			<view class="weui-panel__bd" hidden="{{is_image_previewer_hide}}">
@@ -53,8 +53,8 @@
 			</scroll-view>
 		</view>
 	</view>
-	<view class="page__bd rounded-20" style="overflow: hidden;">
-		<view class="weui-cells" hidden="{{is_uploader_hide}}">
+	<view class="page__bd">
+		<view class="weui-cells rounded-20 shadow overflow-hidden" hidden="{{is_uploader_hide}}">
 			<view class="weui-panel weui-panel_access">
 				<!--uploader title-->
 				<view class="weui-panel__hd">图片上传</view>
@@ -100,6 +100,23 @@
 			<view class="weui-cell">
 				<button class="weui-btn shadow" type="primary" disabled="{{!is_upload_available}}"
 					bindtap="upload_image">上传</button></view>
+		</view>
+	</view>
+	<!--sign up-->
+	<view class="page__bd" hidden="{{is_sign_up_hide}}">
+		<view class="weui-cells rounded-20 shadow overflow-hidden">
+			<view class="weui-panel weui-panel_access">
+				<!--uploader title-->
+				<view class="weui-panel__hd">活动签到</view>
+			</view>
+			<view class="weui-cell__bd" style="margin-left:20rpx;" hidden="{{is_signer_hide}}">
+				<image src="{{sign_up_location_image}}" class="d-inline-block upload_image_choose_loaction"
+					bindtap="get_location"></image>
+				<input class="shadow upload_image_loaction" disabled="true" value="{{sign_up_tip}}"></input>
+			</view>
+			<view class="weui-cell">
+				<button class="weui-btn shadow" type="primary" disabled="{{!is_sign_up_available}}"
+					bindtap="sign_up">{{sign_up_state}}</button></view>
 		</view>
 	</view>
 	<!--footer-->

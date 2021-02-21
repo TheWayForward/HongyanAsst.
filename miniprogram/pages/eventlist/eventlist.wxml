@@ -9,7 +9,7 @@
     <!--rentable-->
     <view class="weui-cells__group weui-cells__group_form">
 		<!--coming-->
-		<view class="weui-cells__title bg-standard" wx:if="{{coming_event[0]._id}}">即将进行的活动</view>
+		<view class="weui-cells__title bg-standard" style="margin-top:8px;" wx:if="{{coming_event[0]._id}}">即将进行的活动</view>
 		<view class="weui-panel weui-panel_access shadow rounded-20" wx:if="{{coming_event[0]._id}}">
 			<view class="weui-panel__bd" style="border-bottom: 1px solid #F5F5F5;" wx:for="{{coming_event}}" wx:key="_id">
 				<view class="weui-media-box weui-media-box_appmsg">
@@ -36,7 +36,7 @@
 		</view>
 
 		<!--current-->
-		<view class="weui-cells__title bg-standard" wx:if="{{current_event[0]._id}}">当前活动</view>
+		<view class="weui-cells__title bg-standard" style="margin-top:8px;" wx:if="{{current_event[0]._id}}">当前活动</view>
 		<view class="weui-panel weui-panel_access shadow rounded-20" wx:if="{{current_event[0]._id}}">
 			<view class="weui-panel__bd" wx:for="{{current_event}}" wx:key="_id">
 				<view class="weui-media-box weui-media-box_appmsg">
@@ -63,7 +63,7 @@
 		</view>
 
 		<!--previous-->
-		<view class="weui-cells__title bg-standard" wx:if="{{previous_event[0]._id}}">往期活动</view>
+		<view class="weui-cells__title bg-standard" style="margin-top:8px;" wx:if="{{previous_event[0]._id}}">往期活动</view>
 		<view class="weui-panel weui-panel_access shadow rounded-20">
 			<view class="weui-panel__bd" wx:for="{{previous_event_shown}}"
 				wx:key="_id">
@@ -93,8 +93,7 @@
 		</view>
 		</view>
 	</view>
-	<!--line-->
+	<button class="weui-btn weui-btn_primary shadow mt-50" bindtap="show_more" hidden="{{is_show_more_hide}}">显示更多</button>
 	<view class="weui-loadmore weui-loadmore_line weui-loadmore_dot"></view>
-	<button class="weui-btn weui-btn_primary shadow" bindtap="show_more" hidden="{{is_show_more_hide}}">显示更多</button>
 </view>
 <view id="end" style="margin-top:30rpx;"></view>

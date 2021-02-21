@@ -7,7 +7,7 @@
 				</swiper-item>
 			</swiper>
 		</view>
-		<view class="weui-cells">
+		<view class="weui-cells rounded-20 shadow overflow-hidden">
 			<view class="weui-form-preview">
 				<view class="weui-form-preview__hd">
 					<view class="weui-form-preview__item" style="font-weight: bold;">
@@ -50,7 +50,7 @@
 			</view>
 		</view>
 		<!--participants-->
-		<view class="weui-cells">
+		<view class="weui-cells rounded-20 shadow overflow-hidden">
 			<view class="weui-cell weui-cell_active" bindtap="show_participants">
 				<view class="weui-cell__bd">
 					<text style="vertical-align: middle;">参与者</text>

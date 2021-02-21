@@ -199,6 +199,13 @@ Page({
     wx.stopPullDownRefresh({})
   },
 
+  preview: function (e) {
+    wx.previewImage({
+      urls: [e.currentTarget.dataset.action],
+      current: e.currentTarget.dataset.action
+    })
+  },
+
   goto_transaction_detail: function (e) {
     app.globalData.my_bicycle_and_transaction = e.currentTarget.dataset.action;
     wx.navigateTo({

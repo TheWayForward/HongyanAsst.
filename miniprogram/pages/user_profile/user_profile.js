@@ -10,7 +10,7 @@ Page({
    */
   data: {
     user: {
-      avatar: "../../images/loading.gif"
+      avatar: "../../images/loading.gif",
     },
     show_top: true,
     watcher: 0

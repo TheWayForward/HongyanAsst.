@@ -3,7 +3,7 @@
     <view class="weui-form__control-area shadow rounded-20 overflow-hidden" style="margin-top:0;margin-bottom:0;">
       <view class="weui-cells__group weui-cells__group_form">
         <view class="weui-cells__title">车辆信息</view>
-        <view class="weui-cells weui-cells_form" style="border-radius:20rpx 20rpx 0 0;">
+        <view class="weui-cells weui-cells_form rounded-20 shadow">
           <view class="weui-cell weui-cell_active weui-cell_select weui-cell_select-before">
             <view class="weui-cell__hd">
               <picker range="{{brands}}" bindchange="bind_brand_change">
@@ -72,7 +72,7 @@
       </view>
       <view class="weui-cells__group weui-cells__group_form">
         <view class="weui-cells__title mt-20">车辆简介</view>
-        <view class="weui-cells weui-cells_form">
+        <view class="weui-cells weui-cells_form rounded-20 shadow">
           <view class="weui-cell">
             <view class="weui-cell__bd">
               <textarea class="weui-textarea" placeholder="填写车辆简介" value="{{detail}}" rows="3"
@@ -82,7 +82,7 @@
           </view>
         </view>
       </view>
-      <view class="weui-cells__group weui-cells__group_form">
+      <view class="weui-cells__group weui-cells__group_form rounded-20 shadow">
         <view class="weui-cells__title">车辆属性</view>
         <view class="page__bd" style="overflow:hidden;border-radius:0 0 20rpx 20rpx;">
           <view class="weui-cells" style="margin-top:0;">
@@ -113,7 +113,7 @@
       </view>
       <view class="weui-cells__group weui-cells__group_form">
         <view class="weui-cells__title">定位设备</view>
-        <view class="page__bd" style="overflow:hidden;border-radius:0 0 20rpx 20rpx;">
+        <view class="page__bd rounded-20 shadow" style="overflow:hidden;border-radius:0 0 20rpx 20rpx;">
           <view class="weui-cells" style="margin-top:0;">
             <view class="weui-cell weui-cell_active weui-cell_switch">
               <view class="weui-cell__bd">添加定位设备</view>
@@ -140,7 +140,7 @@
       </view>
       <view class="weui-cells__group weui-cells__group_form">
         <view class="weui-cells__title">车辆图片</view>
-        <view class="weui-cells weui-cells_form" style="border-radius:0 0 20rpx 20rpx;">
+        <view class="weui-cells weui-cells_form rounded-20 shadow">
           <view class="page__bd" style="overflow:hidden;border-radius:0 0 20rpx 20rpx;">
             <view class="weui-cells" style="margin-top:0;">
               <view class="weui-cell">

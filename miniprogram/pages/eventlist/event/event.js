@@ -219,6 +219,7 @@ Page({
             poster: event.poster,
             date: event.date,
             distance: event.distance,
+            detail: event.detail,
             precise_time: new Date(event.date).getTime(),
             is_signed: false
           });

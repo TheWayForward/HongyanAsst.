@@ -15,7 +15,7 @@
     <view class="weui-form__control-area shadow rounded-20 overflow-hidden" style="margin-bottom:0;margin-top:0;">
       <view class="weui-cells__group weui-cells__group_form">
         <view class="weui-cells__title">车辆信息</view>
-        <view class="weui-cells weui-cells_form" style="border-radius:20rpx 20rpx 0 0;">
+        <view class="weui-cells weui-cells_form rounded-20 shadow overflow-hidden">
           <view class="weui-cell weui-cell_active">
             <view class="weui-cell__hd"><label class="weui-label">添加时间</label></view>
             <view class="weui-cell__bd">
@@ -55,7 +55,7 @@
       </view>
       <view class="weui-cells__group weui-cells__group_form">
         <view class="weui-cells__title mt-20">车辆简介</view>
-        <view class="weui-cells weui-cells_form">
+        <view class="weui-cells weui-cells_form rounded-20 shadow overflow-hidden">
           <view class="weui-cell">
             <view class="weui-cell__bd">
               <textarea class="weui-textarea" placeholder="读万卷书，行万里路..." value="{{bicycle.detail}}" rows="3"
@@ -65,7 +65,7 @@
           </view>
         </view>
         <view class="weui-cells__title">车辆图片</view>
-        <view class="page__bd" style="overflow:hidden;border-radius:0 0 20rpx 20rpx;">
+        <view class="page__bd rounded-20 shadow overflow-hidden">
           <view class="weui-cells" style="margin-top:0;">
             <view class="weui-cell weui-cell_active weui-cell_switch">
               <view class="weui-cell__bd">更换图片</view>
@@ -77,7 +77,7 @@
               </view>
             </view>
             <view class="weui-cell" hidden="{{is_uploader_hide}}">
-              <view class="weui-cell__bd">
+              <view class="weui-cell__bd rounded-20 shadow overflow-hidden">
                 <view class="weui-uploader">
                   <view class="weui-uploader__bd">
                     <view class="weui-uploader__files">
@@ -102,8 +102,8 @@
           </view>
         </view>
         <view class="weui-cells__title text_red">风险操作</view>
-        <view class="page__bd" style="overflow:hidden;border-radius:0 0 20rpx 20rpx;">
-          <view class="weui-cells" style="margin-top:0;">
+        <view class="page__bd">
+          <view class="weui-cells rounded-20 shadow overflow-hidden" style="margin-top:0;">
             <view class="weui-cell weui-cell_active weui-cell_switch">
               <view class="weui-cell__bd">删除车辆</view>
               <view class="weui-cell__ft">

@@ -4,7 +4,7 @@
 </view>
 <!--search bar-->
 <view style="position:fixed;width:100%;z-index:10;">
-	<view class="search_align rounded-10 d-flex">
+	<view class="search_align shadow rounded-10 d-flex">
 		<view class="input" style="align-items:center;">
 			<image src="../../images/search.png" mode="aspectFill" style="height:56rpx;width:72rpx;"></image>
 			<input placeholder="按题目或标签搜索资讯" id="search_input" class="box" value="{{input_value}}" bindinput="input"></input>

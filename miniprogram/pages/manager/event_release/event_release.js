@@ -417,14 +417,16 @@ Page({
                       detail: that.data.detail,
                       is_signed: true
                     });
+                    app.globalData.user.total_distance += that.data.distance;
                     wx.cloud.callFunction({
-                      name: "update_user_event",
+                      name: "event_sign_up",
                       data: {
-                        openid: app.globalData.user.openid,
-                        my_event: app.globalData.user.my_event
+                        _id: app.globalData.user._id,
+                        my_event: app.globalData.user.my_event,
+                        total_distance: app.globalData.user.total_distance
                       },
                       success(res){
-                        console.log("[cloudfunction][update_user_event]: updated successfully");
+                        console.log("[cloudfunction][event_sign_up]: updated successfully");
                         wx.showToast({
                           title: '发布成功',
                           duration: 2000,
@@ -440,7 +442,7 @@ Page({
                         })
                       },
                       fail(res){
-                        console.log("[cloudfunction][update_user_event]: failed to update");
+                        console.log("[cloudfunction][event_sign_up]: failed to update");
                         notification_helper.show_toast_without_icon("获取数据失败，请刷新页面重试",2000);
                       }
                     })

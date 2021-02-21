@@ -12,10 +12,10 @@
       <h2 class="weui-form__title">{{user.nickname}}</h2>
       <view class="weui-form__desc">{{user.detail}}</view>
     </view>
-    <view class="weui-form__control-area shadow rounded-20 overflow-hidden" style="margin-bottom:0;">
+    <view class="weui-form__control-area" style="margin-bottom:0;">
       <view class="weui-cells__group weui-cells__group_form">
         <view class="weui-cells__title">个人信息</view>
-        <view class="weui-cells weui-cells_form" style="border-radius:20rpx 20rpx 0 0;">
+        <view class="weui-cells weui-cells_form rounded-20 shadow overflow-hidden">
           <!--realname-->
           <view class="weui-cell weui-cell_active">
             <view class="weui-cell__hd"><label class="weui-label">姓名</label></view>
@@ -47,6 +47,13 @@
                 value="{{user.dept}}" />
             </view>
           </view>
+          <view class="weui-cell weui-cell_active">
+            <view class="weui-cell__hd"><label class="weui-label">骑行里程</label></view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" disabled="true" placeholder-class="weui-input__placeholder"
+                value="{{user.total_distance_string}} km" />
+            </view>
+          </view>
           <view class="weui-cell">
             <button class="weui-btn weui-btn_primary shadow" bindtap="goto_user_profile_update">编辑信息</button>
           </view>
@@ -54,8 +61,8 @@
       </view>
       <!--bicycle management-->
       <view class="weui-cells__group weui-cells__group_form">
-        <view class="weui-cells__title mt-20">我的车辆</view>
-        <view class="weui-cells weui-cells_form">
+        <view class="weui-cells__title mt-20">我的车辆({{user.my_bicycle.length}})</view>
+        <view class="weui-cells weui-cells_form rounded-20 shadow overflow-hidden">
           <view class="weui-panel weui-panel_access">
             <view class="weui-panel__bd">
               <a wx:for="{{user.my_bicycle}}" wx:key="_id" class="weui-media-box weui-media-box_appmsg">
@@ -79,7 +86,7 @@
       <!--events-->
       <view class="weui-cells__group weui-cells__group_form">
         <view class="weui-cells__title mt-20">我参加的活动({{user.my_event.length}})</view>
-        <view class="weui-cells weui-cells_form">
+        <view class="weui-cells weui-cells_form rounded-20 shadow overflow-hidden">
           <view class="weui-panel weui-panel_access">
             <view class="weui-panel__bd">
               <a wx:for="{{user.my_event}}" wx:key="_id" class="weui-media-box weui-media-box_appmsg">
@@ -88,7 +95,10 @@
                     data-action="{{item.poster}}" bindtap="preview" lazy-load="true" alt></image>
                 </view>
                 <view class="weui-media-box__bd" data-action="{{item}}" bindtap="goto_event">
-                  <h4 class="weui-media-box__title">{{item.name}}</h4>
+                  <h4 class="weui-media-box__title">{{item.name}}<text class="weui-badge bg_red shadow" style="margin-left: 5px;"
+                      wx:if="{{!item.is_signed}}">未签到</text>
+                    <text class="weui-badge bg_green shadow" style="margin-left: 5px;"
+                      wx:if="{{item.is_signed}}">已签到</text></h4>
                   <view class="weui-media-box__desc">{{item.detail}}</view>
                 </view>
               </a>
@@ -101,9 +111,9 @@
         </view>
       </view>
       <!--snapshots-->
-      <view class="weui-cells__group weui-cells__group_form" wx:if="{{user.mysnapshots.length}}">
+      <view class="weui-cells__group weui-cells__group_form" wx:if="{{user.my_snapshots.length}}">
         <view class="weui-cells__title mt-20">我上传的照片({{user.my_snapshots.length}})</view>
-        <view class="weui-cells weui-cells_form" style="border-radius:0 0 20rpx 20rpx;">
+        <view class="weui-cells weui-cells_form rounded-20 shadow overflow-hidden">
           <view class="album_align">
             <view class="snapshots_align" style="z-index:6;">
               <view class="snapshot_box" wx:for="{{user.my_snapshots}}" wx:key="url">

@@ -70,8 +70,8 @@ Page({
           that.data.poster_urls.push(res.data[i].thumbnail)
         }
         that.setData({
-          posters: res.data, 
-          poster_urls: that.data.poster_urls,
+          posters: res.data.reverse(), 
+          poster_urls: that.data.poster_urls.reverse(),
           is_swiper_hide: false
         })
       }

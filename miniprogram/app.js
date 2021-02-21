@@ -35,8 +35,6 @@ App({
 
   onLaunch: function () {
 
-
-
     var that = this;
     //loading animation
     wx.showLoading({
